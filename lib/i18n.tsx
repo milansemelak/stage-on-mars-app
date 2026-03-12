@@ -7,7 +7,7 @@ export type Lang = "en" | "sk";
 const translations = {
   en: {
     // Header
-    humanFutureSimulator: "The Human Future Simulator",
+    humanFutureSimulator: "Go to Mars",
     // Play page
     headline: "The Systemic Playbook",
     subheadline: "Turn the question into a play to see what you can't see alone",
@@ -55,7 +55,7 @@ const translations = {
   },
   sk: {
     // Header
-    humanFutureSimulator: "Ľudský simulátor budúcnosti",
+    humanFutureSimulator: "Poď na Mars",
     // Play page
     headline: "Systemický Playbook",
     subheadline: "Premeň otázku na hru a uvidíš, čo sám nevidíš",
