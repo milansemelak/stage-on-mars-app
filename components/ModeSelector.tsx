@@ -22,7 +22,6 @@ export default function ModeSelector({ mode, onChange }: Props) {
         }`}
       >
         {t.facilitatorMode}
-        <span className="block text-xs opacity-70 mt-0.5">{t.facilitatorSub}</span>
       </button>
       <button
         onClick={() => onChange("self-service")}
@@ -33,7 +32,6 @@ export default function ModeSelector({ mode, onChange }: Props) {
         }`}
       >
         {t.selfService}
-        <span className="block text-xs opacity-70 mt-0.5">{t.selfServiceSub}</span>
       </button>
     </div>
   );
