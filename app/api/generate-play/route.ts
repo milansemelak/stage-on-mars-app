@@ -48,8 +48,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ plays });
   } catch (error) {
     console.error("Error generating play:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to generate play. Please try again." },
+      { error: `Failed to generate play: ${message}` },
       { status: 500 }
     );
   }
