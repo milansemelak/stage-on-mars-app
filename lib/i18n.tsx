@@ -103,7 +103,7 @@ const translations = {
   },
 } as const;
 
-type Translations = typeof translations.en;
+type Translations = { [K in keyof typeof translations.en]: string };
 
 type I18nContextType = {
   lang: Lang;
