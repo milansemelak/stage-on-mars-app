@@ -11,6 +11,7 @@ import { useI18n } from "@/lib/i18n";
 export default function PlayPage() {
   const [question, setQuestion] = useState("");
   const [mode, setMode] = useState<Mode>("guide");
+  const [context, setContext] = useState<"personal" | "business">("personal");
   const [plays, setPlays] = useState<Play[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +30,7 @@ export default function PlayPage() {
       const response = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, mode, lang }),
+        body: JSON.stringify({ question, mode, context, lang }),
       });
 
       if (!response.ok) {
@@ -46,6 +47,7 @@ export default function PlayPage() {
       history.unshift({
         question,
         mode,
+        context,
         plays: data.plays,
         timestamp: Date.now(),
       });
@@ -67,7 +69,32 @@ export default function PlayPage() {
         <p className="text-white/40 text-sm">{t.subheadline}</p>
       </div>
 
-      <ModeSelector mode={mode} onChange={setMode} />
+      <div className="flex gap-3">
+        <ModeSelector mode={mode} onChange={setMode} />
+        <div className="flex rounded-lg overflow-hidden border border-white/20">
+          <button
+            onClick={() => setContext("personal")}
+            className={`px-4 py-3 text-sm font-medium transition-colors ${
+              context === "personal"
+                ? "bg-orange-500 text-white"
+                : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            {t.personal}
+          </button>
+          <button
+            onClick={() => setContext("business")}
+            className={`px-4 py-3 text-sm font-medium transition-colors ${
+              context === "business"
+                ? "bg-orange-500 text-white"
+                : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            {t.business}
+          </button>
+        </div>
+      </div>
+
       <QuestionInput
         question={question}
         onChange={setQuestion}

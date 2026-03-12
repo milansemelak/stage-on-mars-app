@@ -70,16 +70,24 @@ export function buildUserPrompt(
   lang?: "en" | "sk" | "cs"
 ): string {
   const count = mode === "guide" ? 3 : 1;
-  const extra =
+
+  const modeInstruction =
     mode === "self-service"
-      ? " Include slightly more detail in each component so someone unfamiliar with the method can facilitate the play."
-      : " Keep descriptions concise — these are pitches a Director would give in 30 seconds each.";
+      ? "Include slightly more detail in each component so someone unfamiliar with the method can facilitate the play."
+      : "Keep descriptions concise — these are pitches a Director would give in 30 seconds each.";
+
+  const contextInstruction =
+    context === "business"
+      ? `Context: BUSINESS / ORGANIZATIONAL question.
+For business plays: images and characters can still be poetic and symbolic, but stay grounded enough that people in professional settings will feel safe stepping into them. Think: forces inside an organization, tensions between roles or values, the invisible dynamics that shape decisions. Imagery that is striking but not alienating — a boardroom without a table, a compass that spins, a ship with no one at the helm. Characters can be organizational archetypes, systemic forces, or collective voices (The Founder's Ghost, The Market, The Unspoken Agreement, Chaos). The author's role should feel purposeful and clear.`
+      : `Context: PERSONAL question.
+For personal plays: be boldly imaginative. Go strange, poetic, mythological. The image should feel like it came from a dream that understood the question better than the person who asked it. Characters can be inner forces, archetypes, contradictions, time, wounds, desires, alternative selves. The author's role should feel risky and genuinely alive — not safe observation but real participation. The ending should leave a physical memory in the body.`;
 
   const langInstruction =
     lang === "sk"
-      ? " IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Slovak language (slovenčina)."
+      ? "IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Slovak language (slovenčina)."
       : lang === "cs"
-      ? " IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Czech language (čeština)."
+      ? "IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Czech language (čeština)."
       : "";
 
   const parts = [
@@ -87,15 +95,15 @@ export function buildUserPrompt(
     "",
     `"${question}"`,
     "",
+    contextInstruction,
+    "",
+    modeInstruction,
   ];
 
-  if (context) {
-    parts.push(`Additional context: ${context}`);
-    parts.push("");
+  if (langInstruction) {
+    parts.push(langInstruction);
   }
 
-  parts.push(extra);
-  parts.push(langInstruction);
   parts.push("");
   parts.push("Remember: return ONLY a JSON array of play objects. No other text.");
 
