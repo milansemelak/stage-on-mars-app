@@ -44,6 +44,7 @@ const translations = {
     characterGeneratorTitle: "Character Generator",
     characterGeneratorSub: "Based on your question and group size, get characters to bring into the play",
     generateCharacters: "Generate Characters",
+    characterPlaceholder: "What question do you need characters for?",
     personal: "Personal",
     business: "Business",
     // Landing page
@@ -110,6 +111,7 @@ const translations = {
     characterGeneratorTitle: "Generátor postáv",
     characterGeneratorSub: "Na základe otázky a počtu ľudí navrhne postavy do hry",
     generateCharacters: "Vygeneruj postavy",
+    characterPlaceholder: "Na akú otázku potrebuješ postavy?",
     personal: "Osobné",
     business: "Biznis",
   },
@@ -164,6 +166,7 @@ const translations = {
     characterGeneratorTitle: "Generátor postav",
     characterGeneratorSub: "Na základě otázky a počtu lidí navrhne postavy do hry",
     generateCharacters: "Vygeneruj postavy",
+    characterPlaceholder: "Na jakou otázku potřebuješ postavy?",
     personal: "Osobní",
     business: "Byznys",
   },

@@ -67,7 +67,7 @@ export default function CharacterGenerator() {
         <textarea
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder={t.placeholder}
+          placeholder={t.characterPlaceholder}
           rows={2}
           className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none"
           onKeyDown={(e) => {
