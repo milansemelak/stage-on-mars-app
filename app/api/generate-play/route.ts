@@ -8,7 +8,7 @@ const anthropic = new Anthropic();
 export async function POST(request: NextRequest) {
   try {
     const body: GenerateRequest = await request.json();
-    const { question, mode, context } = body;
+    const { question, mode, context, lang } = body;
 
     if (!question || !question.trim()) {
       return NextResponse.json(
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: buildUserPrompt(question, mode, context),
+          content: buildUserPrompt(question, mode, context, lang),
         },
       ],
     });

@@ -78,13 +78,19 @@ Return ONLY valid JSON — no markdown, no explanation, no wrapping. Just the ar
 export function buildUserPrompt(
   question: string,
   mode: "guide" | "self-service",
-  context?: string
+  context?: string,
+  lang?: "en" | "sk"
 ): string {
   const count = mode === "guide" ? 3 : 1;
   const extra =
     mode === "self-service"
       ? " Include slightly more detail in each component so someone unfamiliar with the method can facilitate the play."
       : " Keep descriptions concise — these are pitches a Director would give in 30 seconds each.";
+
+  const langInstruction =
+    lang === "sk"
+      ? " IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Slovak language (slovenčina)."
+      : "";
 
   const parts = [
     `Generate ${count} Systemic Play(s) for this question:`,
@@ -99,6 +105,7 @@ export function buildUserPrompt(
   }
 
   parts.push(extra);
+  parts.push(langInstruction);
   parts.push("");
   parts.push("Remember: return ONLY a JSON array of play objects. No other text.");
 

@@ -14,7 +14,7 @@ export default function PlayPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [askedQuestion, setAskedQuestion] = useState<string>("");
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
 
   async function generatePlay() {
     if (!question.trim()) return;
@@ -28,7 +28,7 @@ export default function PlayPage() {
       const response = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, mode }),
+        body: JSON.stringify({ question, mode, lang }),
       });
 
       if (!response.ok) {
