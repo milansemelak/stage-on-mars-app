@@ -1,6 +1,7 @@
 "use client";
 
 import { Play } from "@/lib/types";
+import { useI18n } from "@/lib/i18n";
 
 type Props = {
   play: Play;
@@ -8,6 +9,8 @@ type Props = {
 };
 
 export default function PlayCard({ play, index }: Props) {
+  const { t } = useI18n();
+
   return (
     <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden hover:border-orange-500/30 transition-colors">
       <div className="p-6 space-y-5">
@@ -16,7 +19,7 @@ export default function PlayCard({ play, index }: Props) {
           <div>
             {index !== undefined && (
               <span className="text-xs text-orange-400 font-bold uppercase tracking-wider">
-                Option {index + 1}
+                {t.option} {index + 1}
               </span>
             )}
             <h3 className="text-xl font-bold text-white mt-1">{play.name}</h3>
@@ -24,7 +27,7 @@ export default function PlayCard({ play, index }: Props) {
           <div className="flex items-center gap-3 text-xs text-white/40">
             <span>{play.duration}</span>
             <span>
-              {play.playerCount.min}-{play.playerCount.max} players
+              {play.playerCount.min}-{play.playerCount.max} {t.players}
             </span>
           </div>
         </div>
@@ -34,16 +37,16 @@ export default function PlayCard({ play, index }: Props) {
 
         {/* 4 Components */}
         <div className="space-y-4">
-          <Section label="The Image" color="orange">
+          <Section label={t.theImage} color="orange">
             {play.image}
           </Section>
-          <Section label="Characters" color="blue">
+          <Section label={t.characters} color="blue">
             {play.characters}
           </Section>
-          <Section label="Author's Role" color="green">
+          <Section label={t.authorsRole} color="green">
             {play.authorRole}
           </Section>
-          <Section label="Ending Perspective" color="purple">
+          <Section label={t.endingPerspective} color="purple">
             {play.endingPerspective}
           </Section>
         </div>

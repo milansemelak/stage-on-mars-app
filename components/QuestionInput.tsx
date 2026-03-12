@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useI18n } from "@/lib/i18n";
 
 type Props = {
   question: string;
@@ -16,6 +17,7 @@ export default function QuestionInput({
   loading,
 }: Props) {
   const [showAngles, setShowAngles] = useState(false);
+  const { t } = useI18n();
 
   return (
     <div className="space-y-4">
@@ -23,7 +25,7 @@ export default function QuestionInput({
         <textarea
           value={question}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="What question do you want to explore?"
+          placeholder={t.placeholder}
           rows={3}
           className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none text-lg"
           onKeyDown={(e) => {
@@ -41,7 +43,7 @@ export default function QuestionInput({
           onClick={() => setShowAngles(!showAngles)}
           className="text-xs text-white/40 hover:text-white/70 transition-colors"
         >
-          {showAngles ? "Hide" : "Need help?"} Question Triangle
+          {showAngles ? t.hide : t.needHelp} {t.questionTriangle}
         </button>
 
         <button
@@ -52,10 +54,10 @@ export default function QuestionInput({
           {loading ? (
             <span className="flex items-center gap-2">
               <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              Generating...
+              {t.generating}
             </span>
           ) : (
-            "Generate Play"
+            t.generatePlay
           )}
         </button>
       </div>
@@ -69,11 +71,9 @@ export default function QuestionInput({
             className="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors text-left"
           >
             <span className="text-orange-400 text-xs font-bold uppercase tracking-wider">
-              It
+              {t.it}
             </span>
-            <p className="text-white/50 text-xs mt-1">
-              External — a situation, project, decision
-            </p>
+            <p className="text-white/50 text-xs mt-1">{t.itDesc}</p>
           </button>
           <button
             onClick={() =>
@@ -82,11 +82,9 @@ export default function QuestionInput({
             className="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors text-left"
           >
             <span className="text-orange-400 text-xs font-bold uppercase tracking-wider">
-              Us
+              {t.us}
             </span>
-            <p className="text-white/50 text-xs mt-1">
-              Collective — a team, relationship, group
-            </p>
+            <p className="text-white/50 text-xs mt-1">{t.usDesc}</p>
           </button>
           <button
             onClick={() =>
@@ -95,11 +93,9 @@ export default function QuestionInput({
             className="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors text-left"
           >
             <span className="text-orange-400 text-xs font-bold uppercase tracking-wider">
-              Me
+              {t.me}
             </span>
-            <p className="text-white/50 text-xs mt-1">
-              Personal — identity, purpose, inner conflict
-            </p>
+            <p className="text-white/50 text-xs mt-1">{t.meDesc}</p>
           </button>
         </div>
       )}

@@ -5,6 +5,7 @@ import QuestionInput from "@/components/QuestionInput";
 import ModeSelector from "@/components/ModeSelector";
 import PlayCard from "@/components/PlayCard";
 import { Mode, Play } from "@/lib/types";
+import { useI18n } from "@/lib/i18n";
 
 export default function PlayPage() {
   const [question, setQuestion] = useState("");
@@ -13,6 +14,7 @@ export default function PlayPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [askedQuestion, setAskedQuestion] = useState<string>("");
+  const { t } = useI18n();
 
   async function generatePlay() {
     if (!question.trim()) return;
@@ -51,7 +53,7 @@ export default function PlayPage() {
         JSON.stringify(history.slice(0, 20))
       );
     } catch {
-      setError("Failed to generate play. Make sure your API key is configured.");
+      setError(t.errorMessage);
     } finally {
       setLoading(false);
     }
@@ -60,10 +62,8 @@ export default function PlayPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">The Systemic Play Creator</h1>
-        <p className="text-white/40 text-sm">
-          Turn the question into a play to see what you can't see alone
-        </p>
+        <h1 className="text-3xl font-bold">{t.headline}</h1>
+        <p className="text-white/40 text-sm">{t.subheadline}</p>
       </div>
 
       <ModeSelector mode={mode} onChange={setMode} />
@@ -85,10 +85,10 @@ export default function PlayPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-white/80">
-                {plays.length === 1 ? "Your Play" : "Play Options"}
+                {plays.length === 1 ? t.yourPlay : t.playOptions}
               </h2>
               <p className="text-sm text-white/30 mt-0.5">
-                For: &ldquo;{askedQuestion}&rdquo;
+                {t.forQuestion}: &ldquo;{askedQuestion}&rdquo;
               </p>
             </div>
             <button
@@ -96,7 +96,7 @@ export default function PlayPage() {
               disabled={loading}
               className="text-xs text-orange-400 hover:text-orange-300 transition-colors"
             >
-              Regenerate
+              {t.regenerate}
             </button>
           </div>
 
