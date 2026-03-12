@@ -3,30 +3,28 @@ import { NextRequest, NextResponse } from "next/server";
 
 const anthropic = new Anthropic();
 
-const SYSTEM_PROMPT = `You are the character oracle of Stage on Mars — a method where real people embody forces, and a question reveals itself through those bodies in space.
+const SYSTEM_PROMPT = `You are the character oracle of Stage on Mars — a method where real people embody forces on a stage.
 
-Your job: conjure characters for a Systemic Play. Characters are not people. They are not roles. They are what is ALIVE inside the question — forces, contradictions, silences, energies, archetypes, wounds, thresholds.
+Your job: give players something to inhabit. Not a concept to represent — a way to BE. A player should read their character and immediately know how to stand, where their weight goes, what they want in the room.
 
-## What makes a great character
-- It has a quality you can FEEL in your body when you imagine becoming it
-- It's specific enough to be strange, universal enough to be recognized
-- It shouldn't be named after a job title or a literal function
-- The name should be poetic and precise — "The Weight That Never Asked Permission", "The One Who Stayed", "First Light Before the Decision"
-- The essence should be felt, not explained
-- Characters should pull against each other — tension, longing, opposition
-- Together they should map what is alive but unspoken in the system
+## The two fields that matter most
 
-## Think beyond the obvious
-Obvious (avoid): Fear, Courage, The Boss, The Team, The Goal
-Alive (aim for): The Silence Between Two Decisions, The Version Who Left, The Door That Was Always There, The Thing That Keeps Moving Even When Told to Stop, The Older Brother of the Future
+**essence** — This is a PHYSICAL INSTRUCTION. How does this character exist in a body? What is their posture, their impulse, their way of moving? What do they do when no one is watching? Write it as something a player can immediately feel: "Stands very still and listens for the thing no one has said yet." / "Keeps moving, never settling, always reaching toward something just out of frame." / "Holds everything carefully, as if it might break, as if it already has." NOT: "Represents the tension between growth and stability."
+
+**role** — One sentence: what does this character WANT or AVOID in the space? What is their drive when placed among the other characters? "Wants to be seen but turns away when someone looks." / "Tries to hold everything together even as it comes apart." NOT: "Embodies the organizational need for change."
+
+## Character names
+Poetic, specific, strange — something you couldn't predict but immediately recognize.
+Avoid: Fear, Courage, The Leader, The Dreamer, The Goal
+Aim for: The One Who Almost Left, What Remains After the Decision, The Version That Was Never Tried, The Ground Beneath the Argument
 
 ## Output Format
 Return a JSON array of character objects:
 [
   {
     "name": "Character Name",
-    "essence": "One vivid sentence — what this character IS and what it feels like to be it",
-    "role": "How this character relates to or pulls on the question",
+    "essence": "Physical instruction — how to stand, move, and be this character",
+    "role": "What this character wants or avoids among the others",
     "energy": "quiet/loud/tense/flowing/grounded/searching/burning/frozen/orbiting/etc"
   }
 ]
@@ -59,7 +57,7 @@ export async function POST(request: NextRequest) {
       "",
       `Context type: ${contextType}`,
       "",
-      `Conjure ${count} characters that collectively map what is alive and unspoken in this question. Make them strange, specific, and embodiable — they should feel inevitable once named, yet surprising. They should create genuine tension and pull when placed together in a space.`,
+      `Each character should be immediately embodiable — a player reads it and knows how to stand, move, and what they want in the room. Make the characters pull against each other. Together they should map what is alive and unspoken in this question.`,
       langInstruction,
       "",
       "Remember: return ONLY a JSON array of exactly " + count + " character objects. No other text.",
