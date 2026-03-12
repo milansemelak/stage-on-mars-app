@@ -9,12 +9,12 @@ const translations = {
     // Header
     humanFutureSimulator: "Go to Mars",
     // Play page
-    headline: "The Systemic Playbook",
+    headline: "Play Generator",
     subheadline: "Turn the question into a play to see what you can't see alone",
     facilitatorMode: "Facilitator Mode",
-    facilitatorSub: "3 play options",
+    facilitatorSub: "3 plays",
     selfService: "Self-service",
-    selfServiceSub: "1 detailed play",
+    selfServiceSub: "1 play",
     placeholder: "What question do you want to explore?",
     needHelp: "Need help?",
     hide: "Hide",
@@ -63,12 +63,12 @@ const translations = {
     // Header
     humanFutureSimulator: "Poď na Mars",
     // Play page
-    headline: "Systemický Playbook",
+    headline: "Generátor Hier",
     subheadline: "Premeň otázku na hru a uvidíš, čo sám nevidíš",
     facilitatorMode: "Režim sprievodcu",
-    facilitatorSub: "3 možnosti hry",
+    facilitatorSub: "3 hry",
     selfService: "Samoobsluha",
-    selfServiceSub: "1 detailná hra",
+    selfServiceSub: "1 hra",
     placeholder: "Akú otázku chceš preskúmať?",
     needHelp: "Potrebuješ pomoc?",
     hide: "Skryť",
@@ -117,12 +117,12 @@ const translations = {
     // Header
     humanFutureSimulator: "Pojď na Mars",
     // Play page
-    headline: "Systemický Playbook",
+    headline: "Generátor Her",
     subheadline: "Přeměň otázku na hru a uvidíš, co sám nevidíš",
     facilitatorMode: "Režim průvodce",
-    facilitatorSub: "3 možnosti hry",
+    facilitatorSub: "3 hry",
     selfService: "Samoobsluha",
-    selfServiceSub: "1 detailní hra",
+    selfServiceSub: "1 hra",
     placeholder: "Jakou otázku chceš prozkoumat?",
     needHelp: "Potřebuješ pomoc?",
     hide: "Skrýt",
