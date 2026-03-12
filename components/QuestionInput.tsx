@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
 
 type Props = {
@@ -16,7 +15,6 @@ export default function QuestionInput({
   onSubmit,
   loading,
 }: Props) {
-  const [showAngles, setShowAngles] = useState(false);
   const { t } = useI18n();
 
   return (
@@ -38,13 +36,14 @@ export default function QuestionInput({
       </div>
 
       <div className="flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => setShowAngles(!showAngles)}
-          className="text-xs text-white/40 hover:text-white/70 transition-colors"
+        <a
+          href="https://www.stageonmars.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-white/40 hover:text-orange-400 transition-colors"
         >
-          {showAngles ? t.hide : t.needHelp} {t.questionTriangle}
-        </button>
+          {t.humanFutureSimulator} &rarr;
+        </a>
 
         <button
           onClick={onSubmit}
@@ -61,44 +60,6 @@ export default function QuestionInput({
           )}
         </button>
       </div>
-
-      {showAngles && (
-        <div className="grid grid-cols-3 gap-3 mt-3">
-          <button
-            onClick={() =>
-              onChange(question ? question : "What about this situation...")
-            }
-            className="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors text-left"
-          >
-            <span className="text-orange-400 text-xs font-bold uppercase tracking-wider">
-              {t.it}
-            </span>
-            <p className="text-white/50 text-xs mt-1">{t.itDesc}</p>
-          </button>
-          <button
-            onClick={() =>
-              onChange(question ? question : "What about us...")
-            }
-            className="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors text-left"
-          >
-            <span className="text-orange-400 text-xs font-bold uppercase tracking-wider">
-              {t.us}
-            </span>
-            <p className="text-white/50 text-xs mt-1">{t.usDesc}</p>
-          </button>
-          <button
-            onClick={() =>
-              onChange(question ? question : "What about me...")
-            }
-            className="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-orange-500/50 transition-colors text-left"
-          >
-            <span className="text-orange-400 text-xs font-bold uppercase tracking-wider">
-              {t.me}
-            </span>
-            <p className="text-white/50 text-xs mt-1">{t.meDesc}</p>
-          </button>
-        </div>
-      )}
     </div>
   );
 }
