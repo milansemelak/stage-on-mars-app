@@ -4,6 +4,7 @@ import { useState } from "react";
 import QuestionInput from "@/components/QuestionInput";
 import ModeSelector from "@/components/ModeSelector";
 import PlayCard from "@/components/PlayCard";
+import CharacterGenerator from "@/components/CharacterGenerator";
 import { Mode, Play } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
@@ -109,6 +110,11 @@ export default function PlayPage() {
           ))}
         </div>
       )}
+
+      {/* Divider */}
+      <div className="border-t border-white/10 pt-12">
+        <CharacterGenerator />
+      </div>
     </div>
   );
 }

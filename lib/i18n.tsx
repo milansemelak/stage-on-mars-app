@@ -40,6 +40,12 @@ const translations = {
     usDesc: "Collective — a team, relationship, group",
     me: "Me",
     meDesc: "Personal — identity, purpose, inner conflict",
+    // Character generator
+    characterGeneratorTitle: "Character Generator",
+    characterGeneratorSub: "Based on your question and group size, get characters to bring into the play",
+    generateCharacters: "Generate Characters",
+    personal: "Personal",
+    business: "Business",
     // Landing page
     landingHeadline1: "Question",
     landingHeadline2: "Play",
@@ -100,6 +106,12 @@ const translations = {
     playDesc: "Získaj unikátnu Systémovú hru s obrazom, postavami, tvojou rolou a záverom. Pripravenú na odehranie.",
     see: "Pozri",
     seeDesc: "Rozšír svoju perspektívu. Nie odpovede — nové spôsoby videnia cez kolektívnu kreativitu.",
+    // Character generator
+    characterGeneratorTitle: "Generátor postáv",
+    characterGeneratorSub: "Na základe otázky a počtu ľudí navrhne postavy do hry",
+    generateCharacters: "Vygeneruj postavy",
+    personal: "Osobné",
+    business: "Biznis",
   },
   cs: {
     // Header
@@ -148,6 +160,12 @@ const translations = {
     playDesc: "Získej unikátní Systémovou hru s obrazem, postavami, tvou rolí a závěrem. Připravenou k odehrání.",
     see: "Podívej",
     seeDesc: "Rozšiř svou perspektivu. Ne odpovědi — nové způsoby vidění skrze kolektivní kreativitu.",
+    // Character generator
+    characterGeneratorTitle: "Generátor postav",
+    characterGeneratorSub: "Na základě otázky a počtu lidí navrhne postavy do hry",
+    generateCharacters: "Vygeneruj postavy",
+    personal: "Osobní",
+    business: "Byznys",
   },
 } as const;
 
