@@ -70,34 +70,13 @@ export default function PlayPage() {
       </div>
 
       <ModeSelector mode={mode} onChange={setMode} />
-      <div className="flex rounded-lg overflow-hidden border border-white/20 w-fit">
-        <button
-          onClick={() => setContext("personal")}
-          className={`px-4 py-2 text-sm font-medium transition-colors ${
-            context === "personal"
-              ? "bg-orange-500 text-white"
-              : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
-          }`}
-        >
-          {t.personal}
-        </button>
-        <button
-          onClick={() => setContext("business")}
-          className={`px-4 py-2 text-sm font-medium transition-colors ${
-            context === "business"
-              ? "bg-orange-500 text-white"
-              : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
-          }`}
-        >
-          {t.business}
-        </button>
-      </div>
-
       <QuestionInput
         question={question}
         onChange={setQuestion}
         onSubmit={generatePlay}
         loading={loading}
+        context={context}
+        onContextChange={setContext}
       />
 
       {error && (

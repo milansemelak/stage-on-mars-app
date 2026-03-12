@@ -7,6 +7,8 @@ type Props = {
   onChange: (q: string) => void;
   onSubmit: () => void;
   loading: boolean;
+  context: "personal" | "business";
+  onContextChange: (c: "personal" | "business") => void;
 };
 
 export default function QuestionInput({
@@ -14,6 +16,8 @@ export default function QuestionInput({
   onChange,
   onSubmit,
   loading,
+  context,
+  onContextChange,
 }: Props) {
   const { t } = useI18n();
 
@@ -36,14 +40,28 @@ export default function QuestionInput({
       </div>
 
       <div className="flex items-center justify-between">
-        <a
-          href="https://www.stageonmars.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-white/40 hover:text-orange-400 transition-colors"
-        >
-          {t.humanFutureSimulator} &rarr;
-        </a>
+        <div className="flex rounded-lg overflow-hidden border border-white/20">
+          <button
+            onClick={() => onContextChange("personal")}
+            className={`px-4 py-2 text-sm font-medium transition-colors ${
+              context === "personal"
+                ? "bg-orange-500 text-white"
+                : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            {t.personal}
+          </button>
+          <button
+            onClick={() => onContextChange("business")}
+            className={`px-4 py-2 text-sm font-medium transition-colors ${
+              context === "business"
+                ? "bg-orange-500 text-white"
+                : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            {t.business}
+          </button>
+        </div>
 
         <button
           onClick={onSubmit}
