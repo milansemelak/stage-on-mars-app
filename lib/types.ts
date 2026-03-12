@@ -15,7 +15,7 @@ export type GenerateRequest = {
   question: string;
   mode: Mode;
   context?: string;
-  lang?: "en" | "sk";
+  lang?: "en" | "sk" | "cs";
 };
 
 export type GenerateResponse = {

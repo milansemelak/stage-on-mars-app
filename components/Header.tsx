@@ -21,12 +21,21 @@ export default function Header() {
           />
         </Link>
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => setLang(lang === "en" ? "sk" : "en")}
-            className="text-xs font-medium text-white/50 hover:text-white transition-colors border border-white/20 rounded px-2 py-1"
-          >
-            {lang === "en" ? "SK" : "EN"}
-          </button>
+          <div className="flex gap-1">
+            {(["en", "sk", "cs"] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`text-xs font-medium transition-colors border rounded px-2 py-1 ${
+                  lang === l
+                    ? "text-white border-orange-500 bg-orange-500/20"
+                    : "text-white/50 border-white/20 hover:text-white"
+                }`}
+              >
+                {l === "en" ? "EN" : l === "sk" ? "SK" : "CZ"}
+              </button>
+            ))}
+          </div>
           <a
             href="https://www.stageonmars.com"
             target="_blank"

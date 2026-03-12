@@ -79,7 +79,7 @@ export function buildUserPrompt(
   question: string,
   mode: "guide" | "self-service",
   context?: string,
-  lang?: "en" | "sk"
+  lang?: "en" | "sk" | "cs"
 ): string {
   const count = mode === "guide" ? 3 : 1;
   const extra =
@@ -90,6 +90,8 @@ export function buildUserPrompt(
   const langInstruction =
     lang === "sk"
       ? " IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Slovak language (slovenčina)."
+      : lang === "cs"
+      ? " IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Czech language (čeština)."
       : "";
 
   const parts = [

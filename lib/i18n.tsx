@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-export type Lang = "en" | "sk";
+export type Lang = "en" | "sk" | "cs";
 
 const translations = {
   en: {
@@ -101,6 +101,54 @@ const translations = {
     see: "Pozri",
     seeDesc: "Rozšír svoju perspektívu. Nie odpovede — nové spôsoby videnia cez kolektívnu kreativitu.",
   },
+  cs: {
+    // Header
+    humanFutureSimulator: "Pojď na Mars",
+    // Play page
+    headline: "Systemický Playbook",
+    subheadline: "Přeměň otázku na hru a uvidíš, co sám nevidíš",
+    facilitatorMode: "Režim průvodce",
+    facilitatorSub: "3 možnosti hry",
+    selfService: "Samoobsluha",
+    selfServiceSub: "1 detailní hra",
+    placeholder: "Jakou otázku chceš prozkoumat?",
+    needHelp: "Potřebuješ pomoc?",
+    hide: "Skrýt",
+    questionTriangle: "Trojúhelník otázek",
+    generatePlay: "Vygeneruj hru",
+    generating: "Generuji...",
+    errorMessage: "Nepodařilo se vygenerovat hru. Zkontroluj API klíč.",
+    yourPlay: "Tvoje hra",
+    playOptions: "Možnosti hry",
+    forQuestion: "Pro",
+    regenerate: "Znovu",
+    option: "Možnost",
+    // Play card sections
+    theImage: "Obraz",
+    characters: "Postavy",
+    authorsRole: "Role klienta",
+    endingPerspective: "Závěr",
+    players: "hráčů",
+    // Question Triangle
+    it: "To",
+    itDesc: "Externí — situace, projekt, rozhodnutí",
+    us: "My",
+    usDesc: "Kolektivní — tým, vztah, skupina",
+    me: "Já",
+    meDesc: "Osobní — identita, účel, vnitřní konflikt",
+    // Landing page
+    landingHeadline1: "Otázka",
+    landingHeadline2: "Hra",
+    landingHeadline3: "Perspektiva",
+    landingDesc: "Přeměň jakoukoliv otázku na Systémovou hru — zážitkovou metodu, která rozšiřuje perspektivu skrze kolektivní kreativitu, pohyb a propojení.",
+    generateAPlay: "Vygeneruj hru",
+    ask: "Ptej se",
+    askDesc: "Přines svou otázku — osobní, kolektivní nebo o situaci. Otázka je měna.",
+    play: "Hraj",
+    playDesc: "Získej unikátní Systémovou hru s obrazem, postavami, tvou rolí a závěrem. Připravenou k odehrání.",
+    see: "Podívej",
+    seeDesc: "Rozšiř svou perspektivu. Ne odpovědi — nové způsoby vidění skrze kolektivní kreativitu.",
+  },
 } as const;
 
 type Translations = { [K in keyof typeof translations.en]: string };
@@ -122,7 +170,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("som-lang") as Lang | null;
-    if (saved && (saved === "en" || saved === "sk")) {
+    if (saved && (saved === "en" || saved === "sk" || saved === "cs")) {
       setLang(saved);
     }
   }, []);
