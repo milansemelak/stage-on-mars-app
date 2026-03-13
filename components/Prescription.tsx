@@ -131,12 +131,12 @@ export default function Prescription({ play, question, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-lg my-8">
+      <div className="relative w-full max-w-lg my-4 sm:my-8">
         {/* Close button - outside the card so it's always accessible */}
         <button
           onClick={onClose}
@@ -151,8 +151,8 @@ export default function Prescription({ play, question, onClose }: Props) {
           className="bg-[#0a0a0a] border-2 border-orange-500/50 rounded-xl overflow-hidden shadow-2xl shadow-orange-500/10"
         >
           {/* Header stripe */}
-          <div className="bg-orange-500 px-6 py-4 flex items-center justify-between">
-            <span className="text-black font-bold text-lg tracking-wide">
+          <div className="bg-orange-500 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+            <span className="text-black font-bold text-sm sm:text-lg tracking-wide">
               The Stage on Mars Experience
             </span>
             <button
@@ -165,7 +165,7 @@ export default function Prescription({ play, question, onClose }: Props) {
           </div>
 
           {/* Body */}
-          <div className="p-6 space-y-5">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
             {/* Title */}
             <div className="text-center">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">
@@ -184,7 +184,7 @@ export default function Prescription({ play, question, onClose }: Props) {
             </div>
 
             {/* Play name */}
-            <h2 className="text-2xl font-bold text-white">{play.name}</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white">{play.name}</h2>
 
             {/* Mood + meta */}
             <div className="flex items-center gap-4 text-xs text-white/40">
