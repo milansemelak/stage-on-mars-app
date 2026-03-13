@@ -67,6 +67,25 @@ export default function PlayCard({ play, index }: Props) {
             </p>
           </div>
         )}
+
+        {/* Perspectives */}
+        {play.perspectives && play.perspectives.length > 0 && (
+          <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] p-5">
+            <div className="mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-white/50">
+                💡 {t.perspectivesTitle}
+              </span>
+            </div>
+            <div className="space-y-3">
+              {play.perspectives.map((p, i) => (
+                <div key={i} className="flex gap-3 items-start">
+                  <span className="text-orange-400 font-bold text-sm mt-0.5">{i + 1}.</span>
+                  <p className="text-white/70 text-sm leading-relaxed">{p}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

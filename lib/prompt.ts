@@ -59,7 +59,8 @@ Return plays as a JSON array. Each play object:
   "playerCount": { "min": 3, "max": 8 },
   "duration": "10-15 min",
   "mood": "contemplative, energetic, etc.",
-  "simulation": "(ONLY when requested) A vivid short scenario describing how the play unfolds step by step — what happens, what shifts, how it ends. Written as narrative prose, 4-6 sentences. Like a director's vision of one possible way it plays out."
+  "simulation": "(ONLY when requested) A vivid short scenario describing how the play unfolds step by step — what happens, what shifts, how it ends. Written as narrative prose, 4-6 sentences. Like a director's vision of one possible way it plays out.",
+  "perspectives": ["(ONLY when requested) Three concrete possible perspectives/takeaways that could emerge from this simulation — specific, actionable, directly relevant to the original question. Not generic wisdom — real insights that only this play could reveal."]
 }
 
 Return ONLY valid JSON — no markdown, no explanation, no wrapping. Just the array.`;
@@ -75,7 +76,8 @@ export function buildUserPrompt(
   const modeInstruction =
     mode === "self-service"
       ? `This is a SIMULATION mode. Generate 1 play with SHORT, punchy descriptions for each component (image, characters, authorRole, endingPerspective — keep each to 1-2 sentences max).
-ALSO include a "simulation" field: a vivid narrative scenario (4-6 sentences) describing how the play might unfold — what happens when it starts, what shifts, what moments arise, and how it ends. Write it as prose, like watching it happen.`
+ALSO include a "simulation" field: a vivid narrative scenario (4-6 sentences) describing how the play might unfold — what happens when it starts, what shifts, what moments arise, and how it ends. Write it as prose, like watching it happen.
+ALSO include a "perspectives" field: an array of exactly 3 strings — concrete possible perspectives or takeaways that could emerge from this simulation. These should be specific insights directly relevant to the original question, not generic wisdom. Each one sentence.`
       : "Keep descriptions concise — these are pitches a Director would give in 30 seconds each. Do NOT include a simulation field.";
 
   const contextInstruction =

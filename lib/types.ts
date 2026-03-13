@@ -8,6 +8,7 @@ export type Play = {
   duration: string;
   mood: string;
   simulation?: string;
+  perspectives?: string[];
 };
 
 export type Mode = "guide" | "self-service";
