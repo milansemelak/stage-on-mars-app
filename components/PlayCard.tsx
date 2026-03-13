@@ -125,7 +125,7 @@ export default function PlayCard({ play, index, question }: Props) {
                   : "bg-orange-500/10 border-2 border-orange-500/40 text-orange-400 hover:bg-orange-500/20 hover:border-orange-500/60"
               }`}
             >
-              {prescribed ? t.prescribed : `℞ ${t.prescribe}`}
+              {prescribed ? t.prescribed : `🚀 ${t.prescribe}`}
             </button>
           </div>
         </div>

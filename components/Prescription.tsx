@@ -1,5 +1,8 @@
 "use client";
 
+import { useRef, useState } from "react";
+import Image from "next/image";
+import html2canvas from "html2canvas";
 import { Play } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
@@ -11,48 +14,92 @@ type Props = {
 
 export default function Prescription({ play, question, onClose }: Props) {
   const { t } = useI18n();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [saving, setSaving] = useState(false);
 
-  const rxNumber = `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`;
   const today = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
 
+  async function saveAsImage() {
+    if (!cardRef.current) return;
+    setSaving(true);
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: "#0a0a0a",
+        scale: 2,
+        useCORS: true,
+      });
+      const link = document.createElement("a");
+      link.download = `stage-on-mars-${play.name.replace(/\s+/g, "-").toLowerCase()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (err) {
+      console.error("Failed to save image:", err);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function sendToEmail() {
+    const subject = encodeURIComponent(`Stage on Mars — ${play.name}`);
+    const body = encodeURIComponent(
+      `${t.prescribedFor}: "${question}"\n\n` +
+        `${play.name}\n` +
+        `${play.mood} · ${play.duration} · ${play.playerCount.min}-${play.playerCount.max} ${t.players}\n\n` +
+        `${t.theImage}:\n${play.image}\n\n` +
+        `${t.characters}:\n${play.characters}\n\n` +
+        `${t.authorsRole}:\n${play.authorRole}\n\n` +
+        `${t.endingPerspective}:\n${play.endingPerspective}\n\n` +
+        `---\n${t.takeToStage}\nhttps://www.stageonmars.com`
+    );
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div className="relative w-full max-w-lg my-8">
-        {/* Prescription card */}
-        <div className="bg-[#0a0a0a] border-2 border-orange-500/50 rounded-xl overflow-hidden shadow-2xl shadow-orange-500/10">
-          {/* Header stripe */}
+        {/* The card (captured for image export) */}
+        <div
+          ref={cardRef}
+          className="bg-[#0a0a0a] border-2 border-orange-500/50 rounded-xl overflow-hidden shadow-2xl shadow-orange-500/10"
+        >
+          {/* Header stripe with logo */}
           <div className="bg-orange-500 px-6 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="text-2xl font-black tracking-tighter text-black">
-                ℞
-              </span>
-              <span className="text-sm font-bold text-black uppercase tracking-wider">
-                {t.prescriptionTitle}
-              </span>
+              <Image
+                src="/logo.png"
+                alt="Stage On Mars"
+                width={120}
+                height={30}
+                className="h-[28px] w-auto"
+              />
             </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-black/60">
-                {rxNumber}
-              </span>
-              <button
-                onClick={onClose}
-                className="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors"
-              >
-                ✕
-              </button>
-            </div>
+            <button
+              onClick={onClose}
+              className="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors"
+            >
+              ✕
+            </button>
           </div>
 
           {/* Body */}
           <div className="p-6 space-y-5">
-            {/* Question / Prescribed for */}
+            {/* Title */}
+            <div className="text-center">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">
+                {t.prescriptionTitle}
+              </span>
+            </div>
+
+            {/* Question */}
             <div className="space-y-1">
               <span className="text-[10px] uppercase tracking-wider text-white/30 font-bold">
                 {t.prescribedFor}
@@ -85,13 +132,13 @@ export default function Prescription({ play, question, onClose }: Props) {
               />
             </div>
 
-            {/* Date */}
+            {/* Date + branding */}
             <div className="flex items-center justify-between pt-2 border-t border-white/10">
               <span className="text-[10px] uppercase tracking-wider text-white/30">
                 {t.prescriptionDate}: {today}
               </span>
               <span className="text-[10px] text-white/20 font-mono">
-                Stage on Mars
+                stageonmars.com
               </span>
             </div>
 
@@ -105,6 +152,23 @@ export default function Prescription({ play, question, onClose }: Props) {
               {t.takeToStage} →
             </a>
           </div>
+        </div>
+
+        {/* Action buttons below card */}
+        <div className="flex gap-3 mt-4 justify-center">
+          <button
+            onClick={saveAsImage}
+            disabled={saving}
+            className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2"
+          >
+            📷 {saving ? "..." : t.saveImage}
+          </button>
+          <button
+            onClick={sendToEmail}
+            className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2"
+          >
+            ✉️ {t.shareEmail}
+          </button>
         </div>
       </div>
     </div>
