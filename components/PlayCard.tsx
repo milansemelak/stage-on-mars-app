@@ -50,6 +50,23 @@ export default function PlayCard({ play, index }: Props) {
             {play.endingPerspective}
           </Section>
         </div>
+
+        {/* Simulation Scenario */}
+        {play.simulation && (
+          <div className="mt-6 rounded-lg border-2 border-dashed border-orange-500/30 bg-orange-500/5 p-5">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-orange-400">
+                ▶ {t.simulationTitle}
+              </span>
+              <span className="text-xs text-white/30 italic">
+                {t.simulationSub}
+              </span>
+            </div>
+            <p className="text-white/70 text-sm leading-relaxed italic font-light">
+              {play.simulation}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

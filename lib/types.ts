@@ -7,6 +7,7 @@ export type Play = {
   playerCount: { min: number; max: number };
   duration: string;
   mood: string;
+  simulation?: string;
 };
 
 export type Mode = "guide" | "self-service";
