@@ -20,16 +20,11 @@ export default function Prescription({ play, question, onClose }: Props) {
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-      <div className="relative w-full max-w-lg">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute -top-10 right-0 text-white/40 hover:text-white text-sm transition-colors"
-        >
-          ✕ close
-        </button>
-
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="relative w-full max-w-lg my-8">
         {/* Prescription card */}
         <div className="bg-[#0a0a0a] border-2 border-orange-500/50 rounded-xl overflow-hidden shadow-2xl shadow-orange-500/10">
           {/* Header stripe */}
@@ -42,9 +37,17 @@ export default function Prescription({ play, question, onClose }: Props) {
                 {t.prescriptionTitle}
               </span>
             </div>
-            <span className="text-xs font-mono text-black/60">
-              {rxNumber}
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-black/60">
+                {rxNumber}
+              </span>
+              <button
+                onClick={onClose}
+                className="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors"
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           {/* Body */}
