@@ -1,8 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
-import Image from "next/image";
-import html2canvas from "html2canvas";
+import { useRef, useState, useCallback } from "react";
 import { Play } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
@@ -23,25 +21,42 @@ export default function Prescription({ play, question, onClose }: Props) {
     year: "numeric",
   });
 
-  async function saveAsImage() {
-    if (!cardRef.current) return;
+  const saveAsImage = useCallback(async () => {
+    if (!cardRef.current || saving) return;
     setSaving(true);
     try {
+      // Dynamic import to avoid SSR issues
+      const html2canvas = (await import("html2canvas")).default;
+
+      // Hide the close button before capture
+      const closeBtn = cardRef.current.querySelector("[data-close-btn]") as HTMLElement;
+      if (closeBtn) closeBtn.style.display = "none";
+
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#0a0a0a",
         scale: 2,
         useCORS: true,
+        allowTaint: true,
+        logging: false,
       });
+
+      // Restore close button
+      if (closeBtn) closeBtn.style.display = "";
+
+      const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
-      link.download = `stage-on-mars-${play.name.replace(/\s+/g, "-").toLowerCase()}.png`;
-      link.href = canvas.toDataURL("image/png");
+      link.download = `stage-on-mars-${play.name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase()}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
     } catch (err) {
       console.error("Failed to save image:", err);
+      alert("Failed to save image. Please try again.");
     } finally {
       setSaving(false);
     }
-  }
+  }, [play.name, saving]);
 
   function sendToEmail() {
     const subject = encodeURIComponent(`Stage on Mars — ${play.name}`);
@@ -55,7 +70,7 @@ export default function Prescription({ play, question, onClose }: Props) {
         `${t.endingPerspective}:\n${play.endingPerspective}\n\n` +
         `---\n${t.takeToStage}\nhttps://www.stageonmars.com`
     );
-    window.open(`mailto:?subject=${subject}&body=${body}`);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
   }
 
   return (
@@ -72,19 +87,18 @@ export default function Prescription({ play, question, onClose }: Props) {
           className="bg-[#0a0a0a] border-2 border-orange-500/50 rounded-xl overflow-hidden shadow-2xl shadow-orange-500/10"
         >
           {/* Header stripe with logo */}
-          <div className="bg-orange-500 px-6 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt="Stage On Mars"
-                width={120}
-                height={30}
-                className="h-[28px] w-auto"
-              />
-            </div>
+          <div className="bg-orange-500 px-6 py-4 flex items-center justify-between">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt="Stage On Mars"
+              className="h-[48px] w-auto"
+              crossOrigin="anonymous"
+            />
             <button
+              data-close-btn
               onClick={onClose}
-              className="text-black/40 hover:text-black font-bold text-lg leading-none transition-colors"
+              className="text-black/40 hover:text-black font-bold text-xl leading-none transition-colors"
             >
               ✕
             </button>
@@ -159,9 +173,9 @@ export default function Prescription({ play, question, onClose }: Props) {
           <button
             onClick={saveAsImage}
             disabled={saving}
-            className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2"
+            className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-40"
           >
-            📷 {saving ? "..." : t.saveImage}
+            📷 {saving ? "Saving..." : t.saveImage}
           </button>
           <button
             onClick={sendToEmail}
