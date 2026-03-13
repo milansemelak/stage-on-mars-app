@@ -110,6 +110,7 @@ export default function PlayPage() {
               key={i}
               play={play}
               index={plays.length > 1 ? i : undefined}
+              question={askedQuestion}
             />
           ))}
         </div>

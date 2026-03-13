@@ -1,93 +1,145 @@
 "use client";
 
+import { useState } from "react";
 import { Play } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
+import Prescription from "./Prescription";
 
 type Props = {
   play: Play;
   index?: number;
+  question?: string;
 };
 
-export default function PlayCard({ play, index }: Props) {
+export default function PlayCard({ play, index, question }: Props) {
   const { t } = useI18n();
+  const [showPrescription, setShowPrescription] = useState(false);
+  const [prescribed, setPrescribed] = useState(false);
+
+  function handlePrescribe() {
+    // Save to localStorage
+    const prescriptions = JSON.parse(
+      localStorage.getItem("som-prescriptions") || "[]"
+    );
+    prescriptions.unshift({
+      play,
+      question: question || "",
+      timestamp: Date.now(),
+      rxNumber: `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`,
+    });
+    localStorage.setItem(
+      "som-prescriptions",
+      JSON.stringify(prescriptions.slice(0, 50))
+    );
+
+    setPrescribed(true);
+    setShowPrescription(true);
+  }
 
   return (
-    <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden hover:border-orange-500/30 transition-colors">
-      <div className="p-6 space-y-5">
-        {/* Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            {index !== undefined && (
-              <span className="text-xs text-orange-400 font-bold uppercase tracking-wider">
-                {t.option} {index + 1}
+    <>
+      <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden hover:border-orange-500/30 transition-colors">
+        <div className="p-6 space-y-5">
+          {/* Header */}
+          <div className="flex items-start justify-between">
+            <div>
+              {index !== undefined && (
+                <span className="text-xs text-orange-400 font-bold uppercase tracking-wider">
+                  {t.option} {index + 1}
+                </span>
+              )}
+              <h3 className="text-xl font-bold text-white mt-1">{play.name}</h3>
+            </div>
+            <div className="flex items-center gap-3 text-xs text-white/40">
+              <span>{play.duration}</span>
+              <span>
+                {play.playerCount.min}-{play.playerCount.max} {t.players}
               </span>
-            )}
-            <h3 className="text-xl font-bold text-white mt-1">{play.name}</h3>
+            </div>
           </div>
-          <div className="flex items-center gap-3 text-xs text-white/40">
-            <span>{play.duration}</span>
-            <span>
-              {play.playerCount.min}-{play.playerCount.max} {t.players}
-            </span>
+
+          {/* Mood */}
+          <div className="text-sm text-orange-300/70 italic">{play.mood}</div>
+
+          {/* 4 Components */}
+          <div className="space-y-4">
+            <Section label={t.theImage} color="orange">
+              {play.image}
+            </Section>
+            <Section label={t.characters} color="blue">
+              {play.characters}
+            </Section>
+            <Section label={t.authorsRole} color="green">
+              {play.authorRole}
+            </Section>
+            <Section label={t.endingPerspective} color="purple">
+              {play.endingPerspective}
+            </Section>
+          </div>
+
+          {/* Simulation Scenario */}
+          {play.simulation && (
+            <div className="mt-6 rounded-lg border-2 border-dashed border-orange-500/30 bg-orange-500/5 p-5">
+              <div className="mb-3 flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-orange-400">
+                  ▶ {t.simulationTitle}
+                </span>
+                <span className="text-xs text-white/30 italic">
+                  {t.simulationSub}
+                </span>
+              </div>
+              <p className="text-white/70 text-sm leading-relaxed italic font-light">
+                {play.simulation}
+              </p>
+            </div>
+          )}
+
+          {/* Perspectives */}
+          {play.perspectives && play.perspectives.length > 0 && (
+            <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] p-5">
+              <div className="mb-3">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/50">
+                  💡 {t.perspectivesTitle}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {play.perspectives.map((p, i) => (
+                  <div key={i} className="flex gap-3 items-start">
+                    <span className="text-orange-400 font-bold text-sm mt-0.5">
+                      {i + 1}.
+                    </span>
+                    <p className="text-white/70 text-sm leading-relaxed">{p}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Prescribe button */}
+          <div className="pt-2">
+            <button
+              onClick={handlePrescribe}
+              className={`w-full py-3 rounded-lg font-bold text-sm transition-all ${
+                prescribed
+                  ? "bg-green-500/10 border border-green-500/30 text-green-400 cursor-default"
+                  : "bg-orange-500/10 border-2 border-orange-500/40 text-orange-400 hover:bg-orange-500/20 hover:border-orange-500/60"
+              }`}
+            >
+              {prescribed ? t.prescribed : `℞ ${t.prescribe}`}
+            </button>
           </div>
         </div>
-
-        {/* Mood */}
-        <div className="text-sm text-orange-300/70 italic">{play.mood}</div>
-
-        {/* 4 Components */}
-        <div className="space-y-4">
-          <Section label={t.theImage} color="orange">
-            {play.image}
-          </Section>
-          <Section label={t.characters} color="blue">
-            {play.characters}
-          </Section>
-          <Section label={t.authorsRole} color="green">
-            {play.authorRole}
-          </Section>
-          <Section label={t.endingPerspective} color="purple">
-            {play.endingPerspective}
-          </Section>
-        </div>
-
-        {/* Simulation Scenario */}
-        {play.simulation && (
-          <div className="mt-6 rounded-lg border-2 border-dashed border-orange-500/30 bg-orange-500/5 p-5">
-            <div className="mb-3 flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-orange-400">
-                ▶ {t.simulationTitle}
-              </span>
-              <span className="text-xs text-white/30 italic">
-                {t.simulationSub}
-              </span>
-            </div>
-            <p className="text-white/70 text-sm leading-relaxed italic font-light">
-              {play.simulation}
-            </p>
-          </div>
-        )}
-
-        {/* Perspectives */}
-        {play.perspectives && play.perspectives.length > 0 && (
-          <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] p-5">
-            <div className="mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-white/50">
-                💡 {t.perspectivesTitle}
-              </span>
-            </div>
-            <div className="space-y-3">
-              {play.perspectives.map((p, i) => (
-                <div key={i} className="flex gap-3 items-start">
-                  <span className="text-orange-400 font-bold text-sm mt-0.5">{i + 1}.</span>
-                  <p className="text-white/70 text-sm leading-relaxed">{p}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+
+      {/* Prescription modal */}
+      {showPrescription && (
+        <Prescription
+          play={play}
+          question={question || ""}
+          onClose={() => setShowPrescription(false)}
+        />
+      )}
+    </>
   );
 }
 

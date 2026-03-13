@@ -50,6 +50,15 @@ const translations = {
     characterPlaceholder: "What question do you need roles for?",
     personal: "Personal",
     business: "Business",
+    // Prescription
+    prescribe: "Prescribe This Play",
+    prescriptionTitle: "Play Prescription",
+    prescriptionNumber: "Rx",
+    prescribedFor: "Prescribed for",
+    prescriptionDate: "Date",
+    takeToStage: "Play it live at Stage on Mars",
+    prescribed: "Prescribed ✓",
+    savedPlays: "Your Prescriptions",
     // Landing page
     landingHeadline1: "Question",
     landingHeadline2: "Play",
@@ -120,6 +129,15 @@ const translations = {
     characterPlaceholder: "Na akú otázku potrebuješ roly?",
     personal: "Osobné",
     business: "Biznis",
+    // Prescription
+    prescribe: "Predpísať túto hru",
+    prescriptionTitle: "Predpis na hru",
+    prescriptionNumber: "Rx",
+    prescribedFor: "Predpísané pre",
+    prescriptionDate: "Dátum",
+    takeToStage: "Odohraj naživo na Stage on Mars",
+    prescribed: "Predpísané ✓",
+    savedPlays: "Tvoje predpisy",
   },
   cs: {
     // Header
@@ -178,6 +196,15 @@ const translations = {
     characterPlaceholder: "Na jakou otázku potřebuješ role?",
     personal: "Osobní",
     business: "Byznys",
+    // Prescription
+    prescribe: "Předepsat tuto hru",
+    prescriptionTitle: "Předpis na hru",
+    prescriptionNumber: "Rx",
+    prescribedFor: "Předepsáno pro",
+    prescriptionDate: "Datum",
+    takeToStage: "Odehraj naživo na Stage on Mars",
+    prescribed: "Předepsáno ✓",
+    savedPlays: "Tvoje předpisy",
   },
 } as const;
 
