@@ -14,6 +14,7 @@ export default function Prescription({ play, question, onClose }: Props) {
   const { t } = useI18n();
   const cardRef = useRef<HTMLDivElement>(null);
   const [saving, setSaving] = useState(false);
+  const [sharing, setSharing] = useState(false);
 
   const today = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -64,20 +65,69 @@ export default function Prescription({ play, question, onClose }: Props) {
     }
   }, [play.name, saving]);
 
-  function sendToEmail() {
-    const subject = encodeURIComponent(`Stage on Mars — ${play.name}`);
-    const body = encodeURIComponent(
+  const shareViaEmail = useCallback(async () => {
+    if (!cardRef.current || sharing) return;
+    setSharing(true);
+
+    const fileName = `stage-on-mars-${play.name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase()}.png`;
+    const subject = `Stage on Mars — ${play.name}`;
+    const bodyText =
       `${t.prescribedFor}: "${question}"\n\n` +
-        `${play.name}\n` +
-        `${play.mood} · ${play.duration} · ${play.playerCount.min}-${play.playerCount.max} ${t.players}\n\n` +
-        `${t.theImage}:\n${play.image}\n\n` +
-        `${t.characters}:\n${play.characters}\n\n` +
-        `${t.authorsRole}:\n${play.authorRole}\n\n` +
-        `${t.endingPerspective}:\n${play.endingPerspective}\n\n` +
-        `---\n${t.takeToStage}\nhttps://www.stageonmars.com`
-    );
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-  }
+      `${play.name}\n` +
+      `${play.mood} · ${play.duration} · ${play.playerCount.min}-${play.playerCount.max} ${t.players}\n\n` +
+      `${t.theImage}:\n${play.image}\n\n` +
+      `${t.characters}:\n${play.characters}\n\n` +
+      `${t.authorsRole}:\n${play.authorRole}\n\n` +
+      `${t.endingPerspective}:\n${play.endingPerspective}\n\n` +
+      `---\n${t.takeToStage}\nhttps://www.stageonmars.com`;
+
+    try {
+      // Generate PNG
+      const { toPng } = await import("html-to-image");
+      const closeBtn = cardRef.current.querySelector("[data-close-btn]") as HTMLElement;
+      if (closeBtn) closeBtn.style.visibility = "hidden";
+
+      const dataUrl = await toPng(cardRef.current, {
+        quality: 1.0,
+        pixelRatio: 2,
+        backgroundColor: "#0a0a0a",
+        cacheBust: true,
+      });
+
+      if (closeBtn) closeBtn.style.visibility = "";
+
+      // Convert data URL to blob
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], fileName, { type: "image/png" });
+
+      // Try Web Share API (supports file sharing on mobile + modern browsers)
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          title: subject,
+          text: bodyText,
+          files: [file],
+        });
+      } else {
+        // Fallback: download image + open mailto
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = dataUrl;
+        link.click();
+
+        // Small delay then open email with text
+        setTimeout(() => {
+          window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText + "\n\n(The play card image has been downloaded — attach it to your email.)")}`;
+        }, 500);
+      }
+    } catch (err) {
+      console.error("Share failed:", err);
+      // Last resort: just open mailto with text
+      window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+    } finally {
+      setSharing(false);
+    }
+  }, [play, question, t, sharing]);
 
   return (
     <div
@@ -188,10 +238,11 @@ export default function Prescription({ play, question, onClose }: Props) {
             📷 {saving ? "Saving..." : t.saveImage}
           </button>
           <button
-            onClick={sendToEmail}
-            className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2"
+            onClick={shareViaEmail}
+            disabled={sharing}
+            className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-40"
           >
-            ✉️ {t.shareEmail}
+            ✉️ {sharing ? "Preparing..." : t.shareEmail}
           </button>
         </div>
       </div>
