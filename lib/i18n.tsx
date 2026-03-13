@@ -42,7 +42,7 @@ const translations = {
     meDesc: "Personal — identity, purpose, inner conflict",
     // Character generator
     characterGeneratorTitle: "Role Generator",
-    characterGeneratorSub: "Based on your question and group size, get roles to bring into the play",
+    characterGeneratorSub: "Based on your question and group size, generate roles to bring into play.",
     generateCharacters: "Generate Roles",
     characterPlaceholder: "What question do you need roles for?",
     personal: "Personal",
