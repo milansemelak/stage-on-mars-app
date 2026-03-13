@@ -152,7 +152,7 @@ export default function Prescription({ play, question, onClose }: Props) {
         >
           {/* Header stripe */}
           <div className="bg-orange-500 px-6 py-4 flex items-center justify-between">
-            <span className="text-white font-bold text-lg tracking-wide uppercase">
+            <span className="text-black font-bold text-lg tracking-wide">
               The Stage on Mars Experience
             </span>
             <button
