@@ -89,9 +89,9 @@ For personal plays: be boldly imaginative. Go strange, poetic, mythological. The
 
   const langInstruction =
     lang === "sk"
-      ? "IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Slovak language (slovenčina)."
+      ? "IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood, simulation, perspectives) in Slovak language (slovenčina). Use the official term 'Systemická hra' for Systemic Play."
       : lang === "cs"
-      ? "IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood) in Czech language (čeština)."
+      ? "IMPORTANT: Generate ALL content (play name, image, characters, authorRole, endingPerspective, mood, simulation, perspectives) in Czech language (čeština). Use the official term 'Systemická hra' for Systemic Play."
       : "";
 
   const parts = [
