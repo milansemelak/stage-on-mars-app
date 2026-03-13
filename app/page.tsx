@@ -9,9 +9,6 @@ export default function Home() {
   return (
     <div className="min-h-[calc(100vh-65px)] flex flex-col items-center justify-center px-6">
       <div className="max-w-2xl text-center space-y-8">
-        {/* Mars circle */}
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 mx-auto shadow-lg shadow-orange-500/20" />
-
         <h1 className="text-5xl font-bold tracking-tight">
           {t.landingHeadline1} <span className="text-orange-500">&times;</span>{" "}
           {t.landingHeadline2}{" "}
