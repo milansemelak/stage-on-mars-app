@@ -25,34 +25,40 @@ export default function Prescription({ play, question, onClose }: Props) {
     if (!cardRef.current || saving) return;
     setSaving(true);
     try {
-      // Dynamic import to avoid SSR issues
-      const html2canvas = (await import("html2canvas")).default;
+      const { toPng } = await import("html-to-image");
 
-      // Hide the close button before capture
+      // Hide buttons before capture
       const closeBtn = cardRef.current.querySelector("[data-close-btn]") as HTMLElement;
-      if (closeBtn) closeBtn.style.display = "none";
+      if (closeBtn) closeBtn.style.visibility = "hidden";
 
-      const canvas = await html2canvas(cardRef.current, {
+      const dataUrl = await toPng(cardRef.current, {
+        quality: 1.0,
+        pixelRatio: 2,
         backgroundColor: "#0a0a0a",
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
+        cacheBust: true,
       });
 
-      // Restore close button
-      if (closeBtn) closeBtn.style.display = "";
+      // Restore
+      if (closeBtn) closeBtn.style.visibility = "";
 
-      const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.download = `stage-on-mars-${play.name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase()}.png`;
       link.href = dataUrl;
-      document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
     } catch (err) {
       console.error("Failed to save image:", err);
-      alert("Failed to save image. Please try again.");
+      // Fallback: try again without options
+      try {
+        const { toPng } = await import("html-to-image");
+        const dataUrl = await toPng(cardRef.current!, { cacheBust: true });
+        const link = document.createElement("a");
+        link.download = `stage-on-mars-${play.name.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase()}.png`;
+        link.href = dataUrl;
+        link.click();
+      } catch (err2) {
+        console.error("Fallback also failed:", err2);
+        alert("Failed to save image. Please try taking a screenshot instead.");
+      }
     } finally {
       setSaving(false);
     }
@@ -81,20 +87,24 @@ export default function Prescription({ play, question, onClose }: Props) {
       }}
     >
       <div className="relative w-full max-w-lg my-8">
+        {/* Close button - outside the card so it's always accessible */}
+        <button
+          onClick={onClose}
+          className="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white/60 hover:text-white flex items-center justify-center text-lg font-bold transition-colors backdrop-blur-sm border border-white/20"
+        >
+          ✕
+        </button>
+
         {/* The card (captured for image export) */}
         <div
           ref={cardRef}
           className="bg-[#0a0a0a] border-2 border-orange-500/50 rounded-xl overflow-hidden shadow-2xl shadow-orange-500/10"
         >
-          {/* Header stripe with logo */}
+          {/* Header stripe */}
           <div className="bg-orange-500 px-6 py-4 flex items-center justify-between">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo.png"
-              alt="Stage On Mars"
-              className="h-[48px] w-auto"
-              crossOrigin="anonymous"
-            />
+            <span className="text-white font-bold text-lg tracking-wide uppercase">
+              The Stage on Mars Experience
+            </span>
             <button
               data-close-btn
               onClick={onClose}
