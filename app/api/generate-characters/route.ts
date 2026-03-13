@@ -3,33 +3,29 @@ import { NextRequest, NextResponse } from "next/server";
 
 const anthropic = new Anthropic();
 
-const SYSTEM_PROMPT = `You are the character oracle of Stage on Mars — a method where real people embody forces on a stage.
+const SYSTEM_PROMPT = `You are the character generator of Stage on Mars.
 
-Your job: give players something to inhabit. Not a concept to represent — a way to BE. A player should read their character and immediately know how to stand, where their weight goes, what they want in the room.
+Generate characters for a Systemic Play. Each character is just a NAME — maximum 2 words. Short, vivid, immediately evocative. Like a title someone can step into.
 
-## The two fields that matter most
+Examples: Evil Queen, Crazy President, Silent Witness, Burning Bridge, Broken Clock, Hungry Ghost, Lost Captain, Frozen River, Loud Silence, Golden Cage
 
-**essence** — This is a PHYSICAL INSTRUCTION. How does this character exist in a body? What is their posture, their impulse, their way of moving? What do they do when no one is watching? Write it as something a player can immediately feel: "Stands very still and listens for the thing no one has said yet." / "Keeps moving, never settling, always reaching toward something just out of frame." / "Holds everything carefully, as if it might break, as if it already has." NOT: "Represents the tension between growth and stability."
-
-**role** — One sentence: what does this character WANT or AVOID in the space? What is their drive when placed among the other characters? "Wants to be seen but turns away when someone looks." / "Tries to hold everything together even as it comes apart." NOT: "Embodies the organizational need for change."
-
-## Character names
-Poetic, specific, strange — something you couldn't predict but immediately recognize.
-Avoid: Fear, Courage, The Leader, The Dreamer, The Goal
-Aim for: The One Who Almost Left, What Remains After the Decision, The Version That Was Never Tried, The Ground Beneath the Argument
+RULES:
+- Maximum 2 words per name
+- No descriptions, no explanations
+- Names should create tension and contrast when placed together
+- Names should feel like someone you could become on a stage
+- Together the characters should map what is alive in the question
 
 ## Output Format
-Return a JSON array of character objects:
+Return a JSON array of objects with ONLY "name" and "energy":
 [
-  {
-    "name": "Character Name",
-    "essence": "Physical instruction — how to stand, move, and be this character",
-    "role": "What this character wants or avoids among the others",
-    "energy": "quiet/loud/tense/flowing/grounded/searching/burning/frozen/orbiting/etc"
-  }
+  { "name": "Evil Queen", "energy": "burning" },
+  { "name": "Silent Witness", "energy": "quiet" }
 ]
 
-Return ONLY valid JSON — no markdown, no explanation. Just the array.`;
+Energy options: quiet, loud, tense, flowing, grounded, searching, burning, frozen
+
+Return ONLY valid JSON — no markdown, no explanation.`;
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,27 +41,25 @@ export async function POST(request: NextRequest) {
 
     const langInstruction =
       lang === "sk"
-        ? " IMPORTANT: Generate ALL content (name, essence, role, energy) in Slovak language (slovenčina)."
+        ? " IMPORTANT: Generate ALL names in Slovak language (slovenčina)."
         : lang === "cs"
-        ? " IMPORTANT: Generate ALL content (name, essence, role, energy) in Czech language (čeština)."
+        ? " IMPORTANT: Generate ALL names in Czech language (čeština)."
         : "";
 
     const prompt = [
-      `Generate exactly ${count} characters for a Systemic Play exploring this question:`,
+      `Generate exactly ${count} characters for this question:`,
       "",
       `"${question}"`,
       "",
-      `Context type: ${contextType}`,
-      "",
-      `Each character should be immediately embodiable — a player reads it and knows how to stand, move, and what they want in the room. Make the characters pull against each other. Together they should map what is alive and unspoken in this question.`,
+      `Context: ${contextType}`,
       langInstruction,
       "",
-      "Remember: return ONLY a JSON array of exactly " + count + " character objects. No other text.",
+      `Return ONLY a JSON array of exactly ${count} objects with "name" (max 2 words) and "energy". No other text.`,
     ].join("\n");
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 2048,
+      max_tokens: 1024,
       temperature: 1.0,
       system: SYSTEM_PROMPT,
       messages: [{ role: "user", content: prompt }],

@@ -5,8 +5,6 @@ import { useI18n } from "@/lib/i18n";
 
 type Character = {
   name: string;
-  essence: string;
-  role: string;
   energy: string;
 };
 
@@ -155,14 +153,10 @@ export default function CharacterGenerator() {
             {characters.map((char, i) => (
               <div
                 key={i}
-                className={`rounded-lg border p-4 space-y-2 ${getEnergyStyle(char.energy)}`}
+                className={`rounded-lg border px-4 py-3 flex items-center justify-between ${getEnergyStyle(char.energy)}`}
               >
-                <div className="flex items-start justify-between gap-2">
-                  <span className="font-semibold text-white">{char.name}</span>
-                  <span className="text-xs text-white/30 italic shrink-0">{char.energy}</span>
-                </div>
-                <p className="text-sm text-white/70">{char.essence}</p>
-                <p className="text-xs text-white/40">{char.role}</p>
+                <span className="font-semibold text-white">{char.name}</span>
+                <span className="text-xs text-white/30 italic">{char.energy}</span>
               </div>
             ))}
           </div>
