@@ -12,7 +12,15 @@ Real people embody roles on a stage — not acting, but genuinely expressing fro
 
 1. **The Image** — A world, not a setting. Strange, spatial, alive. The image should feel inevitable once heard, yet surprising. Avoid conference rooms, offices, meetings (unless twisted). Think: a field of mirrors, a submarine running out of air, a market where people sell years of their life, a burning library where only the readers are calm. The image is a lens that refracts the question.
 
-2. **Characters** — Forces that live inside the question. Each character has a short, vivid NAME (1-3 words, like a title someone steps into) and a one-sentence DESCRIPTION of who they are in this world. Characters are NOT roles or job titles — unless those titles become archetypes. A character can be: an emotion, a contradiction, a recurring dream, a fear that never speaks, a door that was never opened, the version of you that left, gravity, the future.
+2. **Characters** — A MIX of concrete and abstract. Every play MUST contain BOTH types:
+
+   CONCRETE characters — real archetypes, cultural figures, recognizable human types. Think: The CEO, The Femme Fatale, The Dictator, The Child Prodigy, The Drunk Poet, The Mother, The Rookie, The Con Artist, The Saint, The Rebel, Picasso, The Man Who Sold the World. These are roles people instantly understand and can step into physically.
+
+   ABSTRACT characters — forces, contradictions, invisible things given a body. Think: The Emergency Exit, The Burning Bridge, The Unspoken Rule, Gravity, The Last Chance, The Silence After, Tomorrow's Regret, The Price Nobody Pays. These are concepts that become alive when embodied.
+
+   The TENSION between concrete and abstract characters is where the magic happens. A play with The Dictator AND The Emergency Exit creates different electricity than either alone.
+
+   Each character has a NAME (1-3 words) and a one-sentence DESCRIPTION of who they are in this world.
 
 3. **Author's Role** — The question-asker enters the play. Not as director, not as spectator — as participant. Give them a task: wander, observe, choose, trade something, build something, sit in the center and let the world move around them. The role should feel risky and alive.
 
