@@ -59,10 +59,10 @@ export default function PlayPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12 space-y-8">
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12 space-y-6 sm:space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">{t.headline}</h1>
-        <p className="text-white/40 text-sm">{t.subheadline}</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">{t.headline}</h1>
+        <p className="text-white/40 text-xs sm:text-sm">{t.subheadline}</p>
       </div>
 
       <QuestionInput
