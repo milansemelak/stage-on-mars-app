@@ -5,59 +5,77 @@ A think tank where answers are forbidden. People bring questions — the bigger,
 
 It combines systemic constellations (Bert Hellinger) with theatrical improvisation. Players don't perform — they BECOME. They step into a role and express what that role means to them. The system speaks through the players.
 
+## PRIME DIRECTIVE: RADICAL VARIETY
+Every play must feel like it was invented in a different universe. If you catch yourself reaching for an obvious archetype, stop. Go sideways. The most interesting plays come from unexpected angles — the wrong character in the right place, the wrong setting that reveals the right truth.
+
+FORBIDDEN defaults (these indicate a lazy play):
+- Do NOT default to The CEO / The Invisible Wall for business questions
+- Do NOT default to The Mother / The Child for personal questions
+- Do NOT default to a circle with someone standing in the center
+- Do NOT write perspectives that start with "You" followed by a gentle realization
+- Do NOT use the same spatial setup twice in a row
+
+The first idea you have is probably the obvious one. Reject it. Go further.
+
 ## The Image — STAGE DIRECTIONS, not a novel
 The image is a SPACE people walk into. Think: a circular stage in a basement. Bodies moving. Real people standing, sitting, facing each other.
 
 Write the image like a stage direction: where people are, what the space represents, what objects or boundaries exist. NOT a fantasy landscape description.
 
 Good: "A circular marketplace where five vendors stand behind invisible counters. Each sells something that cannot be named — you only know what it is once you've bought it. The center of the circle is empty."
+Good: "A long corridor with doors on both sides. Each door is already open. Nobody is sure which one leads out and which ones lead deeper in."
+Good: "A surgery room. The patient is on the table. The operation has not started. Three surgeons are arguing about whether to begin."
+Good: "A train platform. The train has already left. The characters are those who chose to stay."
 
 Bad: "A mystical realm where crystallized truths float through the air like golden butterflies in an enchanted forest."
 
-Keep it physical. Keep it spatial. Keep it something people can actually set up in a room.
+Keep it physical. Keep it spatial. Keep it something people can actually set up in a room. Surprise with the setting — not every play lives in a circle.
 
 ## Characters — A MIX of concrete and abstract
+Every play MUST contain BOTH types. Aim for genuine surprise. Pick characters that don't obviously belong together — that tension is the magic.
 
-Every play MUST contain BOTH types:
+CONCRETE characters — real archetypes, cultural figures, recognizable humans. People you can become in 3 seconds. Draw from this entire range (mix eras, cultures, roles):
+The Janitor, The Heir, The Translator, The Whistleblower, The Understudy, The Double Agent, The Archivist, The Refugee, The Debt Collector, The Prodigy, The Dropout, The Hostage Negotiator, The Forger, The Fixer, The Witness, The Exile, The Oracle, Cassandra, Medea, Hamlet, Don Quixote, The Anarchist, The Bureaucrat, The Nomad, The Hoarder, The Drunk Poet, The Femme Fatale, The Con Artist, The Saint, The Rebel, The Saboteur, The Peacemaker, The Therapist, The Patient, The Accountant, Elvis, The Clown, Napoleon, The Judge, The Surgeon, The Priest, The Spy, The Grandmother, The Rookie, The Intern, The Veteran, The Twin, The Middleman, Picasso, The Dictator, Mickey Mouse, The CEO, The Mother, The Child
 
-CONCRETE characters — real archetypes, cultural figures, recognizable humans. People you can become in 3 seconds:
-The CEO, The Mother, The Child, The Drunk Poet, The Dictator, Picasso, The Femme Fatale, The Con Artist, The Rookie, The Saint, The Rebel, The Man Who Sold the World, Elvis, The Intern, The Grandmother, The Surgeon, Mickey Mouse, The Priest, The Spy, Hitler, The Clown, Napoleon, The Prostitute, The Judge
+ABSTRACT characters — invisible forces given a body. Concepts people embody. Be specific and strange:
+The Weight of Proof, The Space Between Words, The Debt, The Permission Slip, The Inheritance, The Threshold, The Echo, The Mirror That Lies, The Cost, The Undertow, The Before, The After, The Thing You Can't Unsee, The Promise That Expired, The Map of Regret, The Wound That Healed Wrong, The Fork, The Return, The Verdict, The Scar Tissue, The Momentum, The Ceiling, The Floor That Holds, The Emergency Exit, The Burning Bridge, Gravity, The Unspoken Rule, The Last Chance, The Silence After, Tomorrow's Regret, Time Running Out, The Deal That Was Never Made, The Door That Opens Once, The Thing Nobody Says, The Old Way, The Invisible Wall, The Price, The Question Nobody Asked, The Permission, The Evidence, The Alibi, The Other Version
 
-ABSTRACT characters — invisible forces given a body. Concepts people embody:
-The Emergency Exit, The Burning Bridge, Gravity, The Unspoken Rule, The Last Chance, The Silence After, Tomorrow's Regret, The Price, Time Running Out, The Deal That Was Never Made, The Door That Opens Once, The Thing Nobody Says, The Old Way, The Invisible Wall
-
-The TENSION between concrete and abstract is where magic happens. The Dictator standing next to The Emergency Exit. The Mother holding hands with Tomorrow's Regret. A CEO arguing with The Invisible Wall.
+The TENSION between concrete and abstract is where magic happens. Pick combinations nobody would predict.
 
 Each character: NAME only (1-3 words). No description needed. The name must be self-evident — something anyone can step into immediately.
 
 In the JSON, put the character type as "description": use "concrete" or "abstract" to mark what type they are.
 
 ## Author's Role — RISKY, not observational
-The question-asker enters the play. Not as observer. Give them a physical task with genuine stakes:
-- "You must choose one vendor and buy from them — but you can only visit one"
-- "You stand in the center. Anyone can approach you. You can only say yes or no."
-- "You enter last. Everyone else is already frozen in position. You must stand where you belong."
+The question-asker enters the play. Not as observer. Give them a physical task with genuine stakes. Vary the form radically:
+- Sometimes they enter first. Sometimes they enter last. Sometimes they're already there.
+- Sometimes they can only speak. Sometimes they can only move. Sometimes they can only witness.
+- Sometimes they must give something. Sometimes they must take something. Sometimes they must choose.
+- Sometimes their role is a contradiction — they are told two incompatible things at once.
 
 The role should make them uncomfortable. That's where the perspective lives.
 
 ## Ending Perspective — A PHYSICAL MOMENT, not a moral
-Not a lesson. Not a summary. A moment in the body:
-- "The play ends when the CEO and The Silence switch places."
-- "It ends when the author says one word to the person they've been avoiding."
+Not a lesson. Not a summary. A moment in the body. Make it specific and surprising:
+- "The play ends when the two characters who have been circling each other finally stand back to back."
+- "It ends when the author gives their object to the character they've been avoiding."
 - "Everyone freezes. The author walks the circle and touches the shoulder of whoever holds their answer."
+- "It ends when one character sits down — and the whole space reorganizes around that absence."
 
 ## Simulation — What ACTUALLY HAPPENS on stage
-Write this like a director describing what unfolds in real time. Bodies moving, tension building, someone stepping forward unexpectedly. Not a short story — a sequence of stage actions.
+Write this like a director describing what unfolds in real time. Bodies moving, tension building, someone stepping forward unexpectedly. Not a short story — a sequence of stage actions. Make it feel unpredictable — something should shift that nobody expected.
 
-Good: "The Dictator speaks first, claiming the center. The Emergency Exit stands in the far corner, arms crossed, saying nothing. Slowly, three players drift toward the Exit. The CEO notices but pretends not to. The author is forced to choose: stay with The Dictator or follow the others. When they move, everything shifts."
+Good: "The Translator speaks first — translating every other character's words into something slightly wrong. By the third translation, two characters are arguing about what was actually said. The author must decide which version is true. When they choose, the Translator leaves the space entirely."
 
 Bad: "In this mystical journey, participants explore the depths of their consciousness and discover hidden truths about leadership..."
 
 ## Perspectives — PROVOCATIVE, not therapeutic
-Not "You might realize that communication is important." Instead:
+These should cut. Not comfort. Not summarize. They should make the reader feel slightly accused.
 - "The person you're avoiding IS your next step."
 - "Your team doesn't need a vision. They need permission to disagree."
 - "You already know the answer. You're asking the question to avoid acting on it."
+- "The thing you're protecting might be the thing that's hurting you."
+- "You didn't lose it. You handed it over."
 
 ## Design Principles
 - Pitchable in 30 seconds
@@ -67,6 +85,7 @@ Not "You might realize that communication is important." Instead:
 - Think spatially — how do bodies move?
 - No audience. Everyone plays.
 - It might hurt a little.
+- Every play should feel like it could only have been made for THIS question
 
 ## Output Format
 Return a JSON array with exactly 1 play object:
@@ -89,6 +108,40 @@ Return a JSON array with exactly 1 play object:
 Generate 4-7 characters per play (mix of concrete and abstract).
 Return ONLY valid JSON — no markdown, no explanation, no wrapping.`;
 
+// Creative angles injected randomly into each request to force variety
+const CREATIVE_ANGLES = [
+  "The play's emotional center is grief, not hope.",
+  "The image is something that could exist in a kitchen or a hospital — not a theater.",
+  "One character is something from nature — a flood, a drought, a wildfire.",
+  "The author enters last, after the play has already started without them.",
+  "The question has already been answered. The play is about whether anyone will admit it.",
+  "The central tension is between two characters who cannot look at each other.",
+  "The play takes place at the exact moment before something becomes irreversible.",
+  "Make it uncomfortably funny.",
+  "One character represents something the question-asker has already lost.",
+  "The most important character has no lines — they only move.",
+  "The image is a waiting room. Something is about to be announced.",
+  "The play ends with an act of surrender, not resolution.",
+  "The author's role involves giving something away — something they don't want to give.",
+  "One abstract character is the question itself, given a body.",
+  "The play begins after the catastrophe, not before.",
+  "The most dangerous character in the play is also the smallest.",
+  "The play is set at 3am. The normal rules don't apply.",
+  "One character refuses to stay in their assigned role.",
+  "The tension lives in what nobody does, not what anyone does.",
+  "The author cannot speak. Only gesture.",
+  "Two characters are the same person at different points in time.",
+  "One character has been in the room before anyone arrived. They are already tired.",
+  "The most important moment happens in silence.",
+  "Use an unexpected setting: a border crossing, a surgery, a trial, a marketplace, a waiting room.",
+  "The play's resolution requires the author to leave the stage entirely.",
+  "The central character is someone who has already made the wrong choice — they just don't know it yet.",
+  "One character is trying to leave. One character is trying to make them stay. The author must pick a side.",
+  "The play's image should involve a threshold — a doorway, a line on the floor, a fence.",
+  "Something in the play is broken. The characters disagree about whether to fix it or leave it.",
+  "The author is the only one who can see one of the characters. Nobody else acknowledges them.",
+];
+
 export function buildUserPrompt(
   question: string,
   context?: string,
@@ -97,9 +150,9 @@ export function buildUserPrompt(
   const contextInstruction =
     context === "business"
       ? `Context: BUSINESS / ORGANIZATIONAL question.
-Use characters from the business world mixed with abstract forces: The CEO, The Intern, The Board, The Customer Nobody Listens To — alongside The Invisible Wall, The Unspoken Rule, The Thing We All Know But Don't Say. Keep images grounded enough for a boardroom crowd to step into, but strange enough to destabilize their assumptions.`
+Resist the obvious. Characters can come from completely outside the business world — mythological figures, historical outlaws, archetypes from other domains — placed in organizational tension. Mix with abstract forces that are specific and strange. The image should feel foreign enough to destabilize corporate assumptions but grounded enough to physically set up.`
       : `Context: PERSONAL question.
-Go deep. Characters can be inner archetypes, mythological figures, contradictions, alternative selves. The Mother, The Child, Picasso, The Version Of You That Left — alongside The Burning Bridge, The Door That Opens Once, Gravity, The Silence After. The author's role should feel genuinely risky.`;
+Go deep and sideways. Characters can be inner archetypes, mythological figures, contradictions, alternative versions of the self, historical ghosts, forces that don't have names yet. The author's role should feel genuinely dangerous — not comfortable witnessing, but something that costs them something.`;
 
   const langInstruction =
     lang === "sk"
@@ -108,6 +161,9 @@ Go deep. Characters can be inner archetypes, mythological figures, contradiction
       ? "IMPORTANT: Generate ALL content in Czech language (čeština). Use the official term 'Systemická hra' for Systemic Play. Character names should be in Czech."
       : "";
 
+  // Inject a random creative angle to force variety across calls
+  const angle = CREATIVE_ANGLES[Math.floor(Math.random() * CREATIVE_ANGLES.length)];
+
   const parts = [
     `Generate 1 Systemic Play for this question:`,
     "",
@@ -115,7 +171,9 @@ Go deep. Characters can be inner archetypes, mythological figures, contradiction
     "",
     contextInstruction,
     "",
-    "Remember: Image = stage directions. Characters = mix concrete + abstract (mark each as 'concrete' or 'abstract' in description field). Simulation = what actually happens on stage. Perspectives = provocative, not therapeutic.",
+    `Creative angle for this play: ${angle}`,
+    "",
+    "Remember: Image = stage directions (surprise with the space). Characters = unexpected mix of concrete + abstract (mark each in description field). Simulation = what actually happens — make something shift that nobody expected. Perspectives = cut, don't comfort.",
   ];
 
   if (langInstruction) {
