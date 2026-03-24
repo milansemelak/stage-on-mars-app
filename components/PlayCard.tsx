@@ -90,7 +90,7 @@ export default function PlayCard({ play, question }: Props) {
           {/* Characters — energy-coded pills */}
           <div className="animate-fade-slide-up stagger-3">
             <SectionLabel color="blue">{t.characters}</SectionLabel>
-            <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap gap-2.5">
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {play.characters.map((char, i) => {
                 const energyClass =
                   ENERGY_COLORS[char.description?.toLowerCase()] ||
@@ -98,13 +98,13 @@ export default function PlayCard({ play, question }: Props) {
                 return (
                   <div
                     key={i}
-                    className={`rounded-2xl border px-5 py-3.5 ${energyClass} transition-all hover:scale-[1.02]`}
+                    className={`rounded-2xl border px-5 py-4 ${energyClass} transition-all hover:scale-[1.01]`}
                   >
-                    <span className="font-bold text-sm sm:text-base">{char.name}</span>
+                    <div className="font-bold text-sm sm:text-base">{char.name}</div>
                     {char.description && (
-                      <span className="ml-2 text-xs opacity-40">
+                      <div className="text-xs opacity-40 mt-1">
                         {char.description}
-                      </span>
+                      </div>
                     )}
                   </div>
                 );
