@@ -6,14 +6,14 @@ import { useI18n } from "@/lib/i18n";
 import Prescription from "./Prescription";
 
 const ENERGY_COLORS: Record<string, string> = {
-  quiet: "bg-blue-500/15 text-blue-300 border-blue-500/25",
-  loud: "bg-red-500/15 text-red-300 border-red-500/25",
-  tense: "bg-yellow-500/15 text-yellow-300 border-yellow-500/25",
-  flowing: "bg-cyan-500/15 text-cyan-300 border-cyan-500/25",
-  grounded: "bg-emerald-500/15 text-emerald-300 border-emerald-500/25",
-  searching: "bg-purple-500/15 text-purple-300 border-purple-500/25",
-  burning: "bg-orange-500/15 text-orange-300 border-orange-500/25",
-  frozen: "bg-slate-400/15 text-slate-300 border-slate-400/25",
+  quiet: "bg-orange-500/8 text-orange-200 border-orange-500/20",
+  loud: "bg-orange-500/15 text-orange-200 border-orange-500/30",
+  tense: "bg-orange-500/12 text-orange-200 border-orange-400/25",
+  flowing: "bg-orange-500/8 text-orange-200 border-orange-500/20",
+  grounded: "bg-orange-500/10 text-orange-200 border-orange-500/20",
+  searching: "bg-orange-500/10 text-orange-200 border-orange-500/20",
+  burning: "bg-orange-500/18 text-orange-200 border-orange-500/35",
+  frozen: "bg-orange-500/6 text-orange-300 border-orange-500/15",
 };
 
 type Props = {
@@ -90,7 +90,7 @@ export default function PlayCard({ play, question }: Props) {
           {/* Characters — energy-coded pills */}
           <div className="animate-fade-slide-up stagger-3">
             <SectionLabel color="blue">{t.characters}</SectionLabel>
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-col sm:flex-row sm:flex-wrap gap-2.5">
               {play.characters.map((char, i) => {
                 const energyClass =
                   ENERGY_COLORS[char.description?.toLowerCase()] ||
@@ -98,11 +98,11 @@ export default function PlayCard({ play, question }: Props) {
                 return (
                   <div
                     key={i}
-                    className={`rounded-full border px-4 py-2 ${energyClass} transition-all hover:scale-105`}
+                    className={`rounded-2xl border px-5 py-3.5 ${energyClass} transition-all hover:scale-[1.02]`}
                   >
-                    <span className="font-bold text-sm">{char.name}</span>
+                    <span className="font-bold text-sm sm:text-base">{char.name}</span>
                     {char.description && (
-                      <span className="ml-1.5 text-xs opacity-50">
+                      <span className="ml-2 text-xs opacity-40">
                         {char.description}
                       </span>
                     )}
@@ -147,19 +147,28 @@ export default function PlayCard({ play, question }: Props) {
 
           {/* Perspectives */}
           {play.perspectives && play.perspectives.length > 0 && (
-            <div className="animate-fade-slide-up stagger-7 space-y-3">
-              <SectionLabel color="white">{t.perspectivesTitle}</SectionLabel>
-              {play.perspectives.map((p, i) => (
-                <div
-                  key={i}
-                  className="flex gap-3 items-start pl-1"
-                >
-                  <span className="text-orange-500/50 font-mono text-sm mt-0.5 shrink-0">
-                    0{i + 1}
-                  </span>
-                  <p className="text-white/60 text-sm leading-relaxed">{p}</p>
-                </div>
-              ))}
+            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-orange-500/[0.02] p-5 sm:p-7">
+              <div className="mb-5 flex items-center gap-3">
+                <div className="w-1 h-5 rounded-full bg-orange-500" />
+                <span className="text-sm font-bold uppercase tracking-widest text-white/60">
+                  {t.perspectivesTitle}
+                </span>
+              </div>
+              <div className="space-y-4">
+                {play.perspectives.map((p, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-4 items-start"
+                  >
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                      <span className="text-orange-400 font-bold text-xs">
+                        {i + 1}
+                      </span>
+                    </div>
+                    <p className="text-white/70 text-sm sm:text-base leading-relaxed pt-1">{p}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
