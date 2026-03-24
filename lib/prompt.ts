@@ -137,12 +137,18 @@ export function buildMarsPrompt(
 
   const langInstruction =
     lang === "sk"
-      ? "\nIMPORTANT: Generate ALL content in Slovak language (slovenčina)."
+      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo."
       : lang === "cs"
-      ? "\nIMPORTANT: Generate ALL content in Czech language (čeština)."
+      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo."
       : "";
 
-  return [
+  const parts: string[] = [];
+
+  if (langInstruction) {
+    parts.push(langInstruction, "");
+  }
+
+  parts.push(
     `The question that was explored:`,
     `"${question}"`,
     ``,
@@ -155,10 +161,11 @@ export function buildMarsPrompt(
     `Ending Perspective: ${play.endingPerspective}`,
     ``,
     `What happened on this stage? What did you witness?`,
-    langInstruction,
     ``,
     `Return ONLY valid JSON with "simulation" and "perspectives". No other text.`,
-  ].join("\n");
+  );
+
+  return parts.join("\n");
 };
 
 // Creative angles injected randomly into each request to force variety
@@ -209,15 +216,22 @@ Go deep and sideways. Characters can be inner archetypes, mythological figures, 
 
   const langInstruction =
     lang === "sk"
-      ? "IMPORTANT: Generate ALL content in Slovak language (slovenčina). Use the official term 'Systemická hra' for Systemic Play. Character names should be in Slovak."
+      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo — názov hry, obraz, mená postáv, rola autora, záver. Žiadna angličtina. Použi termín 'Systemická hra'."
       : lang === "cs"
-      ? "IMPORTANT: Generate ALL content in Czech language (čeština). Use the official term 'Systemická hra' for Systemic Play. Character names should be in Czech."
+      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo — název hry, obraz, jména postav, role autora, závěr. Žádná angličtina. Použi termín 'Systemická hra'."
       : "";
 
   // Inject a random creative angle to force variety across calls
   const angle = CREATIVE_ANGLES[Math.floor(Math.random() * CREATIVE_ANGLES.length)];
 
-  const parts = [
+  const parts: string[] = [];
+
+  // Language instruction goes first so it dominates
+  if (langInstruction) {
+    parts.push(langInstruction, "");
+  }
+
+  parts.push(
     `Generate 1 Systemic Play for this question:`,
     "",
     `"${question}"`,
@@ -227,11 +241,7 @@ Go deep and sideways. Characters can be inner archetypes, mythological figures, 
     `Creative angle for this play: ${angle}`,
     "",
     "Remember: Image = stage directions (surprise with the space). Characters = unexpected mix of concrete + abstract (mark each as 'concrete' or 'abstract' in the description field). Author's role = genuinely risky. Ending = a physical moment, not a lesson. Do NOT include simulation or perspectives.",
-  ];
-
-  if (langInstruction) {
-    parts.push("", langInstruction);
-  }
+  );
 
   parts.push("", "Return ONLY a JSON array with 1 play object. No other text.");
 
