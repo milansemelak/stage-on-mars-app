@@ -226,7 +226,7 @@ Go deep and sideways. Characters can be inner archetypes, mythological figures, 
     "",
     `Creative angle for this play: ${angle}`,
     "",
-    "Remember: Image = stage directions (surprise with the space). Characters = unexpected mix of concrete + abstract (mark each in description field). Simulation = what actually happens — make something shift that nobody expected. Perspectives = cut, don't comfort.",
+    "Remember: Image = stage directions (surprise with the space). Characters = unexpected mix of concrete + abstract (mark each as 'concrete' or 'abstract' in the description field). Author's role = genuinely risky. Ending = a physical moment, not a lesson. Do NOT include simulation or perspectives.",
   ];
 
   if (langInstruction) {
