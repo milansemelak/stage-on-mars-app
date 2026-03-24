@@ -5,17 +5,6 @@ import { Play } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import Prescription from "./Prescription";
 
-const ENERGY_COLORS: Record<string, string> = {
-  quiet: "bg-orange-500/8 text-orange-200 border-orange-500/20",
-  loud: "bg-orange-500/15 text-orange-200 border-orange-500/30",
-  tense: "bg-orange-500/12 text-orange-200 border-orange-400/25",
-  flowing: "bg-orange-500/8 text-orange-200 border-orange-500/20",
-  grounded: "bg-orange-500/10 text-orange-200 border-orange-500/20",
-  searching: "bg-orange-500/10 text-orange-200 border-orange-500/20",
-  burning: "bg-orange-500/18 text-orange-200 border-orange-500/35",
-  frozen: "bg-orange-500/6 text-orange-300 border-orange-500/15",
-};
-
 type Props = {
   play: Play;
   question?: string;
@@ -79,7 +68,7 @@ export default function PlayCard({ play, question }: Props) {
             </div>
           </div>
 
-          {/* The Image / Scene */}
+          {/* The Image / Stage Directions */}
           <div className="animate-fade-slide-up stagger-2">
             <SectionLabel color="orange">{t.theImage}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
@@ -87,25 +76,36 @@ export default function PlayCard({ play, question }: Props) {
             </p>
           </div>
 
-          {/* Characters — energy-coded pills */}
+          {/* Characters — concrete vs abstract */}
           <div className="animate-fade-slide-up stagger-3">
-            <SectionLabel color="blue">{t.characters}</SectionLabel>
+            <SectionLabel color="orange">{t.characters}</SectionLabel>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {play.characters.map((char, i) => {
-                const energyClass =
-                  ENERGY_COLORS[char.description?.toLowerCase()] ||
-                  ENERGY_COLORS["searching"];
+                const isAbstract =
+                  char.description?.toLowerCase() === "abstract";
                 return (
                   <div
                     key={i}
-                    className={`rounded-2xl border px-5 py-4 ${energyClass} transition-all hover:scale-[1.01]`}
+                    className={`rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] ${
+                      isAbstract
+                        ? "bg-white/[0.02] border-white/10 hover:border-white/20"
+                        : "bg-orange-500/8 border-orange-500/20 hover:border-orange-500/35"
+                    }`}
                   >
-                    <div className="font-bold text-sm sm:text-base">{char.name}</div>
-                    {char.description && (
-                      <div className="text-xs opacity-40 mt-1">
-                        {char.description}
-                      </div>
-                    )}
+                    <div
+                      className={`font-bold text-sm sm:text-base ${
+                        isAbstract ? "text-white/70 italic" : "text-orange-200"
+                      }`}
+                    >
+                      {char.name}
+                    </div>
+                    <div
+                      className={`text-[10px] uppercase tracking-widest mt-1 ${
+                        isAbstract ? "text-white/20" : "text-orange-400/30"
+                      }`}
+                    >
+                      {isAbstract ? "abstract" : "concrete"}
+                    </div>
                   </div>
                 );
               })}
@@ -128,7 +128,7 @@ export default function PlayCard({ play, question }: Props) {
             </p>
           </div>
 
-          {/* Simulation Scenario */}
+          {/* Simulation — What happens on stage */}
           {play.simulation && (
             <div className="animate-fade-slide-up stagger-6 rounded-xl border border-orange-500/15 bg-orange-500/[0.03] p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
@@ -139,13 +139,13 @@ export default function PlayCard({ play, question }: Props) {
                   {t.simulationSub}
                 </span>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed italic">
+              <p className="text-white/60 text-sm leading-relaxed">
                 {play.simulation}
               </p>
             </div>
           )}
 
-          {/* Perspectives */}
+          {/* Perspectives — provocative */}
           {play.perspectives && play.perspectives.length > 0 && (
             <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-orange-500/[0.02] p-5 sm:p-7">
               <div className="mb-5 flex items-center gap-3">
@@ -156,16 +156,15 @@ export default function PlayCard({ play, question }: Props) {
               </div>
               <div className="space-y-4">
                 {play.perspectives.map((p, i) => (
-                  <div
-                    key={i}
-                    className="flex gap-4 items-start"
-                  >
+                  <div key={i} className="flex gap-4 items-start">
                     <div className="shrink-0 w-8 h-8 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
                       <span className="text-orange-400 font-bold text-xs">
                         {i + 1}
                       </span>
                     </div>
-                    <p className="text-white/70 text-sm sm:text-base leading-relaxed pt-1">{p}</p>
+                    <p className="text-white/70 text-sm sm:text-base leading-relaxed pt-1 font-medium">
+                      {p}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -221,7 +220,9 @@ function SectionLabel({
   };
 
   return (
-    <span className={`text-[11px] font-bold uppercase tracking-widest ${colors[color]}`}>
+    <span
+      className={`text-[11px] font-bold uppercase tracking-widest ${colors[color]}`}
+    >
       {children}
     </span>
   );
