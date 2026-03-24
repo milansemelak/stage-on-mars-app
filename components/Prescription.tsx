@@ -11,12 +11,13 @@ type Props = {
 };
 
 export default function Prescription({ play, question, onClose }: Props) {
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
   const cardRef = useRef<HTMLDivElement>(null);
   const [saving, setSaving] = useState(false);
   const [sharing, setSharing] = useState(false);
 
-  const today = new Date().toLocaleDateString("en-GB", {
+  const locale = lang === "sk" ? "sk-SK" : lang === "cs" ? "cs-CZ" : "en-GB";
+  const today = new Date().toLocaleDateString(locale, {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -156,7 +157,7 @@ export default function Prescription({ play, question, onClose }: Props) {
           {/* Header stripe */}
           <div className="bg-mars px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <span className="text-black font-bold text-sm sm:text-lg tracking-wide">
-              The Stage on Mars Experience
+              {t.prescriptionHeader}
             </span>
             <button
               data-close-btn
@@ -261,14 +262,14 @@ export default function Prescription({ play, question, onClose }: Props) {
             disabled={saving}
             className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-40"
           >
-            📷 {saving ? "Saving..." : t.saveImage}
+            📷 {saving ? t.saving : t.saveImage}
           </button>
           <button
             onClick={shareViaEmail}
             disabled={sharing}
             className="px-5 py-2.5 rounded-lg border border-white/20 text-white/60 hover:text-white hover:border-white/40 text-sm font-medium transition-colors flex items-center gap-2 disabled:opacity-40"
           >
-            ✉️ {sharing ? "Preparing..." : t.shareEmail}
+            ✉️ {sharing ? t.preparing : t.shareEmail}
           </button>
         </div>
       </div>
