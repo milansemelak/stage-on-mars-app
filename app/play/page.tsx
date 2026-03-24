@@ -63,7 +63,7 @@ export default function PlayPage() {
       {/* Input section — centered when no play, top when play exists */}
       <div
         className={`w-full ${
-          play ? "pt-6 sm:pt-8" : "pt-8 sm:pt-16"
+          play ? "pt-4 sm:pt-8" : "pt-4 sm:pt-12"
         }`}
       >
         <div className="mx-auto w-full max-w-3xl px-5 sm:px-8">
