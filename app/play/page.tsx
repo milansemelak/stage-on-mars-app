@@ -33,12 +33,17 @@ export default function PlayPage() {
   const [askedQuestion, setAskedQuestion] = useState("");
   const [loadingMsg, setLoadingMsg] = useState(0);
   const [playCount, setPlayCount] = useState(0);
+  const [questionIdx, setQuestionIdx] = useState(0);
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
 
-  // Get daily question based on day of year
-  const dailyQuestion =
-    t[DAILY_QUESTIONS_KEYS[Math.floor(Date.now() / 86400000) % 7]];
+  // Random question suggestion — changes on each load/generate
+  const dailyQuestion = t[DAILY_QUESTIONS_KEYS[questionIdx]];
+
+  // Pick a random question on mount
+  useEffect(() => {
+    setQuestionIdx(Math.floor(Math.random() * DAILY_QUESTIONS_KEYS.length));
+  }, []);
 
   // Load play count
   useEffect(() => {
@@ -95,6 +100,9 @@ export default function PlayPage() {
         JSON.stringify(history.slice(0, 50))
       );
       setPlayCount(history.length);
+
+      // Rotate question suggestion
+      setQuestionIdx((prev) => (prev + 1) % DAILY_QUESTIONS_KEYS.length);
 
       // Scroll to play after a short delay
       setTimeout(() => {
