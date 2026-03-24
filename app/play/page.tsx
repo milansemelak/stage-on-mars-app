@@ -62,10 +62,8 @@ export default function PlayPage() {
     <div className="min-h-[calc(100vh-64px)] flex flex-col">
       {/* Input section — centered when no play, top when play exists */}
       <div
-        className={`w-full transition-all duration-500 ${
-          play
-            ? "pt-6 sm:pt-8"
-            : "flex-1 flex items-center"
+        className={`w-full ${
+          play ? "pt-6 sm:pt-8" : "pt-8 sm:pt-16"
         }`}
       >
         <div className="mx-auto w-full max-w-3xl px-5 sm:px-8">
