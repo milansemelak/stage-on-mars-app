@@ -16,7 +16,7 @@ export default function Header() {
             alt="Stage On Mars"
             width={200}
             height={50}
-            className="h-10 sm:h-12 w-auto invert"
+            className="h-14 sm:h-14 w-auto invert"
             priority
           />
         </Link>
