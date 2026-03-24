@@ -59,42 +59,58 @@ export default function PlayPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12 space-y-6 sm:space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-bold">{t.headline}</h1>
-        <p className="text-white/40 text-xs sm:text-sm">{t.subheadline}</p>
+    <div className="min-h-[calc(100vh-64px)] flex flex-col">
+      {/* Input section — centered when no play, top when play exists */}
+      <div
+        className={`w-full transition-all duration-500 ${
+          play
+            ? "pt-6 sm:pt-8"
+            : "flex-1 flex items-center"
+        }`}
+      >
+        <div className="mx-auto w-full max-w-3xl px-5 sm:px-8">
+          {!play && (
+            <div className="space-y-1 mb-6 sm:mb-8">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                {t.headline}
+              </h1>
+              <p className="text-white/30 text-sm sm:text-base">
+                {t.subheadline}
+              </p>
+            </div>
+          )}
+
+          <QuestionInput
+            question={question}
+            onChange={setQuestion}
+            onSubmit={generatePlay}
+            loading={loading}
+            context={context}
+            onContextChange={setContext}
+          />
+        </div>
       </div>
 
-      <QuestionInput
-        question={question}
-        onChange={setQuestion}
-        onSubmit={generatePlay}
-        loading={loading}
-        context={context}
-        onContextChange={setContext}
-      />
-
+      {/* Error */}
       {error && (
-        <div className="rounded-lg bg-red-500/10 border border-red-500/30 p-4 text-red-400 text-sm">
-          {error}
+        <div className="mx-auto max-w-3xl px-5 sm:px-8 mt-6">
+          <div className="rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-red-400 text-sm">
+            {error}
+          </div>
         </div>
       )}
 
+      {/* Play result */}
       {play && (
-        <div className="space-y-6 pt-4">
+        <div className="mx-auto w-full max-w-3xl px-5 sm:px-8 py-6 sm:py-8 space-y-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-white/80">
-                {t.yourPlay}
-              </h2>
-              <p className="text-sm text-white/30 mt-0.5">
-                {t.forQuestion}: &ldquo;{askedQuestion}&rdquo;
-              </p>
-            </div>
+            <p className="text-sm text-white/30">
+              &ldquo;{askedQuestion}&rdquo;
+            </p>
             <button
               onClick={generatePlay}
               disabled={loading}
-              className="text-xs text-orange-400 hover:text-orange-300 transition-colors"
+              className="text-xs text-orange-400/70 hover:text-orange-400 transition-colors"
             >
               {t.regenerate}
             </button>

@@ -23,40 +23,38 @@ export default function QuestionInput({
 
   return (
     <div className="space-y-4">
-      <div className="relative">
-        <textarea
-          value={question}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={t.placeholder}
-          rows={3}
-          className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 resize-none text-base sm:text-lg"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              onSubmit();
-            }
-          }}
-        />
-      </div>
+      <textarea
+        value={question}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={t.placeholder}
+        rows={5}
+        className="w-full rounded-xl bg-white/[0.03] border border-white/10 px-5 py-4 sm:px-6 sm:py-5 text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-orange-500/40 focus:border-orange-500/60 resize-none text-lg sm:text-xl leading-relaxed"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onSubmit();
+          }
+        }}
+      />
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex rounded-lg overflow-hidden border border-white/20">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex rounded-xl overflow-hidden border border-white/10">
           <button
             onClick={() => onContextChange("personal")}
-            className={`flex-1 sm:flex-none px-4 py-2.5 sm:py-2 text-sm font-medium transition-colors ${
+            className={`px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-medium transition-all ${
               context === "personal"
                 ? "bg-orange-500 text-white"
-                : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                : "bg-white/[0.03] text-white/40 hover:text-white/70 hover:bg-white/[0.06]"
             }`}
           >
             {t.personal}
           </button>
           <button
             onClick={() => onContextChange("business")}
-            className={`flex-1 sm:flex-none px-4 py-2.5 sm:py-2 text-sm font-medium transition-colors ${
+            className={`px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-medium transition-all ${
               context === "business"
                 ? "bg-orange-500 text-white"
-                : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                : "bg-white/[0.03] text-white/40 hover:text-white/70 hover:bg-white/[0.06]"
             }`}
           >
             {t.business}
@@ -66,10 +64,10 @@ export default function QuestionInput({
         <button
           onClick={onSubmit}
           disabled={loading || !question.trim()}
-          className="w-full sm:w-auto px-6 py-3 sm:py-2.5 rounded-lg bg-orange-500 hover:bg-orange-400 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold sm:font-medium text-sm transition-colors"
+          className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-orange-500 hover:bg-orange-400 disabled:opacity-30 disabled:cursor-not-allowed text-white font-semibold text-sm sm:text-base transition-all"
         >
           {loading ? (
-            <span className="flex items-center justify-center gap-2">
+            <span className="flex items-center gap-2">
               <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               {t.generating}
             </span>
