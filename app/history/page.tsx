@@ -39,7 +39,7 @@ export default function HistoryPage() {
         <div className="flex gap-3">
           <Link
             href="/play"
-            className="px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-400 text-white text-sm font-medium transition-colors"
+            className="px-4 py-2 rounded-lg bg-mars hover:bg-mars-light text-white text-sm font-medium transition-colors"
           >
             + New Play
           </Link>
@@ -59,7 +59,7 @@ export default function HistoryPage() {
           <p className="text-white/20 text-lg">No plays yet</p>
           <Link
             href="/play"
-            className="inline-block px-6 py-3 rounded-lg bg-orange-500 hover:bg-orange-400 text-white font-medium transition-colors"
+            className="inline-block px-6 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-medium transition-colors"
           >
             Generate your first play
           </Link>

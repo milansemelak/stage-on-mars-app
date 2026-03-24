@@ -89,7 +89,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
   if (status === "loading") {
     return (
       <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
-        <div className="w-5 h-5 border-2 border-orange-500/30 border-t-orange-500 rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-mars/30 border-t-mars rounded-full animate-spin" />
       </div>
     );
   }
@@ -121,7 +121,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
             }}
             placeholder="Your email"
             autoFocus
-            className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white text-center placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-colors"
+            className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white text-center placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
           />
 
           {error && (
@@ -131,7 +131,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
           <button
             onClick={handleSubmit}
             disabled={!email.trim() || checking}
-            className="w-full py-3 rounded-lg bg-orange-500 hover:bg-orange-400 disabled:opacity-30 disabled:cursor-not-allowed text-white font-semibold transition-colors"
+            className="w-full py-3 rounded-lg bg-mars hover:bg-mars-light disabled:opacity-30 disabled:cursor-not-allowed text-white font-semibold transition-colors"
           >
             {checking ? (
               <span className="flex items-center justify-center gap-2">

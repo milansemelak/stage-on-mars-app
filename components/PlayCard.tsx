@@ -58,7 +58,7 @@ export default function PlayCard({ play, question }: Props) {
               {play.name}
             </h3>
             <div className="flex items-center gap-3 mt-2 text-xs text-white/30">
-              <span className="italic text-orange-400/50">{play.mood}</span>
+              <span className="italic text-mars/50">{play.mood}</span>
               <span className="text-white/10">|</span>
               <span>{play.duration}</span>
               <span className="text-white/10">|</span>
@@ -70,7 +70,7 @@ export default function PlayCard({ play, question }: Props) {
 
           {/* The Image / Stage Directions */}
           <div className="animate-fade-slide-up stagger-2">
-            <SectionLabel color="orange">{t.theImage}</SectionLabel>
+            <SectionLabel color="mars">{t.theImage}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
               {play.image}
             </p>
@@ -78,7 +78,7 @@ export default function PlayCard({ play, question }: Props) {
 
           {/* Characters — concrete vs abstract */}
           <div className="animate-fade-slide-up stagger-3">
-            <SectionLabel color="orange">{t.characters}</SectionLabel>
+            <SectionLabel color="mars">{t.characters}</SectionLabel>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {play.characters.map((char, i) => {
                 const isAbstract =
@@ -89,19 +89,19 @@ export default function PlayCard({ play, question }: Props) {
                     className={`rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] ${
                       isAbstract
                         ? "bg-white/[0.02] border-white/10 hover:border-white/20"
-                        : "bg-orange-500/8 border-orange-500/20 hover:border-orange-500/35"
+                        : "bg-mars/8 border-mars/20 hover:border-mars/35"
                     }`}
                   >
                     <div
                       className={`font-bold text-sm sm:text-base ${
-                        isAbstract ? "text-white/70 italic" : "text-orange-200"
+                        isAbstract ? "text-white/70 italic" : "text-[#ffb380]"
                       }`}
                     >
                       {char.name}
                     </div>
                     <div
                       className={`text-[10px] uppercase tracking-widest mt-1 ${
-                        isAbstract ? "text-white/20" : "text-orange-400/30"
+                        isAbstract ? "text-white/20" : "text-mars/30"
                       }`}
                     >
                       {isAbstract ? "abstract" : "concrete"}
@@ -128,11 +128,11 @@ export default function PlayCard({ play, question }: Props) {
             </p>
           </div>
 
-          {/* Simulation — What happens on stage */}
+          {/* What Happens on Stage */}
           {play.simulation && (
-            <div className="animate-fade-slide-up stagger-6 rounded-xl border border-orange-500/15 bg-orange-500/[0.03] p-5 sm:p-6">
+            <div className="animate-fade-slide-up stagger-6 rounded-xl border border-mars/15 bg-mars/[0.03] p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-orange-400/70">
+                <span className="text-xs font-bold uppercase tracking-wider text-mars-light/70">
                   {t.simulationTitle}
                 </span>
                 <span className="text-xs text-white/20 italic">
@@ -145,11 +145,11 @@ export default function PlayCard({ play, question }: Props) {
             </div>
           )}
 
-          {/* Perspectives — provocative */}
+          {/* Perspectives */}
           {play.perspectives && play.perspectives.length > 0 && (
-            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-orange-500/[0.02] p-5 sm:p-7">
+            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-mars/[0.02] p-5 sm:p-7">
               <div className="mb-5 flex items-center gap-3">
-                <div className="w-1 h-5 rounded-full bg-orange-500" />
+                <div className="w-1 h-5 rounded-full bg-mars" />
                 <span className="text-sm font-bold uppercase tracking-widest text-white/60">
                   {t.perspectivesTitle}
                 </span>
@@ -157,8 +157,8 @@ export default function PlayCard({ play, question }: Props) {
               <div className="space-y-4">
                 {play.perspectives.map((p, i) => (
                   <div key={i} className="flex gap-4 items-start">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-                      <span className="text-orange-400 font-bold text-xs">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-mars/10 border border-mars/20 flex items-center justify-center">
+                      <span className="text-mars-light font-bold text-xs">
                         {i + 1}
                       </span>
                     </div>
@@ -178,7 +178,7 @@ export default function PlayCard({ play, question }: Props) {
               className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
                 prescribed
                   ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                  : "bg-orange-500 hover:bg-orange-400 text-white"
+                  : "bg-mars hover:bg-mars-light text-white"
               }`}
             >
               {prescribed ? "✓ " + t.prescribed : t.prescribe}
@@ -208,11 +208,11 @@ function SectionLabel({
   color,
   children,
 }: {
-  color: "orange" | "blue" | "green" | "purple" | "white";
+  color: "mars" | "blue" | "green" | "purple" | "white";
   children: React.ReactNode;
 }) {
   const colors = {
-    orange: "text-orange-400/60",
+    mars: "text-mars-light/60",
     blue: "text-blue-400/60",
     green: "text-green-400/60",
     purple: "text-purple-400/60",

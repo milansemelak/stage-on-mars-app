@@ -148,10 +148,10 @@ export default function Prescription({ play, question, onClose }: Props) {
         {/* The card (captured for image export) */}
         <div
           ref={cardRef}
-          className="bg-[#0a0a0a] border-2 border-orange-500/50 rounded-xl overflow-hidden shadow-2xl shadow-orange-500/10"
+          className="bg-[#0a0a0a] border-2 border-mars/50 rounded-xl overflow-hidden shadow-2xl shadow-mars/10"
         >
           {/* Header stripe */}
-          <div className="bg-orange-500 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="bg-mars px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <span className="text-black font-bold text-sm sm:text-lg tracking-wide">
               The Stage on Mars Experience
             </span>
@@ -168,7 +168,7 @@ export default function Prescription({ play, question, onClose }: Props) {
           <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
             {/* Title */}
             <div className="text-center">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-orange-400">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-mars-light">
                 {t.prescriptionTitle}
               </span>
             </div>
@@ -188,7 +188,7 @@ export default function Prescription({ play, question, onClose }: Props) {
 
             {/* Mood + meta */}
             <div className="flex items-center gap-4 text-xs text-white/40">
-              <span className="italic text-orange-300/60">{play.mood}</span>
+              <span className="italic text-mars-light/60">{play.mood}</span>
               <span>{play.duration}</span>
               <span>
                 {play.playerCount.min}-{play.playerCount.max} {t.players}
@@ -199,7 +199,7 @@ export default function Prescription({ play, question, onClose }: Props) {
             <div className="space-y-3 text-sm">
               <PrescriptionLine label={t.theImage} text={play.image} />
               <div>
-                <span className="text-[10px] uppercase tracking-wider text-orange-400/60 font-bold">
+                <span className="text-[10px] uppercase tracking-wider text-mars-light/60 font-bold">
                   {t.characters}
                 </span>
                 <div className="mt-1 space-y-1">
@@ -232,7 +232,7 @@ export default function Prescription({ play, question, onClose }: Props) {
               href="https://www.stageonmars.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-center px-6 py-3 rounded-lg bg-orange-500 hover:bg-orange-400 text-white font-bold text-sm transition-colors"
+              className="block w-full text-center px-6 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-bold text-sm transition-colors"
             >
               {t.takeToStage} →
             </a>
@@ -264,7 +264,7 @@ export default function Prescription({ play, question, onClose }: Props) {
 function PrescriptionLine({ label, text }: { label: string; text: string }) {
   return (
     <div>
-      <span className="text-[10px] uppercase tracking-wider text-orange-400/60 font-bold">
+      <span className="text-[10px] uppercase tracking-wider text-mars-light/60 font-bold">
         {label}
       </span>
       <p className="text-white/60 leading-relaxed">{text}</p>

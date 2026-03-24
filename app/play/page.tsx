@@ -167,7 +167,7 @@ export default function PlayPage() {
       {loading && (
         <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-12 sm:mt-16">
           <div className="flex flex-col items-center gap-6 text-center">
-            <div className="w-8 h-8 border-2 border-orange-500/20 border-t-orange-500 rounded-full animate-spin" />
+            <div className="w-8 h-8 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
             <p className="text-white/40 text-sm sm:text-base italic animate-fade-in" key={loadingMsg}>
               {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
             </p>
@@ -194,7 +194,7 @@ export default function PlayPage() {
             <button
               onClick={generatePlay}
               disabled={loading}
-              className="text-xs text-orange-400/60 hover:text-orange-400 transition-colors whitespace-nowrap border border-orange-500/20 rounded-lg px-3 py-1.5 hover:border-orange-500/40"
+              className="text-xs text-mars-light/60 hover:text-mars-light transition-colors whitespace-nowrap border border-mars/20 rounded-lg px-3 py-1.5 hover:border-mars/40"
             >
               {t.regenerate}
             </button>
