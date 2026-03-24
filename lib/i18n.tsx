@@ -36,6 +36,8 @@ const translations = {
     authorsRole: "Author's Role",
     endingPerspective: "Ending Perspective",
     players: "players",
+    concrete: "concrete",
+    abstract: "abstract",
     // Question Triangle
     it: "It",
     itDesc: "External — a situation, project, decision",
@@ -129,6 +131,8 @@ const translations = {
     authorsRole: "Rola klienta",
     endingPerspective: "Záver",
     players: "hráčov",
+    concrete: "konkrétna",
+    abstract: "abstraktná",
     // Question Triangle
     it: "To",
     itDesc: "Externé — situácia, projekt, rozhodnutie",
@@ -222,6 +226,8 @@ const translations = {
     authorsRole: "Role klienta",
     endingPerspective: "Závěr",
     players: "hráčů",
+    concrete: "konkrétní",
+    abstract: "abstraktní",
     // Question Triangle
     it: "To",
     itDesc: "Externí — situace, projekt, rozhodnutí",
