@@ -88,6 +88,10 @@ const translations = {
     dailyQ7: "Who are you when nobody is watching?",
     // Play counter
     playsGenerated: "plays generated",
+    // From Mars (step 2)
+    fromMars: "See what Mars saw",
+    loadingMars: "Mars is watching...",
+    marsError: "Mars couldn't see this one. Try again.",
     // Share
     sharePlay: "Share",
   },
@@ -174,6 +178,10 @@ const translations = {
     dailyQ7: "Kto si, keď sa nikto nepozerá?",
     // Play counter
     playsGenerated: "hier vygenerovaných",
+    // From Mars (step 2)
+    fromMars: "Pozri, čo videl Mars",
+    loadingMars: "Mars sleduje...",
+    marsError: "Mars to nevidel. Skús znova.",
     // Share
     sharePlay: "Zdieľať",
   },
@@ -260,6 +268,10 @@ const translations = {
     dailyQ7: "Kdo jsi, když se nikdo nedívá?",
     // Play counter
     playsGenerated: "her vygenerovaných",
+    // From Mars (step 2)
+    fromMars: "Podívej se, co viděl Mars",
+    loadingMars: "Mars sleduje...",
+    marsError: "Mars to neviděl. Zkus znovu.",
     // Share
     sharePlay: "Sdílet",
   },

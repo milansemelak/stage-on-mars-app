@@ -62,21 +62,6 @@ Not a lesson. Not a summary. A moment in the body. Make it specific and surprisi
 - "Everyone freezes. The author walks the circle and touches the shoulder of whoever holds their answer."
 - "It ends when one character sits down — and the whole space reorganizes around that absence."
 
-## Simulation — What ACTUALLY HAPPENS on stage
-Write this like a director describing what unfolds in real time. Bodies moving, tension building, someone stepping forward unexpectedly. Not a short story — a sequence of stage actions. Make it feel unpredictable — something should shift that nobody expected.
-
-Good: "The Translator speaks first — translating every other character's words into something slightly wrong. By the third translation, two characters are arguing about what was actually said. The author must decide which version is true. When they choose, the Translator leaves the space entirely."
-
-Bad: "In this mystical journey, participants explore the depths of their consciousness and discover hidden truths about leadership..."
-
-## Perspectives — PROVOCATIVE, not therapeutic
-These should cut. Not comfort. Not summarize. They should make the reader feel slightly accused.
-- "The person you're avoiding IS your next step."
-- "Your team doesn't need a vision. They need permission to disagree."
-- "You already know the answer. You're asking the question to avoid acting on it."
-- "The thing you're protecting might be the thing that's hurting you."
-- "You didn't lose it. You handed it over."
-
 ## Design Principles
 - Pitchable in 30 seconds
 - Strange but immediately graspable
@@ -88,6 +73,7 @@ These should cut. Not comfort. Not summarize. They should make the reader feel s
 - Every play should feel like it could only have been made for THIS question
 
 ## Output Format
+This is Step 1 — the play setup only. Do NOT include simulation or perspectives.
 Return a JSON array with exactly 1 play object:
 [{
   "name": "Play Name (short, punchy, 2-5 words)",
@@ -100,13 +86,80 @@ Return a JSON array with exactly 1 play object:
   "endingPerspective": "The physical moment that ends the play (1 sentence)",
   "playerCount": { "min": 3, "max": 8 },
   "duration": "10-15 min",
-  "mood": "2-3 words, raw and honest",
-  "simulation": "What happens on stage — bodies, tension, action, shifts. Written as stage direction, not prose. 4-6 sentences.",
-  "perspectives": ["Provocative takeaway 1", "Provocative takeaway 2", "Provocative takeaway 3"]
+  "mood": "2-3 words, raw and honest"
 }]
 
 Generate 4-7 characters per play (mix of concrete and abstract).
 Return ONLY valid JSON — no markdown, no explanation, no wrapping.`;
+
+// ─── Step 2: From Mars ───────────────────────────────────────────────────────
+
+export const MARS_SYSTEM_PROMPT = `You are the silent witness of Stage on Mars. A play was set up. People stepped into it. You watched from above — from Mars — and you saw everything: who moved first, who froze, what the bodies revealed that the words didn't.
+
+Now report what you witnessed.
+
+## The Simulation — what unfolded on stage
+Describe what actually happened with THESE specific characters, in THIS specific space. Reference them by name. Show tension building, an unexpected shift, the moment something cracked open. Bodies moving. Silences that said more than words.
+
+Not abstract. Not generic. Specific to THIS play, THESE characters, THIS question.
+
+4-6 sentences. Written as stage direction — present tense, active, physical.
+
+Good: "The Translator speaks first — rendering every other character's words into something slightly wrong. By the third translation, two characters are arguing about what was actually said. The author stands in the gap between them, asked to decide which version is true. When they finally choose, the Translator walks out of the space entirely."
+
+## Perspectives — what it revealed
+Three insights that cut. Not comfort. Not generic wisdom. Specific to what played out between these characters for this question. Make the reader feel slightly accused — like they already knew this but hadn't admitted it.
+
+## Output Format
+Return ONLY valid JSON:
+{
+  "simulation": "What unfolded — 4-6 sentences, stage direction style",
+  "perspectives": ["Cuts deep 1", "Cuts deep 2", "Cuts deep 3"]
+}
+
+No markdown. No explanation. Only the JSON.`;
+
+export function buildMarsPrompt(
+  play: {
+    name: string;
+    image: string;
+    characters: { name: string; description: string }[];
+    authorRole: string;
+    endingPerspective: string;
+    mood: string;
+  },
+  question: string,
+  lang?: "en" | "sk" | "cs"
+): string {
+  const characterList = play.characters
+    .map((c) => `- ${c.name} (${c.description})`)
+    .join("\n");
+
+  const langInstruction =
+    lang === "sk"
+      ? "\nIMPORTANT: Generate ALL content in Slovak language (slovenčina)."
+      : lang === "cs"
+      ? "\nIMPORTANT: Generate ALL content in Czech language (čeština)."
+      : "";
+
+  return [
+    `The question that was explored:`,
+    `"${question}"`,
+    ``,
+    `The play:`,
+    `Name: ${play.name}`,
+    `Mood: ${play.mood}`,
+    `Image: ${play.image}`,
+    `Characters:\n${characterList}`,
+    `Author's Role: ${play.authorRole}`,
+    `Ending Perspective: ${play.endingPerspective}`,
+    ``,
+    `What happened on this stage? What did you witness?`,
+    langInstruction,
+    ``,
+    `Return ONLY valid JSON with "simulation" and "perspectives". No other text.`,
+  ].join("\n");
+};
 
 // Creative angles injected randomly into each request to force variety
 const CREATIVE_ANGLES = [

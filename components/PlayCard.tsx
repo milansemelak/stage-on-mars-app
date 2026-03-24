@@ -8,19 +8,44 @@ import Prescription from "./Prescription";
 type Props = {
   play: Play;
   question?: string;
+  onPlayUpdate?: (play: Play) => void;
 };
 
-export default function PlayCard({ play, question }: Props) {
-  const { t } = useI18n();
+export default function PlayCard({ play, question, onPlayUpdate }: Props) {
+  const { lang, t } = useI18n();
+  const [currentPlay, setCurrentPlay] = useState(play);
   const [showPrescription, setShowPrescription] = useState(false);
   const [prescribed, setPrescribed] = useState(false);
+  const [marsLoading, setMarsLoading] = useState(false);
+  const [marsError, setMarsError] = useState<string | null>(null);
+
+  async function fetchFromMars() {
+    setMarsLoading(true);
+    setMarsError(null);
+    try {
+      const response = await fetch("/api/generate-mars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ play: currentPlay, question, lang }),
+      });
+      if (!response.ok) throw new Error("Failed");
+      const data = await response.json();
+      const updated = { ...currentPlay, simulation: data.simulation, perspectives: data.perspectives };
+      setCurrentPlay(updated);
+      onPlayUpdate?.(updated);
+    } catch {
+      setMarsError(t.marsError);
+    } finally {
+      setMarsLoading(false);
+    }
+  }
 
   function handlePrescribe() {
     const prescriptions = JSON.parse(
       localStorage.getItem("som-prescriptions") || "[]"
     );
     prescriptions.unshift({
-      play,
+      play: currentPlay,
       question: question || "",
       timestamp: Date.now(),
       rxNumber: `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`,
@@ -35,7 +60,7 @@ export default function PlayCard({ play, question }: Props) {
   }
 
   async function handleShare() {
-    const text = `${play.name}\n\n"${question}"\n\n${t.theImage}: ${play.image}\n\n${t.characters}: ${play.characters.map((c) => c.name).join(", ")}\n\n${t.authorsRole}: ${play.authorRole}\n\nhttps://playbook.stageonmars.com`;
+    const text = `${currentPlay.name}\n\n"${question}"\n\n${t.theImage}: ${currentPlay.image}\n\n${t.characters}: ${currentPlay.characters.map((c) => c.name).join(", ")}\n\n${t.authorsRole}: ${currentPlay.authorRole}\n\nhttps://playbook.stageonmars.com`;
 
     if (navigator.share) {
       try {
@@ -55,15 +80,15 @@ export default function PlayCard({ play, question }: Props) {
           {/* Play name — hero element */}
           <div className="animate-fade-slide-up stagger-1">
             <h3 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
-              {play.name}
+              {currentPlay.name}
             </h3>
             <div className="flex items-center gap-3 mt-2 text-xs text-white/30">
-              <span className="italic text-mars/50">{play.mood}</span>
+              <span className="italic text-mars/50">{currentPlay.mood}</span>
               <span className="text-white/10">|</span>
-              <span>{play.duration}</span>
+              <span>{currentPlay.duration}</span>
               <span className="text-white/10">|</span>
               <span>
-                {play.playerCount.min}-{play.playerCount.max} {t.players}
+                {currentPlay.playerCount.min}-{currentPlay.playerCount.max} {t.players}
               </span>
             </div>
           </div>
@@ -72,7 +97,7 @@ export default function PlayCard({ play, question }: Props) {
           <div className="animate-fade-slide-up stagger-2">
             <SectionLabel color="mars">{t.theImage}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-              {play.image}
+              {currentPlay.image}
             </p>
           </div>
 
@@ -80,7 +105,7 @@ export default function PlayCard({ play, question }: Props) {
           <div className="animate-fade-slide-up stagger-3">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {play.characters.map((char, i) => {
+              {currentPlay.characters.map((char, i) => {
                 const isAbstract =
                   char.description?.toLowerCase() === "abstract";
                 return (
@@ -116,7 +141,7 @@ export default function PlayCard({ play, question }: Props) {
           <div className="animate-fade-slide-up stagger-4">
             <SectionLabel color="green">{t.authorsRole}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-              {play.authorRole}
+              {currentPlay.authorRole}
             </p>
           </div>
 
@@ -124,12 +149,34 @@ export default function PlayCard({ play, question }: Props) {
           <div className="animate-fade-slide-up stagger-5">
             <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-              {play.endingPerspective}
+              {currentPlay.endingPerspective}
             </p>
           </div>
 
+          {/* ── Step 2: From Mars ── */}
+          {!currentPlay.simulation && !marsLoading && (
+            <div className="animate-fade-slide-up stagger-6">
+              {marsError && (
+                <p className="text-red-400/70 text-xs mb-3 text-center">{marsError}</p>
+              )}
+              <button
+                onClick={fetchFromMars}
+                className="w-full py-4 rounded-2xl border border-mars/40 bg-mars/[0.06] hover:bg-mars/[0.12] hover:border-mars/60 text-mars-light font-bold text-sm tracking-wide transition-all"
+              >
+                {t.fromMars} →
+              </button>
+            </div>
+          )}
+
+          {marsLoading && (
+            <div className="animate-fade-slide-up stagger-6 flex flex-col items-center gap-3 py-6">
+              <div className="w-6 h-6 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
+              <p className="text-white/30 text-sm italic">{t.loadingMars}</p>
+            </div>
+          )}
+
           {/* What Happens on Stage */}
-          {play.simulation && (
+          {currentPlay.simulation && (
             <div className="animate-fade-slide-up stagger-6 rounded-xl border border-mars/15 bg-mars/[0.03] p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-mars-light/70">
@@ -140,13 +187,13 @@ export default function PlayCard({ play, question }: Props) {
                 </span>
               </div>
               <p className="text-white/60 text-sm leading-relaxed">
-                {play.simulation}
+                {currentPlay.simulation}
               </p>
             </div>
           )}
 
           {/* Perspectives */}
-          {play.perspectives && play.perspectives.length > 0 && (
+          {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (
             <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-mars/30 bg-gradient-to-br from-mars/[0.10] to-mars/[0.04] p-5 sm:p-7">
               <div className="mb-5 flex items-center gap-3">
                 <div className="w-1 h-6 rounded-full bg-mars" />
@@ -155,7 +202,7 @@ export default function PlayCard({ play, question }: Props) {
                 </span>
               </div>
               <div className="space-y-5">
-                {play.perspectives.map((p, i) => (
+                {currentPlay.perspectives.map((p, i) => (
                   <div key={i} className="flex gap-4 items-start">
                     <div className="shrink-0 w-8 h-8 rounded-full bg-mars/25 border border-mars/50 flex items-center justify-center">
                       <span className="text-mars-light font-bold text-xs">
@@ -195,7 +242,7 @@ export default function PlayCard({ play, question }: Props) {
 
       {showPrescription && (
         <Prescription
-          play={play}
+          play={currentPlay}
           question={question || ""}
           onClose={() => setShowPrescription(false)}
         />

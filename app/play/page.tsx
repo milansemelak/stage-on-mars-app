@@ -115,6 +115,19 @@ export default function PlayPage() {
     }
   }
 
+  function handlePlayUpdate(updatedPlay: Play) {
+    setPlay(updatedPlay);
+    const history = JSON.parse(localStorage.getItem("som-play-history") || "[]");
+    const idx = history.findIndex(
+      (e: { play: Play; question: string }) =>
+        e.play.name === updatedPlay.name && e.question === question
+    );
+    if (idx !== -1) {
+      history[idx].play = updatedPlay;
+      localStorage.setItem("som-play-history", JSON.stringify(history));
+    }
+  }
+
   function useDailyQuestion() {
     setQuestion(dailyQuestion);
   }
@@ -200,7 +213,7 @@ export default function PlayPage() {
             </button>
           </div>
 
-          <PlayCard play={play} question={askedQuestion} />
+          <PlayCard play={play} question={askedQuestion} onPlayUpdate={handlePlayUpdate} />
         </div>
       )}
     </div>
