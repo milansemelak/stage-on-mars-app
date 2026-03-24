@@ -12,8 +12,8 @@ export type Play = {
   playerCount: { min: number; max: number };
   duration: string;
   mood: string;
-  simulation: string;
-  perspectives: string[];
+  simulation?: string;
+  perspectives?: string[];
 };
 
 export type GenerateRequest = {

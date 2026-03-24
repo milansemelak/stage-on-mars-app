@@ -27,6 +27,13 @@ export default function HistoryPage() {
     setHistory([]);
   }
 
+  function handlePlayUpdate(updatedPlay: Play, index: number) {
+    const updated = [...history];
+    updated[index] = { ...updated[index], play: updatedPlay };
+    setHistory(updated);
+    localStorage.setItem("som-play-history", JSON.stringify(updated));
+  }
+
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 space-y-8">
       <div className="flex items-center justify-between">
@@ -79,7 +86,7 @@ export default function HistoryPage() {
                 <span className="text-white/10">·</span>
                 <span className="italic">&ldquo;{entry.question}&rdquo;</span>
               </div>
-              <PlayCard play={entry.play} question={entry.question} />
+              <PlayCard play={entry.play} question={entry.question} onPlayUpdate={(p) => handlePlayUpdate(p, i)} />
             </div>
           ))}
         </div>
