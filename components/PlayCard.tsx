@@ -129,7 +129,7 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
                         isAbstract ? "text-white/20" : "text-mars/30"
                       }`}
                     >
-                      {isAbstract ? "abstract" : "concrete"}
+                      {isAbstract ? t.abstract : t.concrete}
                     </div>
                   </div>
                 );
