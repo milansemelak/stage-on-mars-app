@@ -79,6 +79,9 @@ export default function Prescription({ play, question, onClose }: Props) {
       `${t.characters}:\n${play.characters.map((c) => `• ${c.name} — ${c.description}`).join("\n")}\n\n` +
       `${t.authorsRole}:\n${play.authorRole}\n\n` +
       `${t.endingPerspective}:\n${play.endingPerspective}\n\n` +
+      (play.perspectives && play.perspectives.length > 0
+        ? `${t.perspectivesTitle}:\n${play.perspectives.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n\n`
+        : "") +
       `---\n${t.takeToStage}\nhttps://www.stageonmars.com`;
 
     try {
@@ -216,6 +219,18 @@ export default function Prescription({ play, question, onClose }: Props) {
                 text={play.endingPerspective}
               />
             </div>
+
+            {/* First perspective — pull quote */}
+            {play.perspectives && play.perspectives.length > 0 && (
+              <div className="rounded-lg border border-mars/30 bg-mars/[0.07] px-4 py-3">
+                <span className="text-[10px] uppercase tracking-wider text-mars-light/70 font-bold">
+                  {t.perspectivesTitle}
+                </span>
+                <p className="text-white/90 leading-relaxed mt-1.5 font-medium italic text-sm">
+                  &ldquo;{play.perspectives[0]}&rdquo;
+                </p>
+              </div>
+            )}
 
             {/* Date + branding */}
             <div className="flex items-center justify-between pt-2 border-t border-white/10">

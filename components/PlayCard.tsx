@@ -147,22 +147,22 @@ export default function PlayCard({ play, question }: Props) {
 
           {/* Perspectives */}
           {play.perspectives && play.perspectives.length > 0 && (
-            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-mars/[0.02] p-5 sm:p-7">
+            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-mars/30 bg-gradient-to-br from-mars/[0.10] to-mars/[0.04] p-5 sm:p-7">
               <div className="mb-5 flex items-center gap-3">
-                <div className="w-1 h-5 rounded-full bg-mars" />
-                <span className="text-sm font-bold uppercase tracking-widest text-white/60">
+                <div className="w-1 h-6 rounded-full bg-mars" />
+                <span className="text-sm font-bold uppercase tracking-widest text-white/80">
                   {t.perspectivesTitle}
                 </span>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {play.perspectives.map((p, i) => (
                   <div key={i} className="flex gap-4 items-start">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-mars/10 border border-mars/20 flex items-center justify-center">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-mars/25 border border-mars/50 flex items-center justify-center">
                       <span className="text-mars-light font-bold text-xs">
                         {i + 1}
                       </span>
                     </div>
-                    <p className="text-white/70 text-sm sm:text-base leading-relaxed pt-1 font-medium">
+                    <p className="text-white text-base sm:text-lg leading-relaxed pt-0.5 font-medium">
                       {p}
                     </p>
                   </div>
