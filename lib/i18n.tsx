@@ -23,12 +23,12 @@ const translations = {
     hide: "Hide",
     questionTriangle: "Question Triangle",
     generatePlay: "Generate Play",
-    generating: "Generating...",
+    generating: "Creating your play",
     errorMessage: "Failed to generate play. Make sure your API key is configured.",
     yourPlay: "Your Play",
     playOptions: "Play Options",
     forQuestion: "For",
-    regenerate: "Regenerate",
+    regenerate: "New play",
     option: "Option",
     // Play card sections
     theImage: "The Image",
@@ -56,7 +56,7 @@ const translations = {
     prescribedFor: "Question",
     prescriptionDate: "Date",
     takeToStage: "Play it live on Mars!",
-    prescribed: "Taken to Mars ✓",
+    prescribed: "Taken to Mars",
     savedPlays: "Your Plays",
     saveImage: "Save as Image",
     shareEmail: "Send to Email",
@@ -72,6 +72,24 @@ const translations = {
     playDesc: "Get a unique Systemic Play with scene, characters, your role, and ending. Ready to perform.",
     see: "See",
     seeDesc: "Expand your perspective. Not answers — new ways of seeing through collective creativity.",
+    // Loading messages
+    loading1: "Looking at your question from angles you haven't tried...",
+    loading2: "Finding the characters hiding in your question...",
+    loading3: "Building a stage for what needs to be seen...",
+    loading4: "Mapping the tension between what you know and what you feel...",
+    loading5: "Designing a play that sees what you can't see alone...",
+    // Daily questions
+    dailyQ1: "What are you avoiding?",
+    dailyQ2: "What would change if you stopped pretending?",
+    dailyQ3: "What does your team need but won't ask for?",
+    dailyQ4: "What would you do if nobody was watching?",
+    dailyQ5: "What's the question you're afraid to ask?",
+    dailyQ6: "What would your customers say if they were truly honest?",
+    dailyQ7: "What are you holding onto that no longer serves you?",
+    // Play counter
+    playsGenerated: "plays generated",
+    // Share
+    sharePlay: "Share",
   },
   sk: {
     // Header
@@ -91,12 +109,12 @@ const translations = {
     hide: "Skryť",
     questionTriangle: "Trojuholník otázok",
     generatePlay: "Vygeneruj hru",
-    generating: "Generujem...",
+    generating: "Tvorím tvoju hru",
     errorMessage: "Nepodarilo sa vygenerovať hru. Skontroluj API kľúč.",
     yourPlay: "Tvoja hra",
     playOptions: "Možnosti hry",
     forQuestion: "Pre",
-    regenerate: "Znova",
+    regenerate: "Nová hra",
     option: "Možnosť",
     // Play card sections
     theImage: "Obraz",
@@ -136,10 +154,28 @@ const translations = {
     prescribedFor: "Otázka",
     prescriptionDate: "Dátum",
     takeToStage: "Odohraj naživo na Marse!",
-    prescribed: "Taken to Mars ✓",
+    prescribed: "Taken to Mars",
     savedPlays: "Tvoje hry",
     saveImage: "Uložiť ako obrázok",
     shareEmail: "Poslať emailom",
+    // Loading messages
+    loading1: "Pozerám sa na tvoju otázku z uhlov, ktoré si neskúsil...",
+    loading2: "Hľadám postavy ukryté v tvojej otázke...",
+    loading3: "Staviam scénu pre to, čo potrebuje byť videné...",
+    loading4: "Mapujem napätie medzi tým, čo vieš a čo cítiš...",
+    loading5: "Navrhujem hru, ktorá vidí, čo sám nevidíš...",
+    // Daily questions
+    dailyQ1: "Čomu sa vyhýbaš?",
+    dailyQ2: "Čo by sa zmenilo, keby si prestal predstierať?",
+    dailyQ3: "Čo tvoj tím potrebuje, ale nepýta sa na to?",
+    dailyQ4: "Čo by si robil, keby sa nikto nepozeral?",
+    dailyQ5: "Aká je otázka, ktorej sa bojíš?",
+    dailyQ6: "Čo by povedali tvoji zákazníci, keby boli úprimní?",
+    dailyQ7: "Čoho sa držíš, čo ti už neslúži?",
+    // Play counter
+    playsGenerated: "hier vygenerovaných",
+    // Share
+    sharePlay: "Zdieľať",
   },
   cs: {
     // Header
@@ -159,12 +195,12 @@ const translations = {
     hide: "Skrýt",
     questionTriangle: "Trojúhelník otázek",
     generatePlay: "Vygeneruj hru",
-    generating: "Generuji...",
+    generating: "Tvořím tvoji hru",
     errorMessage: "Nepodařilo se vygenerovat hru. Zkontroluj API klíč.",
     yourPlay: "Tvoje hra",
     playOptions: "Možnosti hry",
     forQuestion: "Pro",
-    regenerate: "Znovu",
+    regenerate: "Nová hra",
     option: "Možnost",
     // Play card sections
     theImage: "Obraz",
@@ -204,10 +240,28 @@ const translations = {
     prescribedFor: "Otázka",
     prescriptionDate: "Datum",
     takeToStage: "Odehraj naživo na Marsu!",
-    prescribed: "Taken to Mars ✓",
+    prescribed: "Taken to Mars",
     savedPlays: "Tvoje hry",
     saveImage: "Uložit jako obrázek",
     shareEmail: "Poslat emailem",
+    // Loading messages
+    loading1: "Dívám se na tvou otázku z úhlů, které jsi nezkusil...",
+    loading2: "Hledám postavy ukryté v tvé otázce...",
+    loading3: "Stavím scénu pro to, co potřebuje být viděno...",
+    loading4: "Mapuji napětí mezi tím, co víš a co cítíš...",
+    loading5: "Navrhuji hru, která vidí, co sám nevidíš...",
+    // Daily questions
+    dailyQ1: "Čemu se vyhýbáš?",
+    dailyQ2: "Co by se změnilo, kdybys přestal předstírat?",
+    dailyQ3: "Co tvůj tým potřebuje, ale neptá se na to?",
+    dailyQ4: "Co bys dělal, kdyby se nikdo nedíval?",
+    dailyQ5: "Jaká je otázka, které se bojíš?",
+    dailyQ6: "Co by řekli tvoji zákazníci, kdyby byli upřímní?",
+    dailyQ7: "Čeho se držíš, co ti už neslouží?",
+    // Play counter
+    playsGenerated: "her vygenerovaných",
+    // Share
+    sharePlay: "Sdílet",
   },
 } as const;
 
