@@ -7,17 +7,15 @@ import Prescription from "./Prescription";
 
 type Props = {
   play: Play;
-  index?: number;
   question?: string;
 };
 
-export default function PlayCard({ play, index, question }: Props) {
+export default function PlayCard({ play, question }: Props) {
   const { t } = useI18n();
   const [showPrescription, setShowPrescription] = useState(false);
   const [prescribed, setPrescribed] = useState(false);
 
   function handlePrescribe() {
-    // Save to localStorage
     const prescriptions = JSON.parse(
       localStorage.getItem("som-prescriptions") || "[]"
     );
@@ -42,14 +40,7 @@ export default function PlayCard({ play, index, question }: Props) {
         <div className="p-6 space-y-5">
           {/* Header */}
           <div className="flex items-start justify-between">
-            <div>
-              {index !== undefined && (
-                <span className="text-xs text-orange-400 font-bold uppercase tracking-wider">
-                  {t.option} {index + 1}
-                </span>
-              )}
-              <h3 className="text-xl font-bold text-white mt-1">{play.name}</h3>
-            </div>
+            <h3 className="text-xl font-bold text-white">{play.name}</h3>
             <div className="flex items-center gap-3 text-xs text-white/40">
               <span>{play.duration}</span>
               <span>
@@ -61,21 +52,44 @@ export default function PlayCard({ play, index, question }: Props) {
           {/* Mood */}
           <div className="text-sm text-orange-300/70 italic">{play.mood}</div>
 
-          {/* 4 Components */}
-          <div className="space-y-4">
-            <Section label={t.theImage} color="orange">
-              {play.image}
-            </Section>
-            <Section label={t.characters} color="blue">
-              {play.characters}
-            </Section>
-            <Section label={t.authorsRole} color="green">
-              {play.authorRole}
-            </Section>
-            <Section label={t.endingPerspective} color="purple">
-              {play.endingPerspective}
-            </Section>
+          {/* The Image */}
+          <Section label={t.theImage} color="orange">
+            {play.image}
+          </Section>
+
+          {/* Characters — structured grid */}
+          <div>
+            <div className="mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-blue-400">
+                {t.characters}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {play.characters.map((char, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-3 hover:border-blue-500/40 transition-colors"
+                >
+                  <div className="font-bold text-white text-sm mb-1">
+                    {char.name}
+                  </div>
+                  <div className="text-white/40 text-xs leading-relaxed">
+                    {char.description}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* Author's Role */}
+          <Section label={t.authorsRole} color="green">
+            {play.authorRole}
+          </Section>
+
+          {/* Ending Perspective */}
+          <Section label={t.endingPerspective} color="purple">
+            {play.endingPerspective}
+          </Section>
 
           {/* Simulation Scenario */}
           {play.simulation && (
@@ -99,7 +113,7 @@ export default function PlayCard({ play, index, question }: Props) {
             <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] p-5">
               <div className="mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-white/50">
-                  💡 {t.perspectivesTitle}
+                  {t.perspectivesTitle}
                 </span>
               </div>
               <div className="space-y-3">
@@ -125,13 +139,12 @@ export default function PlayCard({ play, index, question }: Props) {
                   : "bg-orange-500/10 border-2 border-orange-500/40 text-orange-400 hover:bg-orange-500/20 hover:border-orange-500/60"
               }`}
             >
-              {prescribed ? t.prescribed : `🚀 ${t.prescribe}`}
+              {prescribed ? t.prescribed : t.prescribe}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Prescription modal */}
       {showPrescription && (
         <Prescription
           play={play}
@@ -149,19 +162,17 @@ function Section({
   children,
 }: {
   label: string;
-  color: "orange" | "blue" | "green" | "purple";
+  color: "orange" | "green" | "purple";
   children: React.ReactNode;
 }) {
   const colors = {
     orange: "border-orange-500/30 bg-orange-500/5",
-    blue: "border-blue-500/30 bg-blue-500/5",
     green: "border-green-500/30 bg-green-500/5",
     purple: "border-purple-500/30 bg-purple-500/5",
   };
 
   const labelColors = {
     orange: "text-orange-400",
-    blue: "text-blue-400",
     green: "text-green-400",
     purple: "text-purple-400",
   };

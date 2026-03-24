@@ -76,7 +76,7 @@ export default function Prescription({ play, question, onClose }: Props) {
       `${play.name}\n` +
       `${play.mood} · ${play.duration} · ${play.playerCount.min}-${play.playerCount.max} ${t.players}\n\n` +
       `${t.theImage}:\n${play.image}\n\n` +
-      `${t.characters}:\n${play.characters}\n\n` +
+      `${t.characters}:\n${play.characters.map((c) => `• ${c.name} — ${c.description}`).join("\n")}\n\n` +
       `${t.authorsRole}:\n${play.authorRole}\n\n` +
       `${t.endingPerspective}:\n${play.endingPerspective}\n\n` +
       `---\n${t.takeToStage}\nhttps://www.stageonmars.com`;
@@ -198,7 +198,18 @@ export default function Prescription({ play, question, onClose }: Props) {
             {/* Components - condensed */}
             <div className="space-y-3 text-sm">
               <PrescriptionLine label={t.theImage} text={play.image} />
-              <PrescriptionLine label={t.characters} text={play.characters} />
+              <div>
+                <span className="text-[10px] uppercase tracking-wider text-orange-400/60 font-bold">
+                  {t.characters}
+                </span>
+                <div className="mt-1 space-y-1">
+                  {play.characters.map((c, i) => (
+                    <p key={i} className="text-white/60 leading-relaxed text-sm">
+                      <span className="font-bold text-white/80">{c.name}</span> — {c.description}
+                    </p>
+                  ))}
+                </div>
+              </div>
               <PrescriptionLine label={t.authorsRole} text={play.authorRole} />
               <PrescriptionLine
                 label={t.endingPerspective}

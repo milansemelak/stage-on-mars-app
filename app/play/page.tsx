@@ -2,20 +2,17 @@
 
 import { useState } from "react";
 import QuestionInput from "@/components/QuestionInput";
-import ModeSelector from "@/components/ModeSelector";
 import PlayCard from "@/components/PlayCard";
-import CharacterGenerator from "@/components/CharacterGenerator";
-import { Mode, Play } from "@/lib/types";
+import { Play } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
 export default function PlayPage() {
   const [question, setQuestion] = useState("");
-  const [mode, setMode] = useState<Mode>("guide");
   const [context, setContext] = useState<"personal" | "business">("personal");
-  const [plays, setPlays] = useState<Play[]>([]);
+  const [play, setPlay] = useState<Play | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [askedQuestion, setAskedQuestion] = useState<string>("");
+  const [askedQuestion, setAskedQuestion] = useState("");
   const { lang, t } = useI18n();
 
   async function generatePlay() {
@@ -23,14 +20,14 @@ export default function PlayPage() {
 
     setLoading(true);
     setError(null);
-    setPlays([]);
+    setPlay(null);
     setAskedQuestion(question);
 
     try {
       const response = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, mode, context, lang }),
+        body: JSON.stringify({ question, context, lang }),
       });
 
       if (!response.ok) {
@@ -38,7 +35,7 @@ export default function PlayPage() {
       }
 
       const data = await response.json();
-      setPlays(data.plays);
+      setPlay(data.plays[0]);
 
       // Save to localStorage
       const history = JSON.parse(
@@ -46,9 +43,8 @@ export default function PlayPage() {
       );
       history.unshift({
         question,
-        mode,
         context,
-        plays: data.plays,
+        play: data.plays[0],
         timestamp: Date.now(),
       });
       localStorage.setItem(
@@ -69,7 +65,6 @@ export default function PlayPage() {
         <p className="text-white/40 text-sm">{t.subheadline}</p>
       </div>
 
-      <ModeSelector mode={mode} onChange={setMode} />
       <QuestionInput
         question={question}
         onChange={setQuestion}
@@ -85,12 +80,12 @@ export default function PlayPage() {
         </div>
       )}
 
-      {plays.length > 0 && (
+      {play && (
         <div className="space-y-6 pt-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-white/80">
-                {plays.length === 1 ? t.yourPlay : t.playOptions}
+                {t.yourPlay}
               </h2>
               <p className="text-sm text-white/30 mt-0.5">
                 {t.forQuestion}: &ldquo;{askedQuestion}&rdquo;
@@ -105,21 +100,9 @@ export default function PlayPage() {
             </button>
           </div>
 
-          {plays.map((play, i) => (
-            <PlayCard
-              key={i}
-              play={play}
-              index={plays.length > 1 ? i : undefined}
-              question={askedQuestion}
-            />
-          ))}
+          <PlayCard play={play} question={askedQuestion} />
         </div>
       )}
-
-      {/* Divider */}
-      <div className="border-t border-white/10 pt-12">
-        <CharacterGenerator />
-      </div>
     </div>
   );
 }

@@ -1,21 +1,23 @@
+export type Character = {
+  name: string;
+  description: string;
+};
+
 export type Play = {
   name: string;
   image: string;
-  characters: string;
+  characters: Character[];
   authorRole: string;
   endingPerspective: string;
   playerCount: { min: number; max: number };
   duration: string;
   mood: string;
-  simulation?: string;
-  perspectives?: string[];
+  simulation: string;
+  perspectives: string[];
 };
-
-export type Mode = "guide" | "self-service";
 
 export type GenerateRequest = {
   question: string;
-  mode: Mode;
   context?: string;
   lang?: "en" | "sk" | "cs";
 };
