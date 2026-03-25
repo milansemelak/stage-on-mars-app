@@ -30,12 +30,12 @@ export default function QuestionInput({
         <div
           className={`absolute -inset-1 rounded-2xl transition-all duration-500 blur-xl ${
             hasQuestion
-              ? "bg-mars/20 opacity-100"
-              : "bg-mars/5 opacity-0 group-hover:opacity-100"
+              ? "bg-mars/25 opacity-100"
+              : "bg-mars/10 opacity-100"
           }`}
         />
 
-        <div className="relative rounded-2xl overflow-hidden border border-white/[0.12] bg-white/[0.04] backdrop-blur-sm">
+        <div className="relative rounded-2xl overflow-hidden border border-mars/20 bg-white/[0.03] backdrop-blur-sm">
           <textarea
             value={question}
             onChange={(e) => onChange(e.target.value)}
@@ -90,7 +90,7 @@ export default function QuestionInput({
         className={`w-full mt-3 py-5 sm:py-6 rounded-2xl font-black text-2xl sm:text-3xl tracking-widest uppercase transition-all duration-300 ${
           hasQuestion
             ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_8px_50px_-4px_rgba(255,85,0,0.6)] hover:scale-[1.01] active:scale-[0.99]"
-            : "bg-white/[0.05] text-white/20 cursor-not-allowed border border-white/[0.08]"
+            : "bg-mars/10 text-mars/30 cursor-not-allowed border border-mars/15"
         }`}
       >
         {t.generatePlay}
