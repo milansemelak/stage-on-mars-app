@@ -77,7 +77,7 @@ export default function QuestionInput({
         className={`w-full py-5 sm:py-6 rounded-2xl font-black text-2xl sm:text-3xl tracking-widest uppercase transition-all duration-300 ${
           hasQuestion
             ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.5)] active:scale-[0.99]"
-            : "bg-mars/30 text-white/40 cursor-not-allowed"
+            : "bg-mars text-white/50 cursor-not-allowed opacity-60"
         }`}
       >
         {t.generatePlay}
