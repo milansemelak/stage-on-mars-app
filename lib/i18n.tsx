@@ -22,7 +22,7 @@ const translations = {
     needHelp: "Need help?",
     hide: "Hide",
     questionTriangle: "Question Triangle",
-    generatePlay: "Play Simulation",
+    generatePlay: "Generate Play",
     generating: "Creating your play",
     errorMessage: "Failed to generate play. Make sure your API key is configured.",
     yourPlay: "Your Play",
@@ -94,7 +94,7 @@ const translations = {
     // Play counter
     playsGenerated: "plays generated",
     // From Mars (step 2)
-    fromMars: "See what Mars saw",
+    fromMars: "Play Simulation",
     loadingMars: "Mars is watching...",
     marsError: "Mars couldn't see this one. Try again.",
     // Share
