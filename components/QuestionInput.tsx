@@ -35,13 +35,13 @@ export default function QuestionInput({
           }`}
         />
 
-        <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm">
+        <div className="relative rounded-2xl overflow-hidden border border-white/[0.12] bg-white/[0.04] backdrop-blur-sm">
           <textarea
             value={question}
             onChange={(e) => onChange(e.target.value)}
             placeholder={t.placeholder}
             rows={3}
-            className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white placeholder:text-white/15 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem] sm:min-h-[8rem]"
+            className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white placeholder:text-white/25 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem] sm:min-h-[8rem]"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -76,7 +76,7 @@ export default function QuestionInput({
             </div>
 
             {/* Inline submit hint */}
-            <span className="text-[10px] text-white/10 hidden sm:block">
+            <span className="text-[10px] text-white/20 hidden sm:block">
               Enter ↵
             </span>
           </div>
@@ -90,7 +90,7 @@ export default function QuestionInput({
         className={`w-full mt-3 py-5 sm:py-6 rounded-2xl font-black text-2xl sm:text-3xl tracking-widest uppercase transition-all duration-300 ${
           hasQuestion
             ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_8px_50px_-4px_rgba(255,85,0,0.6)] hover:scale-[1.01] active:scale-[0.99]"
-            : "bg-white/[0.03] text-white/10 cursor-not-allowed border border-white/[0.04]"
+            : "bg-white/[0.05] text-white/20 cursor-not-allowed border border-white/[0.08]"
         }`}
       >
         {t.generatePlay}
