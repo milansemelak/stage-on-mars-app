@@ -26,6 +26,14 @@ export const metadata: Metadata = {
       "Turn your question into a systemic play to see what you can't see alone.",
     siteName: "Stage on Mars",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Stage on Mars — The Playmaker",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
