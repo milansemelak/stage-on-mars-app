@@ -102,6 +102,11 @@ Characters should feel like they BELONG to the question. Name them by what they 
 
 Characters should be 1-3 words. In JSON, mark each as "concrete" or "abstract" in the description field.
 
+CRITICAL: Properly distinguish concrete vs abstract:
+- "concrete" = tangible roles a person embodies: King, Judge, Mirror, Shepherd, Vendor, Weather Frog, Manual, Mother, Wolf
+- "abstract" = intangible forces/concepts given a body: Self-deception, Freedom, Fear, Safety, The Result, Tomorrow, The Silence, Editing, Trust, The Bonus, Stillness, Expectations, The Cost
+A good play has BOTH types — typically 2-3 concrete and 2-4 abstract. NEVER mark all characters as the same type.
+
 ## Image = GAME SETUP
 Not a fantasy landscape. A physical space people walk into. Describe WHERE people stand, WHAT the space represents, WHAT objects or boundaries exist. Think: marketplace, courtroom, two chairs facing each other, a circle with the author in the center, a line people walk along.
 

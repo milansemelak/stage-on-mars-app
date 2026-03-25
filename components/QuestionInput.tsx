@@ -20,55 +20,81 @@ export default function QuestionInput({
   onContextChange,
 }: Props) {
   const { t } = useI18n();
+  const hasQuestion = question.trim().length > 0;
 
   return (
-    <div className="space-y-3">
-      <textarea
-        value={question}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={t.placeholder}
-        rows={4}
-        className="w-full rounded-xl bg-white/[0.03] border border-white/10 px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 focus:border-mars/40 resize-none text-base sm:text-lg leading-relaxed transition-all min-h-[14.4rem] sm:min-h-0"
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            onSubmit();
-          }
-        }}
-      />
+    <div className="space-y-0">
+      {/* Input container with glow effect */}
+      <div className="relative group">
+        {/* Ambient glow behind the input */}
+        <div
+          className={`absolute -inset-1 rounded-2xl transition-all duration-500 blur-xl ${
+            hasQuestion
+              ? "bg-mars/20 opacity-100"
+              : "bg-mars/5 opacity-0 group-hover:opacity-100"
+          }`}
+        />
 
-      <div className="w-full rounded-2xl overflow-hidden shadow-[0_8px_40px_-4px_rgba(194,87,27,0.5)] hover:shadow-[0_8px_50px_-4px_rgba(194,87,27,0.7)] transition-shadow">
-        <div className="flex w-full">
-          <button
-            onClick={() => onContextChange("personal")}
-            className={`flex-1 py-3 text-sm font-semibold transition-all ${
-              context === "personal"
-                ? "bg-white/12 text-white"
-                : "bg-white/[0.03] text-white/25 hover:text-white/50"
-            }`}
-          >
-            {t.personal}
-          </button>
-          <button
-            onClick={() => onContextChange("business")}
-            className={`flex-1 py-3 text-sm font-semibold transition-all border-l border-white/[0.06] ${
-              context === "business"
-                ? "bg-white/12 text-white"
-                : "bg-white/[0.03] text-white/25 hover:text-white/50"
-            }`}
-          >
-            {t.business}
-          </button>
+        <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm">
+          <textarea
+            value={question}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={t.placeholder}
+            rows={3}
+            className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white placeholder:text-white/15 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem] sm:min-h-[8rem]"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                onSubmit();
+              }
+            }}
+          />
+
+          {/* Context toggle — inside the input box */}
+          <div className="flex items-center justify-between px-4 sm:px-5 pb-3">
+            <div className="flex items-center gap-1 bg-white/[0.04] rounded-lg p-0.5">
+              <button
+                onClick={() => onContextChange("personal")}
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                  context === "personal"
+                    ? "bg-white/10 text-white shadow-sm"
+                    : "text-white/25 hover:text-white/50"
+                }`}
+              >
+                {t.personal}
+              </button>
+              <button
+                onClick={() => onContextChange("business")}
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                  context === "business"
+                    ? "bg-white/10 text-white shadow-sm"
+                    : "text-white/25 hover:text-white/50"
+                }`}
+              >
+                {t.business}
+              </button>
+            </div>
+
+            {/* Inline submit hint */}
+            <span className="text-[10px] text-white/10 hidden sm:block">
+              Enter ↵
+            </span>
+          </div>
         </div>
-
-        <button
-          onClick={onSubmit}
-          disabled={loading || !question.trim()}
-          className="w-full py-6 bg-mars hover:bg-mars-light disabled:bg-mars/50 disabled:cursor-not-allowed text-white disabled:text-white/30 font-black text-2xl sm:text-3xl tracking-widest uppercase transition-all"
-        >
-          {t.generatePlay}
-        </button>
       </div>
+
+      {/* PLAY button */}
+      <button
+        onClick={onSubmit}
+        disabled={loading || !hasQuestion}
+        className={`w-full mt-3 py-5 sm:py-6 rounded-2xl font-black text-2xl sm:text-3xl tracking-widest uppercase transition-all duration-300 ${
+          hasQuestion
+            ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_8px_50px_-4px_rgba(255,85,0,0.6)] hover:scale-[1.01] active:scale-[0.99]"
+            : "bg-white/[0.03] text-white/10 cursor-not-allowed border border-white/[0.04]"
+        }`}
+      >
+        {t.generatePlay}
+      </button>
     </div>
   );
 }

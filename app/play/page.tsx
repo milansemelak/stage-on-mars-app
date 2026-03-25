@@ -159,14 +159,14 @@ export default function PlayPage() {
   return (
     <div className="min-h-[calc(100vh-72px)]">
       {/* Input section */}
-      <div className="pt-4 sm:pt-10">
+      <div className={`${!play && !loading ? "pt-8 sm:pt-16" : "pt-4 sm:pt-10"} transition-all`}>
         <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
           {!play && !loading && (
-            <div className="space-y-1 mb-6 sm:mb-8">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <div className="space-y-2 mb-8 sm:mb-10">
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1]">
                 {t.headline}
               </h1>
-              <p className="text-white/30 text-sm sm:text-base">
+              <p className="text-white/25 text-sm sm:text-base font-mercure italic">
                 {t.subheadline}
               </p>
             </div>
@@ -183,18 +183,20 @@ export default function PlayPage() {
 
           {/* Daily question suggestion — only when no play */}
           {!play && !loading && (
-            <button
-              onClick={useDailyQuestion}
-              className="mt-4 text-white/20 hover:text-white/50 text-sm transition-colors text-left"
-            >
-              {t.trySuggestion}: <span className="font-mercure italic">&ldquo;{dailyQuestion}&rdquo;</span>
-            </button>
-          )}
+            <div className="mt-5 space-y-2">
+              <button
+                onClick={useDailyQuestion}
+                className="text-white/20 hover:text-white/45 text-sm transition-colors text-left group"
+              >
+                {t.trySuggestion}: <span className="font-mercure italic text-white/30 group-hover:text-mars/50 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
+              </button>
 
-          {/* Play counter — only when no play showing */}
-          {!play && !loading && playCount > 0 && (
-            <div className="mt-3 text-white/10 text-xs">
-              {playCount} {t.playsGenerated}
+              {/* Play counter */}
+              {playCount > 0 && (
+                <div className="text-white/8 text-xs">
+                  {playCount} {t.playsGenerated}
+                </div>
+              )}
             </div>
           )}
         </div>
