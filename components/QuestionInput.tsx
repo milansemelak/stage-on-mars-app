@@ -38,23 +38,23 @@ export default function QuestionInput({
       />
 
       <div className="w-full rounded-2xl overflow-hidden shadow-lg shadow-mars/20">
-        <div className="flex w-full border-b border-white/10">
+        <div className="flex w-full">
           <button
             onClick={() => onContextChange("personal")}
-            className={`flex-1 py-3 text-sm font-medium transition-all ${
+            className={`flex-1 py-3 text-sm font-semibold transition-all ${
               context === "personal"
-                ? "bg-white/15 text-white"
-                : "bg-white/[0.04] text-white/30 hover:text-white/50"
+                ? "bg-white/12 text-white"
+                : "bg-white/[0.03] text-white/25 hover:text-white/50"
             }`}
           >
             {t.personal}
           </button>
           <button
             onClick={() => onContextChange("business")}
-            className={`flex-1 py-3 text-sm font-medium transition-all border-l border-white/10 ${
+            className={`flex-1 py-3 text-sm font-semibold transition-all border-l border-white/[0.06] ${
               context === "business"
-                ? "bg-white/15 text-white"
-                : "bg-white/[0.04] text-white/30 hover:text-white/50"
+                ? "bg-white/12 text-white"
+                : "bg-white/[0.03] text-white/25 hover:text-white/50"
             }`}
           >
             {t.business}
@@ -64,7 +64,7 @@ export default function QuestionInput({
         <button
           onClick={onSubmit}
           disabled={loading || !question.trim()}
-          className="w-full py-5 bg-mars hover:bg-mars-light disabled:opacity-20 disabled:cursor-not-allowed text-white font-bold text-2xl sm:text-3xl tracking-widest uppercase transition-all"
+          className="w-full py-5 bg-mars hover:bg-mars-light disabled:bg-mars/60 disabled:cursor-not-allowed text-white disabled:text-white/40 font-bold text-2xl sm:text-3xl tracking-widest uppercase transition-all"
         >
           {t.generatePlay}
         </button>
