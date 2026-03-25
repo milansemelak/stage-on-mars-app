@@ -19,6 +19,20 @@ export const metadata: Metadata = {
   title: "Stage on Mars — The Playmaker",
   description:
     "Transform questions into Systemic Plays. An experiential method that expands perspective through collective creativity.",
+  metadataBase: new URL("https://playbook.stageonmars.com"),
+  openGraph: {
+    title: "Stage on Mars — The Playmaker",
+    description:
+      "Turn your question into a systemic play to see what you can't see alone.",
+    siteName: "Stage on Mars",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Stage on Mars — The Playmaker",
+    description:
+      "Turn your question into a systemic play to see what you can't see alone.",
+  },
 };
 
 export default function RootLayout({
