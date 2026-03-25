@@ -21,29 +21,29 @@ export default function Header() {
             className="h-[60px] sm:h-[70px] w-auto invert"
           />
         </button>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Link
             href="/history"
-            className="text-xs font-medium text-white/30 hover:text-white/70 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-white/5"
+            className="text-xs font-medium text-white/30 hover:text-white/70 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap"
           >
-            {t.savedPlays}
+            Archive
           </Link>
           <div className="w-px h-4 bg-white/10" />
-        <div className="flex gap-1">
-          {(["en", "sk", "cs"] as const).map((l) => (
-            <button
-              key={l}
-              onClick={() => setLang(l)}
-              className={`text-xs font-medium transition-all rounded-lg px-2.5 py-1.5 ${
-                lang === l
-                  ? "text-white bg-white/10"
-                  : "text-white/30 hover:text-white/60"
-              }`}
-            >
-              {l === "en" ? "EN" : l === "sk" ? "SK" : "CZ"}
-            </button>
-          ))}
-        </div>
+          <div className="flex gap-1">
+            {(["en", "sk", "cs"] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`text-xs font-medium transition-all rounded-lg px-2.5 py-1.5 ${
+                  lang === l
+                    ? "text-white bg-white/10"
+                    : "text-white/30 hover:text-white/60"
+                }`}
+              >
+                {l === "en" ? "EN" : l === "sk" ? "SK" : "CZ"}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </header>
