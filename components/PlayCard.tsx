@@ -8,44 +8,19 @@ import Prescription from "./Prescription";
 type Props = {
   play: Play;
   question?: string;
-  onPlayUpdate?: (play: Play) => void;
 };
 
-export default function PlayCard({ play, question, onPlayUpdate }: Props) {
-  const { lang, t } = useI18n();
-  const [currentPlay, setCurrentPlay] = useState(play);
+export default function PlayCard({ play, question }: Props) {
+  const { t } = useI18n();
   const [showPrescription, setShowPrescription] = useState(false);
   const [prescribed, setPrescribed] = useState(false);
-  const [marsLoading, setMarsLoading] = useState(false);
-  const [marsError, setMarsError] = useState<string | null>(null);
-
-  async function fetchFromMars() {
-    setMarsLoading(true);
-    setMarsError(null);
-    try {
-      const response = await fetch("/api/generate-mars", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play: currentPlay, question, lang }),
-      });
-      if (!response.ok) throw new Error("Failed");
-      const data = await response.json();
-      const updated = { ...currentPlay, simulation: data.simulation, perspectives: data.perspectives };
-      setCurrentPlay(updated);
-      onPlayUpdate?.(updated);
-    } catch {
-      setMarsError(t.marsError);
-    } finally {
-      setMarsLoading(false);
-    }
-  }
 
   function handlePrescribe() {
     const prescriptions = JSON.parse(
       localStorage.getItem("som-prescriptions") || "[]"
     );
     prescriptions.unshift({
-      play: currentPlay,
+      play,
       question: question || "",
       timestamp: Date.now(),
       rxNumber: `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`,
@@ -60,7 +35,7 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
   }
 
   async function handleShare() {
-    const text = `${currentPlay.name}\n\n"${question}"\n\n${t.theImage}: ${currentPlay.image}\n\n${t.characters}: ${currentPlay.characters.map((c) => c.name).join(", ")}\n\n${t.authorsRole}: ${currentPlay.authorRole}\n\nhttps://playbook.stageonmars.com`;
+    const text = `${play.name}\n\n"${question}"\n\n${t.theImage}: ${play.image}\n\n${t.characters}: ${play.characters.map((c) => c.name).join(", ")}\n\n${t.authorsRole}: ${play.authorRole}\n\nhttps://playbook.stageonmars.com`;
 
     if (navigator.share) {
       try {
@@ -80,15 +55,15 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
           {/* Play name — hero element */}
           <div className="animate-fade-slide-up stagger-1">
             <h3 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
-              {currentPlay.name}
+              {play.name}
             </h3>
             <div className="flex items-center gap-3 mt-2 text-xs text-white/30">
-              <span className="italic text-mars/50">{currentPlay.mood}</span>
+              <span className="font-mercure italic text-mars/50">{play.mood}</span>
               <span className="text-white/10">|</span>
-              <span>{currentPlay.duration}</span>
+              <span>{play.duration}</span>
               <span className="text-white/10">|</span>
               <span>
-                {currentPlay.playerCount.min}-{currentPlay.playerCount.max} {t.players}
+                {play.playerCount.min}-{play.playerCount.max} {t.players}
               </span>
             </div>
           </div>
@@ -97,7 +72,7 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
           <div className="animate-fade-slide-up stagger-2">
             <SectionLabel color="mars">{t.theImage}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-              {currentPlay.image}
+              {play.image}
             </p>
           </div>
 
@@ -105,7 +80,7 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
           <div className="animate-fade-slide-up stagger-3">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {currentPlay.characters.map((char, i) => {
+              {play.characters.map((char, i) => {
                 const isAbstract =
                   char.description?.toLowerCase() === "abstract";
                 return (
@@ -129,7 +104,7 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
                         isAbstract ? "text-white/20" : "text-mars/30"
                       }`}
                     >
-                      {isAbstract ? t.abstract : t.concrete}
+                      {isAbstract ? "abstract" : "concrete"}
                     </div>
                   </div>
                 );
@@ -141,7 +116,7 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
           <div className="animate-fade-slide-up stagger-4">
             <SectionLabel color="green">{t.authorsRole}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-              {currentPlay.authorRole}
+              {play.authorRole}
             </p>
           </div>
 
@@ -149,34 +124,12 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
           <div className="animate-fade-slide-up stagger-5">
             <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-              {currentPlay.endingPerspective}
+              {play.endingPerspective}
             </p>
           </div>
 
-          {/* ── Step 2: From Mars ── */}
-          {!currentPlay.simulation && !marsLoading && (
-            <div className="animate-fade-slide-up stagger-6">
-              {marsError && (
-                <p className="text-red-400/70 text-xs mb-3 text-center">{marsError}</p>
-              )}
-              <button
-                onClick={fetchFromMars}
-                className="w-full py-5 rounded-2xl bg-mars hover:bg-mars-light text-white font-black text-lg sm:text-xl tracking-widest uppercase transition-all shadow-lg shadow-mars/20 hover:shadow-mars/40"
-              >
-                {t.fromMars}
-              </button>
-            </div>
-          )}
-
-          {marsLoading && (
-            <div className="animate-fade-slide-up stagger-6 flex flex-col items-center gap-3 py-6">
-              <div className="w-6 h-6 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
-              <p className="text-white/30 text-sm italic">{t.loadingMars}</p>
-            </div>
-          )}
-
           {/* What Happens on Stage */}
-          {currentPlay.simulation && (
+          {play.simulation && (
             <div className="animate-fade-slide-up stagger-6 rounded-xl border border-mars/15 bg-mars/[0.03] p-5 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-mars-light/70">
@@ -186,30 +139,30 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
                   {t.simulationSub}
                 </span>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed">
-                {currentPlay.simulation}
+              <p className="font-mercure italic text-white/60 text-sm leading-relaxed">
+                {play.simulation}
               </p>
             </div>
           )}
 
           {/* Perspectives */}
-          {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (
-            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-mars/30 bg-gradient-to-br from-mars/[0.10] to-mars/[0.04] p-5 sm:p-7">
+          {play.perspectives && play.perspectives.length > 0 && (
+            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-mars/[0.02] p-5 sm:p-7">
               <div className="mb-5 flex items-center gap-3">
-                <div className="w-1 h-6 rounded-full bg-mars" />
-                <span className="text-sm font-bold uppercase tracking-widest text-white/80">
+                <div className="w-1 h-5 rounded-full bg-mars" />
+                <span className="text-sm font-bold uppercase tracking-widest text-white/60">
                   {t.perspectivesTitle}
                 </span>
               </div>
-              <div className="space-y-5">
-                {currentPlay.perspectives.map((p, i) => (
+              <div className="space-y-4">
+                {play.perspectives.map((p, i) => (
                   <div key={i} className="flex gap-4 items-start">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-mars/25 border border-mars/50 flex items-center justify-center">
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-mars/10 border border-mars/20 flex items-center justify-center">
                       <span className="text-mars-light font-bold text-xs">
                         {i + 1}
                       </span>
                     </div>
-                    <p className="text-white text-base sm:text-lg leading-relaxed pt-0.5 font-medium">
+                    <p className="text-white/70 text-sm sm:text-base leading-relaxed pt-1 font-medium">
                       {p}
                     </p>
                   </div>
@@ -225,14 +178,14 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
               className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
                 prescribed
                   ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                  : "bg-white/8 border border-white/10 hover:bg-white/12 hover:border-white/20 text-white/70 hover:text-white"
+                  : "bg-mars hover:bg-mars-light text-white"
               }`}
             >
               {prescribed ? "✓ " + t.prescribed : t.prescribe}
             </button>
             <button
               onClick={handleShare}
-              className="flex-1 py-3 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
+              className="px-4 py-3 rounded-xl border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 text-sm transition-all"
             >
               {t.sharePlay}
             </button>
@@ -242,7 +195,7 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
 
       {showPrescription && (
         <Prescription
-          play={currentPlay}
+          play={play}
           question={question || ""}
           onClose={() => setShowPrescription(false)}
         />

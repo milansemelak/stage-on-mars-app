@@ -14,30 +14,14 @@ const LOADING_MESSAGES_KEYS = [
   "loading5",
 ] as const;
 
-const PERSONAL_QUESTIONS_KEYS = [
-  "personalQ1",
-  "personalQ2",
-  "personalQ3",
-  "personalQ4",
-  "personalQ5",
-  "personalQ6",
-  "personalQ7",
-  "personalQ8",
-  "personalQ9",
-  "personalQ10",
-] as const;
-
-const BUSINESS_QUESTIONS_KEYS = [
-  "businessQ1",
-  "businessQ2",
-  "businessQ3",
-  "businessQ4",
-  "businessQ5",
-  "businessQ6",
-  "businessQ7",
-  "businessQ8",
-  "businessQ9",
-  "businessQ10",
+const DAILY_QUESTIONS_KEYS = [
+  "dailyQ1",
+  "dailyQ2",
+  "dailyQ3",
+  "dailyQ4",
+  "dailyQ5",
+  "dailyQ6",
+  "dailyQ7",
 ] as const;
 
 export default function PlayPage() {
@@ -53,21 +37,13 @@ export default function PlayPage() {
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
 
-  // Random question suggestion — aligned with current context
-  const questionPool = context === "personal" ? PERSONAL_QUESTIONS_KEYS : BUSINESS_QUESTIONS_KEYS;
-  const dailyQuestion = t[questionPool[questionIdx % questionPool.length]];
+  // Random question suggestion — changes on each load/generate
+  const dailyQuestion = t[DAILY_QUESTIONS_KEYS[questionIdx]];
 
   // Pick a random question on mount
   useEffect(() => {
-    setQuestionIdx(Math.floor(Math.random() * questionPool.length));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setQuestionIdx(Math.floor(Math.random() * DAILY_QUESTIONS_KEYS.length));
   }, []);
-
-  // Rotate suggestion when context changes
-  useEffect(() => {
-    setQuestionIdx(Math.floor(Math.random() * questionPool.length));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context]);
 
   // Load play count
   useEffect(() => {
@@ -126,7 +102,7 @@ export default function PlayPage() {
       setPlayCount(history.length);
 
       // Rotate question suggestion
-      setQuestionIdx((prev) => (prev + 1) % questionPool.length);
+      setQuestionIdx((prev) => (prev + 1) % DAILY_QUESTIONS_KEYS.length);
 
       // Scroll to play after a short delay
       setTimeout(() => {
@@ -136,19 +112,6 @@ export default function PlayPage() {
       setError(t.errorMessage);
     } finally {
       setLoading(false);
-    }
-  }
-
-  function handlePlayUpdate(updatedPlay: Play) {
-    setPlay(updatedPlay);
-    const history = JSON.parse(localStorage.getItem("som-play-history") || "[]");
-    const idx = history.findIndex(
-      (e: { play: Play; question: string }) =>
-        e.play.name === updatedPlay.name && e.question === question
-    );
-    if (idx !== -1) {
-      history[idx].play = updatedPlay;
-      localStorage.setItem("som-play-history", JSON.stringify(history));
     }
   }
 
@@ -187,7 +150,7 @@ export default function PlayPage() {
               onClick={useDailyQuestion}
               className="mt-4 text-white/20 hover:text-white/50 text-sm transition-colors text-left"
             >
-              {t.trySuggestion}: <span className="italic">&ldquo;{dailyQuestion}&rdquo;</span>
+              Try: <span className="font-mercure italic">&ldquo;{dailyQuestion}&rdquo;</span>
             </button>
           )}
 
@@ -205,7 +168,7 @@ export default function PlayPage() {
         <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-12 sm:mt-16">
           <div className="flex flex-col items-center gap-6 text-center">
             <div className="w-8 h-8 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
-            <p className="text-white/40 text-sm sm:text-base italic animate-fade-in" key={loadingMsg}>
+            <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in" key={loadingMsg}>
               {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
             </p>
           </div>
@@ -237,7 +200,7 @@ export default function PlayPage() {
             </button>
           </div>
 
-          <PlayCard play={play} question={askedQuestion} onPlayUpdate={handlePlayUpdate} />
+          <PlayCard play={play} question={askedQuestion} />
         </div>
       )}
     </div>

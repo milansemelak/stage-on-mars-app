@@ -1,5 +1,55 @@
 @import "tailwindcss";
 
+/* Gellix — primary brand font */
+@font-face {
+  font-family: "Gellix";
+  src: url("/fonts/Gellix-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gellix";
+  src: url("/fonts/Gellix-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gellix";
+  src: url("/fonts/Gellix-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gellix";
+  src: url("/fonts/Gellix-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Mercure — secondary font for quotes/descriptions */
+@font-face {
+  font-family: "Mercure";
+  src: url("/fonts/Mercure-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mercure";
+  src: url("/fonts/Mercure-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
@@ -21,11 +71,16 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: "Gellix", var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Mercure utility class */
+.font-mercure {
+  font-family: "Mercure", Georgia, "Times New Roman", serif;
 }
 
 ::-webkit-scrollbar {
