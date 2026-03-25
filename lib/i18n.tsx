@@ -22,7 +22,7 @@ const translations = {
     needHelp: "Need help?",
     hide: "Hide",
     questionTriangle: "Question Triangle",
-    generatePlay: "Generate Play",
+    generatePlay: "Play Simulation",
     generating: "Creating your play",
     errorMessage: "Failed to generate play. Make sure your API key is configured.",
     yourPlay: "Your Play",
