@@ -43,8 +43,8 @@ export default function QuestionInput({
             onClick={() => onContextChange("personal")}
             className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
               context === "personal"
-                ? "bg-mars text-white"
-                : "bg-white/[0.03] text-white/30 hover:text-white/60"
+                ? "bg-white/20 text-white"
+                : "bg-white/[0.03] text-white/30 hover:text-white/50"
             }`}
           >
             {t.personal}
@@ -53,8 +53,8 @@ export default function QuestionInput({
             onClick={() => onContextChange("business")}
             className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
               context === "business"
-                ? "bg-mars text-white"
-                : "bg-white/[0.03] text-white/30 hover:text-white/60"
+                ? "bg-white/20 text-white"
+                : "bg-white/[0.03] text-white/30 hover:text-white/50"
             }`}
           >
             {t.business}
