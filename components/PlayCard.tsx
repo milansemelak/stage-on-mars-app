@@ -8,9 +8,10 @@ import Prescription from "./Prescription";
 type Props = {
   play: Play;
   question?: string;
+  onPlayUpdate?: (play: Play) => void;
 };
 
-export default function PlayCard({ play, question }: Props) {
+export default function PlayCard({ play, question, onPlayUpdate }: Props) {
   const { t } = useI18n();
   const [showPrescription, setShowPrescription] = useState(false);
   const [prescribed, setPrescribed] = useState(false);
