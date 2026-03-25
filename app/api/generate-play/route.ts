@@ -5,6 +5,23 @@ import { GenerateRequest, Play } from "@/lib/types";
 
 const anthropic = new Anthropic();
 
+async function callWithRetry(params: Anthropic.MessageCreateParamsNonStreaming, retries = 3): Promise<Anthropic.Message> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await anthropic.messages.create(params);
+    } catch (error: unknown) {
+      const isOverloaded = error instanceof Error && error.message.includes("529");
+      const isRateLimit = error instanceof Error && error.message.includes("rate");
+      if ((isOverloaded || isRateLimit) && i < retries - 1) {
+        await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw new Error("Max retries reached");
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body: GenerateRequest = await request.json();
@@ -17,7 +34,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const message = await anthropic.messages.create({
+    const message = await callWithRetry({
       model: "claude-sonnet-4-20250514",
       max_tokens: 4096,
       temperature: 1.0,
