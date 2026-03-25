@@ -28,7 +28,7 @@ export default function QuestionInput({
         onChange={(e) => onChange(e.target.value)}
         placeholder={t.placeholder}
         rows={4}
-        className="w-full rounded-xl bg-white/[0.03] border border-white/10 px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 focus:border-mars/40 resize-none text-base sm:text-lg leading-relaxed transition-all min-h-[12rem] sm:min-h-0"
+        className="w-full rounded-xl bg-white/[0.03] border border-white/10 px-5 py-4 text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 focus:border-mars/40 resize-none text-base sm:text-lg leading-relaxed transition-all min-h-[14.4rem] sm:min-h-0"
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
