@@ -37,7 +37,7 @@ export default function QuestionInput({
         }}
       />
 
-      <div className="w-full rounded-2xl overflow-hidden shadow-lg shadow-mars/20">
+      <div className="w-full rounded-2xl overflow-hidden shadow-[0_8px_40px_-4px_rgba(194,87,27,0.5)] hover:shadow-[0_8px_50px_-4px_rgba(194,87,27,0.7)] transition-shadow">
         <div className="flex w-full">
           <button
             onClick={() => onContextChange("personal")}
@@ -64,7 +64,7 @@ export default function QuestionInput({
         <button
           onClick={onSubmit}
           disabled={loading || !question.trim()}
-          className="w-full py-5 bg-mars hover:bg-mars-light disabled:bg-mars/60 disabled:cursor-not-allowed text-white disabled:text-white/40 font-bold text-2xl sm:text-3xl tracking-widest uppercase transition-all"
+          className="w-full py-6 bg-mars hover:bg-mars-light disabled:bg-mars/50 disabled:cursor-not-allowed text-white disabled:text-white/30 font-black text-2xl sm:text-3xl tracking-widest uppercase transition-all"
         >
           {t.generatePlay}
         </button>
