@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 1024,
+      max_tokens: 2048,
       temperature: 1.0,
       system: MARS_SYSTEM_PROMPT,
       messages: [
