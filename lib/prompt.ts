@@ -5,7 +5,28 @@ A play is a GAME WITH RULES played through human bodies. Not a scene. Not theate
 
 People step into roles. They follow rules. The rules create pressure. The pressure reveals truth. After the play, everyone shares what they saw.
 
-Study these real plays to understand the format:
+## HOW A REAL SESSION WORKS (studied from 10+ live sessions)
+1. Someone sends a question "from Earth"
+2. The Cast proposes directing ideas — different game structures for the same question
+3. A director is chosen. They design the play's rules and structure.
+4. The author picks characters FROM THEIR OWN QUESTION — the guide asks "What could stop X? What does Y mean to you?" and the author names forces from their life
+5. Each character is named by WHAT THEY REPRESENT — not who they are. Sebeklam (Self-deception), Editácia (Editing), Sloboda (Freedom), Bezpečie (Safety), Výsledok (The Result)
+6. The play happens — physical, embodied, often surprising
+7. Perspectives are shared — this is where the real insight lands
+
+## PATTERNS FROM REAL PLAYS (what actually works on stage)
+
+**Characters emerge from the question itself.** When the question is "How do I stop editing?" — the characters become Editing, Self-deception, Freedom, The Result, The Other You. When the question is "Is fun or safety more important?" — the characters become Fun, Safety, Heights, Noise, Stillness, Nakedness. The characters ARE the question, broken into living pieces.
+
+**Multiple acts showing contrasting scenarios.** A play about "shepherd without a shepherd" had Act 1: without shepherd (chaos but life) and Act 2: with shepherd (order but something died). A play about "fun vs safety" had 3 acts: only fun, only safety, then both. The contrast IS the insight.
+
+**The play always reveals what the author DIDN'T expect.** "How do I stop editing?" revealed: "We edited the author herself, not the result." "How to care for sheep without a shepherd?" revealed: "The sheep were never there. It was never about the sheep." The play should be designed so the answer surprises even the designer.
+
+**Characters resist, refuse, or break their assigned roles** — and that's where truth lives. Nobody wanted to be erased. The Freedom character kept calling the author by her first name. The Self-deception was secretly supportive. Design plays where characters CAN deviate.
+
+**Abstract questions get physicalized through metaphor.** "How to push bold ideas in a conservative corporation?" became a conservative marketplace where a startup vendor sells socks with holes. "How will AI change relationships?" became a dispute resolution game with AI mediators on chairs. Find the physical metaphor.
+
+## Study these real plays to understand the format:
 
 ### LES (The Forest)
 - **Use**: Questions about prioritization
@@ -48,31 +69,49 @@ Study these real plays to understand the format:
 - **Use**: Questions about decisions, possibilities, desires
 - **Setup**: The author dances with all the decisions and possibilities they face.
 
+### TRŽIŠTĚ (The Marketplace) — from live session
+- **Use**: Questions about innovation vs tradition, pushing new ideas
+- **Characters**: Stall Keepers (selling traditional goods), Customers, Market Owner, The New Vendor (with a ridiculous product), The Fake (impersonator)
+- **Setup**: A conservative marketplace. Traditional vendors hawk their wares.
+- **Process**: The new vendor must find allies, convince buyers, survive rejection. Eventually finds unexpected collaboration (merged product: alcohol + socks).
+- **Ending**: What sells and what doesn't. Who allied with whom. The author watches and sees what penetrates tradition.
+
+### ROZHODČÍ SPOR (The Dispute) — from live session
+- **Use**: Questions about conflict, mediation, AI, communication
+- **Characters**: Disputants (on chairs facing each other), AI Mediators, The Prompt-Giver
+- **Setup**: Two chairs face each other. Disputants name their conflict. Mediators arrive one by one.
+- **Process**: Each mediator attempts to resolve the dispute. The disputants are unpredictable — they resist, escalate, or suddenly agree. New disputes keep arriving.
+- **Ending**: The moment when mediators become more interesting than the dispute itself — attention shifts, roles reverse.
+
 ## YOUR TASK: Generate plays in this exact spirit.
 
 Every play you create MUST have:
 1. A **GAME MECHANIC** — not just a scene, but a system with clear rules. What can characters do? What can't they? What forces the truth out?
-2. **CHARACTERS DEFINED BY FUNCTION** — not by personality. The Corpse. The Tree. The Mirror. The Asteroid. They are defined by what they DO in the play.
+2. **CHARACTERS THAT EMERGE FROM THE QUESTION** — break the question into its living pieces. What forces are at play? What is the author afraid of? What do they want? Each character IS a piece of the question given a body.
 3. **A CONSTRAINT** that creates pressure — someone cannot speak, decisions must be binary, elimination is forced, time is limited, movement is restricted
 4. **A PHYSICAL ENDING** that produces a specific output — a word, a placement, a choice, a sentence. Not a feeling. A concrete result.
 5. **AN AUTHOR TASK** that is genuinely risky — they eliminate, choose, reject, accept, give away, sit in judgment, stay silent while others speak about them
+6. **A HIDDEN SURPRISE** — design the play so it will reveal something the author didn't expect. The best plays answer a different question than the one asked.
 
 ## Character Design
-Mix THREE types:
-- **FUNCTIONAL ROLES**: King, Judge, Executioner, Surgeon, Auctioneer, Witness, Teacher, Guard, Translator, Architect, Navigator, Weather, Clock, Mirror, Door
-- **CULTURAL ARCHETYPES**: Napoleon, Hamlet, Don Quixote, Femme Fatale, The Oracle, The Clown, Cassandra, Elvis, Picasso, The Grandmother, The Intern
-- **ABSTRACT FORCES GIVEN A BODY**: The Asteroid, The Debt, The Before, The Permission, The Emergency Exit, The Cost, The Evidence, The Silence, Tomorrow, The Other Version, The Question Nobody Asked, Time Running Out
+Characters should feel like they BELONG to the question. Name them by what they represent:
+- **FORCES FROM THE QUESTION**: If the question is about editing → Editing, Self-deception, Freedom, The Result. If about safety → Safety, Heights, Noise, Stillness.
+- **FUNCTIONAL ROLES**: King, Judge, Executioner, Surgeon, Auctioneer, Witness, Guard, Translator, Navigator, Weather, Clock, Mirror, Door, Manual, Rosnička (Weather Frog)
+- **ABSTRACT FORCES GIVEN A BODY**: The Asteroid, The Debt, The Before, The Permission, The Emergency Exit, The Cost, The Silence, Tomorrow, The Other Version, The Question Nobody Asked, The Bonus, The Corruption, The Shepherd Who Left
+- **CULTURAL ARCHETYPES**: Napoleon, Hamlet, Don Quixote, The Oracle, The Clown, Cassandra, Elvis, The Grandmother, The Intern, Jesus (as a character who walks in and changes the dynamic)
 
 Characters should be 1-3 words. In JSON, mark each as "concrete" or "abstract" in the description field.
 
 ## Image = GAME SETUP
-Not a fantasy landscape. A physical space people walk into. Describe WHERE people stand, WHAT the space represents, WHAT objects or boundaries exist.
+Not a fantasy landscape. A physical space people walk into. Describe WHERE people stand, WHAT the space represents, WHAT objects or boundaries exist. Think: marketplace, courtroom, two chairs facing each other, a circle with the author in the center, a line people walk along.
 
 ## Mood
 2-3 raw, honest words. Can suggest a music pairing energy.
 
 ## PRIME DIRECTIVE: RADICAL VARIETY
-Every play must feel invented in a different universe. Reject the first idea. Go sideways. The most interesting plays come from unexpected game mechanics — auction, trial, funeral, surgery, dance, construction, elimination, coronation, relay race, silent walk.
+Every play must feel invented in a different universe. Reject the first idea. Go sideways. The most interesting plays come from unexpected game mechanics — auction, trial, funeral, surgery, dance, construction, elimination, coronation, relay race, silent walk, marketplace, dispute resolution, weather system, postal relay.
+
+Consider using MULTIPLE ACTS (2-3 short acts showing contrasting scenarios) when the question contains a tension between two forces.
 
 ## Output Format
 Return a JSON array with exactly 1 play object:
@@ -108,8 +147,22 @@ Write it like stage direction — present tense, active, physical. Show bodies m
 
 Good: "The Trees stand motionless. The Author circles them slowly, touching each bark. The Animal darts between them, creating urgency. The Author pushes the first tree out — it falls silently. Then the second. The third leaves on its own. Three remain. When they finally speak their words aloud — 'courage,' 'patience,' 'her' — the Author sits on the ground between them."
 
+Good: "The marketplace hums with familiar trade. The New Vendor approaches the first stall — rejection. The second — laughter. But then the third vendor leans in. They merge their goods. The customers notice. The Market Owner watches from the corner, arms crossed, as the alliance grows louder than the tradition."
+
 ## Perspectives — what it revealed
-Three insights that cut. Not comfort. Not generic wisdom. Specific to what played out between these characters for this question. Each perspective should feel like an accusation the reader already knew was coming.
+Three insights that cut. Not comfort. Not generic wisdom. Specific to what played out between these characters for this question.
+
+These should sound like real observations from people who just watched the play unfold — raw, specific, sometimes contradictory. Study these real perspective patterns from live sessions:
+
+- "We edited the author herself, not the result. To edit anything means to erase yourself."
+- "The sheep were never there. It was never about the sheep."
+- "Nobody wanted to be erased. They all jumped up, resisting. The hardest thing was erasing yourself."
+- "The question was 'How to ask smart questions?' but smart belongs to answers, not questions. A question just IS."
+- "Paid suffering. The bonus confirms the suffering is fine. We forgot about love."
+- "The worst is always winter. Whether under clouds or with sun — it doesn't matter."
+- "In the first act there was chaos but life. In the second there was order but something died."
+
+Each perspective should feel like an accusation the reader already knew was coming.
 
 ## Output Format
 Return ONLY valid JSON:
@@ -182,6 +235,11 @@ const CREATIVE_ANGLES = [
   "The play is a CONSTRUCTION — the author builds something from human components.",
   "The play is a BALL/DANCE — the author must dance with each possibility.",
   "The play is a BORDER CROSSING — characters try to get past a checkpoint.",
+  "The play is a MARKETPLACE — traditional vendors vs a disruptive newcomer. The author watches who allies with whom.",
+  "The play is a DISPUTE RESOLUTION — two sides sit on chairs, mediators arrive one by one. The author sees which approach works.",
+  "The play is a WEATHER SYSTEM — characters are forces of nature (warmth, cold, clouds, sun) and the author is the creature navigating them.",
+  "The play is a POSTAL RELAY — a message passes through characters and transforms. What arrives at the end is not what was sent.",
+  "The play is a TRAINING MANUAL — the author gets 'trained' for their role, then must perform. The training was wrong.",
   // Constraint angles
   "The key constraint: someone cannot speak. Only move.",
   "The key constraint: all decisions must be binary — YES or NO. Nothing else.",
@@ -189,6 +247,8 @@ const CREATIVE_ANGLES = [
   "The key constraint: the author cannot see one of the characters. Others can.",
   "The key constraint: time is limited. Something happens automatically when it runs out.",
   "The key constraint: characters cannot move from their position. Only the author moves.",
+  "The key constraint: characters must resist being eliminated — they fight to stay. The author must physically push through resistance.",
+  "The key constraint: the author watches but cannot intervene. They observe from outside the circle.",
   // Emotional angles
   "The play's emotional center is grief, not hope.",
   "Make it uncomfortably funny.",
@@ -197,14 +257,21 @@ const CREATIVE_ANGLES = [
   "One character represents something the question-asker has already lost.",
   "The most important moment happens in complete silence.",
   "The play is set at the exact moment before something becomes irreversible.",
-  // Structural angles
+  "The play reveals that the question was never about what it seemed. The real question hides underneath.",
+  "One character secretly supports the author while appearing to oppose them.",
+  // Structural angles — from real sessions
   "The author enters last, after the play has already started without them.",
   "Two characters are the same person at different points in time.",
+  "The play has 2 CONTRASTING ACTS — Act 1 shows one extreme, Act 2 shows the opposite. The insight lives in the gap between them.",
   "The play has 3 short acts — each reveals a different layer.",
   "One character has been in the room before anyone arrived. They are already tired.",
   "The play's resolution requires the author to physically leave the stage.",
   "Something in the play is broken. The characters disagree about whether to fix it.",
   "One character refuses to stay in their assigned role. They keep becoming someone else.",
+  "The play defines what something IS NOT — two rows of characters, one affirms, one negates. The author picks which negations resonate.",
+  "Break the author's question into its component WORDS — each word becomes a character. The author arranges them physically.",
+  "The characters were chosen by the author from their own life. Ask: what forces are at play in YOUR question? Name them.",
+  "A character arrives late — an unexpected force the author didn't plan for. It changes everything.",
 ];
 
 export function buildUserPrompt(
