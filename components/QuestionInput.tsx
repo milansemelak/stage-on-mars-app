@@ -37,33 +37,35 @@ export default function QuestionInput({
         }}
       />
 
-      <div className="flex rounded-xl overflow-hidden border border-white/10 self-start">
-        <button
-          onClick={() => onContextChange("personal")}
-          className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
-            context === "personal"
-              ? "bg-mars text-white"
-              : "bg-white/[0.03] text-white/30 hover:text-white/60"
-          }`}
-        >
-          {t.personal}
-        </button>
-        <button
-          onClick={() => onContextChange("business")}
-          className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
-            context === "business"
-              ? "bg-mars text-white"
-              : "bg-white/[0.03] text-white/30 hover:text-white/60"
-          }`}
-        >
-          {t.business}
-        </button>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex rounded-xl overflow-hidden border border-white/10">
+          <button
+            onClick={() => onContextChange("personal")}
+            className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
+              context === "personal"
+                ? "bg-mars text-white"
+                : "bg-white/[0.03] text-white/30 hover:text-white/60"
+            }`}
+          >
+            {t.personal}
+          </button>
+          <button
+            onClick={() => onContextChange("business")}
+            className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
+              context === "business"
+                ? "bg-mars text-white"
+                : "bg-white/[0.03] text-white/30 hover:text-white/60"
+            }`}
+          >
+            {t.business}
+          </button>
+        </div>
       </div>
 
       <button
         onClick={onSubmit}
         disabled={loading || !question.trim()}
-        className="w-full py-5 rounded-2xl bg-mars hover:bg-mars-light disabled:opacity-20 disabled:cursor-not-allowed text-white font-bold text-xl sm:text-2xl tracking-wide transition-all shadow-lg shadow-mars/20 hover:shadow-mars/40"
+        className="w-full py-5 rounded-2xl bg-mars hover:bg-mars-light disabled:opacity-20 disabled:cursor-not-allowed text-white font-bold text-2xl sm:text-3xl tracking-widest uppercase transition-all shadow-lg shadow-mars/20 hover:shadow-mars/40"
       >
         {t.generatePlay}
       </button>
