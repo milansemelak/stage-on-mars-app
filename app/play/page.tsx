@@ -162,11 +162,11 @@ export default function PlayPage() {
       <div className={`${!play && !loading ? "pt-8 sm:pt-16" : "pt-4 sm:pt-10"} transition-all`}>
         <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
           {!play && !loading && (
-            <div className="space-y-2 mb-8 sm:mb-10">
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1]">
+            <div className="mb-8 sm:mb-10">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
                 {t.headline}
               </h1>
-              <p className="text-white/40 text-sm sm:text-base font-mercure italic">
+              <p className="text-white/35 text-sm sm:text-base mt-1">
                 {t.subheadline}
               </p>
             </div>
