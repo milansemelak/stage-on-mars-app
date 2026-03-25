@@ -161,9 +161,9 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
               )}
               <button
                 onClick={fetchFromMars}
-                className="w-full py-4 rounded-2xl border border-mars/40 bg-mars/[0.06] hover:bg-mars/[0.12] hover:border-mars/60 text-mars-light font-bold text-sm tracking-wide transition-all"
+                className="w-full py-5 rounded-2xl bg-mars hover:bg-mars-light text-white font-black text-lg sm:text-xl tracking-widest uppercase transition-all shadow-lg shadow-mars/20 hover:shadow-mars/40"
               >
-                {t.fromMars} →
+                {t.fromMars}
               </button>
             </div>
           )}
@@ -225,14 +225,14 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
               className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
                 prescribed
                   ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                  : "bg-mars hover:bg-mars-light text-white"
+                  : "bg-white/8 border border-white/10 hover:bg-white/12 hover:border-white/20 text-white/70 hover:text-white"
               }`}
             >
               {prescribed ? "✓ " + t.prescribed : t.prescribe}
             </button>
             <button
               onClick={handleShare}
-              className="px-4 py-3 rounded-xl border border-white/10 text-white/40 hover:text-white/70 hover:border-white/20 text-sm transition-all"
+              className="flex-1 py-3 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
             >
               {t.sharePlay}
             </button>
