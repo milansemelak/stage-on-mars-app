@@ -189,7 +189,7 @@ const translations = {
     // Play counter
     playsGenerated: "hier vygenerovaných",
     // From Mars (step 2)
-    fromMars: "Pozri, čo videl Mars",
+    fromMars: "Simulácia Hry",
     loadingMars: "Mars sleduje...",
     marsError: "Mars to nevidel. Skús znova.",
     // Share
@@ -284,7 +284,7 @@ const translations = {
     // Play counter
     playsGenerated: "her vygenerovaných",
     // From Mars (step 2)
-    fromMars: "Podívej se, co viděl Mars",
+    fromMars: "Simulace Hry",
     loadingMars: "Mars sleduje...",
     marsError: "Mars to neviděl. Zkus znovu.",
     // Share
