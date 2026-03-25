@@ -166,7 +166,7 @@ export default function PlayPage() {
               <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1]">
                 {t.headline}
               </h1>
-              <p className="text-white/25 text-sm sm:text-base font-mercure italic">
+              <p className="text-white/40 text-sm sm:text-base font-mercure italic">
                 {t.subheadline}
               </p>
             </div>
@@ -186,14 +186,14 @@ export default function PlayPage() {
             <div className="mt-5 space-y-2">
               <button
                 onClick={useDailyQuestion}
-                className="text-white/20 hover:text-white/45 text-sm transition-colors text-left group"
+                className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
               >
-                {t.trySuggestion}: <span className="font-mercure italic text-white/30 group-hover:text-mars/50 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
+                {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
               </button>
 
               {/* Play counter */}
               {playCount > 0 && (
-                <div className="text-white/8 text-xs">
+                <div className="text-white/15 text-xs">
                   {playCount} {t.playsGenerated}
                 </div>
               )}
