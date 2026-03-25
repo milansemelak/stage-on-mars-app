@@ -37,38 +37,38 @@ export default function QuestionInput({
         }}
       />
 
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex rounded-xl overflow-hidden border border-white/10">
+      <div className="w-full rounded-2xl overflow-hidden shadow-lg shadow-mars/20">
+        <div className="flex w-full border-b border-white/10">
           <button
             onClick={() => onContextChange("personal")}
-            className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
+            className={`flex-1 py-3 text-sm font-medium transition-all ${
               context === "personal"
-                ? "bg-white/20 text-white"
-                : "bg-white/[0.03] text-white/30 hover:text-white/50"
+                ? "bg-white/15 text-white"
+                : "bg-white/[0.04] text-white/30 hover:text-white/50"
             }`}
           >
             {t.personal}
           </button>
           <button
             onClick={() => onContextChange("business")}
-            className={`px-4 sm:px-5 py-2.5 text-sm font-medium transition-all ${
+            className={`flex-1 py-3 text-sm font-medium transition-all border-l border-white/10 ${
               context === "business"
-                ? "bg-white/20 text-white"
-                : "bg-white/[0.03] text-white/30 hover:text-white/50"
+                ? "bg-white/15 text-white"
+                : "bg-white/[0.04] text-white/30 hover:text-white/50"
             }`}
           >
             {t.business}
           </button>
         </div>
-      </div>
 
-      <button
-        onClick={onSubmit}
-        disabled={loading || !question.trim()}
-        className="w-full py-5 rounded-2xl bg-mars hover:bg-mars-light disabled:opacity-20 disabled:cursor-not-allowed text-white font-bold text-2xl sm:text-3xl tracking-widest uppercase transition-all shadow-lg shadow-mars/20 hover:shadow-mars/40"
-      >
-        {t.generatePlay}
-      </button>
+        <button
+          onClick={onSubmit}
+          disabled={loading || !question.trim()}
+          className="w-full py-5 bg-mars hover:bg-mars-light disabled:opacity-20 disabled:cursor-not-allowed text-white font-bold text-2xl sm:text-3xl tracking-widest uppercase transition-all"
+        >
+          {t.generatePlay}
+        </button>
+      </div>
     </div>
   );
 }
