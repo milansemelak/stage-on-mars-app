@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
 
 export default function Header() {
-  const { lang, setLang } = useI18n();
+  const { lang, setLang, t } = useI18n();
 
   function handleLogoClick() {
     window.location.reload();
@@ -20,6 +21,14 @@ export default function Header() {
             className="h-[60px] sm:h-[70px] w-auto invert"
           />
         </button>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/history"
+            className="text-xs font-medium text-white/30 hover:text-white/70 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-white/5"
+          >
+            {t.savedPlays}
+          </Link>
+          <div className="w-px h-4 bg-white/10" />
         <div className="flex gap-1">
           {(["en", "sk", "cs"] as const).map((l) => (
             <button
@@ -34,6 +43,7 @@ export default function Header() {
               {l === "en" ? "EN" : l === "sk" ? "SK" : "CZ"}
             </button>
           ))}
+        </div>
         </div>
       </div>
     </header>
