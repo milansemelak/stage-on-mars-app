@@ -175,45 +175,61 @@ export default function PlayCard({ play, question, onPlayUpdate }: Props) {
             </div>
           )}
 
-          {/* What Happens on Stage */}
+          {/* ── What Happens on Stage ── */}
           {currentPlay.simulation && (
-            <div className="animate-fade-slide-up stagger-6 rounded-xl border border-mars/15 bg-mars/[0.03] p-5 sm:p-6">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-bold uppercase tracking-wider text-mars-light/70">
-                  {t.simulationTitle}
-                </span>
-                <span className="text-xs text-white/20 italic">
-                  {t.simulationSub}
-                </span>
+            <div className="animate-fade-slide-up stagger-6 relative mt-4">
+              {/* Divider line */}
+              <div className="absolute -top-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+
+              <div className="relative rounded-2xl overflow-hidden">
+                {/* Subtle gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-b from-mars/[0.06] via-mars/[0.02] to-transparent" />
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-mars via-mars/40 to-transparent rounded-full" />
+
+                <div className="relative p-6 sm:p-8 pl-7 sm:pl-10">
+                  <div className="flex items-baseline gap-3 mb-4">
+                    <span className="text-[11px] font-black uppercase tracking-[0.2em] text-mars">
+                      {t.simulationTitle}
+                    </span>
+                    <span className="text-[10px] text-white/20 font-mercure italic tracking-wide">
+                      {t.simulationSub}
+                    </span>
+                  </div>
+                  <p className="font-mercure italic text-white/70 text-base sm:text-lg leading-[1.8] tracking-wide">
+                    {currentPlay.simulation}
+                  </p>
+                </div>
               </div>
-              <p className="font-mercure italic text-white/60 text-sm leading-relaxed">
-                {currentPlay.simulation}
-              </p>
             </div>
           )}
 
-          {/* Perspectives */}
+          {/* ── Perspectives ── */}
           {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (
-            <div className="animate-fade-slide-up stagger-7 rounded-2xl border border-mars/30 bg-gradient-to-br from-mars/[0.10] to-mars/[0.04] p-5 sm:p-7">
-              <div className="mb-5 flex items-center gap-3">
-                <div className="w-1 h-6 rounded-full bg-mars" />
-                <span className="text-sm font-bold uppercase tracking-widest text-white/80">
-                  {t.perspectivesTitle}
-                </span>
-              </div>
-              <div className="space-y-5">
-                {currentPlay.perspectives.map((p, i) => (
-                  <div key={i} className="flex gap-4 items-start">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-mars/25 border border-mars/50 flex items-center justify-center">
-                      <span className="text-mars-light font-bold text-xs">
-                        {i + 1}
-                      </span>
+            <div className="animate-fade-slide-up stagger-7 relative">
+              <div className="rounded-2xl border border-mars/20 overflow-hidden">
+                {/* Header bar */}
+                <div className="bg-mars/[0.08] border-b border-mars/15 px-6 sm:px-8 py-4 flex items-center gap-3">
+                  <div className="w-1.5 h-7 rounded-full bg-mars shadow-[0_0_12px_rgba(255,85,0,0.3)]" />
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">
+                    {t.perspectivesTitle}
+                  </span>
+                </div>
+
+                {/* Perspective items */}
+                <div className="divide-y divide-white/[0.04]">
+                  {currentPlay.perspectives.map((p, i) => (
+                    <div key={i} className="flex gap-5 items-start px-6 sm:px-8 py-5 sm:py-6 hover:bg-white/[0.02] transition-colors">
+                      <div className="shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-mars/40 to-mars/15 border border-mars/40 flex items-center justify-center shadow-[0_0_8px_rgba(255,85,0,0.15)]">
+                        <span className="text-white font-bold text-xs">
+                          {i + 1}
+                        </span>
+                      </div>
+                      <p className="text-white/90 text-base sm:text-lg leading-relaxed pt-1 font-medium">
+                        {p}
+                      </p>
                     </div>
-                    <p className="text-white text-base sm:text-lg leading-relaxed pt-0.5 font-medium">
-                      {p}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           )}
