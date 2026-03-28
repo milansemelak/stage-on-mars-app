@@ -343,9 +343,11 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
           )}
 
           {marsLoading && (
-            <div className="animate-fade-slide-up stagger-6 flex flex-col items-center gap-3 py-6">
-              <div className="w-6 h-6 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
-              <p className="font-mercure text-white/30 text-sm italic">{t.loadingMars}</p>
+            <div className="animate-fade-slide-up stagger-6 mt-4">
+              <StageSimulation
+                characters={currentPlay.characters}
+                loading={true}
+              />
             </div>
           )}
 

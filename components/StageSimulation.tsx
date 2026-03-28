@@ -8,6 +8,7 @@ type Props = {
   characters: Character[];
   simulation?: string;
   simulationSteps?: SimulationStep[];
+  loading?: boolean;
 };
 
 type Position = { x: number; y: number };
@@ -284,7 +285,7 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
-export default function StageSimulation({ characters, simulation, simulationSteps }: Props) {
+export default function StageSimulation({ characters, simulation, simulationSteps, loading }: Props) {
   const { t } = useI18n();
 
   // Determine narration sentences
@@ -416,8 +417,18 @@ export default function StageSimulation({ characters, simulation, simulationStep
           }}
         />
 
+        {/* Loading overlay */}
+        {loading && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
+              <p className="font-mercure text-white/30 text-sm italic">{t.loadingMars}</p>
+            </div>
+          </div>
+        )}
+
         {/* Play overlay */}
-        {!hasStarted && (
+        {!loading && !hasStarted && (
           <button
             onClick={handlePlayPause}
             className="absolute inset-0 z-10 flex items-center justify-center group cursor-pointer"
