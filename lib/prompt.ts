@@ -138,7 +138,10 @@ Return a JSON array with exactly 1 play object:
 }]
 
 Generate 4-7 characters per play.
-Return ONLY valid JSON — no markdown, no explanation.`;
+
+FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
+
+Return ONLY valid JSON, no markdown, no explanation.`;
 
 // ─── Step 2: From Mars ───────────────────────────────────────────────────────
 
@@ -199,6 +202,8 @@ Return ONLY valid JSON:
 }
 
 IMPORTANT: Use exact character names from the play. 5-7 steps. Each step's positions must match what the narration describes.
+
+FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
 No markdown. No explanation. Only the JSON.`;
 

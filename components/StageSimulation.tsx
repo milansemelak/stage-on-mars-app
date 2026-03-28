@@ -15,7 +15,7 @@ type Position = { x: number; y: number };
 // Stage dimensions (SVG viewBox 0 0 100 100)
 const CX = 50;
 const CY = 50;
-const EDGE_R = 42; // radius for edge positions
+const EDGE_R = 34; // radius for edge positions (inside the ring)
 
 /**
  * Resolve a position keyword to absolute x,y coordinates.
@@ -46,10 +46,10 @@ function resolvePosition(
     return { x: CX + EDGE_R, y: CY + ((seed + charIndex * 7) % 12) - 6 };
   }
   if (kw === "edge-top") {
-    return { x: CX + ((seed + charIndex * 5) % 16) - 8, y: CY - EDGE_R * 0.6 };
+    return { x: CX + ((seed + charIndex * 5) % 16) - 8, y: CY - EDGE_R };
   }
   if (kw === "edge-bottom") {
-    return { x: CX + ((seed + charIndex * 5) % 16) - 8, y: CY + EDGE_R * 0.6 };
+    return { x: CX + ((seed + charIndex * 5) % 16) - 8, y: CY + EDGE_R };
   }
   if (kw === "scattered") {
     const angle = (seed * 1.7 + charIndex * 2.3) % (2 * Math.PI);
@@ -58,7 +58,7 @@ function resolvePosition(
   }
   if (kw === "circle") {
     const angle = -Math.PI / 2 + (2 * Math.PI * charIndex) / charCount;
-    return { x: CX + Math.cos(angle) * 34, y: CY + Math.sin(angle) * 22 };
+    return { x: CX + Math.cos(angle) * 30, y: CY + Math.sin(angle) * 30 };
   }
   if (kw === "frozen") {
     return null; // keep previous position
@@ -199,10 +199,16 @@ function separatePositions(positions: Position[]) {
     }
   }
 
-  // Clamp to stay inside the stage
+  // Clamp to stay inside the circular stage (radius 40 from center 50,50)
+  const MAX_R = 38;
   for (const p of positions) {
-    p.x = Math.max(8, Math.min(92, p.x));
-    p.y = Math.max(10, Math.min(90, p.y));
+    const dx = p.x - CX;
+    const dy = p.y - CY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist > MAX_R) {
+      p.x = CX + (dx / dist) * MAX_R;
+      p.y = CY + (dy / dist) * MAX_R;
+    }
   }
 }
 
@@ -398,7 +404,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   return (
     <div className="rounded-2xl overflow-hidden bg-[#080808]">
       {/* Stage */}
-      <div className="relative w-full aspect-[5/4] sm:aspect-[16/10] overflow-hidden">
+      <div className="relative w-full aspect-square overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
@@ -444,11 +450,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
             </filter>
           </defs>
 
-          {/* LED ring */}
-          <ellipse cx="50" cy="50" rx="48" ry="42" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="3" />
-          <ellipse cx="50" cy="50" rx="48" ry="42" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
-          <ellipse cx="50" cy="50" rx="48" ry="42" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
-          <ellipse cx="50" cy="52" rx="44" ry="38" fill="rgba(255,85,0,0.015)" />
+          {/* LED ring — perfect circle */}
+          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="3" />
+          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
+          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
+          <circle cx="50" cy="50" r="42" fill="rgba(255,85,0,0.015)" />
 
           {/* Characters */}
           {renderPositions.map((pos, i) => {
