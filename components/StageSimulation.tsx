@@ -15,7 +15,7 @@ type Position = { x: number; y: number };
 // Stage dimensions (SVG viewBox 0 0 100 100)
 const CX = 50;
 const CY = 50;
-const EDGE_R = 38; // radius for edge positions
+const EDGE_R = 42; // radius for edge positions
 
 /**
  * Resolve a position keyword to absolute x,y coordinates.
@@ -58,7 +58,7 @@ function resolvePosition(
   }
   if (kw === "circle") {
     const angle = -Math.PI / 2 + (2 * Math.PI * charIndex) / charCount;
-    return { x: CX + Math.cos(angle) * 28, y: CY + Math.sin(angle) * 15 };
+    return { x: CX + Math.cos(angle) * 34, y: CY + Math.sin(angle) * 22 };
   }
   if (kw === "frozen") {
     return null; // keep previous position
@@ -398,10 +398,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </defs>
 
           {/* LED ring */}
-          <ellipse cx="50" cy="50" rx="46" ry="30" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="3" />
-          <ellipse cx="50" cy="50" rx="46" ry="30" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
-          <ellipse cx="50" cy="50" rx="46" ry="30" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
-          <ellipse cx="50" cy="52" rx="40" ry="26" fill="rgba(255,85,0,0.015)" />
+          <ellipse cx="50" cy="50" rx="48" ry="42" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="3" />
+          <ellipse cx="50" cy="50" rx="48" ry="42" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
+          <ellipse cx="50" cy="50" rx="48" ry="42" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
+          <ellipse cx="50" cy="52" rx="44" ry="38" fill="rgba(255,85,0,0.015)" />
 
           {/* Characters */}
           {renderPositions.map((pos, i) => {
