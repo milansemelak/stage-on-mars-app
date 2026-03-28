@@ -428,42 +428,35 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
             </div>
           )}
 
-          {/* ── Perspectives ── */}
+          {/* ── Perspectives — revealed from the stage ── */}
           {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && (
-            <div className="relative" style={{ animation: currentPlay.simulation ? "perspectiveReveal 1.2s ease-out forwards" : undefined }}>
-              {/* Transition bridge */}
+            <div
+              className="relative -mt-2"
+              style={{ animation: currentPlay.simulation ? "perspectiveReveal 1s ease-out forwards" : undefined }}
+            >
+              {/* Top glow — as if light is spilling from the stage above */}
               {currentPlay.simulation && (
-                <div className="flex flex-col items-center gap-3 mb-6">
-                  <div className="w-px h-8 bg-gradient-to-b from-mars/30 to-mars/10" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-mars/40" />
-                </div>
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-mars/[0.06] blur-xl rounded-full pointer-events-none" />
               )}
 
-              <div className="rounded-2xl border border-mars/20 overflow-hidden">
-                {/* Header bar */}
-                <div className="bg-mars/[0.08] border-b border-mars/15 px-6 sm:px-8 py-4 flex items-center gap-3">
-                  <div className="w-1.5 h-7 rounded-full bg-mars shadow-[0_0_12px_rgba(255,85,0,0.3)]" />
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">
-                    {t.perspectivesTitle}
-                  </span>
+              <div className="rounded-2xl border border-white/[0.06] overflow-hidden bg-white/[0.02]">
+                {/* Header */}
+                <div className="px-6 sm:px-8 pt-6 pb-4">
+                  <p className="font-mercure italic text-white/30 text-sm">{t.whatTheStageRevealed}</p>
                 </div>
 
                 {/* Perspective items */}
-                <div className="divide-y divide-white/[0.04]">
+                <div className="px-6 sm:px-8 pb-6 space-y-4">
                   {currentPlay.perspectives.map((p, i) => (
                     <div
                       key={i}
-                      className="flex gap-5 items-start px-6 sm:px-8 py-5 sm:py-6 hover:bg-white/[0.02] transition-colors"
+                      className="relative pl-6"
                       style={currentPlay.simulation ? {
-                        animation: `perspectiveItemReveal 0.6s ease-out ${0.3 + i * 0.2}s both`,
+                        animation: `perspectiveItemReveal 0.6s ease-out ${0.2 + i * 0.25}s both`,
                       } : undefined}
                     >
-                      <div className="shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-mars/40 to-mars/15 border border-mars/40 flex items-center justify-center shadow-[0_0_8px_rgba(255,85,0,0.15)]">
-                        <span className="text-white font-bold text-xs">
-                          {i + 1}
-                        </span>
-                      </div>
-                      <p className="text-white/90 text-base sm:text-lg leading-relaxed pt-1 font-medium">
+                      <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-mars/50 shadow-[0_0_8px_rgba(255,85,0,0.3)]" />
+                      <p className="text-white/85 text-base sm:text-lg leading-relaxed font-medium">
                         {p}
                       </p>
                     </div>

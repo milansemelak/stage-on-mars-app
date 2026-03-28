@@ -118,6 +118,7 @@ const translations = {
     stageHasSpoken: "The stage has spoken.",
     startThePlay: "Start the Play",
     endThePlay: "End the Play",
+    whatTheStageRevealed: "What the stage revealed",
     replay: "Replay",
     author: "You",
     // Client name
@@ -252,6 +253,7 @@ const translations = {
     stageHasSpoken: "Javisko prehovorilo.",
     startThePlay: "Spusti hru",
     endThePlay: "Ukonči hru",
+    whatTheStageRevealed: "Čo odhalilo javisko",
     replay: "Prehrať znova",
     author: "Ty",
     // Client name
@@ -358,12 +360,12 @@ const translations = {
     trySuggestion: "Zkus",
     personalQ1: "Čemu se vyhýbám?",
     personalQ2: "Co by se změnilo, kdybych přestal předstírat?",
-    personalQ3: "Jaká je otázka, které se bojím?",
+    personalQ3: "Jaká je otázka, ze které mám strach?",
     personalQ4: "Kdo jsem, když se nikdo nedívá?",
     personalQ5: "Jaké přesvědčení mě nejvíce brzdí?",
     personalQ6: "Co bych dělal, kdybych věděl, že nemůžu selhat?",
     personalQ7: "Kterou část sebe jsem opustil?",
-    personalQ8: "Co truchlím, ale ještě jsem si to nepojmenoval?",
+    personalQ8: "Nad čím truchlím, ale ještě jsem to nepojmenoval?",
     personalQ9: "Co by mi moje budoucí já řeklo právě teď?",
     personalQ10: "Co stále říkám, že udělám — ale nikdy to neudělám?",
     // Question suggestions — business
@@ -386,6 +388,7 @@ const translations = {
     stageHasSpoken: "Jeviště promluvilo.",
     startThePlay: "Spusť hru",
     endThePlay: "Ukonči hru",
+    whatTheStageRevealed: "Co odhalilo jeviště",
     replay: "Přehrát znovu",
     author: "Ty",
     // Client name
