@@ -13,6 +13,7 @@ const LOADING_MESSAGES_KEYS = [
   "loading3",
   "loading4",
   "loading5",
+  "loading6",
 ] as const;
 
 const PERSONAL_QUESTIONS_KEYS = [
