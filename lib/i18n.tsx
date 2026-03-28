@@ -112,7 +112,7 @@ const translations = {
     playsGenerated: "plays generated",
     // From Mars (step 2)
     fromMars: "Play Simulation",
-    loadingMars: "Characters enter the stage.",
+    loadingMars: "Play begins shortly.",
     marsError: "Mars couldn't see this one. Try again.",
     // Client name
     forWhom: "Who is this play for?",
@@ -240,7 +240,7 @@ const translations = {
     playsGenerated: "hier vygenerovaných",
     // From Mars (step 2)
     fromMars: "Simulácia Hry",
-    loadingMars: "Postavy vstupujú na scénu.",
+    loadingMars: "Hra čoskoro začne.",
     marsError: "Mars to nevidel. Skús znova.",
     // Client name
     forWhom: "Pre koho je táto hra?",
@@ -368,7 +368,7 @@ const translations = {
     playsGenerated: "her vygenerovaných",
     // From Mars (step 2)
     fromMars: "Simulace Hry",
-    loadingMars: "Postavy vstupují na scénu.",
+    loadingMars: "Hra brzy začne.",
     marsError: "Mars to neviděl. Zkus znovu.",
     // Client name
     forWhom: "Pro koho je tato hra?",
