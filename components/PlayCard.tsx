@@ -414,16 +414,6 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
               {prescribed ? "✓ " + t.prescribed : t.prescribe}
             </button>
             <button
-              onClick={copyAsText}
-              className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
-                copied
-                  ? "border-green-500/20 text-green-400 bg-green-500/10"
-                  : "border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20"
-              }`}
-            >
-              {copied ? t.copied : t.exportText}
-            </button>
-            <button
               onClick={handleShare}
               className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
             >
