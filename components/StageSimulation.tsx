@@ -171,7 +171,7 @@ function computeStepPositions(
  * Runs multiple iterations for stability.
  */
 function separatePositions(positions: Position[]) {
-  const MIN_DIST = 12; // minimum distance between any two characters
+  const MIN_DIST = 16; // minimum distance between any two characters
   const iterations = 5;
 
   for (let iter = 0; iter < iterations; iter++) {
@@ -472,11 +472,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </div>
         )}
 
-        {/* Play overlay — big solid button center stage */}
+        {/* Play overlay — button at bottom of stage to avoid character overlap */}
         {!loading && !hasStarted && (
           <button
             onClick={handlePlayPause}
-            className="absolute inset-0 z-10 flex items-center justify-center group cursor-pointer"
+            className="absolute inset-x-0 bottom-6 sm:bottom-8 z-10 flex justify-center group cursor-pointer"
           >
             <div className="relative">
               {/* Glow */}
@@ -489,6 +489,31 @@ export default function StageSimulation({ characters, simulation, simulationStep
               </div>
             </div>
           </button>
+        )}
+
+        {/* Narration overlay inside stage */}
+        {hasStarted && !hasEnded && sentences[currentStep] && (
+          <div className="absolute inset-x-0 bottom-0 z-10 pointer-events-none">
+            <div className="bg-gradient-to-t from-[#080808] via-[#080808]/90 to-transparent px-6 sm:px-8 pt-8 pb-4">
+              <p
+                className="font-mercure italic text-white/70 text-sm sm:text-base leading-relaxed animate-fade-in text-center"
+                key={currentStep}
+              >
+                {sentences[currentStep]}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Ending message overlay inside stage */}
+        {hasEnded && endingPhase >= 2 && (
+          <div className="absolute inset-x-0 bottom-0 z-10 pointer-events-none">
+            <div className="bg-gradient-to-t from-[#080808] via-[#080808]/90 to-transparent px-6 sm:px-8 pt-8 pb-4">
+              <p className="font-mercure italic text-mars/70 text-sm sm:text-base leading-relaxed text-center animate-fade-in">
+                {t.stageHasSpoken}
+              </p>
+            </div>
+          </div>
         )}
 
         <svg
@@ -510,8 +535,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
               <feGaussianBlur stdDeviation="0.5" />
             </filter>
             <filter id="glow-author" x="-200%" y="-200%" width="500%" height="500%">
-              <feGaussianBlur stdDeviation="1.2" result="b1" />
-              <feGaussianBlur stdDeviation="3" result="b2" />
+              <feGaussianBlur stdDeviation="0.6" result="b1" />
+              <feGaussianBlur stdDeviation="1.5" result="b2" />
               <feMerge>
                 <feMergeNode in="b2" />
                 <feMergeNode in="b1" />
@@ -544,39 +569,35 @@ export default function StageSimulation({ characters, simulation, simulationStep
             const isAuthor = char.description === "author";
             const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
             const isActive = hasStarted && movedCharacters.has(i);
-            const dotR = isAuthor ? 3 : (isActive ? 2.8 : 2);
+            const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
 
-            // Author: gold/amber   Concrete: orange   Abstract: white
+            // Author: muted gold   Concrete: orange   Abstract: white
             const colors = isAuthor
-              ? { fill: "rgba(255,215,0,0.85)", stroke: "rgba(255,215,0,1)", glow: "rgba(255,215,0,0.12)", text: "rgba(255,230,130,1)", textDim: "rgba(255,215,0,0.7)" }
+              ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)", textDim: "rgba(255,215,0,0.5)" }
               : isAbstract
                 ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)", textDim: "rgba(255,255,255,0.4)" }
                 : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)", textDim: "rgba(255,179,128,0.55)" };
+
+            // Alternate name above/below to avoid overlap
+            const nameAbove = i % 2 === 0;
+            const nameY = nameAbove
+              ? (isActive ? -5 : -4)
+              : (isActive ? 6 : 5.2);
 
             return (
               <g key={i} transform={`translate(${pos.x}, ${pos.y})`}>
                 {/* Glow */}
                 <circle cx={0} cy={0}
-                  r={isAuthor ? 8 : (isActive ? 7 : 4)}
+                  r={isAuthor ? 4 : (isActive ? 7 : 4)}
                   fill={colors.glow}
                   filter={isAuthor ? "url(#glow-author)" : "url(#glow-char)"}
                 />
-
-                {/* Author outer ring */}
-                {isAuthor && (
-                  <circle cx={0} cy={0} r="4.5" fill="none"
-                    stroke="rgba(255,215,0,0.3)" strokeWidth="0.3"
-                  >
-                    <animate attributeName="r" values="4;6;4" dur="3s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.6;0;0.6" dur="3s" repeatCount="indefinite" />
-                  </circle>
-                )}
 
                 {/* Dot */}
                 <circle cx={0} cy={0} r={dotR}
                   fill={colors.fill}
                   stroke={colors.stroke}
-                  strokeWidth={isAuthor ? 0.5 : (isActive ? 0.4 : 0.2)}
+                  strokeWidth={isAuthor ? 0.3 : (isActive ? 0.4 : 0.2)}
                 />
 
                 {/* Active pulse (non-author) */}
@@ -592,14 +613,15 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
                 {/* Name */}
                 <text
-                  x={0} y={isAuthor ? -5.5 : (isActive ? -5 : -4)}
+                  x={0} y={nameY}
                   textAnchor="middle"
                   fill={colors.text}
-                  fontSize={isAuthor ? 2.8 : (isActive ? 2.8 : 2.2)}
-                  fontWeight={isAuthor ? 700 : (isActive ? 700 : 500)}
-                  fontStyle={isAbstract ? "italic" : "normal"}
+                  fontSize={isAuthor ? 2.2 : (isActive ? 2.8 : 2.2)}
+                  fontWeight={isAuthor ? 600 : (isActive ? 700 : 500)}
+                  fontStyle={isAbstract || isAuthor ? "italic" : "normal"}
                   letterSpacing="0.03"
                   className="select-none"
+                  dominantBaseline={nameAbove ? "auto" : "hanging"}
                 >
                   {char.name}
                 </text>
@@ -609,31 +631,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
         </svg>
       </div>
 
-      {/* Narration + Controls */}
+      {/* Controls below stage */}
       {hasStarted && (
         <div className="relative">
-          <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
-
-          <div className="px-6 sm:px-8 pt-5 pb-4">
-            {endingPhase >= 2 ? (
-              <p
-                className="font-mercure italic text-mars/70 text-base sm:text-lg leading-relaxed text-center animate-fade-in"
-                key="ending"
-              >
-                {t.stageHasSpoken}
-              </p>
-            ) : (
-              <p
-                className="font-mercure italic text-white/70 text-base sm:text-lg leading-relaxed animate-fade-in"
-                key={currentStep}
-              >
-                {sentences[currentStep]}
-              </p>
-            )}
-          </div>
-
+          {/* Progress bar + play/pause (during play) */}
           {!hasEnded && (
-            <div className="px-5 sm:px-6 pb-4 flex items-center gap-3">
+            <div className="px-5 sm:px-6 py-3 flex items-center gap-3">
               <button
                 onClick={handlePlayPause}
                 className="flex-shrink-0 w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.1] flex items-center justify-center transition-colors"
@@ -669,7 +672,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
           {/* End the play — solid button */}
           {hasEnded && endingPhase >= 2 && (
-            <div className="px-5 sm:px-6 py-5 animate-fade-in flex flex-col items-center gap-3">
+            <div className="px-5 sm:px-6 py-4 animate-fade-in flex flex-col items-center gap-3">
               <button
                 onClick={() => onEnd?.()}
                 className="group w-full relative"

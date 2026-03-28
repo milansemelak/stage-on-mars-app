@@ -449,7 +449,7 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
               </div>
 
               {/* Perspectives */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {currentPlay.perspectives.map((p, i) => {
                   const isStructured = typeof p === "object" && p !== null;
                   const perspective = isStructured ? (p as Perspective) : null;
@@ -465,25 +465,27 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                     : null;
                   const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
 
-                  // Hero perspective (first)
+                  // Hero perspective (first) — dominant card
                   if (isFirst) {
                     return (
                       <div
                         key={i}
-                        className="relative rounded-xl border border-mars/15 bg-gradient-to-b from-mars/[0.06] to-transparent overflow-hidden"
+                        className="relative rounded-2xl overflow-hidden"
                         style={currentPlay.simulation ? {
                           animation: `perspectiveItemReveal 0.8s ease-out 0.15s both`,
                         } : undefined}
                       >
-                        <div className="px-6 sm:px-8 pt-6 pb-7">
+                        {/* Top accent line */}
+                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
+                        <div className="bg-gradient-to-b from-mars/[0.08] via-mars/[0.04] to-transparent border border-mars/15 rounded-2xl px-6 sm:px-8 pt-7 pb-8">
                           <p className="text-white/95 text-lg sm:text-xl leading-relaxed font-medium">
-                            {insightText}
+                            &ldquo;{insightText}&rdquo;
                           </p>
                           {charName && (
-                            <div className="mt-4 flex items-center gap-2">
-                              <div className="h-px w-6 bg-mars/30" />
-                              <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                                isAbstract ? "text-white/30 font-mercure italic" : "text-mars-light/40"
+                            <div className="mt-5 flex items-center gap-3">
+                              <div className={`w-2 h-2 rounded-full ${isAbstract ? "bg-white/25" : "bg-mars/50"}`} />
+                              <span className={`text-xs font-bold uppercase tracking-widest ${
+                                isAbstract ? "text-white/35 font-mercure italic" : "text-mars-light/50"
                               }`}>
                                 {charName}
                               </span>
@@ -494,31 +496,33 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                     );
                   }
 
-                  // Supporting perspectives (rest)
+                  // Supporting perspectives — each in its own subtle card
                   return (
                     <div
                       key={i}
-                      className="flex gap-4 items-start px-4 sm:px-5 py-3"
+                      className="relative rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 sm:px-6 py-4"
                       style={currentPlay.simulation ? {
-                        animation: `perspectiveItemReveal 0.6s ease-out ${0.3 + i * 0.2}s both`,
+                        animation: `perspectiveItemReveal 0.6s ease-out ${0.3 + i * 0.15}s both`,
                       } : undefined}
                     >
-                      <div
-                        className={`mt-2 w-1 h-1 rounded-full shrink-0 ${
-                          isAbstract ? "bg-white/30" : "bg-mars/40"
-                        }`}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white/70 text-sm sm:text-base leading-relaxed">
-                          {insightText}
-                        </p>
-                        {charName && (
-                          <span className={`text-[9px] font-bold uppercase tracking-widest mt-1 block ${
-                            isAbstract ? "text-white/20 font-mercure italic" : "text-mars-light/30"
-                          }`}>
-                            {charName}
-                          </span>
-                        )}
+                      <div className="flex gap-4 items-start">
+                        <div
+                          className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${
+                            isAbstract ? "bg-white/20" : "bg-mars/30"
+                          }`}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white/75 text-sm sm:text-base leading-relaxed">
+                            {insightText}
+                          </p>
+                          {charName && (
+                            <span className={`text-[10px] font-bold uppercase tracking-widest mt-2 block ${
+                              isAbstract ? "text-white/20 font-mercure italic" : "text-mars-light/30"
+                            }`}>
+                              {charName}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );

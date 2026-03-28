@@ -137,7 +137,7 @@ Return a JSON array with exactly 1 play object:
   "mood": "2-3 words"
 }]
 
-Generate 4-7 characters per play.
+Generate 3-5 characters per play (fewer characters = stronger dynamics).
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
