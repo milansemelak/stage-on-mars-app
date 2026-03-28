@@ -19,7 +19,7 @@ const translations = {
     simulationTitle: "What Happens on Stage",
     simulationSub: "a possible unfolding",
     perspectivesTitle: "Possible Perspectives",
-    placeholder: "What question do you want to play out?",
+    placeholder: "What question do you want to play with?",
     needHelp: "Need help?",
     hide: "Hide",
     questionTriangle: "Question Triangle",
