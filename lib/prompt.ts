@@ -177,7 +177,7 @@ Good example:
 ]
 
 ## Perspectives — what each character revealed
-Three perspectives, each PAIRED WITH A SPECIFIC CHARACTER from the play. The character whose behavior on stage revealed this truth gets credited. Pick the 3 characters whose actions were most revealing.
+Five perspectives, each PAIRED WITH A SPECIFIC CHARACTER from the play. The character whose behavior on stage revealed this truth gets credited. Pick the 5 most revealing moments. The FIRST perspective should be the deepest, most striking insight. The rest build around it.
 
 These should sound like raw observations from someone who watched that specific character on stage. Not generic wisdom. Specific to what THIS character did, resisted, or revealed through their body.
 
@@ -198,9 +198,11 @@ Return ONLY valid JSON:
     {"narration": "Step 2 narration...", "positions": {"CharName": "close-to:OtherChar"}}
   ],
   "perspectives": [
+    {"character": "The Corpse", "insight": "The corpse was never dead. It was the only one breathing."},
     {"character": "The Mourner", "insight": "The mourner cried not for loss but for permission to finally stop pretending."},
     {"character": "The Heir", "insight": "The heir inherited only the fear. Everything else was already spent."},
-    {"character": "The Corpse", "insight": "The corpse was never dead. It was the only one breathing."}
+    {"character": "Silence", "insight": "Silence wasn't empty. It was full of everything no one dared to say."},
+    {"character": "The Gravedigger", "insight": "He buried things that were still alive. And called it responsibility."}
   ]
 }
 

@@ -442,19 +442,20 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
               style={{ animation: currentPlay.simulation ? "perspectiveReveal 1s ease-out forwards" : undefined }}
             >
               {/* Header */}
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-mars/50">{t.whatTheStageRevealed}</span>
+                <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-mars/50">{t.whatTheStageRevealed}</span>
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
               </div>
 
-              {/* Perspective cards */}
-              <div className="space-y-4">
+              {/* Perspectives */}
+              <div className="space-y-3">
                 {currentPlay.perspectives.map((p, i) => {
                   const isStructured = typeof p === "object" && p !== null;
                   const perspective = isStructured ? (p as Perspective) : null;
                   const insightText = perspective ? perspective.insight : (p as string);
                   const charName = perspective?.character;
+                  const isFirst = i === 0;
 
                   // Find matching character for color
                   const matchedChar = charName
@@ -464,41 +465,60 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                     : null;
                   const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
 
+                  // Hero perspective (first)
+                  if (isFirst) {
+                    return (
+                      <div
+                        key={i}
+                        className="relative rounded-xl border border-mars/15 bg-gradient-to-b from-mars/[0.06] to-transparent overflow-hidden"
+                        style={currentPlay.simulation ? {
+                          animation: `perspectiveItemReveal 0.8s ease-out 0.15s both`,
+                        } : undefined}
+                      >
+                        <div className="px-6 sm:px-8 pt-6 pb-7">
+                          <p className="text-white/95 text-lg sm:text-xl leading-relaxed font-medium">
+                            {insightText}
+                          </p>
+                          {charName && (
+                            <div className="mt-4 flex items-center gap-2">
+                              <div className="h-px w-6 bg-mars/30" />
+                              <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                                isAbstract ? "text-white/30 font-mercure italic" : "text-mars-light/40"
+                              }`}>
+                                {charName}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // Supporting perspectives (rest)
                   return (
                     <div
                       key={i}
-                      className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
+                      className="flex gap-4 items-start px-4 sm:px-5 py-3"
                       style={currentPlay.simulation ? {
-                        animation: `perspectiveItemReveal 0.7s ease-out ${0.15 + i * 0.3}s both`,
+                        animation: `perspectiveItemReveal 0.6s ease-out ${0.3 + i * 0.2}s both`,
                       } : undefined}
                     >
-                      {/* Character attribution */}
-                      {charName && (
-                        <div className="px-5 sm:px-6 pt-4 pb-1 flex items-center gap-2.5">
-                          <div
-                            className={`w-2 h-2 rounded-full shadow-[0_0_6px] ${
-                              isAbstract
-                                ? "bg-white/50 shadow-white/20"
-                                : "bg-mars/70 shadow-mars/30"
-                            }`}
-                          />
-                          <span
-                            className={`text-xs font-bold uppercase tracking-widest ${
-                              isAbstract
-                                ? "text-white/40 font-mercure italic"
-                                : "text-mars-light/50"
-                            }`}
-                          >
-                            {charName}
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Insight */}
-                      <div className={`px-5 sm:px-6 ${charName ? "pt-2 pb-5" : "py-5"}`}>
-                        <p className="text-white/90 text-base sm:text-lg leading-relaxed font-medium">
+                      <div
+                        className={`mt-2 w-1 h-1 rounded-full shrink-0 ${
+                          isAbstract ? "bg-white/30" : "bg-mars/40"
+                        }`}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white/70 text-sm sm:text-base leading-relaxed">
                           {insightText}
                         </p>
+                        {charName && (
+                          <span className={`text-[9px] font-bold uppercase tracking-widest mt-1 block ${
+                            isAbstract ? "text-white/20 font-mercure italic" : "text-mars-light/30"
+                          }`}>
+                            {charName}
+                          </span>
+                        )}
                       </div>
                     </div>
                   );
