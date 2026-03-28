@@ -408,18 +408,19 @@ export default function StageSimulation({ characters, simulation, simulationStep
   }, [currentStep, isPlaying, sentences.length]);
 
   // Auto-stop at end — trigger ritual ending
+  const endingTriggered = useRef(false);
   useEffect(() => {
-    if (currentStep >= sentences.length - 1 && isPlaying && sentences.length > 0) {
+    if (currentStep >= sentences.length - 1 && isPlaying && sentences.length > 0 && !endingTriggered.current) {
+      endingTriggered.current = true;
       setIsPlaying(false);
-      // Start ritual ending after a beat
-      const t1 = setTimeout(() => {
+      // Start ritual ending after a beat — use refs so cleanup doesn't cancel
+      setTimeout(() => {
         setHasEnded(true);
         setEndingPhase(1); // circle forming
       }, 2000);
-      const t2 = setTimeout(() => {
+      setTimeout(() => {
         setEndingPhase(2); // message + button visible
       }, 4000);
-      return () => { clearTimeout(t1); clearTimeout(t2); };
     }
   }, [currentStep, sentences.length, isPlaying]);
 
@@ -428,6 +429,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
       setHasStarted(true);
       setHasEnded(false);
       setEndingPhase(0);
+      endingTriggered.current = false;
       setCurrentStep(0);
       setIsPlaying(true);
       return;
@@ -435,6 +437,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
     if (hasEnded || currentStep >= sentences.length - 1) {
       setHasEnded(false);
       setEndingPhase(0);
+      endingTriggered.current = false;
       setCurrentStep(0);
       setIsPlaying(true);
       return;
