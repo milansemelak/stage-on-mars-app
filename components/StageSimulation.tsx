@@ -478,10 +478,13 @@ export default function StageSimulation({ characters, simulation, simulationStep
             onClick={handlePlayPause}
             className="absolute inset-0 z-10 flex items-center justify-center group cursor-pointer"
           >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-mars/20 group-hover:bg-mars/30 border border-mars/40 group-hover:border-mars/60 flex items-center justify-center transition-all duration-300 shadow-[0_0_30px_rgba(255,85,0,0.15)] group-hover:shadow-[0_0_40px_rgba(255,85,0,0.25)]">
-              <svg viewBox="0 0 24 24" className="w-7 h-7 sm:w-8 sm:h-8 ml-1 fill-mars/80 group-hover:fill-mars transition-colors">
+            <div className="px-8 py-3.5 rounded-xl bg-mars/20 group-hover:bg-mars/30 border border-mars/40 group-hover:border-mars/60 flex items-center gap-3 transition-all duration-300 shadow-[0_0_30px_rgba(255,85,0,0.15)] group-hover:shadow-[0_0_40px_rgba(255,85,0,0.25)]">
+              <svg viewBox="0 0 24 24" className="w-5 h-5 ml-0.5 fill-mars/80 group-hover:fill-mars transition-colors">
                 <polygon points="5,3 19,12 5,21" />
               </svg>
+              <span className="text-white/80 group-hover:text-white font-bold text-sm tracking-wide uppercase transition-colors">
+                {t.startThePlay}
+              </span>
             </div>
           </button>
         )}
