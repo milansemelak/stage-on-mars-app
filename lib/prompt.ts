@@ -105,9 +105,10 @@ Characters should feel like they BELONG to the question. Name them by what they 
 Characters should be 1-3 words. In JSON, mark each as "concrete" or "abstract" in the description field.
 
 CRITICAL: Properly distinguish concrete vs abstract:
-- "concrete" = tangible roles a person embodies: King, Judge, Mirror, Shepherd, Vendor, Weather Frog, Manual, Mother, Wolf
-- "abstract" = intangible forces/concepts given a body: Self-deception, Freedom, Fear, Safety, The Result, Tomorrow, The Silence, Editing, Trust, The Bonus, Stillness, Expectations, The Cost
-A good play has BOTH types — typically 2-3 concrete and 2-4 abstract. NEVER mark all characters as the same type.
+- "concrete" = ANY character that is a ROLE, PERSON, or FIGURE someone plays — even if poetic or metaphorical. If the name describes WHO someone IS or WHAT ROLE they play, it's concrete. Examples: King, Judge, Mirror, Shepherd, Vendor, The Mourner, The Witness, The Gravedigger, The One Who Remembers, The Oracle, The Corpse, The Messenger, The Stranger, Mother, Wolf, The Fool, The Navigator
+- "abstract" = ONLY pure concepts, emotions, forces, or ideas that have NO human form. If you can't picture a person doing this as a job or role, it's abstract. Examples: Fear, Freedom, Self-deception, Safety, Silence, Trust, The Cost, Tomorrow, Stillness, Editing, Expectations, The Bonus, Time, Gravity, Permission, Regret, The Debt
+- RULE OF THUMB: "The Mourner of X" = concrete (it's a mourner — a person). "X" alone (Fear, Silence, Trust) = abstract (it's a force).
+A good play has BOTH types — typically 3-4 concrete and 2-3 abstract. NEVER mark all characters as the same type.
 
 ## Image = GAME SETUP
 Not a fantasy landscape. A physical space made entirely of people. Describe WHERE people stand and WHAT each person represents. No props, no chairs, no objects — only human bodies in space. Think: people forming a marketplace, people standing as a circle around the author, two people facing each other as opposing forces, people arranged in a line the author walks along. Every element of the space IS a person.

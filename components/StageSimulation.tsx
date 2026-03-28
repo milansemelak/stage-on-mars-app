@@ -157,7 +157,53 @@ function computeStepPositions(
     }
   }
 
+  // Separation pass — push overlapping characters apart
+  separatePositions(positions);
+
   return positions;
+}
+
+/**
+ * Push characters apart so they never overlap.
+ * Runs multiple iterations for stability.
+ */
+function separatePositions(positions: Position[]) {
+  const MIN_DIST = 12; // minimum distance between any two characters
+  const iterations = 5;
+
+  for (let iter = 0; iter < iterations; iter++) {
+    for (let i = 0; i < positions.length; i++) {
+      for (let j = i + 1; j < positions.length; j++) {
+        const dx = positions[j].x - positions[i].x;
+        const dy = positions[j].y - positions[i].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < MIN_DIST && dist > 0.01) {
+          const push = (MIN_DIST - dist) / 2;
+          const nx = dx / dist;
+          const ny = dy / dist;
+
+          positions[i].x -= nx * push;
+          positions[i].y -= ny * push;
+          positions[j].x += nx * push;
+          positions[j].y += ny * push;
+        } else if (dist <= 0.01) {
+          // Exactly overlapping — push in a random direction
+          const angle = (i * 2.3 + j * 1.7) % (2 * Math.PI);
+          positions[i].x -= Math.cos(angle) * MIN_DIST / 2;
+          positions[i].y -= Math.sin(angle) * MIN_DIST / 2;
+          positions[j].x += Math.cos(angle) * MIN_DIST / 2;
+          positions[j].y += Math.sin(angle) * MIN_DIST / 2;
+        }
+      }
+    }
+  }
+
+  // Clamp to stay inside the stage
+  for (const p of positions) {
+    p.x = Math.max(8, Math.min(92, p.x));
+    p.y = Math.max(10, Math.min(90, p.y));
+  }
 }
 
 /**
@@ -220,6 +266,7 @@ function getFallbackPositions(count: number, step: number): Position[] {
     }
     positions.push({ x, y });
   }
+  separatePositions(positions);
   return positions;
 }
 
