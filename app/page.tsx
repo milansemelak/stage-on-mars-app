@@ -45,19 +45,23 @@ export default function Home() {
             </h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
             <input
               type="text"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder={t.heroPlaceholder}
               autoFocus
-              className="w-full rounded-xl bg-white/[0.03] border border-white/10 px-6 py-4 text-white text-center text-lg placeholder:text-white/20 focus:outline-none focus:border-mars/40 transition-colors"
+              className="w-full rounded-xl bg-white/[0.04] border border-white/[0.08] px-6 py-4 text-white text-center text-lg placeholder:text-white/20 focus:outline-none focus:border-mars/50 focus:bg-white/[0.06] transition-all"
             />
             <button
               type="submit"
               disabled={!question.trim()}
-              className="w-full py-3.5 rounded-xl bg-mars hover:bg-mars-light disabled:opacity-20 disabled:cursor-not-allowed text-white font-semibold tracking-wide transition-all duration-300"
+              className={`w-full py-4 rounded-xl font-bold tracking-widest uppercase text-sm transition-all duration-300 ${
+                question.trim()
+                  ? "bg-mars hover:bg-mars-light text-white shadow-[0_4px_30px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] scale-100 hover:scale-[1.01]"
+                  : "bg-white/[0.04] text-white/15 cursor-not-allowed"
+              }`}
             >
               {t.heroSubmit}
             </button>
@@ -66,52 +70,27 @@ export default function Home() {
       </section>
 
       {/* Credibility + Counter */}
-      <section className="px-6 pb-24">
-        <div className="max-w-xl mx-auto animate-fade-slide-up stagger-3 text-center space-y-8">
-          <p className="text-white/30 text-sm sm:text-base leading-relaxed max-w-md mx-auto">
+      <section className="px-6 pb-20">
+        <div className="max-w-md mx-auto animate-fade-slide-up stagger-3 text-center space-y-6">
+          <p className="text-white/25 text-xs sm:text-sm leading-relaxed">
             {t.credibility}
           </p>
 
-          {/* Play counter */}
+          {/* Play counter — only show digital when meaningful */}
           <div className="flex items-center justify-center gap-8 sm:gap-12">
             <div className="text-center">
-              <p className="text-2xl sm:text-3xl font-bold text-white">815+</p>
-              <p className="text-white/20 text-[10px] uppercase tracking-widest mt-1">{t.counterLive}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-white">815<span className="text-white/30">+</span></p>
+              <p className="text-white/15 text-[10px] uppercase tracking-widest mt-1">{t.counterLive}</p>
             </div>
-            <div className="w-px h-10 bg-white/10" />
-            <div className="text-center">
-              <p className="text-2xl sm:text-3xl font-bold text-mars">{digitalPlays > 0 ? `${digitalPlays}` : "—"}</p>
-              <p className="text-white/20 text-[10px] uppercase tracking-widest mt-1">{t.counterDigital}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="px-6 pb-24">
-        <div className="max-w-2xl mx-auto animate-fade-slide-up stagger-5">
-          <p className="text-white/25 text-xs uppercase tracking-[0.2em] mb-12 text-center">
-            {t.howItWorksTitle}
-          </p>
-          <div className="grid grid-cols-3 gap-8 text-center">
-            <div className="space-y-3">
-              <p className="text-mars text-2xl font-bold">{t.stepAsk}</p>
-              <p className="text-white/30 text-sm leading-relaxed">
-                {t.stepAskDesc}
-              </p>
-            </div>
-            <div className="space-y-3">
-              <p className="text-mars text-2xl font-bold">{t.stepPlay}</p>
-              <p className="text-white/30 text-sm leading-relaxed">
-                {t.stepPlayDesc}
-              </p>
-            </div>
-            <div className="space-y-3">
-              <p className="text-mars text-2xl font-bold">{t.stepSee}</p>
-              <p className="text-white/30 text-sm leading-relaxed">
-                {t.stepSeeDesc}
-              </p>
-            </div>
+            {digitalPlays >= 100 && (
+              <>
+                <div className="w-px h-8 bg-white/[0.06]" />
+                <div className="text-center">
+                  <p className="text-2xl sm:text-3xl font-bold text-mars">{digitalPlays}</p>
+                  <p className="text-white/15 text-[10px] uppercase tracking-widest mt-1">{t.counterDigital}</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
