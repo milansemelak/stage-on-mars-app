@@ -21,9 +21,12 @@ export default function Home() {
       {/* Hero */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-24">
         <div className="max-w-xl w-full text-center space-y-8 animate-fade-slide-up">
-          <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
-              {t.heroHeadline}
+          <div className="space-y-5">
+            <p className="text-white/30 text-sm tracking-wide">
+              {t.heroTagline}
+            </p>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight">
+              {t.heroFormula}
             </h1>
             <p className="text-white/40 text-lg font-mercure italic">
               {t.heroSubtitle}
