@@ -491,30 +491,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </button>
         )}
 
-        {/* Narration overlay inside stage */}
-        {hasStarted && !hasEnded && sentences[currentStep] && (
-          <div className="absolute inset-x-0 bottom-0 z-10 pointer-events-none">
-            <div className="bg-gradient-to-t from-[#080808] via-[#080808]/90 to-transparent px-6 sm:px-8 pt-8 pb-4">
-              <p
-                className="font-mercure italic text-white/70 text-sm sm:text-base leading-relaxed animate-fade-in text-center"
-                key={currentStep}
-              >
-                {sentences[currentStep]}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Ending message overlay inside stage */}
-        {hasEnded && endingPhase >= 2 && (
-          <div className="absolute inset-x-0 bottom-0 z-10 pointer-events-none">
-            <div className="bg-gradient-to-t from-[#080808] via-[#080808]/90 to-transparent px-6 sm:px-8 pt-8 pb-4">
-              <p className="font-mercure italic text-mars/70 text-sm sm:text-base leading-relaxed text-center animate-fade-in">
-                {t.stageHasSpoken}
-              </p>
-            </div>
-          </div>
-        )}
+        {/* No overlays on the stage — narration lives below */}
 
         <svg
           className="absolute inset-0 w-full h-full"
@@ -631,12 +608,31 @@ export default function StageSimulation({ characters, simulation, simulationStep
         </svg>
       </div>
 
-      {/* Controls below stage */}
+      {/* Narration + Controls — below the stage, never inside it */}
       {hasStarted && (
         <div className="relative">
+          {/* Narration text */}
+          <div className="px-6 sm:px-8 pt-4 pb-3">
+            {endingPhase >= 2 ? (
+              <p
+                className="font-mercure italic text-mars/70 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
+                key="ending"
+              >
+                {t.stageHasSpoken}
+              </p>
+            ) : (
+              <p
+                className="font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
+                key={currentStep}
+              >
+                {sentences[currentStep]}
+              </p>
+            )}
+          </div>
+
           {/* Progress bar + play/pause (during play) */}
           {!hasEnded && (
-            <div className="px-5 sm:px-6 py-3 flex items-center gap-3">
+            <div className="px-5 sm:px-6 pb-3 flex items-center gap-3">
               <button
                 onClick={handlePlayPause}
                 className="flex-shrink-0 w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.1] flex items-center justify-center transition-colors"
@@ -672,7 +668,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
           {/* End the play — solid button */}
           {hasEnded && endingPhase >= 2 && (
-            <div className="px-5 sm:px-6 py-4 animate-fade-in flex flex-col items-center gap-3">
+            <div className="px-5 sm:px-6 pb-4 animate-fade-in flex flex-col items-center gap-3">
               <button
                 onClick={() => onEnd?.()}
                 className="group w-full relative"

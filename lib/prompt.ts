@@ -231,9 +231,22 @@ export function buildMarsPrompt(
 
   const langInstruction =
     lang === "sk"
-      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Gramatika a diakritika musia byť DOKONALÉ. Nikdy nevynechaj mäkčene a dĺžne: 'pohrebaných' nie 'pohrebanych', 'tvárila' nie 'tvariľa'. NEPOUŽIVAJ vymyslené slová: 'Hrobár' nie 'Hrobník', 'Smútiaci' nie 'Smútočník', 'odvaha' nie 'odvážnosť'. Použi len slová, ktoré reálne existujú v slovenčine."
+      ? `JAZYK: SLOVENČINA. Celý výstup VÝLUČNE po slovensky. Narácia aj perspektívy.
+
+ZAKÁZANÉ VYMYSLENÉ SLOVÁ (NIKDY nepouži):
+- "súvet" → správne: "veta"
+- "odvážnosť" → správne: "odvaha"
+- "Hrobník" → správne: "Hrobár"
+- "Smútočník" → správne: "Smútiaci"
+- "tvariľa" → správne: "tvárila"
+- "pohrebanych" → správne: "pohrebaných"
+- "rozhodčí" → správne: "rozhodca"
+
+PRAVIDLÁ: Používaj LEN reálne slovenské slová. Vždy diakritika. Nikdy české tvary (ř, ě, ů). Ak si nie si istý slovom, použi jednoduchšie. Pred odoslaním over každé slovo.`
       : lang === "cs"
-      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo. Gramatika a diakritika musí být DOKONALÉ. Správně: ť, ď, ň, š, č, ž, ř, ý, á, é, í, ó, ú, ě, ů. Nikdy nevynechej háčky a čárky. Skloňování musí být správné, žádná vymyšlená slova."
+      ? `JAZYK: ČEŠTINA. Celý výstup VÝHRADNĚ česky. Narace i perspektivy.
+
+PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovenské tvary (ľ, ĺ, ŕ, ô). Pokud si nejsi jistý slovem, použij jednodušší. Před odesláním ověř každé slovo.`
       : "";
 
   const parts: string[] = [];
@@ -266,8 +279,14 @@ export function buildMarsPrompt(
 
   parts.push(
     ``,
-    `Return ONLY valid JSON with "simulation" and "perspectives". No other text.`,
+    `Return ONLY valid JSON with "simulationSteps" and "perspectives". No other text.`,
   );
+
+  if (lang === "sk") {
+    parts.push("", "POSLEDNÁ KONTROLA: Prečítaj si KAŽDÉ slovo. Je to reálne slovenské slovo? 'súvet' NEEXISTUJE (správne: veta). 'odvážnosť' NEEXISTUJE (správne: odvaha). Ak si nie si istý, použi jednoduchšie slovo.");
+  } else if (lang === "cs") {
+    parts.push("", "POSLEDNÍ KONTROLA: Přečti si KAŽDÉ slovo. Je to reálné české slovo? Pokud ne, nahraď ho jednodušším.");
+  }
 
   return parts.join("\n");
 };
@@ -339,9 +358,34 @@ Go deep and sideways. Use game mechanics that force the author into genuine vuln
 
   const langInstruction =
     lang === "sk"
-      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo — názov hry, obraz, mená postáv, rola autora, záver. Žiadna angličtina. ŽIADNE preklady v zátvorkách. Použi termín 'Systemická hra'. GRAMATIKA, DIAKRITIKA A FORMÁTOVANIE MUSIA BYŤ DOKONALÉ: (1) Správne mäkčene a dĺžne — 'pohrebaných' nie 'pohrebanych', 'tvárila' nie 'tvariľa'. (2) NIKDY nezlievaj slová dohromady — medzi každými dvoma slovami musí byť medzera. 'Tri pohřeby' nie 'Tri pohřebyPohřebaného'. (3) NEPOUŽIVAJ vymyslené slová ani nesprávne tvary — 'odvaha' nie 'odvážnosť', 'Hrobár' nie 'Hrobník', 'Smútiaci' nie 'Smútočník', 'Porotca' nie 'Porotčík'. Použi len slová, ktoré reálne existujú v slovenčine. (4) Názov hry musí byť 2-5 ODDELENÝCH slov s medzerami, gramaticky správny slovenský názov. Prečítaj si ho pred odoslaním. Ak si nie si istý slovom, použi jednoduchší výraz."
+      ? `JAZYK: SLOVENČINA. Celý výstup VÝLUČNE po slovensky. Žiadna angličtina.
+
+ZAKÁZANÉ VYMYSLENÉ SLOVÁ (toto NIE SÚ slovenské slová, NIKDY ich nepouži):
+- "súvet" → správne: "veta"
+- "odvážnosť" → správne: "odvaha"
+- "Hrobník" → správne: "Hrobár"
+- "Smútočník" → správne: "Smútiaci"
+- "Porotčík" → správne: "Porotca"
+- "tvariľa" → správne: "tvárila"
+- "pohrebanych" → správne: "pohrebaných"
+- "rozhodčí" → správne: "rozhodca" (rozhodčí je čeština!)
+- "pohřeb" → správne: "pohreb" (pohřeb je čeština!)
+
+PRAVIDLÁ:
+1. Každé slovo musí reálne existovať v slovenčine. Ak si nie si 100% istý, použi jednoduchšie slovo.
+2. NIKDY nevynechaj diakritiku: mäkčene (ď, ť, ň, ľ, č, š, ž), dĺžne (á, é, í, ó, ú, ý, ĺ, ŕ), vokáň (ô).
+3. NIKDY nezlievaj slová dohromady — medzi slovami vždy medzera.
+4. NIKDY nepoužívaj české tvary: ř, ě, ů neexistujú v slovenčine.
+5. Pred odoslaním si PREČÍTAJ každé slovo a over, že je to reálne slovenské slovo.`
       : lang === "cs"
-      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo — název hry, obraz, jména postav, role autora, závěr. Žádná angličtina. ŽÁDNÉ překlady v závorkách. Použi termín 'Systemická hra'. GRAMATIKA, DIAKRITIKA A FORMÁTOVÁNÍ MUSÍ BÝT DOKONALÉ: (1) Správné háčky a čárky — nikdy nevynechej diakritiku. (2) NIKDY neslévej slova dohromady — mezi každými dvěma slovy musí být mezera. (3) NEPOUŽÍVEJ vymyšlené tvary slov. (4) Název hry musí být 2-5 ODDĚLENÝCH slov s mezerami, gramaticky správný český název. Přečti si ho před odesláním. Pokud si nejsi jistý slovem, použij jednodušší výraz."
+      ? `JAZYK: ČEŠTINA. Celý výstup VÝHRADNĚ česky. Žádná angličtina.
+
+PRAVIDLA:
+1. Každé slovo musí reálně existovat v češtině. Pokud si nejsi 100% jistý, použij jednodušší slovo.
+2. NIKDY nevynechej diakritiku: háčky (ď, ť, ň, č, š, ž, ř, ě), čárky (á, é, í, ó, ú, ý, ů).
+3. NIKDY neslévej slova dohromady — mezi slovy vždy mezera.
+4. NIKDY nepoužívej slovenské tvary: ľ, ĺ, ŕ, ô neexistují v češtině.
+5. Před odesláním si PŘEČTI každé slovo a ověř, že je to reálné české slovo.`
       : "";
 
   // Inject a random creative angle to force variety across calls
@@ -376,6 +420,12 @@ Go deep and sideways. Use game mechanics that force the author into genuine vuln
   }
 
   parts.push("", "Return ONLY a JSON array with 1 play object. No other text.");
+
+  if (lang === "sk") {
+    parts.push("", "POSLEDNÁ KONTROLA: Prečítaj si KAŽDÉ slovo vo výstupe. Je to reálne slovenské slovo? Existuje v slovníku? Ak nie, nahraď ho. Slová ako 'súvet', 'odvážnosť', 'Hrobník', 'Smútočník' NEEXISTUJÚ.");
+  } else if (lang === "cs") {
+    parts.push("", "POSLEDNÍ KONTROLA: Přečti si KAŽDÉ slovo ve výstupu. Je to reálné české slovo? Existuje ve slovníku? Pokud ne, nahraď ho.");
+  }
 
   return parts.join("\n");
 }
