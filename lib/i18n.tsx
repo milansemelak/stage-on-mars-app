@@ -118,7 +118,7 @@ const translations = {
     stageHasSpoken: "The stage has spoken.",
     startThePlay: "Start the Play",
     endThePlay: "End the Play",
-    whatTheStageRevealed: "What the stage revealed",
+    whatTheStageRevealed: "Perspectives from Mars",
     replay: "Replay",
     author: "You",
     // Client name
@@ -253,7 +253,7 @@ const translations = {
     stageHasSpoken: "Javisko prehovorilo.",
     startThePlay: "Spusti hru",
     endThePlay: "Ukonči hru",
-    whatTheStageRevealed: "Čo odhalilo javisko",
+    whatTheStageRevealed: "Perspektívy z Marsu",
     replay: "Prehrať znova",
     author: "Ty",
     // Client name
@@ -388,7 +388,7 @@ const translations = {
     stageHasSpoken: "Jeviště promluvilo.",
     startThePlay: "Spusť hru",
     endThePlay: "Ukonči hru",
-    whatTheStageRevealed: "Co odhalilo jeviště",
+    whatTheStageRevealed: "Perspektivy z Marsu",
     replay: "Přehrát znovu",
     author: "Ty",
     // Client name
