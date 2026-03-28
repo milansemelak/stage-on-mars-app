@@ -199,9 +199,9 @@ export function buildMarsPrompt(
 
   const langInstruction =
     lang === "sk"
-      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo."
+      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo. Gramatika musí byť dokonalá — správne skloňovanie, žiadne vymyslené slová."
       : lang === "cs"
-      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo."
+      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo. Gramatika musí být dokonalá — správné skloňování, žádná vymyšlená slova."
       : "";
 
   const parts: string[] = [];
@@ -307,9 +307,9 @@ Go deep and sideways. Use game mechanics that force the author into genuine vuln
 
   const langInstruction =
     lang === "sk"
-      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo — názov hry, obraz, mená postáv, rola autora, záver. Žiadna angličtina. Použi termín 'Systemická hra'."
+      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo — názov hry, obraz, mená postáv, rola autora, záver. Žiadna angličtina. Použi termín 'Systemická hra'. GRAMATIKA MUSÍ BYŤ DOKONALÁ — správne skloňovanie, správne tvary slov, žiadne vymyslené slová. Použi len skutočné slovenské slová (napr. 'Kat' nie 'Katovník', 'Porotca' nie 'Porotčík'). Ak si nie si istý slovom, použi jednoduchší výraz."
       : lang === "cs"
-      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo — název hry, obraz, jména postav, role autora, závěr. Žádná angličtina. Použi termín 'Systemická hra'."
+      ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo — název hry, obraz, jména postav, role autora, závěr. Žádná angličtina. Použi termín 'Systemická hra'. GRAMATIKA MUSÍ BÝT DOKONALÁ — správné skloňování, správné tvary slov, žádná vymyšlená slova. Použi jen skutečná česká slova. Pokud si nejsi jistý slovem, použij jednodušší výraz."
       : "";
 
   // Inject a random creative angle to force variety across calls
