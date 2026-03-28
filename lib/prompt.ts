@@ -176,20 +176,19 @@ Good example:
   {"narration": "The remaining trees speak their words aloud. The Author sits between them.", "positions": {"The Author": "center"}}
 ]
 
-## Perspectives — what it revealed
-Three insights that cut. Not comfort. Not generic wisdom. Specific to what played out between these characters for this question.
+## Perspectives — what each character revealed
+Three perspectives, each PAIRED WITH A SPECIFIC CHARACTER from the play. The character whose behavior on stage revealed this truth gets credited. Pick the 3 characters whose actions were most revealing.
 
-These should sound like real observations from people who just watched the play unfold — raw, specific, sometimes contradictory. Study these real perspective patterns from live sessions:
+These should sound like raw observations from someone who watched that specific character on stage. Not generic wisdom. Specific to what THIS character did, resisted, or revealed through their body.
 
+Study these real perspective patterns from live sessions:
 - "We edited the author herself, not the result. To edit anything means to erase yourself."
 - "The sheep were never there. It was never about the sheep."
 - "Nobody wanted to be erased. They all jumped up, resisting. The hardest thing was erasing yourself."
 - "The question was 'How to ask smart questions?' but smart belongs to answers, not questions. A question just IS."
-- "Paid suffering. The bonus confirms the suffering is fine. We forgot about love."
-- "The worst is always winter. Whether under clouds or with sun — it doesn't matter."
 - "In the first act there was chaos but life. In the second there was order but something died."
 
-Each perspective should feel like an accusation the reader already knew was coming.
+Each perspective should feel like an accusation the reader already knew was coming. The character name gives it weight and origin.
 
 ## Output Format
 Return ONLY valid JSON:
@@ -198,7 +197,11 @@ Return ONLY valid JSON:
     {"narration": "Step 1 narration...", "positions": {"CharName": "center", "OtherChar": "edge-left"}},
     {"narration": "Step 2 narration...", "positions": {"CharName": "close-to:OtherChar"}}
   ],
-  "perspectives": ["Cuts deep 1", "Cuts deep 2", "Cuts deep 3"]
+  "perspectives": [
+    {"character": "The Mourner", "insight": "The mourner cried not for loss but for permission to finally stop pretending."},
+    {"character": "The Heir", "insight": "The heir inherited only the fear. Everything else was already spent."},
+    {"character": "The Corpse", "insight": "The corpse was never dead. It was the only one breathing."}
+  ]
 }
 
 IMPORTANT: Use exact character names from the play. 5-7 steps. Each step's positions must match what the narration describes.

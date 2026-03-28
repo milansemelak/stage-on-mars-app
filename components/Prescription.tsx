@@ -81,7 +81,13 @@ export default function Prescription({ play, question, onClose, rxNumber: rxNumb
       `${t.authorsRole}:\n${play.authorRole}\n\n` +
       `${t.endingPerspective}:\n${play.endingPerspective}\n\n` +
       (play.perspectives && play.perspectives.length > 0
-        ? `${t.perspectivesTitle}:\n${play.perspectives.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n\n`
+        ? `${t.perspectivesTitle}:\n${play.perspectives.map((p, i) => {
+            if (typeof p === "object" && p !== null) {
+              const sp = p as { character: string; insight: string };
+              return `${i + 1}. [${sp.character}] ${sp.insight}`;
+            }
+            return `${i + 1}. ${p}`;
+          }).join("\n")}\n\n`
         : "") +
       `---\n${t.takeToStage}\nhttps://www.stageonmars.com`;
 
@@ -259,7 +265,7 @@ export default function Prescription({ play, question, onClose, rxNumber: rxNumb
                   {t.perspectivesTitle}
                 </span>
                 <p className="text-white/85 leading-relaxed font-mercure italic text-sm">
-                  &ldquo;{play.perspectives[0]}&rdquo;
+                  &ldquo;{typeof play.perspectives[0] === "object" && play.perspectives[0] !== null ? (play.perspectives[0] as { insight: string }).insight : play.perspectives[0]}&rdquo;
                 </p>
               </div>
             )}

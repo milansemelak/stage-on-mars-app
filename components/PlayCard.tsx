@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { Play } from "@/lib/types";
+import { Play, Perspective } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { STORAGE_KEYS, MAX_HISTORY } from "@/lib/constants";
 import Prescription from "./Prescription";
@@ -153,7 +153,14 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
     }
     if (currentPlay.perspectives?.length) {
       lines.push("", `${t.perspectivesTitle}:`);
-      currentPlay.perspectives.forEach((p, i) => lines.push(`${i + 1}. ${p}`));
+      currentPlay.perspectives.forEach((p, i) => {
+        if (typeof p === "object" && p !== null) {
+          const sp = p as Perspective;
+          lines.push(`${i + 1}. [${sp.character}] ${sp.insight}`);
+        } else {
+          lines.push(`${i + 1}. ${p}`);
+        }
+      });
     }
 
     await navigator.clipboard.writeText(lines.join("\n"));
@@ -428,40 +435,74 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
             </div>
           )}
 
-          {/* ── Perspectives — revealed from the stage ── */}
+          {/* ── Perspectives from Mars ── */}
           {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && (
             <div
-              className="relative -mt-2"
+              className="relative"
               style={{ animation: currentPlay.simulation ? "perspectiveReveal 1s ease-out forwards" : undefined }}
             >
-              {/* Top glow — as if light is spilling from the stage above */}
-              {currentPlay.simulation && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-mars/[0.06] blur-xl rounded-full pointer-events-none" />
-              )}
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-5">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-mars/50">{t.whatTheStageRevealed}</span>
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+              </div>
 
-              <div className="rounded-2xl border border-white/[0.06] overflow-hidden bg-white/[0.02]">
-                {/* Header */}
-                <div className="px-6 sm:px-8 pt-6 pb-4">
-                  <p className="font-mercure italic text-white/30 text-sm">{t.whatTheStageRevealed}</p>
-                </div>
+              {/* Perspective cards */}
+              <div className="space-y-4">
+                {currentPlay.perspectives.map((p, i) => {
+                  const isStructured = typeof p === "object" && p !== null;
+                  const perspective = isStructured ? (p as Perspective) : null;
+                  const insightText = perspective ? perspective.insight : (p as string);
+                  const charName = perspective?.character;
 
-                {/* Perspective items */}
-                <div className="px-6 sm:px-8 pb-6 space-y-4">
-                  {currentPlay.perspectives.map((p, i) => (
+                  // Find matching character for color
+                  const matchedChar = charName
+                    ? currentPlay.characters.find(
+                        (c) => c.name.toLowerCase() === charName.toLowerCase()
+                      )
+                    : null;
+                  const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
+
+                  return (
                     <div
                       key={i}
-                      className="relative pl-6"
+                      className="rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden"
                       style={currentPlay.simulation ? {
-                        animation: `perspectiveItemReveal 0.6s ease-out ${0.2 + i * 0.25}s both`,
+                        animation: `perspectiveItemReveal 0.7s ease-out ${0.15 + i * 0.3}s both`,
                       } : undefined}
                     >
-                      <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-mars/50 shadow-[0_0_8px_rgba(255,85,0,0.3)]" />
-                      <p className="text-white/85 text-base sm:text-lg leading-relaxed font-medium">
-                        {p}
-                      </p>
+                      {/* Character attribution */}
+                      {charName && (
+                        <div className="px-5 sm:px-6 pt-4 pb-1 flex items-center gap-2.5">
+                          <div
+                            className={`w-2 h-2 rounded-full shadow-[0_0_6px] ${
+                              isAbstract
+                                ? "bg-white/50 shadow-white/20"
+                                : "bg-mars/70 shadow-mars/30"
+                            }`}
+                          />
+                          <span
+                            className={`text-xs font-bold uppercase tracking-widest ${
+                              isAbstract
+                                ? "text-white/40 font-mercure italic"
+                                : "text-mars-light/50"
+                            }`}
+                          >
+                            {charName}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Insight */}
+                      <div className={`px-5 sm:px-6 ${charName ? "pt-2 pb-5" : "py-5"}`}>
+                        <p className="text-white/90 text-base sm:text-lg leading-relaxed font-medium">
+                          {insightText}
+                        </p>
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
           )}

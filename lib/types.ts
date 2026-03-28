@@ -8,6 +8,11 @@ export type SimulationStep = {
   positions: Record<string, string>; // character name → position keyword
 };
 
+export type Perspective = {
+  character: string;
+  insight: string;
+};
+
 export type Play = {
   name: string;
   image: string;
@@ -19,7 +24,7 @@ export type Play = {
   mood: string;
   simulation?: string;
   simulationSteps?: SimulationStep[];
-  perspectives?: string[];
+  perspectives?: (string | Perspective)[];
 };
 
 export type HistoryEntry = {
