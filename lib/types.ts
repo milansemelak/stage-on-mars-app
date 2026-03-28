@@ -3,6 +3,11 @@ export type Character = {
   description: string;
 };
 
+export type SimulationStep = {
+  narration: string;
+  positions: Record<string, string>; // character name → position keyword
+};
+
 export type Play = {
   name: string;
   image: string;
@@ -13,6 +18,7 @@ export type Play = {
   duration: string;
   mood: string;
   simulation?: string;
+  simulationSteps?: SimulationStep[];
   perspectives?: string[];
 };
 

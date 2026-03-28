@@ -57,16 +57,32 @@ export async function POST(request: NextRequest) {
     const text =
       message.content[0].type === "text" ? message.content[0].text : "";
 
-    let result: { simulation: string; perspectives: string[] };
+    let parsed: Record<string, unknown>;
     try {
-      result = JSON.parse(text);
+      parsed = JSON.parse(text);
     } catch {
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
-        result = JSON.parse(jsonMatch[0]);
+        parsed = JSON.parse(jsonMatch[0]);
       } else {
         throw new Error("Failed to parse Mars response");
       }
+    }
+
+    // Build result with backward compat — produce both simulation (string) and simulationSteps
+    const result: Record<string, unknown> = {
+      perspectives: parsed.perspectives,
+    };
+
+    if (parsed.simulationSteps && Array.isArray(parsed.simulationSteps)) {
+      result.simulationSteps = parsed.simulationSteps;
+      // Also produce flat simulation string for text display / export
+      result.simulation = (parsed.simulationSteps as { narration: string }[])
+        .map((s) => s.narration)
+        .join(" ");
+    } else if (parsed.simulation) {
+      // Old format fallback
+      result.simulation = parsed.simulation;
     }
 
     return NextResponse.json(result);

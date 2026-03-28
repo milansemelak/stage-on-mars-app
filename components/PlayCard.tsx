@@ -50,7 +50,12 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
       });
       if (!response.ok) throw new Error("Failed");
       const data = await response.json();
-      const updated = { ...currentPlay, simulation: data.simulation, perspectives: data.perspectives };
+      const updated = {
+        ...currentPlay,
+        simulation: data.simulation,
+        simulationSteps: data.simulationSteps,
+        perspectives: data.perspectives,
+      };
       setCurrentPlay(updated);
       onPlayUpdate?.(updated);
     } catch {
@@ -350,6 +355,7 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
               <StageSimulation
                 characters={currentPlay.characters}
                 simulation={currentPlay.simulation}
+                simulationSteps={currentPlay.simulationSteps}
               />
             </div>
           )}

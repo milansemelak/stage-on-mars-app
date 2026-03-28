@@ -1,104 +1,220 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
-import { Character } from "@/lib/types";
+import { Character, SimulationStep } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
 type Props = {
   characters: Character[];
-  simulation: string;
+  simulation?: string;
+  simulationSteps?: SimulationStep[];
 };
 
 type Position = { x: number; y: number };
 
-function getChoreography(count: number, step: number, activeIndex: number): Position[] {
-  const cx = 50;
-  const cy = 50;
-  const positions: Position[] = [];
+// Stage dimensions (SVG viewBox 0 0 100 100)
+const CX = 50;
+const CY = 50;
+const EDGE_R = 38; // radius for edge positions
 
+/**
+ * Resolve a position keyword to absolute x,y coordinates.
+ * Keywords: center, edge-left, edge-right, edge-top, edge-bottom,
+ *           close-to:CharName, far-from:CharName, scattered, circle, frozen
+ */
+function resolvePosition(
+  keyword: string,
+  charIndex: number,
+  allPositions: Map<string, Position>,
+  charCount: number,
+  seed: number
+): Position | null {
+  const kw = keyword.trim().toLowerCase();
+
+  if (kw === "center") {
+    return { x: CX + (seed % 5) - 2, y: CY + ((seed * 3) % 5) - 2 };
+  }
+  if (kw === "edge-left") {
+    return { x: CX - EDGE_R, y: CY + ((seed + charIndex * 7) % 12) - 6 };
+  }
+  if (kw === "edge-right") {
+    return { x: CX + EDGE_R, y: CY + ((seed + charIndex * 7) % 12) - 6 };
+  }
+  if (kw === "edge-top") {
+    return { x: CX + ((seed + charIndex * 5) % 16) - 8, y: CY - EDGE_R * 0.6 };
+  }
+  if (kw === "edge-bottom") {
+    return { x: CX + ((seed + charIndex * 5) % 16) - 8, y: CY + EDGE_R * 0.6 };
+  }
+  if (kw === "scattered") {
+    const angle = (seed * 1.7 + charIndex * 2.3) % (2 * Math.PI);
+    const r = 15 + (seed % 20);
+    return { x: CX + Math.cos(angle) * r, y: CY + Math.sin(angle) * (r * 0.55) };
+  }
+  if (kw === "circle") {
+    const angle = -Math.PI / 2 + (2 * Math.PI * charIndex) / charCount;
+    return { x: CX + Math.cos(angle) * 28, y: CY + Math.sin(angle) * 15 };
+  }
+  if (kw === "frozen") {
+    return null; // keep previous position
+  }
+
+  // close-to:CharName
+  if (kw.startsWith("close-to:")) {
+    const targetName = keyword.substring(9).trim();
+    const targetPos = allPositions.get(targetName) || allPositions.get(targetName.toLowerCase());
+    if (targetPos) {
+      const offsetAngle = (charIndex * 1.5 + seed * 0.3) % (2 * Math.PI);
+      return {
+        x: targetPos.x + Math.cos(offsetAngle) * 5,
+        y: targetPos.y + Math.sin(offsetAngle) * 3,
+      };
+    }
+    // If target not found, move toward center
+    return { x: CX + ((seed + charIndex) % 8) - 4, y: CY + ((seed + charIndex * 3) % 6) - 3 };
+  }
+
+  // far-from:CharName
+  if (kw.startsWith("far-from:")) {
+    const targetName = keyword.substring(9).trim();
+    const targetPos = allPositions.get(targetName) || allPositions.get(targetName.toLowerCase());
+    if (targetPos) {
+      const dx = CX - targetPos.x;
+      const dy = CY - targetPos.y;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      return {
+        x: CX + (dx / len) * EDGE_R * 0.8,
+        y: CY + (dy / len) * EDGE_R * 0.5,
+      };
+    }
+    return { x: CX + EDGE_R * 0.7, y: CY };
+  }
+
+  return null;
+}
+
+/**
+ * Compute positions for all characters at a given step.
+ * Uses AI-provided position keywords from simulationSteps.
+ */
+function computeStepPositions(
+  characters: Character[],
+  steps: SimulationStep[],
+  stepIndex: number
+): Position[] {
+  const count = characters.length;
+
+  // Start with circle formation
+  const positions: Position[] = characters.map((_, i) => {
+    const angle = -Math.PI / 2 + (2 * Math.PI * i) / count;
+    return { x: CX + Math.cos(angle) * 28, y: CY + Math.sin(angle) * 15 };
+  });
+
+  // Apply all steps up to and including current step
+  for (let s = 0; s <= stepIndex && s < steps.length; s++) {
+    const step = steps[s];
+    if (!step.positions) continue;
+
+    // Build a lookup of current positions by name
+    const posMap = new Map<string, Position>();
+    characters.forEach((c, i) => posMap.set(c.name, positions[i]));
+
+    // First pass: resolve non-relative positions
+    // Second pass: resolve close-to / far-from (which depend on others)
+    const entries = Object.entries(step.positions);
+    const deferred: [number, string][] = [];
+
+    for (const [charName, keyword] of entries) {
+      const idx = characters.findIndex(
+        (c) => c.name === charName || c.name.toLowerCase() === charName.toLowerCase()
+      );
+      if (idx === -1) continue;
+
+      const kw = keyword.trim().toLowerCase();
+      if (kw.startsWith("close-to:") || kw.startsWith("far-from:")) {
+        deferred.push([idx, keyword]);
+        continue;
+      }
+
+      const resolved = resolvePosition(keyword, idx, posMap, count, s * 7 + idx);
+      if (resolved) {
+        positions[idx] = resolved;
+        posMap.set(characters[idx].name, resolved);
+      }
+    }
+
+    // Second pass for relative positions
+    for (const [idx, keyword] of deferred) {
+      const resolved = resolvePosition(keyword, idx, posMap, count, s * 7 + idx);
+      if (resolved) {
+        positions[idx] = resolved;
+      }
+    }
+  }
+
+  return positions;
+}
+
+/**
+ * Fallback: generate positions from plain text simulation (old format)
+ */
+function getFallbackPositions(count: number, step: number): Position[] {
   const formations = [
     "circle", "semicircle-top", "cluster-left", "spread",
     "semicircle-bottom", "diagonal", "two-groups", "arc-right",
   ];
   const formation = formations[step % formations.length];
+  const activeIndex = step % count;
+  const positions: Position[] = [];
 
   for (let i = 0; i < count; i++) {
     if (i === activeIndex) {
-      positions.push({
-        x: cx + Math.sin(step * 1.7) * 4,
-        y: cy + Math.cos(step * 1.3) * 2 - 2,
-      });
+      positions.push({ x: CX + Math.sin(step * 1.7) * 4, y: CY + Math.cos(step * 1.3) * 2 - 2 });
       continue;
     }
-
     const idx = i < activeIndex ? i : i - 1;
     const others = count - 1;
     let x: number, y: number;
-
     switch (formation) {
       case "circle": {
-        const angle = -Math.PI / 2 + (2 * Math.PI * idx) / others;
-        x = cx + Math.cos(angle) * 28;
-        y = cy + Math.sin(angle) * 15.4;
-        break;
+        const a = -Math.PI / 2 + (2 * Math.PI * idx) / others;
+        x = CX + Math.cos(a) * 28; y = CY + Math.sin(a) * 15.4; break;
       }
       case "semicircle-top": {
-        const angle = Math.PI + (Math.PI * (idx + 1)) / (others + 1);
-        x = cx + Math.cos(angle) * 30;
-        y = cy + Math.sin(angle) * 18 - 5;
-        break;
+        const a = Math.PI + (Math.PI * (idx + 1)) / (others + 1);
+        x = CX + Math.cos(a) * 30; y = CY + Math.sin(a) * 18 - 5; break;
       }
       case "semicircle-bottom": {
-        const angle = (Math.PI * (idx + 1)) / (others + 1);
-        x = cx + Math.cos(angle) * 30;
-        y = cy + Math.sin(angle) * 18 + 5;
-        break;
+        const a = (Math.PI * (idx + 1)) / (others + 1);
+        x = CX + Math.cos(a) * 30; y = CY + Math.sin(a) * 18 + 5; break;
       }
       case "cluster-left": {
-        const angle = Math.PI * 0.6 + (Math.PI * 0.8 * idx) / Math.max(others - 1, 1);
-        x = cx + Math.cos(angle) * 24;
-        y = cy + Math.sin(angle) * 14;
-        break;
+        const a = Math.PI * 0.6 + (Math.PI * 0.8 * idx) / Math.max(others - 1, 1);
+        x = CX + Math.cos(a) * 24; y = CY + Math.sin(a) * 14; break;
       }
       case "spread": {
-        const angle = -Math.PI / 2 + (2 * Math.PI * idx) / others;
-        x = cx + Math.cos(angle) * 36;
-        y = cy + Math.sin(angle) * 18;
-        break;
+        const a = -Math.PI / 2 + (2 * Math.PI * idx) / others;
+        x = CX + Math.cos(a) * 36; y = CY + Math.sin(a) * 18; break;
       }
       case "diagonal": {
         x = 20 + (60 * idx) / Math.max(others - 1, 1);
-        y = 30 + (40 * idx) / Math.max(others - 1, 1);
-        break;
+        y = 30 + (40 * idx) / Math.max(others - 1, 1); break;
       }
       case "two-groups": {
         const isLeft = idx < others / 2;
-        const groupIdx = isLeft ? idx : idx - Math.floor(others / 2);
-        const groupSize = isLeft ? Math.floor(others / 2) : Math.ceil(others / 2);
-        const groupCx = isLeft ? 28 : 72;
-        const angle = (-Math.PI / 2) + (2 * Math.PI * groupIdx) / Math.max(groupSize, 1);
-        x = groupCx + Math.cos(angle) * 8;
-        y = cy + Math.sin(angle) * 4.8;
-        break;
-      }
-      case "arc-right": {
-        const angle = -Math.PI * 0.4 + (Math.PI * 0.8 * idx) / Math.max(others - 1, 1);
-        x = cx + Math.cos(angle) * 26;
-        y = cy + Math.sin(angle) * 16;
-        break;
+        const gi = isLeft ? idx : idx - Math.floor(others / 2);
+        const gs = isLeft ? Math.floor(others / 2) : Math.ceil(others / 2);
+        const gcx = isLeft ? 28 : 72;
+        const a = (-Math.PI / 2) + (2 * Math.PI * gi) / Math.max(gs, 1);
+        x = gcx + Math.cos(a) * 8; y = CY + Math.sin(a) * 4.8; break;
       }
       default: {
-        const angle = (2 * Math.PI * idx) / others;
-        x = cx + Math.cos(angle) * 25;
-        y = cy + Math.sin(angle) * 15;
+        const a = -Math.PI * 0.4 + (Math.PI * 0.8 * idx) / Math.max(others - 1, 1);
+        x = CX + Math.cos(a) * 26; y = CY + Math.sin(a) * 16;
       }
     }
-
-    x += Math.sin(step * 0.9 + i * 3.7) * 1.5;
-    y += Math.cos(step * 0.7 + i * 2.3) * 1;
     positions.push({ x, y });
   }
-
   return positions;
 }
 
@@ -110,29 +226,58 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
-export default function StageSimulation({ characters, simulation }: Props) {
+export default function StageSimulation({ characters, simulation, simulationSteps }: Props) {
   const { t } = useI18n();
-  const sentences = useMemo(() => splitIntoSentences(simulation), [simulation]);
+
+  // Determine narration sentences
+  const sentences = useMemo(() => {
+    if (simulationSteps?.length) {
+      return simulationSteps.map((s) => s.narration);
+    }
+    return simulation ? splitIntoSentences(simulation) : [];
+  }, [simulationSteps, simulation]);
+
+  const hasChoreography = !!simulationSteps?.length;
+
   const [currentStep, setCurrentStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false); // Start paused — user hits play
+  const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
 
-  const activeIndex = currentStep % characters.length;
+  // Compute target positions for current step
+  const targets = useMemo(() => {
+    if (hasChoreography && simulationSteps) {
+      return computeStepPositions(characters, simulationSteps, currentStep);
+    }
+    return getFallbackPositions(characters.length, currentStep);
+  }, [characters, simulationSteps, hasChoreography, currentStep]);
 
-  const targets = useMemo(
-    () => getChoreography(characters.length, currentStep, activeIndex),
-    [characters.length, currentStep, activeIndex]
-  );
+  // Find which characters moved this step (for highlighting)
+  const movedCharacters = useMemo(() => {
+    if (!hasChoreography || !simulationSteps?.[currentStep]?.positions) return new Set<number>();
+    const moved = new Set<number>();
+    const stepPositions = simulationSteps[currentStep].positions;
+    for (const charName of Object.keys(stepPositions)) {
+      const idx = characters.findIndex(
+        (c) => c.name === charName || c.name.toLowerCase() === charName.toLowerCase()
+      );
+      if (idx !== -1) moved.add(idx);
+    }
+    return moved;
+  }, [hasChoreography, simulationSteps, currentStep, characters]);
 
+  // Animated positions
   const currentPositions = useRef<Position[]>([]);
   const [renderPositions, setRenderPositions] = useState<Position[]>([]);
   const rafRef = useRef<number>();
 
-  // Initialize positions
+  // Initialize
   useEffect(() => {
     if (currentPositions.current.length !== characters.length) {
-      const initial = getChoreography(characters.length, 0, 0);
-      currentPositions.current = initial.map((p) => ({ ...p }));
+      const initial = characters.map((_, i) => {
+        const angle = -Math.PI / 2 + (2 * Math.PI * i) / characters.length;
+        return { x: CX + Math.cos(angle) * 28, y: CY + Math.sin(angle) * 15 };
+      });
+      currentPositions.current = initial;
       setRenderPositions(initial);
     }
   }, [characters.length]);
@@ -146,15 +291,15 @@ export default function StageSimulation({ characters, simulation }: Props) {
         return;
       }
 
-      const speed = 0.035;
+      const speed = 0.04;
       for (let i = 0; i < pos.length; i++) {
         pos[i].x = lerp(pos[i].x, targets[i].x, speed);
         pos[i].y = lerp(pos[i].y, targets[i].y, speed);
       }
 
       const rendered = pos.map((p, i) => ({
-        x: p.x + Math.sin(time * 0.001 + i * 2.5) * 0.4,
-        y: p.y + Math.cos(time * 0.0008 + i * 1.8) * 0.3,
+        x: p.x + Math.sin(time * 0.001 + i * 2.5) * 0.35,
+        y: p.y + Math.cos(time * 0.0008 + i * 1.8) * 0.25,
       }));
 
       setRenderPositions(rendered);
@@ -170,11 +315,11 @@ export default function StageSimulation({ characters, simulation }: Props) {
   // Auto-advance narration
   useEffect(() => {
     if (!isPlaying || currentStep >= sentences.length - 1) return;
-    const timer = setTimeout(() => setCurrentStep((p) => p + 1), 4000);
+    const timer = setTimeout(() => setCurrentStep((p) => p + 1), 5000);
     return () => clearTimeout(timer);
   }, [currentStep, isPlaying, sentences.length]);
 
-  // When play finishes, pause
+  // Auto-stop at end
   useEffect(() => {
     if (currentStep >= sentences.length - 1 && isPlaying) {
       setIsPlaying(false);
@@ -189,7 +334,6 @@ export default function StageSimulation({ characters, simulation }: Props) {
       return;
     }
     if (currentStep >= sentences.length - 1) {
-      // Restart
       setCurrentStep(0);
       setIsPlaying(true);
       return;
@@ -201,7 +345,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
 
   return (
     <div className="rounded-2xl overflow-hidden bg-[#080808]">
-      {/* Stage area */}
+      {/* Stage */}
       <div className="relative w-full aspect-[5/4] sm:aspect-[16/10] overflow-hidden">
         <div
           className="absolute inset-0"
@@ -214,7 +358,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
           }}
         />
 
-        {/* Play overlay — before started */}
+        {/* Play overlay */}
         {!hasStarted && (
           <button
             onClick={handlePlayPause}
@@ -254,33 +398,12 @@ export default function StageSimulation({ characters, simulation }: Props) {
           <ellipse cx="50" cy="50" rx="46" ry="30" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
           <ellipse cx="50" cy="52" rx="40" ry="26" fill="rgba(255,85,0,0.015)" />
 
-          {/* Trail lines from active to others */}
-          {hasStarted && renderPositions.map((pos, i) => {
-            if (i !== activeIndex || !renderPositions[activeIndex]) return null;
-            const active = renderPositions[activeIndex];
-            if (i === activeIndex) return null;
-            return null;
-          })}
-          {hasStarted && renderPositions[activeIndex] && renderPositions.map((pos, j) => {
-            if (j === activeIndex) return null;
-            const active = renderPositions[activeIndex];
-            return (
-              <line
-                key={`trail-${j}`}
-                x1={active.x} y1={active.y}
-                x2={pos.x} y2={pos.y}
-                stroke="rgba(255,85,0,0.04)"
-                strokeWidth="0.1"
-              />
-            );
-          })}
-
           {/* Characters */}
           {renderPositions.map((pos, i) => {
             const char = characters[i];
             if (!char) return null;
             const isAbstract = char.description?.toLowerCase() === "abstract";
-            const isActive = i === activeIndex && hasStarted;
+            const isActive = hasStarted && movedCharacters.has(i);
             const dotR = isActive ? 1.8 : 1.1;
 
             return (
@@ -343,7 +466,6 @@ export default function StageSimulation({ characters, simulation }: Props) {
         <div className="relative">
           <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
 
-          {/* Narration */}
           <div className="px-5 sm:px-6 pt-4 pb-3">
             <p
               className="font-mercure italic text-white/50 text-sm sm:text-base leading-relaxed animate-fade-in"
@@ -353,9 +475,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
             </p>
           </div>
 
-          {/* Progress bar + controls */}
           <div className="px-5 sm:px-6 pb-4 flex items-center gap-3">
-            {/* Play/Pause button */}
             <button
               onClick={handlePlayPause}
               className="flex-shrink-0 w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.1] flex items-center justify-center transition-colors"
@@ -376,7 +496,6 @@ export default function StageSimulation({ characters, simulation }: Props) {
               )}
             </button>
 
-            {/* Progress bar */}
             <div className="flex-1 h-1 bg-white/[0.06] rounded-full overflow-hidden">
               <div
                 className="h-full bg-mars/50 rounded-full transition-all duration-500 ease-out"
@@ -384,7 +503,6 @@ export default function StageSimulation({ characters, simulation }: Props) {
               />
             </div>
 
-            {/* Step counter */}
             <span className="text-[9px] text-white/15 font-mono flex-shrink-0 tabular-nums">
               {currentStep + 1}/{sentences.length}
             </span>
