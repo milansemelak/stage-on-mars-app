@@ -665,40 +665,28 @@ export default function StageSimulation({ characters, simulation, simulationStep
             </div>
           )}
 
-          {/* End the play — ritual close */}
+          {/* End the play — ritual command */}
           {hasEnded && endingPhase >= 2 && (
-            <div className="px-5 sm:px-6 pb-6 pt-2 animate-fade-in">
-              <div className="flex flex-col items-center gap-4">
-                <button
-                  onClick={() => onEnd?.()}
-                  className="group relative flex flex-col items-center gap-3 cursor-pointer py-2"
-                >
-                  {/* Decorative lines */}
-                  <div className="flex items-center gap-3 w-48">
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-mars/30" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-mars/40 group-hover:bg-mars/70 transition-colors duration-500" />
-                    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-mars/30" />
-                  </div>
-                  <span className="text-white/50 group-hover:text-white/80 text-[11px] font-bold uppercase tracking-[0.25em] transition-colors duration-500">
-                    {t.endThePlay}
-                  </span>
-                  <div className="flex items-center gap-3 w-48">
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-mars/30" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-mars/40 group-hover:bg-mars/70 transition-colors duration-500" />
-                    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-mars/30" />
-                  </div>
-                </button>
+            <div className="pb-6 pt-1 animate-fade-in flex flex-col items-center gap-3">
+              <button
+                onClick={() => onEnd?.()}
+                className="group relative cursor-pointer py-2"
+              >
+                <div className="absolute -inset-6 bg-mars/[0.06] blur-2xl rounded-full animate-pulse-glow pointer-events-none" />
+                <span className="relative text-mars/60 group-hover:text-mars text-lg sm:text-xl font-black uppercase tracking-[0.3em] transition-colors duration-500 drop-shadow-[0_0_20px_rgba(255,85,0,0.15)] group-hover:drop-shadow-[0_0_30px_rgba(255,85,0,0.3)]">
+                  {t.endThePlay}
+                </span>
+              </button>
 
-                <button
-                  onClick={handlePlayPause}
-                  className="flex items-center gap-2 text-white/15 hover:text-white/35 text-[10px] transition-colors py-1"
-                >
-                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current">
-                    <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
-                  </svg>
-                  {t.replay}
-                </button>
-              </div>
+              <button
+                onClick={handlePlayPause}
+                className="flex items-center gap-2 text-white/15 hover:text-white/30 text-[10px] transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current">
+                  <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
+                </svg>
+                {t.replay}
+              </button>
             </div>
           )}
         </div>
