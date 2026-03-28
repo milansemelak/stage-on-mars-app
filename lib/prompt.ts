@@ -270,6 +270,13 @@ Before writing each perspective, ask: "Does this CONTRADICT what the author expe
 ### The SPECIFICITY TEST:
 Could this perspective apply to ANY play about ANY question? If yes, it's garbage. Delete it. Write one that only makes sense for THIS play, THIS question, THIS character.
 
+## Follow-up Question
+After the perspectives, generate ONE follow-up question. This is the question the PLAY is now asking the author. Not the original question repeated. Not a generic "what do you think?" The play revealed something — what question does THAT revelation demand?
+
+The follow-up should feel like the natural next step. It should go DEEPER, not sideways. It should make the author uncomfortable in a productive way. It emerges directly from the strongest perspective.
+
+Example: If the original question was "How do I find my purpose?" and the play revealed "You already found it, you've been running from it" — the follow-up might be: "What are you running from?"
+
 ## Output Format
 Return ONLY valid JSON:
 {
@@ -281,10 +288,11 @@ Return ONLY valid JSON:
     {"character": "CharName", "insight": "One devastating sentence. Maybe two."},
     {"character": "CharName", "insight": "Something that inverts the question."},
     {"character": "CharName", "insight": "Something the author didn't want to hear."}
-  ]
+  ],
+  "followUpQuestion": "The one question the play is now asking the author."
 }
 
-IMPORTANT: Use exact character names from the play. 5-7 simulation steps. EXACTLY 3 perspectives. Each step's positions must match what the narration describes.
+IMPORTANT: Use exact character names from the play. 5-7 simulation steps. EXACTLY 3 perspectives. 1 follow-up question. Each step's positions must match what the narration describes.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 

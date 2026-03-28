@@ -25,6 +25,7 @@ export type Play = {
   simulation?: string;
   simulationSteps?: SimulationStep[];
   perspectives?: (string | Perspective)[];
+  followUpQuestion?: string;
 };
 
 export type HistoryEntry = {

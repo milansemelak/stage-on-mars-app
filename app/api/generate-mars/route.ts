@@ -109,6 +109,7 @@ export async function POST(request: NextRequest) {
     // Build result with backward compat — produce both simulation (string) and simulationSteps
     const result: Record<string, unknown> = {
       perspectives: parsed.perspectives,
+      followUpQuestion: parsed.followUpQuestion || null,
     };
 
     if (parsed.simulationSteps && Array.isArray(parsed.simulationSteps)) {

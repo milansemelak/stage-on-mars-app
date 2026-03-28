@@ -11,13 +11,14 @@ type Props = {
   play: Play;
   question?: string;
   onPlayUpdate?: (play: Play) => void;
+  onAskQuestion?: (question: string) => void;
   favorite?: boolean;
   onToggleFavorite?: () => void;
   rxNumber?: string;
   clientName?: string;
 };
 
-export default function PlayCard({ play, question, onPlayUpdate, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
+export default function PlayCard({ play, question, onPlayUpdate, onAskQuestion, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
   const { lang, t } = useI18n();
   const [currentPlay, setCurrentPlay] = useState(play);
 
@@ -60,6 +61,7 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
         simulation: data.simulation,
         simulationSteps: data.simulationSteps,
         perspectives: data.perspectives,
+        followUpQuestion: data.followUpQuestion || undefined,
       };
       setCurrentPlay(updated);
       onPlayUpdate?.(updated);
@@ -528,6 +530,31 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                   );
                 })}
               </div>
+            </div>
+          )}
+
+          {/* Follow-up question */}
+          {currentPlay.followUpQuestion && perspectivesRevealed && (
+            <div
+              className="relative"
+              style={currentPlay.simulation ? { animation: "perspectiveItemReveal 0.6s ease-out 1s both" } : undefined}
+            >
+              <button
+                onClick={() => onAskQuestion?.(currentPlay.followUpQuestion!)}
+                className="w-full text-left group"
+              >
+                <div className="rounded-xl border border-mars/10 hover:border-mars/30 bg-mars/[0.03] hover:bg-mars/[0.06] px-5 sm:px-6 py-4 transition-all">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-mars/30 block mb-2">
+                    {t.nextQuestion || "Next question"}
+                  </span>
+                  <p className="text-white/80 group-hover:text-white text-sm sm:text-base font-mercure italic leading-relaxed transition-colors">
+                    &ldquo;{currentPlay.followUpQuestion}&rdquo;
+                  </p>
+                  <span className="text-mars/40 group-hover:text-mars/70 text-xs mt-2 block transition-colors">
+                    {t.askThis || "Ask this"} →
+                  </span>
+                </div>
+              </button>
             </div>
           )}
 

@@ -95,6 +95,7 @@ export default function PlayPage() {
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
   const generatingRef = useRef(false);
+  const pendingFollowUp = useRef(false);
 
   // Random question suggestion — aligned with current context
   const questionPool = context === "personal" ? PERSONAL_QUESTIONS_KEYS : BUSINESS_QUESTIONS_KEYS;
@@ -119,6 +120,16 @@ export default function PlayPage() {
     );
     setPlayCount(history.length);
   }, []);
+
+  // Auto-generate when follow-up question is set
+  useEffect(() => {
+    if (pendingFollowUp.current && question.trim()) {
+      pendingFollowUp.current = false;
+      // Small delay to let scroll finish
+      setTimeout(() => generatePlay(), 300);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question]);
 
   // Cycle loading messages
   useEffect(() => {
@@ -289,7 +300,18 @@ export default function PlayPage() {
             </button>
           </div>
 
-          <PlayCard play={play} question={askedQuestion} onPlayUpdate={handlePlayUpdate} clientName={clientName.trim() || undefined} />
+          <PlayCard
+            play={play}
+            question={askedQuestion}
+            onPlayUpdate={handlePlayUpdate}
+            onAskQuestion={(q) => {
+              setQuestion(q);
+              setPlay(null);
+              pendingFollowUp.current = true;
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            clientName={clientName.trim() || undefined}
+          />
         </div>
       )}
     </div>
