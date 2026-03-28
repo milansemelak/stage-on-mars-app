@@ -116,7 +116,7 @@ const translations = {
     loadingMars: "Play begins shortly.",
     marsError: "Mars couldn't see this one. Try again.",
     stageHasSpoken: "The stage has spoken.",
-    startThePlay: "Start the Play",
+    startThePlay: "Begin",
     endThePlay: "End the Play",
     whatTheStageRevealed: "Perspectives from Mars",
     replay: "Replay",

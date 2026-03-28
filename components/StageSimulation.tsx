@@ -472,23 +472,17 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </div>
         )}
 
-        {/* Play overlay — ritual start, anchored to bottom */}
+        {/* Play overlay — ritual command at bottom */}
         {!loading && !hasStarted && (
           <button
             onClick={handlePlayPause}
             className="absolute inset-x-0 bottom-6 sm:bottom-10 z-10 flex justify-center group cursor-pointer"
           >
-            <div className="relative flex flex-col items-center gap-3">
-              {/* Breathing glow behind */}
-              <div className="absolute -inset-8 bg-mars/[0.06] blur-2xl rounded-full animate-pulse-glow pointer-events-none" />
-              {/* Circle with play icon */}
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-mars/25 group-hover:border-mars/50 flex items-center justify-center transition-all duration-500 shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:shadow-[0_0_50px_rgba(255,85,0,0.18)]">
-                <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5 fill-mars/50 group-hover:fill-mars/80 transition-colors duration-500">
-                  <polygon points="5,3 19,12 5,21" />
-                </svg>
-              </div>
-              {/* Text */}
-              <span className="relative text-white/35 group-hover:text-white/60 text-[10px] font-bold uppercase tracking-[0.25em] transition-colors duration-500">
+            <div className="relative flex flex-col items-center">
+              {/* Breathing glow behind text */}
+              <div className="absolute -inset-6 bg-mars/[0.08] blur-2xl rounded-full animate-pulse-glow pointer-events-none" />
+              {/* The command */}
+              <span className="relative text-mars/60 group-hover:text-mars text-lg sm:text-xl font-black uppercase tracking-[0.3em] transition-colors duration-500 drop-shadow-[0_0_20px_rgba(255,85,0,0.15)] group-hover:drop-shadow-[0_0_30px_rgba(255,85,0,0.3)]">
                 {t.startThePlay}
               </span>
             </div>
