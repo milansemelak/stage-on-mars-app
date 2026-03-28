@@ -289,7 +289,7 @@ export function buildUserPrompt(
   const contextInstruction =
     context === "business"
       ? `Context: BUSINESS / ORGANIZATIONAL question.
-Use game mechanics that reveal organizational dynamics — auctions, trials, constructions, eliminations, relay races. Characters can come from completely outside business — mythological figures, archetypes from other domains — placed in organizational tension. The game rules should force honest prioritization.`
+Use game mechanics that reveal organizational dynamics — auctions, trials, constructions, eliminations, relay races, board meetings, mergers, acquisitions, pitches. Characters should use business and rational vocabulary — CEO, Investor, The Budget, The Deadline, The Strategy, The Customer, The Competitor, KPI, The Risk, The Market, The Process, Cash Flow, The Board, The Stakeholder, ROI, The Bottleneck, The Legacy System. Keep the language sharp, professional, and grounded in business reality. The game rules should force honest prioritization.`
       : `Context: PERSONAL question.
 Go deep and sideways. Use game mechanics that force the author into genuine vulnerability — funerals, coronations, mirrors, silent walks, dances. The author's task should cost them something real. Characters can be inner archetypes, contradictions, forces that don't have names yet.`;
 
