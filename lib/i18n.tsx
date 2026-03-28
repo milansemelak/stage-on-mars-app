@@ -121,8 +121,8 @@ const translations = {
     whatTheStageRevealed: "Perspectives from Mars",
     replay: "Replay",
     author: "You",
-    nextQuestion: "The play asks",
-    askThis: "Ask this",
+    nextQuestion: "Next question into the play",
+    askThis: "Play this",
     // Client name
     forWhom: "Who is this play for?",
     forWhomPlaceholder: "Name",
@@ -258,8 +258,8 @@ const translations = {
     whatTheStageRevealed: "Perspektívy z Marsu",
     replay: "Prehrať znova",
     author: "Ty",
-    nextQuestion: "Hra sa pýta",
-    askThis: "Opýtať sa",
+    nextQuestion: "Ďalšia otázka do hry",
+    askThis: "Odohrať",
     // Client name
     forWhom: "Pre koho je táto hra?",
     forWhomPlaceholder: "Meno",
@@ -395,8 +395,8 @@ const translations = {
     whatTheStageRevealed: "Perspektivy z Marsu",
     replay: "Přehrát znovu",
     author: "Ty",
-    nextQuestion: "Hra se ptá",
-    askThis: "Zeptat se",
+    nextQuestion: "Další otázka do hry",
+    askThis: "Odehrát",
     // Client name
     forWhom: "Pro koho je tato hra?",
     forWhomPlaceholder: "Jméno",
