@@ -254,10 +254,12 @@ export default function PlayPage() {
 
       {/* Loading state — skeleton */}
       {loading && (
-        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-8 sm:mt-10 space-y-4">
-          <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
-            {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
-          </p>
+        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-8 sm:mt-10">
+          <div className="py-6 sm:py-8 flex items-center justify-center">
+            <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
+              {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
+            </p>
+          </div>
           <PlaySkeleton />
         </div>
       )}
