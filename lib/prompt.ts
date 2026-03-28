@@ -231,7 +231,7 @@ export function buildMarsPrompt(
 
   const langInstruction =
     lang === "sk"
-      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo. Gramatika a diakritika musia byť DOKONALÉ. Správne: ť, ď, ň, ľ, š, č, ž, ý, á, é, í, ó, ú, ä, ô. Nikdy nevynechaj mäkčene a dĺžne. Príklad: 'pohrebaných' nie 'pohrebanych', 'tvárila' nie 'tvariľa', 'najťažšie' nie 'najtažšie'. NEPOUŽIVAJ vymyslené tvary slov: 'odvaha' nie 'odvážnosť'. Skloňovanie musí byť správne, žiadne vymyslené slová."
+      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Gramatika a diakritika musia byť DOKONALÉ. Nikdy nevynechaj mäkčene a dĺžne: 'pohrebaných' nie 'pohrebanych', 'tvárila' nie 'tvariľa'. NEPOUŽIVAJ vymyslené slová: 'Hrobár' nie 'Hrobník', 'Smútiaci' nie 'Smútočník', 'odvaha' nie 'odvážnosť'. Použi len slová, ktoré reálne existujú v slovenčine."
       : lang === "cs"
       ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo. Gramatika a diakritika musí být DOKONALÉ. Správně: ť, ď, ň, š, č, ž, ř, ý, á, é, í, ó, ú, ě, ů. Nikdy nevynechej háčky a čárky. Skloňování musí být správné, žádná vymyšlená slova."
       : "";
@@ -339,7 +339,7 @@ Go deep and sideways. Use game mechanics that force the author into genuine vuln
 
   const langInstruction =
     lang === "sk"
-      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo — názov hry, obraz, mená postáv, rola autora, záver. Žiadna angličtina. ŽIADNE preklady v zátvorkách. Použi termín 'Systemická hra'. GRAMATIKA, DIAKRITIKA A FORMÁTOVANIE MUSIA BYŤ DOKONALÉ: (1) Správne mäkčene a dĺžne — 'pohrebaných' nie 'pohrebanych', 'tvárila' nie 'tvariľa'. (2) NIKDY nezlievaj slová dohromady — medzi každými dvoma slovami musí byť medzera. 'Tri pohřeby' nie 'Tri pohřebyPohřebaného'. (3) NEPOUŽIVAJ vymyslené tvary slov — 'odvaha' nie 'odvážnosť'. (4) Názov hry musí byť 2-5 ODDELENÝCH slov s medzerami, gramaticky správny slovenský názov. Prečítaj si ho pred odoslaním. Ak si nie si istý slovom, použi jednoduchší výraz."
+      ? "KRITICKÉ: Celý výstup musí byť VÝLUČNE v slovenčine. Každé slovo — názov hry, obraz, mená postáv, rola autora, záver. Žiadna angličtina. ŽIADNE preklady v zátvorkách. Použi termín 'Systemická hra'. GRAMATIKA, DIAKRITIKA A FORMÁTOVANIE MUSIA BYŤ DOKONALÉ: (1) Správne mäkčene a dĺžne — 'pohrebaných' nie 'pohrebanych', 'tvárila' nie 'tvariľa'. (2) NIKDY nezlievaj slová dohromady — medzi každými dvoma slovami musí byť medzera. 'Tri pohřeby' nie 'Tri pohřebyPohřebaného'. (3) NEPOUŽIVAJ vymyslené slová ani nesprávne tvary — 'odvaha' nie 'odvážnosť', 'Hrobár' nie 'Hrobník', 'Smútiaci' nie 'Smútočník', 'Porotca' nie 'Porotčík'. Použi len slová, ktoré reálne existujú v slovenčine. (4) Názov hry musí byť 2-5 ODDELENÝCH slov s medzerami, gramaticky správny slovenský názov. Prečítaj si ho pred odoslaním. Ak si nie si istý slovom, použi jednoduchší výraz."
       : lang === "cs"
       ? "KRITICKÉ: Celý výstup musí být VÝHRADNĚ v češtině. Každé slovo — název hry, obraz, jména postav, role autora, závěr. Žádná angličtina. ŽÁDNÉ překlady v závorkách. Použi termín 'Systemická hra'. GRAMATIKA, DIAKRITIKA A FORMÁTOVÁNÍ MUSÍ BÝT DOKONALÉ: (1) Správné háčky a čárky — nikdy nevynechej diakritiku. (2) NIKDY neslévej slova dohromady — mezi každými dvěma slovy musí být mezera. (3) NEPOUŽÍVEJ vymyšlené tvary slov. (4) Název hry musí být 2-5 ODDĚLENÝCH slov s mezerami, gramaticky správný český název. Přečti si ho před odesláním. Pokud si nejsi jistý slovem, použij jednodušší výraz."
       : "";
