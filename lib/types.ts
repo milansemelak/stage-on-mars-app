@@ -23,12 +23,14 @@ export type HistoryEntry = {
   timestamp: number;
   favorite?: boolean;
   rxNumber?: string;
+  clientName?: string;
 };
 
 export type GenerateRequest = {
   question: string;
   context?: string;
   lang?: "en" | "sk" | "cs";
+  clientName?: string;
 };
 
 export type GenerateResponse = {

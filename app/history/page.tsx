@@ -150,6 +150,7 @@ export default function HistoryPage() {
                   favorite={entry.favorite}
                   onToggleFavorite={() => toggleFavorite(realIdx)}
                   rxNumber={entry.rxNumber}
+                  clientName={entry.clientName}
                 />
               </div>
             );

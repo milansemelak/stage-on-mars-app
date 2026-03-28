@@ -190,7 +190,8 @@ export function buildMarsPrompt(
     mood: string;
   },
   question: string,
-  lang?: "en" | "sk" | "cs"
+  lang?: "en" | "sk" | "cs",
+  clientName?: string
 ): string {
   const characterList = play.characters
     .map((c) => `- ${c.name} (${c.description})`)
@@ -222,6 +223,16 @@ export function buildMarsPrompt(
     `Ending Perspective: ${play.endingPerspective}`,
     ``,
     `What happened on this stage? What did you witness?`,
+  );
+
+  if (clientName) {
+    parts.push(
+      ``,
+      `The person who asked this question is named "${clientName}". Use their name instead of "the author" in the simulation and perspectives.`
+    );
+  }
+
+  parts.push(
     ``,
     `Return ONLY valid JSON with "simulation" and "perspectives". No other text.`,
   );
@@ -284,7 +295,8 @@ const CREATIVE_ANGLES = [
 export function buildUserPrompt(
   question: string,
   context?: string,
-  lang?: "en" | "sk" | "cs"
+  lang?: "en" | "sk" | "cs",
+  clientName?: string
 ): string {
   const contextInstruction =
     context === "business"
@@ -323,6 +335,13 @@ Go deep and sideways. Use game mechanics that force the author into genuine vuln
     "",
     "Do NOT include simulation or perspectives — this is Step 1 only.",
   );
+
+  if (clientName) {
+    parts.push(
+      "",
+      `IMPORTANT: The person asking this question is named "${clientName}". In the authorRole field and anywhere the play references "the author", use their name "${clientName}" instead. For example, instead of "The author stands in the center" write "${clientName} stands in the center".`
+    );
+  }
 
   parts.push("", "Return ONLY a JSON array with 1 play object. No other text.");
 

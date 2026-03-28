@@ -25,7 +25,7 @@ async function callWithRetry(params: Anthropic.MessageCreateParamsNonStreaming, 
 export async function POST(request: NextRequest) {
   try {
     const body: GenerateRequest = await request.json();
-    const { question, context, lang } = body;
+    const { question, context, lang, clientName } = body;
 
     if (!question || !question.trim()) {
       return NextResponse.json(
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: buildUserPrompt(question, context, lang),
+          content: buildUserPrompt(question, context, lang, clientName),
         },
       ],
     });

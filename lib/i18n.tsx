@@ -113,6 +113,9 @@ const translations = {
     fromMars: "Play Simulation",
     loadingMars: "Mars is watching...",
     marsError: "Mars couldn't see this one. Try again.",
+    // Client name
+    forWhom: "Who is this play for?",
+    forWhomPlaceholder: "Name (optional)",
     // Share
     sharePlay: "Share",
     // Favorites
@@ -237,6 +240,9 @@ const translations = {
     fromMars: "Simulácia Hry",
     loadingMars: "Mars sleduje...",
     marsError: "Mars to nevidel. Skús znova.",
+    // Client name
+    forWhom: "Pre koho je táto hra?",
+    forWhomPlaceholder: "Meno (nepovinné)",
     // Share
     sharePlay: "Zdieľať",
     // Favorites
@@ -361,6 +367,9 @@ const translations = {
     fromMars: "Simulace Hry",
     loadingMars: "Mars sleduje...",
     marsError: "Mars to neviděl. Zkus znovu.",
+    // Client name
+    forWhom: "Pro koho je tato hra?",
+    forWhomPlaceholder: "Jméno (nepovinné)",
     // Share
     sharePlay: "Sdílet",
     // Favorites

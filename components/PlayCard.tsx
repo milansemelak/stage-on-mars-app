@@ -13,9 +13,10 @@ type Props = {
   favorite?: boolean;
   onToggleFavorite?: () => void;
   rxNumber?: string;
+  clientName?: string;
 };
 
-export default function PlayCard({ play, question, onPlayUpdate, favorite, onToggleFavorite, rxNumber }: Props) {
+export default function PlayCard({ play, question, onPlayUpdate, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
   const { lang, t } = useI18n();
   const [currentPlay, setCurrentPlay] = useState(play);
 
@@ -44,7 +45,7 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
       const response = await fetch("/api/generate-mars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play: currentPlay, question, lang }),
+        body: JSON.stringify({ play: currentPlay, question, lang, clientName }),
       });
       if (!response.ok) throw new Error("Failed");
       const data = await response.json();

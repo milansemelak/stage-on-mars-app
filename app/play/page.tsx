@@ -82,6 +82,7 @@ function PlaySkeleton() {
 
 export default function PlayPage() {
   const [question, setQuestion] = useState("");
+  const [clientName, setClientName] = useState("");
   const [context, setContext] = useState<"personal" | "business">("personal");
   const [play, setPlay] = useState<Play | null>(null);
   const [loading, setLoading] = useState(false);
@@ -141,7 +142,7 @@ export default function PlayPage() {
       const response = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, context, lang }),
+        body: JSON.stringify({ question, context, lang, clientName: clientName.trim() || undefined }),
       });
 
       if (!response.ok) {
@@ -162,6 +163,7 @@ export default function PlayPage() {
         play: data.plays[0],
         timestamp: Date.now(),
         rxNumber,
+        clientName: clientName.trim() || undefined,
       });
       localStorage.setItem(
         STORAGE_KEYS.playHistory,
@@ -182,7 +184,7 @@ export default function PlayPage() {
       setLoading(false);
       generatingRef.current = false;
     }
-  }, [question, context, lang, questionPool.length, t.errorMessage]);
+  }, [question, context, lang, clientName, questionPool.length, t.errorMessage]);
 
   function handlePlayUpdate(updatedPlay: Play) {
     setPlay(updatedPlay);
@@ -224,6 +226,8 @@ export default function PlayPage() {
             loading={loading}
             context={context}
             onContextChange={setContext}
+            clientName={clientName}
+            onClientNameChange={setClientName}
           />
 
           {/* Daily question suggestion — only when no play */}
@@ -282,7 +286,7 @@ export default function PlayPage() {
             </button>
           </div>
 
-          <PlayCard play={play} question={askedQuestion} onPlayUpdate={handlePlayUpdate} />
+          <PlayCard play={play} question={askedQuestion} onPlayUpdate={handlePlayUpdate} clientName={clientName.trim() || undefined} />
         </div>
       )}
     </div>

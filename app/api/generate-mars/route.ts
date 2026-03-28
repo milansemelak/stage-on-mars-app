@@ -26,12 +26,13 @@ type MarsRequest = {
   play: Play;
   question: string;
   lang?: "en" | "sk" | "cs";
+  clientName?: string;
 };
 
 export async function POST(request: NextRequest) {
   try {
     const body: MarsRequest = await request.json();
-    const { play, question, lang } = body;
+    const { play, question, lang, clientName } = body;
 
     if (!play || !question?.trim()) {
       return NextResponse.json(
@@ -48,7 +49,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: buildMarsPrompt(play, question, lang),
+          content: buildMarsPrompt(play, question, lang, clientName),
         },
       ],
     });

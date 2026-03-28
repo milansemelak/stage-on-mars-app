@@ -9,6 +9,8 @@ type Props = {
   loading: boolean;
   context: "personal" | "business";
   onContextChange: (c: "personal" | "business") => void;
+  clientName: string;
+  onClientNameChange: (name: string) => void;
 };
 
 export default function QuestionInput({
@@ -18,6 +20,8 @@ export default function QuestionInput({
   loading,
   context,
   onContextChange,
+  clientName,
+  onClientNameChange,
 }: Props) {
   const { t } = useI18n();
   const hasQuestion = question.trim().length > 0;
@@ -41,7 +45,7 @@ export default function QuestionInput({
         />
 
         {/* Bottom bar */}
-        <div className="flex items-center justify-between px-4 sm:px-5 pb-3">
+        <div className="flex items-center justify-between px-4 sm:px-5 pb-3 gap-3">
           <div className="flex items-center gap-1 bg-white/[0.06] rounded-lg p-0.5">
             <button
               onClick={() => onContextChange("personal")}
@@ -64,9 +68,18 @@ export default function QuestionInput({
               {t.business}
             </button>
           </div>
-          <span className="text-[10px] text-white/25 hidden sm:block">
-            Enter ↵
-          </span>
+
+          {/* Client name input */}
+          <div className="flex items-center gap-2 flex-1 max-w-[200px]">
+            <label className="text-[10px] text-white/25 whitespace-nowrap hidden sm:block">{t.forWhom}</label>
+            <input
+              type="text"
+              value={clientName}
+              onChange={(e) => onClientNameChange(e.target.value)}
+              placeholder={t.forWhomPlaceholder}
+              className="w-full bg-white/[0.06] rounded-lg px-3 py-1.5 text-xs text-white/70 placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors"
+            />
+          </div>
         </div>
       </div>
 
