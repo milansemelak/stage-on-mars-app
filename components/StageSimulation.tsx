@@ -417,14 +417,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
         setEndingPhase(1); // circle forming
       }, 2000);
       const t2 = setTimeout(() => {
-        setEndingPhase(2); // message visible
+        setEndingPhase(2); // message + button visible
       }, 4000);
-      const t3 = setTimeout(() => {
-        onEnd?.();
-      }, 6000);
-      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+      return () => { clearTimeout(t1); clearTimeout(t2); };
     }
-  }, [currentStep, sentences.length, isPlaying, onEnd]);
+  }, [currentStep, sentences.length, isPlaying]);
 
   const handlePlayPause = () => {
     if (!hasStarted) {
@@ -662,14 +659,20 @@ export default function StageSimulation({ characters, simulation, simulationStep
             </div>
           )}
 
-          {/* Replay button after ending */}
-          {hasEnded && (
-            <div className="px-5 sm:px-6 pb-4 flex justify-center">
+          {/* End the play button + replay after ending */}
+          {hasEnded && endingPhase >= 2 && (
+            <div className="px-5 sm:px-6 pb-5 space-y-3 animate-fade-in">
+              <button
+                onClick={() => onEnd?.()}
+                className="w-full py-3.5 rounded-xl border border-mars/30 hover:border-mars/50 bg-mars/[0.08] hover:bg-mars/[0.15] text-white/80 hover:text-white font-bold text-sm tracking-wide uppercase transition-all"
+              >
+                {t.endThePlay}
+              </button>
               <button
                 onClick={handlePlayPause}
-                className="flex items-center gap-2 text-white/25 hover:text-white/50 text-xs transition-colors"
+                className="w-full flex items-center justify-center gap-2 text-white/20 hover:text-white/40 text-xs transition-colors py-1"
               >
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current">
+                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current">
                   <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
                 </svg>
                 {t.replay}

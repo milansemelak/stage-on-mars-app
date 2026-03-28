@@ -116,6 +116,7 @@ const translations = {
     loadingMars: "Play begins shortly.",
     marsError: "Mars couldn't see this one. Try again.",
     stageHasSpoken: "The stage has spoken.",
+    endThePlay: "End the Play",
     replay: "Replay",
     author: "You",
     // Client name
@@ -248,6 +249,7 @@ const translations = {
     loadingMars: "Hra čoskoro začne.",
     marsError: "Mars to nevidel. Skús znova.",
     stageHasSpoken: "Javisko prehovorilo.",
+    endThePlay: "Ukonči hru",
     replay: "Prehrať znova",
     author: "Ty",
     // Client name
@@ -380,6 +382,7 @@ const translations = {
     loadingMars: "Hra brzy začne.",
     marsError: "Mars to neviděl. Zkus znovu.",
     stageHasSpoken: "Jeviště promluvilo.",
+    endThePlay: "Ukonči hru",
     replay: "Přehrát znovu",
     author: "Ty",
     // Client name
