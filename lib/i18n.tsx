@@ -85,7 +85,7 @@ const translations = {
     heroHeadline: "Ask your question.",
     heroSubtitle: "Mars will show you what you're not seeing.",
     heroSubmit: "Take me to Mars",
-    credibility: "Stage on Mars and the Method of Systemic Play have been used by leading companies across Europe, featured at Forbes conferences, and brought to prime-time reality. Step into it at our flagship space in Prague.",
+    credibility: "Stage on Mars and the Method of Systemic Play have been used by leading companies across Europe, featured at Forbes conferences, and brought to prime-time reality TV. Experience it at our flagship space in Prague.",
     counterLive: "Questions played live",
     counterDigital: "Plays generated here",
     howItWorksTitle: "How it works",
