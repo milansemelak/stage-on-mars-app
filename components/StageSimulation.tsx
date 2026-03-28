@@ -16,7 +16,7 @@ type Position = { x: number; y: number };
 // Stage dimensions (SVG viewBox 0 0 100 100)
 const CX = 50;
 const CY = 50;
-const EDGE_R = 34; // radius for edge positions (inside the ring)
+const EDGE_R = 30; // radius for edge positions (inside the ring)
 
 /**
  * Resolve a position keyword to absolute x,y coordinates.
@@ -200,8 +200,8 @@ function separatePositions(positions: Position[]) {
     }
   }
 
-  // Clamp to stay inside the circular stage (radius 40 from center 50,50)
-  const MAX_R = 38;
+  // Clamp to stay inside the circular stage (inside the r=42 ring)
+  const MAX_R = 34;
   for (const p of positions) {
     const dx = p.x - CX;
     const dy = p.y - CY;
@@ -417,12 +417,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
           }}
         />
 
-        {/* Loading overlay */}
+        {/* Loading overlay — text at bottom, not center */}
         {loading && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-8 h-8 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
-              <p className="font-mercure text-white/30 text-sm italic">{t.loadingMars}</p>
+          <div className="absolute inset-x-0 bottom-4 sm:bottom-6 z-10 flex justify-center">
+            <div className="flex items-center gap-2.5 bg-black/60 backdrop-blur-sm rounded-full px-5 py-2.5">
+              <div className="w-4 h-4 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
+              <p className="font-mercure text-white/40 text-sm italic">{t.loadingMars}</p>
             </div>
           </div>
         )}
@@ -462,10 +462,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </defs>
 
           {/* LED ring — perfect circle */}
-          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="3" />
-          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
-          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
-          <circle cx="50" cy="50" r="42" fill="rgba(255,85,0,0.015)" />
+          <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="3" />
+          <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
+          <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
+          <circle cx="50" cy="50" r="38" fill="rgba(255,85,0,0.015)" />
 
           {/* Characters */}
           {renderPositions.map((pos, i) => {
