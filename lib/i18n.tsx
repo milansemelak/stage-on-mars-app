@@ -117,6 +117,7 @@ const translations = {
     marsError: "Mars couldn't see this one. Try again.",
     stageHasSpoken: "The stage has spoken.",
     replay: "Replay",
+    author: "You",
     // Client name
     forWhom: "Who is this play for?",
     forWhomPlaceholder: "Name",
@@ -248,6 +249,7 @@ const translations = {
     marsError: "Mars to nevidel. Skús znova.",
     stageHasSpoken: "Javisko prehovorilo.",
     replay: "Prehrať znova",
+    author: "Ty",
     // Client name
     forWhom: "Pre koho je táto hra?",
     forWhomPlaceholder: "Meno",
@@ -379,6 +381,7 @@ const translations = {
     marsError: "Mars to neviděl. Zkus znovu.",
     stageHasSpoken: "Jeviště promluvilo.",
     replay: "Přehrát znovu",
+    author: "Ty",
     // Client name
     forWhom: "Pro koho je tato hra?",
     forWhomPlaceholder: "Jméno",

@@ -290,16 +290,15 @@ function lerp(a: number, b: number, t: number) {
 export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, onEnd }: Props) {
   const { t } = useI18n();
 
-  // Add author as a special character if clientName is provided
+  // Always add author as a special character on stage
+  const authorLabel = clientName || t.author;
   const allCharacters = useMemo(() => {
-    if (!clientName) return characters;
-    // Check if author is already in characters list
     const alreadyExists = characters.some(
-      (c) => c.name.toLowerCase() === clientName.toLowerCase()
+      (c) => c.name.toLowerCase() === authorLabel.toLowerCase()
     );
     if (alreadyExists) return characters;
-    return [{ name: clientName, description: "author" }, ...characters];
-  }, [characters, clientName]);
+    return [{ name: authorLabel, description: "author" }, ...characters];
+  }, [characters, authorLabel]);
 
   // Determine narration sentences
   const sentences = useMemo(() => {
