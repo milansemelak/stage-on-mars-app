@@ -1,13 +1,23 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n";
+import { STORAGE_KEYS } from "@/lib/constants";
 
 export default function Home() {
   const { t } = useI18n();
   const router = useRouter();
   const [question, setQuestion] = useState("");
+  const [digitalPlays, setDigitalPlays] = useState(0);
+
+  // Count total plays generated (from all users on this device, as a proxy)
+  useEffect(() => {
+    try {
+      const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.playHistory) || "[]");
+      setDigitalPlays(history.length);
+    } catch { /* */ }
+  }, []);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -55,21 +65,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Example */}
+      {/* Credibility + Counter */}
       <section className="px-6 pb-24">
-        <div className="max-w-xl mx-auto animate-fade-slide-up stagger-3">
-          <p className="text-white/25 text-xs uppercase tracking-[0.2em] mb-6 text-center">
-            {t.exampleLabel}
+        <div className="max-w-xl mx-auto animate-fade-slide-up stagger-3 text-center space-y-8">
+          <p className="text-white/30 text-sm sm:text-base leading-relaxed max-w-md mx-auto">
+            {t.credibility}
           </p>
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 space-y-6">
-            <p className="text-white/60 text-sm">
-              <span className="text-mars/70 mr-2">Q</span>
-              <span className="font-mercure italic">{t.exampleQuestion}</span>
-            </p>
-            <div className="w-8 h-px bg-white/10" />
-            <p className="text-white/40 text-sm leading-relaxed font-mercure italic">
-              {t.examplePerspective}
-            </p>
+
+          {/* Play counter */}
+          <div className="flex items-center justify-center gap-8 sm:gap-12">
+            <div className="text-center">
+              <p className="text-2xl sm:text-3xl font-bold text-white">815+</p>
+              <p className="text-white/20 text-[10px] uppercase tracking-widest mt-1">{t.counterLive}</p>
+            </div>
+            <div className="w-px h-10 bg-white/10" />
+            <div className="text-center">
+              <p className="text-2xl sm:text-3xl font-bold text-mars">{digitalPlays > 0 ? `${digitalPlays}` : "—"}</p>
+              <p className="text-white/20 text-[10px] uppercase tracking-widest mt-1">{t.counterDigital}</p>
+            </div>
           </div>
         </div>
       </section>
