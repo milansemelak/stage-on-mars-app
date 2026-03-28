@@ -75,7 +75,7 @@ export default function QuestionInput({
             value={clientName}
             onChange={(e) => onClientNameChange(e.target.value)}
             placeholder={t.forWhomPlaceholder}
-            className="w-24 sm:w-32 bg-white/[0.06] rounded-lg px-3 py-1.5 text-[16px] sm:text-xs text-white/70 placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors"
+            className="w-24 sm:w-32 bg-white/[0.06] rounded-lg px-3 py-1.5 text-[16px] sm:text-xs text-white/70 placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors text-center"
           />
         </div>
       </div>
