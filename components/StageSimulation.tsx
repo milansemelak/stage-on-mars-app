@@ -9,6 +9,7 @@ type Props = {
   simulation?: string;
   simulationSteps?: SimulationStep[];
   loading?: boolean;
+  clientName?: string;
 };
 
 type Position = { x: number; y: number };
@@ -285,8 +286,19 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
-export default function StageSimulation({ characters, simulation, simulationSteps, loading }: Props) {
+export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName }: Props) {
   const { t } = useI18n();
+
+  // Add author as a special character if clientName is provided
+  const allCharacters = useMemo(() => {
+    if (!clientName) return characters;
+    // Check if author is already in characters list
+    const alreadyExists = characters.some(
+      (c) => c.name.toLowerCase() === clientName.toLowerCase()
+    );
+    if (alreadyExists) return characters;
+    return [{ name: clientName, description: "author" }, ...characters];
+  }, [characters, clientName]);
 
   // Determine narration sentences
   const sentences = useMemo(() => {
@@ -305,10 +317,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
   // Compute target positions for current step
   const targets = useMemo(() => {
     if (hasChoreography && simulationSteps) {
-      return computeStepPositions(characters, simulationSteps, currentStep);
+      return computeStepPositions(allCharacters, simulationSteps, currentStep);
     }
-    return getFallbackPositions(characters.length, currentStep);
-  }, [characters, simulationSteps, hasChoreography, currentStep]);
+    return getFallbackPositions(allCharacters.length, currentStep);
+  }, [allCharacters, simulationSteps, hasChoreography, currentStep]);
 
   // Find which characters moved this step (for highlighting)
   const movedCharacters = useMemo(() => {
@@ -316,13 +328,13 @@ export default function StageSimulation({ characters, simulation, simulationStep
     const moved = new Set<number>();
     const stepPositions = simulationSteps[currentStep].positions;
     for (const charName of Object.keys(stepPositions)) {
-      const idx = characters.findIndex(
+      const idx = allCharacters.findIndex(
         (c) => c.name === charName || c.name.toLowerCase() === charName.toLowerCase()
       );
       if (idx !== -1) moved.add(idx);
     }
     return moved;
-  }, [hasChoreography, simulationSteps, currentStep, characters]);
+  }, [hasChoreography, simulationSteps, currentStep, allCharacters]);
 
   // Animated positions
   const currentPositions = useRef<Position[]>([]);
@@ -331,15 +343,19 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   // Initialize
   useEffect(() => {
-    if (currentPositions.current.length !== characters.length) {
-      const initial = characters.map((_, i) => {
-        const angle = -Math.PI / 2 + (2 * Math.PI * i) / characters.length;
+    if (currentPositions.current.length !== allCharacters.length) {
+      const initial = allCharacters.map((c, i) => {
+        // Author starts at bottom edge
+        if (c.description === "author") {
+          return { x: CX, y: CY + EDGE_R };
+        }
+        const angle = -Math.PI / 2 + (2 * Math.PI * i) / allCharacters.length;
         return { x: CX + Math.cos(angle) * 28, y: CY + Math.sin(angle) * 15 };
       });
       currentPositions.current = initial;
       setRenderPositions(initial);
     }
-  }, [characters.length]);
+  }, [allCharacters]);
 
   // Animation loop
   useEffect(() => {
@@ -459,6 +475,15 @@ export default function StageSimulation({ characters, simulation, simulationStep
             <filter id="glow-char" x="-200%" y="-200%" width="500%" height="500%">
               <feGaussianBlur stdDeviation="0.5" />
             </filter>
+            <filter id="glow-author" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="1.2" result="b1" />
+              <feGaussianBlur stdDeviation="3" result="b2" />
+              <feMerge>
+                <feMergeNode in="b2" />
+                <feMergeNode in="b1" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
 
           {/* LED ring — perfect circle */}
@@ -469,36 +494,48 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
           {/* Characters */}
           {renderPositions.map((pos, i) => {
-            const char = characters[i];
+            const char = allCharacters[i];
             if (!char) return null;
-            const isAbstract = char.description?.toLowerCase() === "abstract";
+            const isAuthor = char.description === "author";
+            const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
             const isActive = hasStarted && movedCharacters.has(i);
-            const dotR = isActive ? 2.8 : 2;
+            const dotR = isAuthor ? 3 : (isActive ? 2.8 : 2);
+
+            // Author: gold/amber   Concrete: orange   Abstract: white
+            const colors = isAuthor
+              ? { fill: "rgba(255,215,0,0.85)", stroke: "rgba(255,215,0,1)", glow: "rgba(255,215,0,0.12)", text: "rgba(255,230,130,1)", textDim: "rgba(255,215,0,0.7)" }
+              : isAbstract
+                ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)", textDim: "rgba(255,255,255,0.4)" }
+                : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)", textDim: "rgba(255,179,128,0.55)" };
 
             return (
               <g key={i} transform={`translate(${pos.x}, ${pos.y})`}>
                 {/* Glow */}
                 <circle cx={0} cy={0}
-                  r={isActive ? 7 : 4}
-                  fill={isAbstract ? "rgba(255,255,255,0.03)" : "rgba(255,85,0,0.06)"}
-                  filter="url(#glow-char)"
+                  r={isAuthor ? 8 : (isActive ? 7 : 4)}
+                  fill={colors.glow}
+                  filter={isAuthor ? "url(#glow-author)" : "url(#glow-char)"}
                 />
+
+                {/* Author outer ring */}
+                {isAuthor && (
+                  <circle cx={0} cy={0} r="4.5" fill="none"
+                    stroke="rgba(255,215,0,0.3)" strokeWidth="0.3"
+                  >
+                    <animate attributeName="r" values="4;6;4" dur="3s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.6;0;0.6" dur="3s" repeatCount="indefinite" />
+                  </circle>
+                )}
 
                 {/* Dot */}
                 <circle cx={0} cy={0} r={dotR}
-                  fill={isActive
-                    ? (isAbstract ? "rgba(255,255,255,0.6)" : "rgba(255,85,0,0.9)")
-                    : (isAbstract ? "rgba(255,255,255,0.35)" : "rgba(255,85,0,0.55)")
-                  }
-                  stroke={isActive
-                    ? (isAbstract ? "rgba(255,255,255,0.8)" : "rgba(255,85,0,1)")
-                    : (isAbstract ? "rgba(255,255,255,0.4)" : "rgba(255,85,0,0.65)")
-                  }
-                  strokeWidth={isActive ? 0.4 : 0.2}
+                  fill={colors.fill}
+                  stroke={colors.stroke}
+                  strokeWidth={isAuthor ? 0.5 : (isActive ? 0.4 : 0.2)}
                 />
 
-                {/* Active pulse */}
-                {isActive && (
+                {/* Active pulse (non-author) */}
+                {isActive && !isAuthor && (
                   <circle cx={0} cy={0} r="4" fill="none"
                     stroke={isAbstract ? "rgba(255,255,255,0.2)" : "rgba(255,85,0,0.35)"}
                     strokeWidth="0.2"
@@ -510,14 +547,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
                 {/* Name */}
                 <text
-                  x={0} y={isActive ? -5 : -4}
+                  x={0} y={isAuthor ? -5.5 : (isActive ? -5 : -4)}
                   textAnchor="middle"
-                  fill={isActive
-                    ? (isAbstract ? "rgba(255,255,255,0.85)" : "rgba(255,179,128,1)")
-                    : (isAbstract ? "rgba(255,255,255,0.4)" : "rgba(255,179,128,0.55)")
-                  }
-                  fontSize={isActive ? 2.8 : 2.2}
-                  fontWeight={isActive ? 700 : 500}
+                  fill={colors.text}
+                  fontSize={isAuthor ? 2.8 : (isActive ? 2.8 : 2.2)}
+                  fontWeight={isAuthor ? 700 : (isActive ? 700 : 500)}
                   fontStyle={isAbstract ? "italic" : "normal"}
                   letterSpacing="0.03"
                   className="select-none"

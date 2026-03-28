@@ -405,6 +405,7 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
               <StageSimulation
                 characters={currentPlay.characters}
                 loading={true}
+                clientName={clientName}
               />
             </div>
           )}
@@ -416,6 +417,7 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                 characters={currentPlay.characters}
                 simulation={currentPlay.simulation}
                 simulationSteps={currentPlay.simulationSteps}
+                clientName={clientName}
               />
             </div>
           )}
