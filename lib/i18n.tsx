@@ -115,6 +115,8 @@ const translations = {
     fromMars: "Play Simulation",
     loadingMars: "Play begins shortly.",
     marsError: "Mars couldn't see this one. Try again.",
+    stageHasSpoken: "The stage has spoken.",
+    replay: "Replay",
     // Client name
     forWhom: "Who is this play for?",
     forWhomPlaceholder: "Name",
@@ -244,6 +246,8 @@ const translations = {
     fromMars: "Simulácia Hry",
     loadingMars: "Hra čoskoro začne.",
     marsError: "Mars to nevidel. Skús znova.",
+    stageHasSpoken: "Javisko prehovorilo.",
+    replay: "Prehrať znova",
     // Client name
     forWhom: "Pre koho je táto hra?",
     forWhomPlaceholder: "Meno",
@@ -373,6 +377,8 @@ const translations = {
     fromMars: "Simulace Hry",
     loadingMars: "Hra brzy začne.",
     marsError: "Mars to neviděl. Zkus znovu.",
+    stageHasSpoken: "Jeviště promluvilo.",
+    replay: "Přehrát znovu",
     // Client name
     forWhom: "Pro koho je tato hra?",
     forWhomPlaceholder: "Jméno",

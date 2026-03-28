@@ -38,10 +38,15 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
     endingPerspective: play.endingPerspective,
   });
   const [copied, setCopied] = useState(false);
+  // Show perspectives immediately if they already exist (history/reload), hide until ritual if fresh
+  const [perspectivesRevealed, setPerspectivesRevealed] = useState(
+    !!(play.perspectives && play.perspectives.length > 0)
+  );
 
   async function fetchFromMars() {
     setMarsLoading(true);
     setMarsError(null);
+    setPerspectivesRevealed(false);
     try {
       const response = await fetch("/api/generate-mars", {
         method: "POST",
@@ -418,13 +423,22 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                 simulation={currentPlay.simulation}
                 simulationSteps={currentPlay.simulationSteps}
                 clientName={clientName}
+                onEnd={() => setPerspectivesRevealed(true)}
               />
             </div>
           )}
 
           {/* ── Perspectives ── */}
-          {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (
-            <div className="animate-fade-slide-up stagger-7 relative">
+          {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && (
+            <div className="relative" style={{ animation: currentPlay.simulation ? "perspectiveReveal 1.2s ease-out forwards" : undefined }}>
+              {/* Transition bridge */}
+              {currentPlay.simulation && (
+                <div className="flex flex-col items-center gap-3 mb-6">
+                  <div className="w-px h-8 bg-gradient-to-b from-mars/30 to-mars/10" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-mars/40" />
+                </div>
+              )}
+
               <div className="rounded-2xl border border-mars/20 overflow-hidden">
                 {/* Header bar */}
                 <div className="bg-mars/[0.08] border-b border-mars/15 px-6 sm:px-8 py-4 flex items-center gap-3">
@@ -437,7 +451,13 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                 {/* Perspective items */}
                 <div className="divide-y divide-white/[0.04]">
                   {currentPlay.perspectives.map((p, i) => (
-                    <div key={i} className="flex gap-5 items-start px-6 sm:px-8 py-5 sm:py-6 hover:bg-white/[0.02] transition-colors">
+                    <div
+                      key={i}
+                      className="flex gap-5 items-start px-6 sm:px-8 py-5 sm:py-6 hover:bg-white/[0.02] transition-colors"
+                      style={currentPlay.simulation ? {
+                        animation: `perspectiveItemReveal 0.6s ease-out ${0.3 + i * 0.2}s both`,
+                      } : undefined}
+                    >
                       <div className="shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-mars/40 to-mars/15 border border-mars/40 flex items-center justify-center shadow-[0_0_8px_rgba(255,85,0,0.15)]">
                         <span className="text-white font-bold text-xs">
                           {i + 1}

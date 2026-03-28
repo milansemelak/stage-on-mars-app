@@ -10,6 +10,7 @@ type Props = {
   simulationSteps?: SimulationStep[];
   loading?: boolean;
   clientName?: string;
+  onEnd?: () => void;
 };
 
 type Position = { x: number; y: number };
@@ -286,7 +287,7 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
-export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName }: Props) {
+export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, onEnd }: Props) {
   const { t } = useI18n();
 
   // Add author as a special character if clientName is provided
@@ -313,14 +314,27 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [hasEnded, setHasEnded] = useState(false);
+  const [endingPhase, setEndingPhase] = useState(0); // 0=not ending, 1=circle forming, 2=message visible
+
+  // Final circle formation for ritual ending
+  const finalCirclePositions = useMemo(() => {
+    const count = allCharacters.length;
+    return allCharacters.map((_, i) => {
+      const angle = -Math.PI / 2 + (2 * Math.PI * i) / count;
+      return { x: CX + Math.cos(angle) * 22, y: CY + Math.sin(angle) * 22 };
+    });
+  }, [allCharacters]);
 
   // Compute target positions for current step
   const targets = useMemo(() => {
+    // During ending ritual, form a circle
+    if (hasEnded) return finalCirclePositions;
     if (hasChoreography && simulationSteps) {
       return computeStepPositions(allCharacters, simulationSteps, currentStep);
     }
     return getFallbackPositions(allCharacters.length, currentStep);
-  }, [allCharacters, simulationSteps, hasChoreography, currentStep]);
+  }, [allCharacters, simulationSteps, hasChoreography, currentStep, hasEnded, finalCirclePositions]);
 
   // Find which characters moved this step (for highlighting)
   const movedCharacters = useMemo(() => {
@@ -394,21 +408,37 @@ export default function StageSimulation({ characters, simulation, simulationStep
     return () => clearTimeout(timer);
   }, [currentStep, isPlaying, sentences.length]);
 
-  // Auto-stop at end
+  // Auto-stop at end — trigger ritual ending
   useEffect(() => {
-    if (currentStep >= sentences.length - 1 && isPlaying) {
+    if (currentStep >= sentences.length - 1 && isPlaying && sentences.length > 0) {
       setIsPlaying(false);
+      // Start ritual ending after a beat
+      const t1 = setTimeout(() => {
+        setHasEnded(true);
+        setEndingPhase(1); // circle forming
+      }, 2000);
+      const t2 = setTimeout(() => {
+        setEndingPhase(2); // message visible
+      }, 4000);
+      const t3 = setTimeout(() => {
+        onEnd?.();
+      }, 6000);
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }
-  }, [currentStep, sentences.length, isPlaying]);
+  }, [currentStep, sentences.length, isPlaying, onEnd]);
 
   const handlePlayPause = () => {
     if (!hasStarted) {
       setHasStarted(true);
+      setHasEnded(false);
+      setEndingPhase(0);
       setCurrentStep(0);
       setIsPlaying(true);
       return;
     }
-    if (currentStep >= sentences.length - 1) {
+    if (hasEnded || currentStep >= sentences.length - 1) {
+      setHasEnded(false);
+      setEndingPhase(0);
       setCurrentStep(0);
       setIsPlaying(true);
       return;
@@ -492,6 +522,17 @@ export default function StageSimulation({ characters, simulation, simulationStep
           <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
           <circle cx="50" cy="50" r="38" fill="rgba(255,85,0,0.015)" />
 
+          {/* Ritual ending — ring pulse */}
+          {hasEnded && (
+            <circle cx="50" cy="50" r="42" fill="none"
+              stroke="rgba(255,85,0,0.4)" strokeWidth="0.6"
+              filter="url(#glow-soft)"
+            >
+              <animate attributeName="strokeWidth" values="0.6;2;0.6" dur="4s" repeatCount="indefinite" />
+              <animate attributeName="stroke-opacity" values="0.4;0.15;0.4" dur="4s" repeatCount="indefinite" />
+            </circle>
+          )}
+
           {/* Characters */}
           {renderPositions.map((pos, i) => {
             const char = allCharacters[i];
@@ -570,46 +611,72 @@ export default function StageSimulation({ characters, simulation, simulationStep
           <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
 
           <div className="px-6 sm:px-8 pt-5 pb-4">
-            <p
-              className="font-mercure italic text-white/70 text-base sm:text-lg leading-relaxed animate-fade-in"
-              key={currentStep}
-            >
-              {sentences[currentStep]}
-            </p>
+            {endingPhase >= 2 ? (
+              <p
+                className="font-mercure italic text-mars/70 text-base sm:text-lg leading-relaxed text-center animate-fade-in"
+                key="ending"
+              >
+                {t.stageHasSpoken}
+              </p>
+            ) : (
+              <p
+                className="font-mercure italic text-white/70 text-base sm:text-lg leading-relaxed animate-fade-in"
+                key={currentStep}
+              >
+                {sentences[currentStep]}
+              </p>
+            )}
           </div>
 
-          <div className="px-5 sm:px-6 pb-4 flex items-center gap-3">
-            <button
-              onClick={handlePlayPause}
-              className="flex-shrink-0 w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.1] flex items-center justify-center transition-colors"
-            >
-              {isPlaying ? (
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50">
-                  <rect x="6" y="4" width="4" height="16" />
-                  <rect x="14" y="4" width="4" height="16" />
-                </svg>
-              ) : currentStep >= sentences.length - 1 ? (
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50">
+          {!hasEnded && (
+            <div className="px-5 sm:px-6 pb-4 flex items-center gap-3">
+              <button
+                onClick={handlePlayPause}
+                className="flex-shrink-0 w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.1] flex items-center justify-center transition-colors"
+              >
+                {isPlaying ? (
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50">
+                    <rect x="6" y="4" width="4" height="16" />
+                    <rect x="14" y="4" width="4" height="16" />
+                  </svg>
+                ) : currentStep >= sentences.length - 1 ? (
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50">
+                    <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50 ml-0.5">
+                    <polygon points="5,3 19,12 5,21" />
+                  </svg>
+                )}
+              </button>
+
+              <div className="flex-1 h-1 bg-white/[0.06] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-mars/50 rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${progress * 100}%` }}
+                />
+              </div>
+
+              <span className="text-[9px] text-white/15 font-mono flex-shrink-0 tabular-nums">
+                {currentStep + 1}/{sentences.length}
+              </span>
+            </div>
+          )}
+
+          {/* Replay button after ending */}
+          {hasEnded && (
+            <div className="px-5 sm:px-6 pb-4 flex justify-center">
+              <button
+                onClick={handlePlayPause}
+                className="flex items-center gap-2 text-white/25 hover:text-white/50 text-xs transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current">
                   <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
                 </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50 ml-0.5">
-                  <polygon points="5,3 19,12 5,21" />
-                </svg>
-              )}
-            </button>
-
-            <div className="flex-1 h-1 bg-white/[0.06] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-mars/50 rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${progress * 100}%` }}
-              />
+                {t.replay}
+              </button>
             </div>
-
-            <span className="text-[9px] text-white/15 font-mono flex-shrink-0 tabular-nums">
-              {currentStep + 1}/{sentences.length}
-            </span>
-          </div>
+          )}
         </div>
       )}
     </div>
