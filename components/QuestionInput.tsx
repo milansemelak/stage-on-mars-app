@@ -69,17 +69,14 @@ export default function QuestionInput({
             </button>
           </div>
 
-          {/* Client name input */}
-          <div className="flex items-center gap-2 flex-1 max-w-[200px]">
-            <label className="text-[10px] text-white/25 whitespace-nowrap hidden sm:block">{t.forWhom}</label>
-            <input
-              type="text"
-              value={clientName}
-              onChange={(e) => onClientNameChange(e.target.value)}
-              placeholder={t.forWhomPlaceholder}
-              className="w-full bg-white/[0.06] rounded-lg px-3 py-1.5 text-xs text-white/70 placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors"
-            />
-          </div>
+          {/* Client name input — 16px font prevents iOS auto-zoom */}
+          <input
+            type="text"
+            value={clientName}
+            onChange={(e) => onClientNameChange(e.target.value)}
+            placeholder={t.forWhomPlaceholder}
+            className="w-24 sm:w-32 bg-white/[0.06] rounded-lg px-3 py-1.5 text-[16px] sm:text-xs text-white/70 placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors"
+          />
         </div>
       </div>
 
