@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
-import { MARS_SYSTEM_PROMPT, buildMarsPrompt } from "@/lib/prompt";
+import { MARS_SYSTEM_PROMPT, buildMarsPrompt, buildValidationPrompt } from "@/lib/prompt";
 import { Play } from "@/lib/types";
 
 const anthropic = new Anthropic();
@@ -66,6 +66,43 @@ export async function POST(request: NextRequest) {
         parsed = JSON.parse(jsonMatch[0]);
       } else {
         throw new Error("Failed to parse Mars response");
+      }
+    }
+
+    // Language validation pass for SK/CS — fix invented words and grammar
+    if (lang === "sk" || lang === "cs") {
+      try {
+        const validationMsg = await callWithRetry({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 4096,
+          temperature: 0,
+          messages: [
+            {
+              role: "user",
+              content: buildValidationPrompt(JSON.stringify(parsed), lang),
+            },
+          ],
+        });
+
+        const validatedText = validationMsg.content[0].type === "text" ? validationMsg.content[0].text : "";
+        try {
+          const validated = JSON.parse(validatedText);
+          if (validated && typeof validated === "object") {
+            parsed = validated;
+          }
+        } catch {
+          const jsonMatch = validatedText.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            try {
+              const validated = JSON.parse(jsonMatch[0]);
+              if (validated && typeof validated === "object") {
+                parsed = validated;
+              }
+            } catch { /* keep original */ }
+          }
+        }
+      } catch (err) {
+        console.error("Language validation failed, using original:", err);
       }
     }
 
