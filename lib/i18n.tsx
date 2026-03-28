@@ -146,7 +146,7 @@ const translations = {
     simulationTitle: "Čo sa deje na scéne",
     simulationSub: "možný priebeh",
     perspectivesTitle: "Možné perspektívy",
-    placeholder: "Akú otázku chceš preskúmať?",
+    placeholder: "Akú otázku chceš rozohrať?",
     needHelp: "Potrebuješ pomoc?",
     hide: "Skryť",
     questionTriangle: "Trojuholník otázok",
