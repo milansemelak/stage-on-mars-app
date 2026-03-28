@@ -21,16 +21,18 @@ export default function Home() {
       {/* Hero */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-24">
         <div className="max-w-xl w-full text-center space-y-8 animate-fade-slide-up">
-          <div className="space-y-5">
-            <p className="text-white/30 text-sm tracking-wide">
-              {t.heroTagline}
-            </p>
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <p className="text-mars/70 text-xs font-bold uppercase tracking-[0.25em]">
+                Stage on Mars
+              </p>
+              <p className="text-white/30 text-sm tracking-wide">
+                {t.heroTagline}
+              </p>
+            </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight">
               {t.heroFormula}
             </h1>
-            <p className="text-white/40 text-lg font-mercure italic">
-              {t.heroSubtitle}
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">

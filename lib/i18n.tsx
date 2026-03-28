@@ -80,7 +80,7 @@ const translations = {
     see: "See",
     seeDesc: "Expand your perspective. Not answers — new ways of seeing through collective creativity.",
     // Home / Oracle landing
-    heroTagline: "To see what you can't see alone.",
+    heroTagline: "The Human Future Simulator",
     heroFormula: "Question × Play = Perspective",
     heroHeadline: "Ask your question.",
     heroSubtitle: "Mars will show you what you're not seeing.",
@@ -219,7 +219,7 @@ const translations = {
     see: "Pozri",
     seeDesc: "Rozšír svoju perspektívu. Nie odpovede — nové spôsoby videnia cez kolektívnu kreativitu.",
     // Home / Oracle landing
-    heroTagline: "Uvidieť, čo sám nevidíš.",
+    heroTagline: "The Human Future Simulator",
     heroFormula: "Otázka × Hra = Perspektíva",
     heroHeadline: "Polož svoju otázku.",
     heroSubtitle: "Mars ti ukáže, čo nevidíš.",
@@ -378,7 +378,7 @@ const translations = {
     see: "Podívej",
     seeDesc: "Rozšiř svou perspektivu. Ne odpovědi — nové způsoby vidění skrze kolektivní kreativitu.",
     // Home / Oracle landing
-    heroTagline: "Uvidět, co sám nevidíš.",
+    heroTagline: "The Human Future Simulator",
     heroFormula: "Otázka × Hra = Perspektiva",
     heroHeadline: "Polož svou otázku.",
     heroSubtitle: "Mars ti ukáže, co nevidíš.",
