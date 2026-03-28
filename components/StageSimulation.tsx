@@ -268,7 +268,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   // Animated positions
   const currentPositions = useRef<Position[]>([]);
   const [renderPositions, setRenderPositions] = useState<Position[]>([]);
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number>(0);
 
   // Initialize
   useEffect(() => {
