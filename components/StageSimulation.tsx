@@ -535,9 +535,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
         <div className="relative">
           <div className="absolute top-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
 
-          <div className="px-5 sm:px-6 pt-4 pb-3">
+          <div className="px-6 sm:px-8 pt-5 pb-4">
             <p
-              className="font-mercure italic text-white/50 text-sm sm:text-base leading-relaxed animate-fade-in"
+              className="font-mercure italic text-white/70 text-base sm:text-lg leading-relaxed animate-fade-in"
               key={currentStep}
             >
               {sentences[currentStep]}
