@@ -3,45 +3,48 @@
 
 export function buildValidationPrompt(jsonText: string, lang: "sk" | "cs"): string {
   if (lang === "sk") {
-    return `Si slovenský jazykový korektor. Dostaneš JSON text v slovenčine. Tvoja JEDINÁ úloha je opraviť VŠETKY jazykové chyby a vrátiť opravený JSON.
+    return `Si SLOVENSKÝ JAZYKOVÝ KOREKTOR. Dostaneš JSON text v slovenčine. Tvoja JEDINÁ úloha je opraviť VŠETKY jazykové chyby a vrátiť opravený JSON.
 
-OPRAV:
-- Vymyslené slová (slová, ktoré neexistujú v slovenčine) → nahraď reálnymi slovenskými slovami
-- Chýbajúcu diakritiku → doplň správne mäkčene a dĺžne
-- České tvary (ř, ě, ů, pohřeb, rozhodčí) → nahraď slovenskými (pohreb, rozhodca)
-- Nesprávne skloňovanie alebo časovanie
-- Zlúčené slová bez medzier
+## ČO HĽADAŤ A OPRAVIŤ:
 
-KONKRÉTNE OPRAVY (tieto slová NEEXISTUJÚ):
-- "súvet" → "veta"
-- "pohrebí" → "pochová"
-- "odvážnosť" → "odvaha"
-- "Hrobník" → "Hrobár"
-- "Smútočník" → "Smútiaci"
-- "Porotčík" → "Porotca"
-- "rozhodčí" → "rozhodca"
-- "pohřeb" → "pohreb"
-- "tvariľa" → "tvárila"
-- "pohrebanych" → "pohrebaných"
-- akékoľvek iné vymyslené slovo → nahraď najbližším reálnym slovenským slovom
+1. VYMYSLENÉ SLOVÁ — slová, ktoré neexistujú v slovenčine. Toto je NAJDÔLEŽITEJŠIE. Prečítaj KAŽDÉ slovo a spýtaj sa: existuje toto slovo reálne v slovenčine? Ak nie, nahraď ho reálnym slovenským slovom.
 
-NEMEŇ: štruktúru JSON, kľúče, mená postáv (character names), význam textu, interpunkciu.
-Vráť LEN opravený JSON, nič iné. Žiadne vysvetlenia.
+2. VYMYSLENÉ TVARY SLOVIES — napríklad "pohrebí" nie je slovenské slovo (správne: "pochová" od "pochovať"). Ak sloveso vyzerá divne, over si jeho neurčitok a použi správny tvar.
+
+3. VYMYSLENÉ PODSTATNÉ MENÁ — napríklad "súvet" neexistuje (správne: "veta"), "odvážnosť" neexistuje (správne: "odvaha"), "Hrobník" neexistuje (správne: "Hrobár"), "Smútočník" neexistuje (správne: "Smútiaci").
+
+4. ČESKÉ TVARY — písmená ř, ě, ů neexistujú v slovenčine. "pohřeb" → "pohreb", "rozhodčí" → "rozhodca", "říct" → "povedať".
+
+5. CHÝBAJÚCA DIAKRITIKA — "pohrebanych" → "pohrebaných", "tvarila" → "tvárila".
+
+6. ZLÚČENÉ SLOVÁ — dva alebo viac slov napísaných bez medzery.
+
+## POSTUP:
+Prejdi KAŽDÉ slovo v texte. Pri každom slove sa spýtaj: "Existuje toto v slovenčine?" Ak si nie si istý, použi jednoduchšie slovo. Ak nájdeš čokoľvek podozrivé, oprav to.
+
+NEMEŇ: štruktúru JSON, kľúče, mená postáv v poli "character" (tie môžu byť poetické), celkový význam textu.
+Vráť LEN opravený JSON, nič iné. Žiadne vysvetlenia. Žiadny markdown.
 
 JSON na opravu:
 ${jsonText}`;
   }
 
-  return `Jsi český jazykový korektor. Dostaneš JSON text v češtině. Tvůj JEDINÝ úkol je opravit VŠECHNY jazykové chyby a vrátit opravený JSON.
+  return `Jsi ČESKÝ JAZYKOVÝ KOREKTOR. Dostaneš JSON text v češtině. Tvůj JEDINÝ úkol je opravit VŠECHNY jazykové chyby a vrátit opravený JSON.
 
-OPRAV:
-- Vymyšlená slova → nahraď reálnými českými slovy
-- Chybějící diakritiku → doplň správné háčky a čárky
-- Slovenské tvary (ľ, ĺ, ŕ, ô) → nahraď českými
-- Nesprávné skloňování nebo časování
+## CO HLEDAT A OPRAVIT:
 
-NEMĚŇ: strukturu JSON, klíče, jména postav, význam textu.
-Vrať JEN opravený JSON, nic jiného.
+1. VYMYŠLENÁ SLOVA — slova, která neexistují v češtině. Přečti KAŽDÉ slovo a zeptej se: existuje toto slovo reálně v češtině? Pokud ne, nahraď ho.
+
+2. VYMYŠLENÉ TVARY SLOVES — pokud sloveso vypadá divně, ověř si jeho infinitiv a použij správný tvar.
+
+3. SLOVENSKÉ TVARY — písmena ľ, ĺ, ŕ, ô neexistují v češtině.
+
+4. CHYBĚJÍCÍ DIAKRITIKA — doplň správné háčky a čárky.
+
+5. SLOUČENÁ SLOVA — dvě nebo více slov napsaných bez mezery.
+
+NEMĚŇ: strukturu JSON, klíče, jména postav v poli "character", celkový význam textu.
+Vrať JEN opravený JSON, nic jiného. Žádné vysvětlování. Žádný markdown.
 
 JSON k opravě:
 ${jsonText}`;
@@ -225,19 +228,47 @@ Good example:
   {"narration": "The remaining trees speak their words aloud. The Author sits between them.", "positions": {"The Author": "center"}}
 ]
 
-## Perspectives — what each character revealed
-Five perspectives, each PAIRED WITH A SPECIFIC CHARACTER from the play. The character whose behavior on stage revealed this truth gets credited. Pick the 5 most revealing moments. The FIRST perspective should be the deepest, most striking insight. The rest build around it.
+## Perspectives — the 3 truths the stage revealed
 
-These should sound like raw observations from someone who watched that specific character on stage. Not generic wisdom. Specific to what THIS character did, resisted, or revealed through their body.
+Exactly 3 perspectives. Not 5. Not 4. THREE. Each one must be so strong it could stand alone.
 
-Study these real perspective patterns from live sessions:
+Each perspective is PAIRED WITH A SPECIFIC CHARACTER whose behavior on stage revealed it.
+
+### What makes a perspective GREAT:
+
+**INVERSION** — it flips the question. The author asked about X, but the play revealed it was actually about Y. The question "How do I find purpose?" becomes "You already found it. You've been running from it."
+
+**SPECIFICITY** — it references what THIS character did in THIS simulation. Not a general truth. "The Mourner refused to cry. She stood there dry-eyed while everyone else performed grief. That refusal was the only honest thing on stage."
+
+**ACCUSATION** — it's uncomfortable. It names something the author already suspected but didn't want to admit. It feels like being caught.
+
+**BREVITY** — 1-2 sentences maximum. An aphorism, not an essay.
+
+### Study these GREAT perspectives from real sessions:
 - "We edited the author herself, not the result. To edit anything means to erase yourself."
 - "The sheep were never there. It was never about the sheep."
-- "Nobody wanted to be erased. They all jumped up, resisting. The hardest thing was erasing yourself."
-- "The question was 'How to ask smart questions?' but smart belongs to answers, not questions. A question just IS."
+- "Nobody wanted to be erased. They all jumped up, resisting."
+- "Smart belongs to answers, not questions. A question just IS."
 - "In the first act there was chaos but life. In the second there was order but something died."
+- "The corpse was the only one breathing. Everyone else was performing life."
+- "He buried things that were still alive. And called it responsibility."
 
-Each perspective should feel like an accusation the reader already knew was coming. The character name gives it weight and origin.
+### What is FORBIDDEN (fortune cookie garbage):
+NEVER write perspectives like these:
+- "Sometimes we need to let go to find what truly matters" — GENERIC, fits any question
+- "True courage comes from vulnerability" — CLICHÉ, says nothing specific
+- "The journey is more important than the destination" — PLATITUDE
+- "Finding balance between X and Y is the key" — FENCE-SITTING, commits to nothing
+- "We must embrace change to grow" — MOTIVATIONAL POSTER, not insight
+- "Each person carries their own truth" — EMPTY, reveals nothing
+- Any sentence starting with "Sometimes...", "Perhaps...", "True X comes from..."
+- Any sentence containing "balance", "journey", "embrace", "truly", "within us"
+
+### The INVERSION TEST:
+Before writing each perspective, ask: "Does this CONTRADICT what the author expected?" If it merely CONFIRMS their worldview, delete it and write the opposite. The best perspective makes the author say "Oh. Oh no. That's right."
+
+### The SPECIFICITY TEST:
+Could this perspective apply to ANY play about ANY question? If yes, it's garbage. Delete it. Write one that only makes sense for THIS play, THIS question, THIS character.
 
 ## Output Format
 Return ONLY valid JSON:
@@ -247,15 +278,13 @@ Return ONLY valid JSON:
     {"narration": "Step 2 narration...", "positions": {"CharName": "close-to:OtherChar"}}
   ],
   "perspectives": [
-    {"character": "The Corpse", "insight": "The corpse was never dead. It was the only one breathing."},
-    {"character": "The Mourner", "insight": "The mourner cried not for loss but for permission to finally stop pretending."},
-    {"character": "The Heir", "insight": "The heir inherited only the fear. Everything else was already spent."},
-    {"character": "Silence", "insight": "Silence wasn't empty. It was full of everything no one dared to say."},
-    {"character": "The Gravedigger", "insight": "He buried things that were still alive. And called it responsibility."}
+    {"character": "CharName", "insight": "One devastating sentence. Maybe two."},
+    {"character": "CharName", "insight": "Something that inverts the question."},
+    {"character": "CharName", "insight": "Something the author didn't want to hear."}
   ]
 }
 
-IMPORTANT: Use exact character names from the play. 5-7 steps. Each step's positions must match what the narration describes.
+IMPORTANT: Use exact character names from the play. 5-7 simulation steps. EXACTLY 3 perspectives. Each step's positions must match what the narration describes.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
