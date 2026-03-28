@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { SYSTEM_PROMPT, buildUserPrompt, buildValidationPrompt } from "@/lib/prompt";
 import { GenerateRequest, Play } from "@/lib/types";
+import { rateLimit } from "@/lib/rate-limit";
 
 const anthropic = new Anthropic();
 
@@ -23,6 +24,9 @@ async function callWithRetry(params: Anthropic.MessageCreateParamsNonStreaming, 
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const body: GenerateRequest = await request.json();
     const { question, context, lang, clientName } = body;

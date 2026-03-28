@@ -79,6 +79,21 @@ const translations = {
     playDesc: "Get a unique Systemic Play with scene, characters, your role, and ending. Ready to perform.",
     see: "See",
     seeDesc: "Expand your perspective. Not answers — new ways of seeing through collective creativity.",
+    // Home / Oracle landing
+    heroHeadline: "Ask your question.",
+    heroSubtitle: "Mars will show you what you're not seeing.",
+    heroPlaceholder: "What do you need to see?",
+    heroSubmit: "Enter the stage",
+    exampleLabel: "A question became a play.",
+    exampleQuestion: "What am I avoiding?",
+    examplePerspective: "You placed Avoidance at the center of the stage. But it wasn't hiding from you — it was protecting something you weren't ready to name. The play revealed: the thing you're avoiding is the same thing you most want.",
+    howItWorksTitle: "How it works",
+    stepAsk: "Ask",
+    stepAskDesc: "Bring your question. Personal, collective, or about a situation.",
+    stepPlay: "Play",
+    stepPlayDesc: "Get a unique systemic play with scene, characters, and your role.",
+    stepSee: "See",
+    stepSeeDesc: "Receive perspectives you couldn't reach alone.",
     // Loading messages
     loading1: "There is no bad question.",
     loading2: "Every question has a play.",
@@ -142,6 +157,11 @@ const translations = {
     // Export
     exportText: "Copy as text",
     copied: "Copied!",
+    // Free play limit
+    freePlayLimitTitle: "You've explored 3 questions.",
+    freePlayLimitDesc: "To keep playing, unlock unlimited plays.",
+    freePlaySubscribe: "Unlock Unlimited Plays",
+    freePlayCount: "free plays remaining",
   },
   sk: {
     // Header
@@ -196,6 +216,21 @@ const translations = {
     playDesc: "Získaj unikátnu Systemickú hru s obrazom, postavami, tvojou rolou a záverom. Pripravenú na odehranie.",
     see: "Pozri",
     seeDesc: "Rozšír svoju perspektívu. Nie odpovede — nové spôsoby videnia cez kolektívnu kreativitu.",
+    // Home / Oracle landing
+    heroHeadline: "Polož svoju otázku.",
+    heroSubtitle: "Mars ti ukáže, čo nevidíš.",
+    heroPlaceholder: "Čo potrebuješ uvidieť?",
+    heroSubmit: "Vstúp na javisko",
+    exampleLabel: "Z otázky sa stala hra.",
+    exampleQuestion: "Čomu sa vyhýbam?",
+    examplePerspective: "Na javisko si postavil Vyhýbanie. No neskrývalo sa pred tebou — chránilo niečo, čo si ešte nebol pripravený pomenovať. Hra odhalila: to, čomu sa vyhýbaš, je to isté, čo si najviac praješ.",
+    howItWorksTitle: "Ako to funguje",
+    stepAsk: "Pýtaj sa",
+    stepAskDesc: "Prines svoju otázku. Osobnú, kolektívnu, alebo o situácii.",
+    stepPlay: "Hraj",
+    stepPlayDesc: "Získaj jedinečnú systemickú hru s obrazom, postavami a tvojou rolou.",
+    stepSee: "Pozri",
+    stepSeeDesc: "Prijmi perspektívy, na ktoré by si sám nedosiahol.",
     // Character generator
     characterGeneratorTitle: "Generátor rolí",
     characterGeneratorSub: "Na základe otázky a počtu ľudí navrhne roly do hry",
@@ -279,6 +314,11 @@ const translations = {
     // Export
     exportText: "Kopírovať ako text",
     copied: "Skopírované!",
+    // Free play limit
+    freePlayLimitTitle: "Preskúmal si 3 otázky.",
+    freePlayLimitDesc: "Ak chceš pokračovať, odomkni neobmedzené hry.",
+    freePlaySubscribe: "Odomknúť neobmedzené hry",
+    freePlayCount: "voľných hier zostáva",
   },
   cs: {
     // Header
@@ -333,6 +373,21 @@ const translations = {
     playDesc: "Získej unikátní Systemickou hru s obrazem, postavami, tvou rolí a závěrem. Připravenou k odehrání.",
     see: "Podívej",
     seeDesc: "Rozšiř svou perspektivu. Ne odpovědi — nové způsoby vidění skrze kolektivní kreativitu.",
+    // Home / Oracle landing
+    heroHeadline: "Polož svou otázku.",
+    heroSubtitle: "Mars ti ukáže, co nevidíš.",
+    heroPlaceholder: "Co potřebuješ uvidět?",
+    heroSubmit: "Vstup na jeviště",
+    exampleLabel: "Z otázky se stala hra.",
+    exampleQuestion: "Čemu se vyhýbám?",
+    examplePerspective: "Na jeviště jsi postavil Vyhýbání. Ale neskrývalo se před tebou — chránilo něco, co jsi ještě nebyl připraven pojmenovat. Hra odhalila: to, čemu se vyhýbáš, je totéž, co si nejvíc přeješ.",
+    howItWorksTitle: "Jak to funguje",
+    stepAsk: "Ptej se",
+    stepAskDesc: "Přines svou otázku. Osobní, kolektivní, nebo o situaci.",
+    stepPlay: "Hraj",
+    stepPlayDesc: "Získej jedinečnou systemickou hru s obrazem, postavami a tvou rolí.",
+    stepSee: "Podívej",
+    stepSeeDesc: "Přijmi perspektivy, na které bys sám nedosáhl.",
     // Character generator
     characterGeneratorTitle: "Generátor rolí",
     characterGeneratorSub: "Na základě otázky a počtu lidí navrhne role do hry",
@@ -416,6 +471,11 @@ const translations = {
     // Export
     exportText: "Kopírovat jako text",
     copied: "Zkopírováno!",
+    // Free play limit
+    freePlayLimitTitle: "Prozkoumal jsi 3 otázky.",
+    freePlayLimitDesc: "Chceš-li pokračovat, odemkni neomezené hry.",
+    freePlaySubscribe: "Odemknout neomezené hry",
+    freePlayCount: "volných her zbývá",
   },
 } as const;
 

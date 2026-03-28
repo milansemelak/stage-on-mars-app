@@ -1,5 +1,117 @@
-import { redirect } from "next/navigation";
+"use client";
+
+import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useI18n } from "@/lib/i18n";
 
 export default function Home() {
-  redirect("/play");
+  const { t } = useI18n();
+  const router = useRouter();
+  const [question, setQuestion] = useState("");
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    const trimmed = question.trim();
+    if (!trimmed) return;
+    router.push(`/play?q=${encodeURIComponent(trimmed)}`);
+  }
+
+  return (
+    <div className="min-h-[calc(100vh-64px)] flex flex-col">
+      {/* Hero */}
+      <section className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-24">
+        <div className="max-w-xl w-full text-center space-y-8 animate-fade-slide-up">
+          <div className="space-y-4">
+            <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+              {t.heroHeadline}
+            </h1>
+            <p className="text-white/40 text-lg font-mercure italic">
+              {t.heroSubtitle}
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="text"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder={t.heroPlaceholder}
+              autoFocus
+              className="w-full rounded-xl bg-white/[0.03] border border-white/10 px-6 py-4 text-white text-center text-lg placeholder:text-white/20 focus:outline-none focus:border-mars/40 transition-colors"
+            />
+            <button
+              type="submit"
+              disabled={!question.trim()}
+              className="w-full py-3.5 rounded-xl bg-mars hover:bg-mars-light disabled:opacity-20 disabled:cursor-not-allowed text-white font-semibold tracking-wide transition-all duration-300"
+            >
+              {t.heroSubmit}
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* Example */}
+      <section className="px-6 pb-24">
+        <div className="max-w-xl mx-auto animate-fade-slide-up stagger-3">
+          <p className="text-white/25 text-xs uppercase tracking-[0.2em] mb-6 text-center">
+            {t.exampleLabel}
+          </p>
+          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8 space-y-6">
+            <p className="text-white/60 text-sm">
+              <span className="text-mars/70 mr-2">Q</span>
+              <span className="font-mercure italic">{t.exampleQuestion}</span>
+            </p>
+            <div className="w-8 h-px bg-white/10" />
+            <p className="text-white/40 text-sm leading-relaxed font-mercure italic">
+              {t.examplePerspective}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="px-6 pb-24">
+        <div className="max-w-2xl mx-auto animate-fade-slide-up stagger-5">
+          <p className="text-white/25 text-xs uppercase tracking-[0.2em] mb-12 text-center">
+            {t.howItWorksTitle}
+          </p>
+          <div className="grid grid-cols-3 gap-8 text-center">
+            <div className="space-y-3">
+              <p className="text-mars text-2xl font-bold">{t.stepAsk}</p>
+              <p className="text-white/30 text-sm leading-relaxed">
+                {t.stepAskDesc}
+              </p>
+            </div>
+            <div className="space-y-3">
+              <p className="text-mars text-2xl font-bold">{t.stepPlay}</p>
+              <p className="text-white/30 text-sm leading-relaxed">
+                {t.stepPlayDesc}
+              </p>
+            </div>
+            <div className="space-y-3">
+              <p className="text-mars text-2xl font-bold">{t.stepSee}</p>
+              <p className="text-white/30 text-sm leading-relaxed">
+                {t.stepSeeDesc}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="px-6 pb-12 pt-8 border-t border-white/[0.04]">
+        <div className="max-w-2xl mx-auto flex items-center justify-between text-white/20 text-xs">
+          <span className="tracking-wide">Stage on Mars</span>
+          <a
+            href="https://stageonmars.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/40 transition-colors"
+          >
+            stageonmars.com
+          </a>
+        </div>
+      </footer>
+    </div>
+  );
 }

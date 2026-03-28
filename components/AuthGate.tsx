@@ -1,9 +1,14 @@
 "use client";
 
 import { useState, useEffect, ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { STORAGE_KEYS } from "@/lib/constants";
 
+// Public routes that don't require authentication
+const PUBLIC_ROUTES = ["/"];
+
 export default function AuthGate({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
   const [status, setStatus] = useState<"loading" | "gate" | "authed">("loading");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -85,6 +90,11 @@ export default function AuthGate({ children }: { children: ReactNode }) {
     const trimmed = email.trim();
     if (!trimmed) return;
     verifyEmail(trimmed);
+  }
+
+  // Public routes bypass auth entirely
+  if (PUBLIC_ROUTES.includes(pathname)) {
+    return <>{children}</>;
   }
 
   if (status === "loading") {

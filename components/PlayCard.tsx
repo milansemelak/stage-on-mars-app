@@ -11,6 +11,7 @@ type Props = {
   play: Play;
   question?: string;
   onPlayUpdate?: (play: Play) => void;
+  onPlayCompleted?: () => void;
   onAskQuestion?: (question: string) => void;
   favorite?: boolean;
   onToggleFavorite?: () => void;
@@ -18,7 +19,7 @@ type Props = {
   clientName?: string;
 };
 
-export default function PlayCard({ play, question, onPlayUpdate, onAskQuestion, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
+export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted, onAskQuestion, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
   const { lang, t } = useI18n();
   const [currentPlay, setCurrentPlay] = useState(play);
 
@@ -65,6 +66,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onAskQuestion, 
       };
       setCurrentPlay(updated);
       onPlayUpdate?.(updated);
+      onPlayCompleted?.();
     } catch {
       setMarsError(t.marsError);
     } finally {

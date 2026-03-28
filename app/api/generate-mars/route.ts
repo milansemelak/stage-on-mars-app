@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { MARS_SYSTEM_PROMPT, buildMarsPrompt, buildValidationPrompt } from "@/lib/prompt";
 import { Play } from "@/lib/types";
+import { rateLimit } from "@/lib/rate-limit";
 
 const anthropic = new Anthropic();
 
@@ -30,6 +31,9 @@ type MarsRequest = {
 };
 
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const body: MarsRequest = await request.json();
     const { play, question, lang, clientName } = body;
