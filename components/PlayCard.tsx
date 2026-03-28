@@ -5,6 +5,7 @@ import { Play } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { STORAGE_KEYS, MAX_HISTORY } from "@/lib/constants";
 import Prescription from "./Prescription";
+import StageSimulation from "./StageSimulation";
 
 type Props = {
   play: Play;
@@ -343,31 +344,13 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
             </div>
           )}
 
-          {/* ── What Happens on Stage ── */}
+          {/* ── What Happens on Stage — Visual Simulation ── */}
           {currentPlay.simulation && (
-            <div className="animate-fade-slide-up stagger-6 relative mt-4">
-              {/* Divider line */}
-              <div className="absolute -top-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-
-              <div className="relative rounded-2xl overflow-hidden">
-                {/* Subtle gradient background */}
-                <div className="absolute inset-0 bg-gradient-to-b from-mars/[0.06] via-mars/[0.02] to-transparent" />
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-mars via-mars/40 to-transparent rounded-full" />
-
-                <div className="relative p-6 sm:p-8 pl-7 sm:pl-10">
-                  <div className="flex items-baseline gap-3 mb-4">
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em] text-mars">
-                      {t.simulationTitle}
-                    </span>
-                    <span className="text-[10px] text-white/20 font-mercure italic tracking-wide">
-                      {t.simulationSub}
-                    </span>
-                  </div>
-                  <p className="font-mercure italic text-white/70 text-base sm:text-lg leading-[1.8] tracking-wide">
-                    {currentPlay.simulation}
-                  </p>
-                </div>
-              </div>
+            <div className="animate-fade-slide-up stagger-6 mt-4">
+              <StageSimulation
+                characters={currentPlay.characters}
+                simulation={currentPlay.simulation}
+              />
             </div>
           )}
 
