@@ -39,6 +39,7 @@ const translations = {
     players: "players",
     concrete: "concrete",
     abstract: "abstract",
+    addCharacter: "Add character",
     // Question Triangle
     it: "It",
     itDesc: "External — a situation, project, decision",
@@ -167,6 +168,7 @@ const translations = {
     players: "hráčov",
     concrete: "konkrétna",
     abstract: "abstraktná",
+    addCharacter: "Pridať postavu",
     // Question Triangle
     it: "To",
     itDesc: "Externé — situácia, projekt, rozhodnutie",
@@ -295,6 +297,7 @@ const translations = {
     players: "hráčů",
     concrete: "konkrétní",
     abstract: "abstraktní",
+    addCharacter: "Přidat postavu",
     // Question Triangle
     it: "To",
     itDesc: "Externí — situace, projekt, rozhodnutí",

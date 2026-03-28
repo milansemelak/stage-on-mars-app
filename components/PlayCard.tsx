@@ -164,6 +164,33 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
     onPlayUpdate?.(updated);
   }
 
+  function toggleCharacterType(index: number) {
+    const updated = { ...currentPlay };
+    updated.characters = [...updated.characters];
+    const current = updated.characters[index].description?.toLowerCase();
+    updated.characters[index] = {
+      ...updated.characters[index],
+      description: current === "abstract" ? "concrete" : "abstract",
+    };
+    setCurrentPlay(updated);
+    onPlayUpdate?.(updated);
+  }
+
+  function removeCharacter(index: number) {
+    if (currentPlay.characters.length <= 2) return;
+    const updated = { ...currentPlay };
+    updated.characters = updated.characters.filter((_, i) => i !== index);
+    setCurrentPlay(updated);
+    onPlayUpdate?.(updated);
+  }
+
+  function addCharacter() {
+    const updated = { ...currentPlay };
+    updated.characters = [...updated.characters, { name: "", description: "concrete" }];
+    setCurrentPlay(updated);
+    onPlayUpdate?.(updated);
+  }
+
   return (
     <>
       <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
@@ -257,40 +284,71 @@ export default function PlayCard({ play, question, onPlayUpdate, favorite, onTog
                 return (
                   <div
                     key={i}
-                    className={`rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] ${
+                    className={`rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] relative ${
                       isAbstract
                         ? "bg-white/[0.02] border-white/10 hover:border-white/20"
                         : "bg-mars/8 border-mars/20 hover:border-mars/35"
                     }`}
                   >
                     {editing ? (
-                      <input
-                        value={char.name}
-                        onChange={(e) => updateCharacterName(i, e.target.value)}
-                        className={`font-bold text-sm sm:text-base bg-transparent border-b focus:outline-none w-full ${
-                          isAbstract ? "text-white/70 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
-                        }`}
-                      />
+                      <>
+                        <div className="flex items-center gap-2">
+                          <input
+                            value={char.name}
+                            onChange={(e) => updateCharacterName(i, e.target.value)}
+                            className={`font-bold text-sm sm:text-base bg-transparent border-b focus:outline-none flex-1 ${
+                              isAbstract ? "text-white/70 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
+                            }`}
+                          />
+                          {currentPlay.characters.length > 2 && (
+                            <button
+                              onClick={() => removeCharacter(i)}
+                              className="text-white/20 hover:text-red-400/70 transition-colors text-lg leading-none"
+                              title="Remove"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => toggleCharacterType(i)}
+                          className={`text-[10px] uppercase tracking-widest mt-1 cursor-pointer hover:opacity-70 transition-opacity ${
+                            isAbstract ? "text-white/20" : "text-mars/30"
+                          }`}
+                        >
+                          {isAbstract ? t.abstract : t.concrete} ↔
+                        </button>
+                      </>
                     ) : (
-                      <div
-                        className={`font-bold text-sm sm:text-base ${
-                          isAbstract ? "text-white/70 font-mercure italic" : "text-[#ffb380]"
-                        }`}
-                      >
-                        {char.name}
-                      </div>
+                      <>
+                        <div
+                          className={`font-bold text-sm sm:text-base ${
+                            isAbstract ? "text-white/70 font-mercure italic" : "text-[#ffb380]"
+                          }`}
+                        >
+                          {char.name}
+                        </div>
+                        <div
+                          className={`text-[10px] uppercase tracking-widest mt-1 ${
+                            isAbstract ? "text-white/20" : "text-mars/30"
+                          }`}
+                        >
+                          {isAbstract ? t.abstract : t.concrete}
+                        </div>
+                      </>
                     )}
-                    <div
-                      className={`text-[10px] uppercase tracking-widest mt-1 ${
-                        isAbstract ? "text-white/20" : "text-mars/30"
-                      }`}
-                    >
-                      {isAbstract ? t.abstract : t.concrete}
-                    </div>
                   </div>
                 );
               })}
             </div>
+            {editing && (
+              <button
+                onClick={addCharacter}
+                className="mt-3 w-full py-3 rounded-2xl border border-dashed border-white/10 hover:border-white/25 text-white/25 hover:text-white/50 text-sm transition-all"
+              >
+                + {t.addCharacter || "Add character"}
+              </button>
+            )}
           </div>
 
           {/* Author's Role */}
