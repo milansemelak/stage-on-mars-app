@@ -78,7 +78,7 @@ const translations = {
     see: "See",
     seeDesc: "Expand your perspective. Not answers — new ways of seeing through collective creativity.",
     // Loading messages
-    loading1: "What if your question is the wrong question?",
+    loading1: "There is no bad question. Every question has a play.",
     loading2: "The answer you want isn't the answer you need...",
     loading3: "Setting up the stage. Bodies are entering the space...",
     loading4: "Finding who's already standing in your question...",
@@ -188,7 +188,7 @@ const translations = {
     saving: "Ukladám...",
     preparing: "Pripravujem...",
     // Loading messages
-    loading1: "Čo ak je tvoja otázka zlá otázka?",
+    loading1: "Neexistuje zlá otázka. Každá otázka má svoju hru.",
     loading2: "Odpoveď, ktorú chceš, nie je odpoveď, ktorú potrebuješ...",
     loading3: "Staviam scénu. Telá vstupujú do priestoru...",
     loading4: "Hľadám, kto už stojí v tvojej otázke...",
@@ -298,7 +298,7 @@ const translations = {
     saving: "Ukládám...",
     preparing: "Připravuji...",
     // Loading messages
-    loading1: "Co když je tvoje otázka špatná otázka?",
+    loading1: "Neexistuje špatná otázka. Každá otázka má svou hru.",
     loading2: "Odpověď, kterou chceš, není odpověď, kterou potřebuješ...",
     loading3: "Stavím scénu. Těla vstupují do prostoru...",
     loading4: "Hledám, kdo už stojí v tvé otázce...",

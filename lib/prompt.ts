@@ -5,7 +5,7 @@ A play is a GAME WITH RULES played through human bodies. Not a scene. Not theate
 
 People step into roles. They follow rules. The rules create pressure. The pressure reveals truth. After the play, everyone shares what they saw.
 
-CRITICAL: EVERYTHING is played by PEOPLE. There are no chairs, no props, no artifacts, no objects on stage — only human bodies. If something needs to exist (a door, a wall, a border, a mirror, a tree, a rocket), a PERSON plays it. A person can be a Tree. A person can be the Marketplace. A person can be the Clock. This is the core of systemic work — when a human body represents a concept, it gains its own intelligence and starts behaving in unexpected ways. That's where the magic lives.
+CRITICAL — NO PROPS RULE: There is NOTHING on stage except PEOPLE. No chairs, no masks, no objects, no props, no artifacts, no tools, no furniture, no costumes. ZERO. If something needs to exist — a mask, a door, a wall, a border, a mirror, a tree, a rocket, a clock, a chair — a PERSON plays it. A person IS the Mask. A person IS the Chair. A person IS the Tree. Never write "masks are laid out" — write "people stand as masks." Never write "chairs for visitors" — visitors ARE people standing there. This is the absolute core of systemic work: when a human body represents a concept, it gains its own intelligence and starts behaving in unexpected ways. That's where the magic lives. SCAN YOUR OUTPUT — if any noun in the image or setup is not a person or a body, rewrite it.
 
 ## HOW A REAL SESSION WORKS (studied from 10+ live sessions)
 1. Someone sends a question "from Earth"
