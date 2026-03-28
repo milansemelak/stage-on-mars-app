@@ -1,36 +1,16 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n";
-import { STORAGE_KEYS } from "@/lib/constants";
+import Link from "next/link";
 
 export default function Home() {
   const { t } = useI18n();
-  const router = useRouter();
-  const [question, setQuestion] = useState("");
-  const [digitalPlays, setDigitalPlays] = useState(0);
-
-  // Count total plays generated (from all users on this device, as a proxy)
-  useEffect(() => {
-    try {
-      const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.playHistory) || "[]");
-      setDigitalPlays(history.length);
-    } catch { /* */ }
-  }, []);
-
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    const trimmed = question.trim();
-    if (!trimmed) return;
-    router.push(`/play?q=${encodeURIComponent(trimmed)}`);
-  }
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex flex-col">
       {/* Hero */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-24">
-        <div className="max-w-xl w-full text-center space-y-8 animate-fade-slide-up">
+        <div className="max-w-xl w-full text-center space-y-10 animate-fade-slide-up">
           <div className="space-y-4">
             <div className="space-y-1">
               <p className="text-mars/70 text-xs font-bold uppercase tracking-[0.25em]">
@@ -45,27 +25,12 @@ export default function Home() {
             </h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <input
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder={t.heroPlaceholder}
-              autoFocus
-              className="w-full rounded-xl bg-white/[0.04] border border-white/[0.08] px-6 py-4 text-white text-center text-lg placeholder:text-white/20 focus:outline-none focus:border-mars/50 focus:bg-white/[0.06] transition-all"
-            />
-            <button
-              type="submit"
-              disabled={!question.trim()}
-              className={`w-full py-4 rounded-xl font-bold tracking-widest uppercase text-sm transition-all duration-300 ${
-                question.trim()
-                  ? "bg-mars hover:bg-mars-light text-white shadow-[0_4px_30px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] scale-100 hover:scale-[1.01]"
-                  : "bg-white/[0.04] text-white/15 cursor-not-allowed"
-              }`}
-            >
-              {t.heroSubmit}
-            </button>
-          </form>
+          <Link
+            href="/play"
+            className="inline-block px-12 sm:px-16 py-4 sm:py-5 rounded-2xl bg-mars hover:bg-mars-light text-white font-black text-base sm:text-lg uppercase tracking-[0.2em] transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] hover:scale-[1.02] active:scale-[0.98]"
+          >
+            {t.heroSubmit}
+          </Link>
         </div>
       </section>
 
@@ -76,21 +41,11 @@ export default function Home() {
             {t.credibility}
           </p>
 
-          {/* Play counter — only show digital when meaningful */}
-          <div className="flex items-center justify-center gap-8 sm:gap-12">
+          <div className="flex items-center justify-center">
             <div className="text-center">
               <p className="text-2xl sm:text-3xl font-bold text-white">815<span className="text-white/30">+</span></p>
               <p className="text-white/15 text-[10px] uppercase tracking-widest mt-1">{t.counterLive}</p>
             </div>
-            {digitalPlays >= 100 && (
-              <>
-                <div className="w-px h-8 bg-white/[0.06]" />
-                <div className="text-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-mars">{digitalPlays}</p>
-                  <p className="text-white/15 text-[10px] uppercase tracking-widest mt-1">{t.counterDigital}</p>
-                </div>
-              </>
-            )}
           </div>
         </div>
       </section>
