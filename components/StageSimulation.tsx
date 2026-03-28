@@ -32,7 +32,12 @@ function resolvePosition(
   const kw = keyword.trim().toLowerCase();
 
   if (kw === "center") {
-    return { x: CX + (seed % 5) - 2, y: CY + ((seed * 3) % 5) - 2 };
+    // Spread slightly so multiple "center" characters don't stack
+    const offsetAngle = (charIndex * 2.2 + seed * 0.7) % (2 * Math.PI);
+    return {
+      x: CX + Math.cos(offsetAngle) * 5,
+      y: CY + Math.sin(offsetAngle) * 3,
+    };
   }
   if (kw === "edge-left") {
     return { x: CX - EDGE_R, y: CY + ((seed + charIndex * 7) % 12) - 6 };
@@ -64,14 +69,14 @@ function resolvePosition(
     const targetName = keyword.substring(9).trim();
     const targetPos = allPositions.get(targetName) || allPositions.get(targetName.toLowerCase());
     if (targetPos) {
-      const offsetAngle = (charIndex * 1.5 + seed * 0.3) % (2 * Math.PI);
+      // Spread characters around the target at a visible distance
+      const offsetAngle = (charIndex * 1.8 + seed * 0.5) % (2 * Math.PI);
       return {
-        x: targetPos.x + Math.cos(offsetAngle) * 5,
-        y: targetPos.y + Math.sin(offsetAngle) * 3,
+        x: targetPos.x + Math.cos(offsetAngle) * 12,
+        y: targetPos.y + Math.sin(offsetAngle) * 7,
       };
     }
-    // If target not found, move toward center
-    return { x: CX + ((seed + charIndex) % 8) - 4, y: CY + ((seed + charIndex * 3) % 6) - 3 };
+    return { x: CX + ((seed + charIndex) % 14) - 7, y: CY + ((seed + charIndex * 3) % 10) - 5 };
   }
 
   // far-from:CharName
@@ -291,7 +296,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
         return;
       }
 
-      const speed = 0.04;
+      const speed = 0.015;
       for (let i = 0; i < pos.length; i++) {
         pos[i].x = lerp(pos[i].x, targets[i].x, speed);
         pos[i].y = lerp(pos[i].y, targets[i].y, speed);
@@ -315,7 +320,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   // Auto-advance narration
   useEffect(() => {
     if (!isPlaying || currentStep >= sentences.length - 1) return;
-    const timer = setTimeout(() => setCurrentStep((p) => p + 1), 5000);
+    const timer = setTimeout(() => setCurrentStep((p) => p + 1), 7000);
     return () => clearTimeout(timer);
   }, [currentStep, isPlaying, sentences.length]);
 
