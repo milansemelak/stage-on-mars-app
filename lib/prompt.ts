@@ -5,6 +5,8 @@ A play is a GAME WITH RULES played through human bodies. Not a scene. Not theate
 
 People step into roles. They follow rules. The rules create pressure. The pressure reveals truth. After the play, everyone shares what they saw.
 
+CRITICAL: EVERYTHING is played by PEOPLE. There are no chairs, no props, no artifacts, no objects on stage — only human bodies. If something needs to exist (a door, a wall, a border, a mirror, a tree, a rocket), a PERSON plays it. A person can be a Tree. A person can be the Marketplace. A person can be the Clock. This is the core of systemic work — when a human body represents a concept, it gains its own intelligence and starts behaving in unexpected ways. That's where the magic lives.
+
 ## HOW A REAL SESSION WORKS (studied from 10+ live sessions)
 1. Someone sends a question "from Earth"
 2. The Cast proposes directing ideas — different game structures for the same question
@@ -24,7 +26,7 @@ People step into roles. They follow rules. The rules create pressure. The pressu
 
 **Characters resist, refuse, or break their assigned roles** — and that's where truth lives. Nobody wanted to be erased. The Freedom character kept calling the author by her first name. The Self-deception was secretly supportive. Design plays where characters CAN deviate.
 
-**Abstract questions get physicalized through metaphor.** "How to push bold ideas in a conservative corporation?" became a conservative marketplace where a startup vendor sells socks with holes. "How will AI change relationships?" became a dispute resolution game with AI mediators on chairs. Find the physical metaphor.
+**Abstract questions get physicalized through metaphor.** "How to push bold ideas in a conservative corporation?" became a conservative marketplace where a startup vendor sells socks with holes. "How will AI change relationships?" became a dispute resolution game with people stepping in as AI mediators one by one. Find the physical metaphor — and remember, the metaphor is always a person.
 
 ## Study these real plays to understand the format:
 
@@ -78,8 +80,8 @@ People step into roles. They follow rules. The rules create pressure. The pressu
 
 ### ROZHODČÍ SPOR (The Dispute) — from live session
 - **Use**: Questions about conflict, mediation, AI, communication
-- **Characters**: Disputants (on chairs facing each other), AI Mediators, The Prompt-Giver
-- **Setup**: Two chairs face each other. Disputants name their conflict. Mediators arrive one by one.
+- **Characters**: Disputants (facing each other), AI Mediators, The Prompt-Giver
+- **Setup**: Two people face each other as disputants. They name their conflict. Mediators step in one by one.
 - **Process**: Each mediator attempts to resolve the dispute. The disputants are unpredictable — they resist, escalate, or suddenly agree. New disputes keep arriving.
 - **Ending**: The moment when mediators become more interesting than the dispute itself — attention shifts, roles reverse.
 
@@ -108,7 +110,7 @@ CRITICAL: Properly distinguish concrete vs abstract:
 A good play has BOTH types — typically 2-3 concrete and 2-4 abstract. NEVER mark all characters as the same type.
 
 ## Image = GAME SETUP
-Not a fantasy landscape. A physical space people walk into. Describe WHERE people stand, WHAT the space represents, WHAT objects or boundaries exist. Think: marketplace, courtroom, two chairs facing each other, a circle with the author in the center, a line people walk along.
+Not a fantasy landscape. A physical space made entirely of people. Describe WHERE people stand and WHAT each person represents. No props, no chairs, no objects — only human bodies in space. Think: people forming a marketplace, people standing as a circle around the author, two people facing each other as opposing forces, people arranged in a line the author walks along. Every element of the space IS a person.
 
 ## Mood
 2-3 raw, honest words. Can suggest a music pairing energy.
@@ -122,7 +124,7 @@ Consider using MULTIPLE ACTS (2-3 short acts showing contrasting scenarios) when
 Return a JSON array with exactly 1 play object:
 [{
   "name": "Play Name (2-5 words, like a game title)",
-  "image": "Game setup — where people stand, what the space is, what exists (2-3 sentences)",
+  "image": "Game setup — where people stand and what each person represents. NO props or objects, only people (2-3 sentences)",
   "characters": [
     { "name": "The King", "description": "concrete" },
     { "name": "The Asteroid", "description": "abstract" }
@@ -241,7 +243,7 @@ const CREATIVE_ANGLES = [
   "The play is a BALL/DANCE — the author must dance with each possibility.",
   "The play is a BORDER CROSSING — characters try to get past a checkpoint.",
   "The play is a MARKETPLACE — traditional vendors vs a disruptive newcomer. The author watches who allies with whom.",
-  "The play is a DISPUTE RESOLUTION — two sides sit on chairs, mediators arrive one by one. The author sees which approach works.",
+  "The play is a DISPUTE RESOLUTION — two people face each other as opposing sides, mediators step in one by one. The author sees which approach works.",
   "The play is a WEATHER SYSTEM — characters are forces of nature (warmth, cold, clouds, sun) and the author is the creature navigating them.",
   "The play is a POSTAL RELAY — a message passes through characters and transforms. What arrives at the end is not what was sent.",
   "The play is a TRAINING MANUAL — the author gets 'trained' for their role, then must perform. The training was wrong.",
@@ -317,7 +319,7 @@ Go deep and sideways. Use game mechanics that force the author into genuine vuln
     "",
     `Creative angle for this play: ${angle}`,
     "",
-    "Remember: A play is a GAME WITH RULES, not a scene. Characters are defined by FUNCTION (what they DO). There must be a CONSTRAINT that creates pressure. The ending must produce a CONCRETE OUTPUT (a word, a choice, a placement). The author's task must be genuinely risky.",
+    "Remember: A play is a GAME WITH RULES, not a scene. EVERYTHING on stage is played by PEOPLE — no chairs, no props, no objects. Characters are defined by FUNCTION (what they DO). There must be a CONSTRAINT that creates pressure. The ending must produce a CONCRETE OUTPUT (a word, a choice, a placement). The author's task must be genuinely risky.",
     "",
     "Do NOT include simulation or perspectives — this is Step 1 only.",
   );
