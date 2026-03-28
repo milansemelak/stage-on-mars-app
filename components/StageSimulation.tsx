@@ -409,53 +409,53 @@ export default function StageSimulation({ characters, simulation, simulationStep
             if (!char) return null;
             const isAbstract = char.description?.toLowerCase() === "abstract";
             const isActive = hasStarted && movedCharacters.has(i);
-            const dotR = isActive ? 1.8 : 1.1;
+            const dotR = isActive ? 2.8 : 2;
 
             return (
               <g key={i} transform={`translate(${pos.x}, ${pos.y})`}>
                 {/* Glow */}
                 <circle cx={0} cy={0}
-                  r={isActive ? 5 : 2.5}
-                  fill={isAbstract ? "rgba(255,255,255,0.02)" : "rgba(255,85,0,0.04)"}
+                  r={isActive ? 7 : 4}
+                  fill={isAbstract ? "rgba(255,255,255,0.03)" : "rgba(255,85,0,0.06)"}
                   filter="url(#glow-char)"
                 />
 
                 {/* Dot */}
                 <circle cx={0} cy={0} r={dotR}
                   fill={isActive
-                    ? (isAbstract ? "rgba(255,255,255,0.5)" : "rgba(255,85,0,0.85)")
-                    : (isAbstract ? "rgba(255,255,255,0.2)" : "rgba(255,85,0,0.4)")
+                    ? (isAbstract ? "rgba(255,255,255,0.6)" : "rgba(255,85,0,0.9)")
+                    : (isAbstract ? "rgba(255,255,255,0.35)" : "rgba(255,85,0,0.55)")
                   }
                   stroke={isActive
-                    ? (isAbstract ? "rgba(255,255,255,0.7)" : "rgba(255,85,0,1)")
-                    : (isAbstract ? "rgba(255,255,255,0.25)" : "rgba(255,85,0,0.5)")
+                    ? (isAbstract ? "rgba(255,255,255,0.8)" : "rgba(255,85,0,1)")
+                    : (isAbstract ? "rgba(255,255,255,0.4)" : "rgba(255,85,0,0.65)")
                   }
-                  strokeWidth={isActive ? 0.3 : 0.15}
+                  strokeWidth={isActive ? 0.4 : 0.2}
                 />
 
                 {/* Active pulse */}
                 {isActive && (
-                  <circle cx={0} cy={0} r="3" fill="none"
-                    stroke={isAbstract ? "rgba(255,255,255,0.15)" : "rgba(255,85,0,0.3)"}
-                    strokeWidth="0.15"
+                  <circle cx={0} cy={0} r="4" fill="none"
+                    stroke={isAbstract ? "rgba(255,255,255,0.2)" : "rgba(255,85,0,0.35)"}
+                    strokeWidth="0.2"
                   >
-                    <animate attributeName="r" values="2;5;2" dur="2.5s" repeatCount="indefinite" />
+                    <animate attributeName="r" values="3.5;7;3.5" dur="2.5s" repeatCount="indefinite" />
                     <animate attributeName="opacity" values="0.8;0;0.8" dur="2.5s" repeatCount="indefinite" />
                   </circle>
                 )}
 
                 {/* Name */}
                 <text
-                  x={0} y={isActive ? -3.8 : -2.6}
+                  x={0} y={isActive ? -5 : -4}
                   textAnchor="middle"
                   fill={isActive
-                    ? (isAbstract ? "rgba(255,255,255,0.7)" : "rgba(255,179,128,0.95)")
-                    : (isAbstract ? "rgba(255,255,255,0.15)" : "rgba(255,179,128,0.3)")
+                    ? (isAbstract ? "rgba(255,255,255,0.85)" : "rgba(255,179,128,1)")
+                    : (isAbstract ? "rgba(255,255,255,0.4)" : "rgba(255,179,128,0.55)")
                   }
-                  fontSize={isActive ? 2.2 : 1.5}
-                  fontWeight={isActive ? 700 : 400}
+                  fontSize={isActive ? 2.8 : 2.2}
+                  fontWeight={isActive ? 700 : 500}
                   fontStyle={isAbstract ? "italic" : "normal"}
-                  letterSpacing="0.05"
+                  letterSpacing="0.03"
                   className="select-none"
                 >
                   {char.name}
