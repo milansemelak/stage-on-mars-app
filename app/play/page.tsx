@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import QuestionInput from "@/components/QuestionInput";
 import PlayCard from "@/components/PlayCard";
-import { Play } from "@/lib/types";
+import { Play, HistoryEntry } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
+import { MAX_HISTORY, STORAGE_KEYS } from "@/lib/constants";
 
 const LOADING_MESSAGES_KEYS = [
   "loading1",
@@ -40,6 +41,45 @@ const BUSINESS_QUESTIONS_KEYS = [
   "businessQ10",
 ] as const;
 
+function PlaySkeleton() {
+  return (
+    <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden animate-fade-slide-up">
+      <div className="p-5 sm:p-8 space-y-6 sm:space-y-8">
+        {/* Title */}
+        <div className="space-y-2">
+          <div className="skeleton h-8 w-3/4" />
+          <div className="skeleton h-4 w-1/3" />
+        </div>
+        {/* Image */}
+        <div className="space-y-2">
+          <div className="skeleton h-3 w-16" />
+          <div className="skeleton h-16 w-full" />
+        </div>
+        {/* Characters */}
+        <div className="space-y-3">
+          <div className="skeleton h-3 w-20" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="skeleton h-16 w-full" />
+            <div className="skeleton h-16 w-full" />
+            <div className="skeleton h-16 w-full" />
+            <div className="skeleton h-16 w-full" />
+          </div>
+        </div>
+        {/* Author role */}
+        <div className="space-y-2">
+          <div className="skeleton h-3 w-24" />
+          <div className="skeleton h-12 w-full" />
+        </div>
+        {/* Ending */}
+        <div className="space-y-2">
+          <div className="skeleton h-3 w-28" />
+          <div className="skeleton h-10 w-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PlayPage() {
   const [question, setQuestion] = useState("");
   const [context, setContext] = useState<"personal" | "business">("personal");
@@ -52,6 +92,7 @@ export default function PlayPage() {
   const [questionIdx, setQuestionIdx] = useState(0);
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
+  const generatingRef = useRef(false);
 
   // Random question suggestion — aligned with current context
   const questionPool = context === "personal" ? PERSONAL_QUESTIONS_KEYS : BUSINESS_QUESTIONS_KEYS;
@@ -72,7 +113,7 @@ export default function PlayPage() {
   // Load play count
   useEffect(() => {
     const history = JSON.parse(
-      localStorage.getItem("som-play-history") || "[]"
+      localStorage.getItem(STORAGE_KEYS.playHistory) || "[]"
     );
     setPlayCount(history.length);
   }, []);
@@ -87,9 +128,10 @@ export default function PlayPage() {
     return () => clearInterval(interval);
   }, [loading]);
 
-  async function generatePlay() {
-    if (!question.trim()) return;
+  const generatePlay = useCallback(async () => {
+    if (!question.trim() || generatingRef.current) return;
 
+    generatingRef.current = true;
     setLoading(true);
     setError(null);
     setPlay(null);
@@ -110,20 +152,22 @@ export default function PlayPage() {
       setPlay(data.plays[0]);
 
       // Save to localStorage
-      const history = JSON.parse(
-        localStorage.getItem("som-play-history") || "[]"
+      const history: HistoryEntry[] = JSON.parse(
+        localStorage.getItem(STORAGE_KEYS.playHistory) || "[]"
       );
+      const rxNumber = `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`;
       history.unshift({
         question,
         context,
         play: data.plays[0],
         timestamp: Date.now(),
+        rxNumber,
       });
       localStorage.setItem(
-        "som-play-history",
-        JSON.stringify(history.slice(0, 50))
+        STORAGE_KEYS.playHistory,
+        JSON.stringify(history.slice(0, MAX_HISTORY))
       );
-      setPlayCount(history.length);
+      setPlayCount(Math.min(history.length, MAX_HISTORY));
 
       // Rotate question suggestion
       setQuestionIdx((prev) => (prev + 1) % questionPool.length);
@@ -136,19 +180,20 @@ export default function PlayPage() {
       setError(t.errorMessage);
     } finally {
       setLoading(false);
+      generatingRef.current = false;
     }
-  }
+  }, [question, context, lang, questionPool.length, t.errorMessage]);
 
   function handlePlayUpdate(updatedPlay: Play) {
     setPlay(updatedPlay);
-    const history = JSON.parse(localStorage.getItem("som-play-history") || "[]");
+    const history: HistoryEntry[] = JSON.parse(localStorage.getItem(STORAGE_KEYS.playHistory) || "[]");
     const idx = history.findIndex(
-      (e: { play: Play; question: string }) =>
-        e.play.name === updatedPlay.name && e.question === question
+      (e) =>
+        e.play.name === updatedPlay.name && e.question === askedQuestion
     );
     if (idx !== -1) {
       history[idx].play = updatedPlay;
-      localStorage.setItem("som-play-history", JSON.stringify(history));
+      localStorage.setItem(STORAGE_KEYS.playHistory, JSON.stringify(history));
     }
   }
 
@@ -202,15 +247,13 @@ export default function PlayPage() {
         </div>
       </div>
 
-      {/* Loading state */}
+      {/* Loading state — skeleton */}
       {loading && (
-        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-12 sm:mt-16">
-          <div className="flex flex-col items-center gap-6 text-center">
-            <div className="w-8 h-8 border-2 border-mars/20 border-t-mars rounded-full animate-spin" />
-            <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in" key={loadingMsg}>
-              {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
-            </p>
-          </div>
+        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-8 sm:mt-10 space-y-4">
+          <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
+            {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
+          </p>
+          <PlaySkeleton />
         </div>
       )}
 

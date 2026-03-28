@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, ReactNode } from "react";
+import { STORAGE_KEYS } from "@/lib/constants";
 
 export default function AuthGate({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<"loading" | "gate" | "authed">("loading");
@@ -13,7 +14,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
     const params = new URLSearchParams(window.location.search);
     const subscribedEmail = params.get("email");
     if (params.get("subscribed") === "true" && subscribedEmail) {
-      localStorage.setItem("som-email", subscribedEmail);
+      localStorage.setItem(STORAGE_KEYS.email, subscribedEmail);
       // Clean URL
       window.history.replaceState({}, "", window.location.pathname);
       setStatus("authed");
@@ -21,7 +22,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
     }
 
     // Check saved email
-    const savedEmail = localStorage.getItem("som-email");
+    const savedEmail = localStorage.getItem(STORAGE_KEYS.email);
     if (savedEmail) {
       verifyEmail(savedEmail, true);
     } else {
@@ -42,12 +43,12 @@ export default function AuthGate({ children }: { children: ReactNode }) {
       const data = await res.json();
 
       if (data.active) {
-        localStorage.setItem("som-email", emailToCheck);
+        localStorage.setItem(STORAGE_KEYS.email, emailToCheck);
         setStatus("authed");
       } else {
         if (silent) {
           // Saved email no longer active — show gate
-          localStorage.removeItem("som-email");
+          localStorage.removeItem(STORAGE_KEYS.email);
           setStatus("gate");
         } else {
           // Redirect to Stripe Checkout
@@ -60,7 +61,7 @@ export default function AuthGate({ children }: { children: ReactNode }) {
 
           if (checkoutData.active) {
             // Already subscribed
-            localStorage.setItem("som-email", emailToCheck);
+            localStorage.setItem(STORAGE_KEYS.email, emailToCheck);
             setStatus("authed");
           } else if (checkoutData.url) {
             window.location.href = checkoutData.url;

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { STORAGE_KEYS } from "@/lib/constants";
 
 export type Lang = "en" | "sk" | "cs";
 
@@ -114,6 +115,20 @@ const translations = {
     marsError: "Mars couldn't see this one. Try again.",
     // Share
     sharePlay: "Share",
+    // Favorites
+    favorite: "Favorite",
+    unfavorite: "Unfavorite",
+    // History
+    clearConfirm: "Delete all plays? This cannot be undone.",
+    clearYes: "Delete all",
+    clearNo: "Cancel",
+    noPlaysYet: "No plays yet",
+    generateFirst: "Generate your first play",
+    newPlay: "+ New Play",
+    clear: "Clear",
+    // Export
+    exportText: "Copy as text",
+    copied: "Copied!",
   },
   sk: {
     // Header
@@ -224,6 +239,20 @@ const translations = {
     marsError: "Mars to nevidel. Skús znova.",
     // Share
     sharePlay: "Zdieľať",
+    // Favorites
+    favorite: "Obľúbené",
+    unfavorite: "Zrušiť obľúbené",
+    // History
+    clearConfirm: "Zmazať všetky hry? Toto sa nedá vrátiť.",
+    clearYes: "Zmazať všetko",
+    clearNo: "Zrušiť",
+    noPlaysYet: "Zatiaľ žiadne hry",
+    generateFirst: "Vygeneruj prvú hru",
+    newPlay: "+ Nová hra",
+    clear: "Zmazať",
+    // Export
+    exportText: "Kopírovať ako text",
+    copied: "Skopírované!",
   },
   cs: {
     // Header
@@ -334,6 +363,20 @@ const translations = {
     marsError: "Mars to neviděl. Zkus znovu.",
     // Share
     sharePlay: "Sdílet",
+    // Favorites
+    favorite: "Oblíbené",
+    unfavorite: "Zrušit oblíbené",
+    // History
+    clearConfirm: "Smazat všechny hry? Toto nelze vrátit.",
+    clearYes: "Smazat vše",
+    clearNo: "Zrušit",
+    noPlaysYet: "Zatím žádné hry",
+    generateFirst: "Vygeneruj první hru",
+    newPlay: "+ Nová hra",
+    clear: "Smazat",
+    // Export
+    exportText: "Kopírovat jako text",
+    copied: "Zkopírováno!",
   },
 } as const;
 
@@ -355,7 +398,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>("en");
 
   useEffect(() => {
-    const saved = localStorage.getItem("som-lang") as Lang | null;
+    const saved = localStorage.getItem(STORAGE_KEYS.lang) as Lang | null;
     if (saved && (saved === "en" || saved === "sk" || saved === "cs")) {
       setLang(saved);
     }
@@ -363,7 +406,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   const handleSetLang = (newLang: Lang) => {
     setLang(newLang);
-    localStorage.setItem("som-lang", newLang);
+    localStorage.setItem(STORAGE_KEYS.lang, newLang);
   };
 
   return (

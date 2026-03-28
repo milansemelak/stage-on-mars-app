@@ -8,9 +8,10 @@ type Props = {
   play: Play;
   question: string;
   onClose: () => void;
+  rxNumber?: string;
 };
 
-export default function Prescription({ play, question, onClose }: Props) {
+export default function Prescription({ play, question, onClose, rxNumber: rxNumberProp }: Props) {
   const { lang, t } = useI18n();
   const cardRef = useRef<HTMLDivElement>(null);
   const [saving, setSaving] = useState(false);
@@ -23,7 +24,7 @@ export default function Prescription({ play, question, onClose }: Props) {
     year: "numeric",
   });
 
-  const rxNumber = `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`;
+  const rxNumber = rxNumberProp || `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`;
 
   const saveAsImage = useCallback(async () => {
     if (!cardRef.current || saving) return;

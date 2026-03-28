@@ -16,6 +16,15 @@ export type Play = {
   perspectives?: string[];
 };
 
+export type HistoryEntry = {
+  question: string;
+  context: string;
+  play: Play;
+  timestamp: number;
+  favorite?: boolean;
+  rxNumber?: string;
+};
+
 export type GenerateRequest = {
   question: string;
   context?: string;
