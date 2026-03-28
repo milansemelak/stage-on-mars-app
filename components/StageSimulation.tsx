@@ -12,8 +12,8 @@ type Props = {
 function getCharacterPositions(count: number, step: number) {
   const positions: { x: number; y: number }[] = [];
   const cx = 50;
-  const cy = 48;
-  const r = 18;
+  const cy = 38;
+  const r = 28;
   const startAngle = -Math.PI / 2;
 
   for (let i = 0; i < count; i++) {
@@ -22,7 +22,7 @@ function getCharacterPositions(count: number, step: number) {
     const driftY = Math.cos(step * 0.4 + i * 1.7) * 1.5;
     positions.push({
       x: cx + Math.cos(angle) * (r + drift),
-      y: cy + Math.sin(angle) * (r * 0.6 + driftY), // compress Y for perspective
+      y: cy + Math.sin(angle) * (r * 0.55 + driftY), // compress Y for perspective
     });
   }
   return positions;
@@ -52,14 +52,14 @@ export default function StageSimulation({ characters, simulation }: Props) {
   return (
     <div className="rounded-2xl overflow-hidden bg-[#080808]">
       {/* Stage area */}
-      <div className="relative w-full aspect-[16/10] overflow-hidden">
+      <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] overflow-hidden">
         {/* Background atmosphere */}
         <div
           className="absolute inset-0"
           style={{
             background: `
-              radial-gradient(ellipse 80% 50% at 50% 55%, rgba(255,85,0,0.06) 0%, transparent 100%),
-              radial-gradient(ellipse 60% 35% at 50% 55%, rgba(255,85,0,0.03) 0%, transparent 100%),
+              radial-gradient(ellipse 90% 60% at 50% 50%, rgba(255,85,0,0.06) 0%, transparent 100%),
+              radial-gradient(ellipse 70% 45% at 50% 50%, rgba(255,85,0,0.03) 0%, transparent 100%),
               linear-gradient(180deg, #0a0a0a 0%, #060606 100%)
             `,
           }}
@@ -67,7 +67,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
 
         <svg
           className="absolute inset-0 w-full h-full"
-          viewBox="0 0 100 80"
+          viewBox="0 0 100 70"
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
@@ -87,7 +87,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
 
           {/* LED ring — outer glow (wide, faint) */}
           <ellipse
-            cx="50" cy="48" rx="36" ry="20"
+            cx="50" cy="38" rx="42" ry="24"
             fill="none"
             stroke="rgba(255,85,0,0.06)"
             strokeWidth="3"
@@ -95,7 +95,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
 
           {/* LED ring — medium glow */}
           <ellipse
-            cx="50" cy="48" rx="36" ry="20"
+            cx="50" cy="38" rx="42" ry="24"
             fill="none"
             stroke="rgba(255,85,0,0.12)"
             strokeWidth="0.8"
@@ -104,7 +104,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
 
           {/* LED ring — sharp thin line */}
           <ellipse
-            cx="50" cy="48" rx="36" ry="20"
+            cx="50" cy="38" rx="42" ry="24"
             fill="none"
             stroke="rgba(255,85,0,0.5)"
             strokeWidth="0.2"
@@ -112,7 +112,7 @@ export default function StageSimulation({ characters, simulation }: Props) {
 
           {/* Floor reflection — subtle gradient inside the ring */}
           <ellipse
-            cx="50" cy="50" rx="30" ry="16"
+            cx="50" cy="40" rx="36" ry="20"
             fill="rgba(255,85,0,0.015)"
           />
 
