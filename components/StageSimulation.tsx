@@ -472,26 +472,21 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </div>
         )}
 
-        {/* Play overlay — bell in center of stage */}
+        {/* Play overlay — big solid button center stage */}
         {!loading && !hasStarted && (
           <button
             onClick={handlePlayPause}
             className="absolute inset-0 z-10 flex items-center justify-center group cursor-pointer"
           >
-            <div className="relative flex flex-col items-center gap-4">
-              {/* Outer glow */}
-              <div className="absolute -inset-10 bg-mars/[0.06] blur-3xl rounded-full animate-pulse-glow pointer-events-none" />
-              {/* Bell */}
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-b from-mars/25 to-mars/10 border border-mars/30 group-hover:border-mars/60 flex items-center justify-center transition-all duration-300 shadow-[0_0_40px_rgba(255,85,0,0.1)] group-hover:shadow-[0_0_60px_rgba(255,85,0,0.25)] group-active:scale-95">
-                {/* Inner dome */}
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-b from-mars/30 to-mars/15 border border-mars/20 flex items-center justify-center">
-                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-mars/60 group-hover:bg-mars/90 transition-colors duration-300 shadow-[0_0_12px_rgba(255,85,0,0.4)]" />
-                </div>
+            <div className="relative">
+              {/* Glow */}
+              <div className="absolute -inset-6 bg-mars/15 blur-2xl rounded-full animate-pulse-glow pointer-events-none" />
+              {/* Button */}
+              <div className="relative px-10 sm:px-14 py-4 sm:py-5 rounded-2xl bg-mars group-hover:bg-mars-light transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] group-hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] group-active:scale-[0.97]">
+                <span className="text-white font-black text-base sm:text-lg uppercase tracking-[0.2em]">
+                  {t.startThePlay}
+                </span>
               </div>
-              {/* Label */}
-              <span className="relative text-mars/50 group-hover:text-mars/80 text-xs sm:text-sm font-black uppercase tracking-[0.3em] transition-colors duration-300">
-                {t.startThePlay}
-              </span>
             </div>
           </button>
         )}
@@ -672,24 +667,19 @@ export default function StageSimulation({ characters, simulation, simulationStep
             </div>
           )}
 
-          {/* End the play — bell */}
+          {/* End the play — solid button */}
           {hasEnded && endingPhase >= 2 && (
-            <div className="py-6 animate-fade-in flex flex-col items-center gap-4">
+            <div className="px-5 sm:px-6 py-5 animate-fade-in flex flex-col items-center gap-3">
               <button
                 onClick={() => onEnd?.()}
-                className="group relative cursor-pointer flex flex-col items-center gap-3"
+                className="group w-full relative"
               >
-                <div className="absolute -inset-8 bg-mars/[0.05] blur-2xl rounded-full animate-pulse-glow pointer-events-none" />
-                {/* Bell */}
-                <div className="relative w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-gradient-to-b from-mars/20 to-mars/8 border border-mars/25 group-hover:border-mars/50 flex items-center justify-center transition-all duration-300 shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:shadow-[0_0_50px_rgba(255,85,0,0.2)] group-active:scale-95">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-b from-mars/25 to-mars/10 border border-mars/15 flex items-center justify-center">
-                    <div className="w-3 h-3 rounded-full bg-mars/50 group-hover:bg-mars/80 transition-colors duration-300 shadow-[0_0_8px_rgba(255,85,0,0.3)]" />
-                  </div>
+                <div className="absolute -inset-2 bg-mars/10 blur-xl rounded-2xl animate-pulse-glow pointer-events-none" />
+                <div className="relative w-full py-4 rounded-2xl bg-mars group-hover:bg-mars-light transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] group-hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] group-active:scale-[0.98] text-center">
+                  <span className="text-white font-black text-sm sm:text-base uppercase tracking-[0.2em]">
+                    {t.endThePlay}
+                  </span>
                 </div>
-                {/* Label */}
-                <span className="relative text-mars/40 group-hover:text-mars/70 text-[11px] font-black uppercase tracking-[0.3em] transition-colors duration-300">
-                  {t.endThePlay}
-                </span>
               </button>
 
               <button
