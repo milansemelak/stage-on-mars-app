@@ -115,7 +115,7 @@ const translations = {
     marsError: "Mars couldn't see this one. Try again.",
     // Client name
     forWhom: "Who is this play for?",
-    forWhomPlaceholder: "Name (optional)",
+    forWhomPlaceholder: "Name",
     // Share
     sharePlay: "Share",
     // Favorites
@@ -242,7 +242,7 @@ const translations = {
     marsError: "Mars to nevidel. Skús znova.",
     // Client name
     forWhom: "Pre koho je táto hra?",
-    forWhomPlaceholder: "Meno (nepovinné)",
+    forWhomPlaceholder: "Meno",
     // Share
     sharePlay: "Zdieľať",
     // Favorites
@@ -369,7 +369,7 @@ const translations = {
     marsError: "Mars to neviděl. Zkus znovu.",
     // Client name
     forWhom: "Pro koho je tato hra?",
-    forWhomPlaceholder: "Jméno (nepovinné)",
+    forWhomPlaceholder: "Jméno",
     // Share
     sharePlay: "Sdílet",
     // Favorites
