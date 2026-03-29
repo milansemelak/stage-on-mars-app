@@ -20,7 +20,7 @@ export default function Header() {
           <img
             src="/logo.png"
             alt="Stage On Mars"
-            className="h-10 sm:h-[70px] w-auto object-contain invert"
+            className="h-12 sm:h-[70px] w-auto object-contain invert"
           />
         </button>
         <div className="flex items-center gap-2">
@@ -55,21 +55,16 @@ export default function Header() {
             Archive
           </Link>
           <div className="w-px h-4 bg-white/10" />
-          <div className="flex gap-1">
-            {(["en", "sk", "cs"] as const).map((l) => (
-              <button
-                key={l}
-                onClick={() => setLang(l)}
-                className={`text-xs font-medium transition-all rounded-lg px-2.5 py-1.5 ${
-                  lang === l
-                    ? "text-white bg-white/10"
-                    : "text-white/30 hover:text-white/60"
-                }`}
-              >
-                {l === "en" ? "EN" : l === "sk" ? "SK" : "CZ"}
-              </button>
-            ))}
-          </div>
+          <button
+            onClick={() => {
+              const order = ["en", "sk", "cs"] as const;
+              const next = order[(order.indexOf(lang) + 1) % order.length];
+              setLang(next);
+            }}
+            className="text-xs font-medium text-white bg-white/10 rounded-lg px-2.5 py-1.5 hover:bg-white/15 transition-colors"
+          >
+            {lang === "en" ? "EN" : lang === "sk" ? "SK" : "CZ"}
+          </button>
         </div>
       </div>
     </header>
