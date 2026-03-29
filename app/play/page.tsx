@@ -110,6 +110,8 @@ function PlayPage() {
   const [playCount, setPlayCount] = useState(0);
   const [freePlayCount, setFreePlayCount] = useState(0);
   const [showAccountGate, setShowAccountGate] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscriptionChecked, setSubscriptionChecked] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
@@ -136,6 +138,13 @@ function PlayPage() {
       setQuestion(q.trim());
       pendingFollowUp.current = true;
     }
+    // Handle return from Stripe checkout
+    if (searchParams.get("subscribed") === "true") {
+      setIsSubscribed(true);
+      setSubscriptionChecked(true);
+      // Clean URL
+      window.history.replaceState({}, "", "/play");
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
@@ -159,6 +168,42 @@ function PlayPage() {
     setFreePlayCount(savedCount);
   }, []);
 
+  // Check subscription status for logged-in users
+  useEffect(() => {
+    if (!user) {
+      setSubscriptionChecked(true);
+      return;
+    }
+    // Check Stripe subscription
+    fetch("/api/stripe/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.active) {
+          setIsSubscribed(true);
+        } else {
+          // Check Supabase profile (supernova code users)
+          const supabase = (async () => {
+            const { createClient } = await import("@/lib/supabase");
+            return createClient();
+          })();
+          supabase.then((sb) => {
+            if (!sb) return;
+            sb.from("profiles").select("is_subscribed").eq("id", user.id).single()
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              .then(({ data: profile }: { data: any }) => {
+                if (profile?.is_subscribed) setIsSubscribed(true);
+              });
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => setSubscriptionChecked(true));
+  }, [user]);
+
   // Auto-generate when follow-up question is set
   useEffect(() => {
     if (pendingFollowUp.current && question.trim()) {
@@ -181,9 +226,15 @@ function PlayPage() {
   const generatePlay = useCallback(async () => {
     if (!question.trim() || generatingRef.current) return;
 
-    // Free play limit check — if not logged in and used all free plays
+    // Free play limit check
     if (!user && freePlayCount >= FREE_PLAY_LIMIT) {
+      // Anonymous user — show account gate
       setShowAccountGate(true);
+      return;
+    }
+    if (user && !isSubscribed && subscriptionChecked) {
+      // Logged in but not subscribed — redirect to subscribe
+      router.push("/auth/subscribe");
       return;
     }
 
@@ -248,7 +299,7 @@ function PlayPage() {
       setLoading(false);
       generatingRef.current = false;
     }
-  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, freePlayCount]);
+  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, freePlayCount, isSubscribed, subscriptionChecked, router]);
 
   function handlePlayUpdate(updatedPlay: Play) {
     setPlay(updatedPlay);

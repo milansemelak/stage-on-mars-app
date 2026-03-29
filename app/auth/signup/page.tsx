@@ -34,20 +34,20 @@ export default function SignUpPage() {
       return;
     }
 
-    // Auto sign in after signup (Supabase does this by default if email confirmation is disabled)
+    // Auto sign in after signup
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: email.trim(),
       password,
     });
 
     if (signInError) {
-      // If sign-in fails, they may need to confirm email
       setError("Check your email to confirm your account, then log in.");
       setLoading(false);
       return;
     }
 
-    router.push("/play");
+    // Redirect to subscribe page
+    router.push("/auth/subscribe");
   }
 
   return (
