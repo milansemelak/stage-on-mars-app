@@ -29,7 +29,7 @@ export default function QuestionInput({
   return (
     <div className="space-y-3">
       {/* Input box */}
-      <div className="rounded-2xl border border-white/15 bg-white/[0.06] overflow-hidden focus-within:border-mars/40 transition-colors">
+      <div className="rounded-2xl border border-white/15 bg-white/[0.06] overflow-hidden focus-within:border-white/25 transition-colors">
         <textarea
           value={question}
           onChange={(e) => onChange(e.target.value)}
