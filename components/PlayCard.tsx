@@ -300,7 +300,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 return (
                   <div
                     key={i}
-                    className={`rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] relative ${
+                    className={`char-reveal char-delay-${Math.min(i, 5)} rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] relative ${
                       isAbstract
                         ? "bg-white/[0.02] border-white/10 hover:border-white/20"
                         : "bg-mars/8 border-mars/20 hover:border-mars/35"

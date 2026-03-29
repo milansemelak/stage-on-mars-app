@@ -136,13 +136,25 @@ html {
   animation: pulseGlow 2s ease-in-out infinite;
 }
 
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.25s; }
-.stagger-3 { animation-delay: 0.4s; }
-.stagger-4 { animation-delay: 0.55s; }
-.stagger-5 { animation-delay: 0.7s; }
-.stagger-6 { animation-delay: 0.85s; }
-.stagger-7 { animation-delay: 1.0s; }
+.stagger-1 { animation-delay: 0.15s; }
+.stagger-2 { animation-delay: 0.6s; }
+.stagger-3 { animation-delay: 1.1s; }
+.stagger-4 { animation-delay: 1.8s; }
+.stagger-5 { animation-delay: 2.3s; }
+.stagger-6 { animation-delay: 2.8s; }
+.stagger-7 { animation-delay: 3.3s; }
+
+/* Character cards — individual reveal */
+.char-reveal {
+  animation: fadeSlideUp 0.5s ease-out forwards;
+  opacity: 0;
+}
+.char-delay-0 { animation-delay: 1.2s; }
+.char-delay-1 { animation-delay: 1.4s; }
+.char-delay-2 { animation-delay: 1.6s; }
+.char-delay-3 { animation-delay: 1.8s; }
+.char-delay-4 { animation-delay: 2.0s; }
+.char-delay-5 { animation-delay: 2.2s; }
 
 /* Perspective reveal — after simulation ritual ending */
 @keyframes perspectiveReveal {
