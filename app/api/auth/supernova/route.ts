@@ -10,10 +10,19 @@ function getSupabaseAdmin() {
   );
 }
 
-// Valid supernova codes — add codes here
-const VALID_CODES = new Set(
-  (process.env.SUPERNOVA_CODES || "").split(",").map((c) => c.trim().toUpperCase()).filter(Boolean)
-);
+// Valid supernova code prefixes — any code matching PREFIX + number is valid
+// e.g. SUPERNOVA_PREFIXES=PLAYER means PLAYER1, PLAYER2, PLAYER999 all work
+const VALID_PREFIXES = (process.env.SUPERNOVA_CODES || "").split(",").map((c) => c.trim().toUpperCase()).filter(Boolean);
+
+function isValidCode(code: string): boolean {
+  const normalized = code.trim().toUpperCase();
+  return VALID_PREFIXES.some((prefix) => {
+    if (normalized === prefix) return true; // exact match
+    // Check if code is PREFIX + number (e.g. PLAYER1, PLAYER42)
+    if (normalized.startsWith(prefix) && /^\d+$/.test(normalized.slice(prefix.length))) return true;
+    return false;
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,9 +32,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Missing code or user." }, { status: 400 });
     }
 
-    const normalizedCode = code.trim().toUpperCase();
-
-    if (!VALID_CODES.has(normalizedCode)) {
+    if (!isValidCode(code)) {
       return NextResponse.json({ success: false, error: "Invalid Supernova code." });
     }
 
