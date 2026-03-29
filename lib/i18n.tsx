@@ -159,11 +159,11 @@ const translations = {
     exportText: "Copy as text",
     copied: "Copied!",
     // Free play limit
-    freePlayLimitTitle: "You've explored 3 questions.",
-    freePlayLimitDesc: "Create a free account to keep playing.",
+    freePlayLimitTitle: "You've explored 3 free plays.",
+    freePlayLimitDesc: "Create an account and subscribe to keep playing.",
     freePlaySubscribe: "Unlock Unlimited Plays",
     freePlayCount: "free plays remaining",
-    createAccount: "Create an account",
+    createAccount: "Create account & subscribe",
     alreadyHaveAccount: "Already have an account? Log in",
     // Auth pages
     unlockPlaymaker: "Unlock The Playmaker",
@@ -358,11 +358,11 @@ const translations = {
     exportText: "Kopírovať ako text",
     copied: "Skopírované!",
     // Free play limit
-    freePlayLimitTitle: "Preskúmal si 3 otázky.",
-    freePlayLimitDesc: "Vytvor si účet zadarmo a hraj ďalej.",
+    freePlayLimitTitle: "Vyskúšal si 3 hry zadarmo.",
+    freePlayLimitDesc: "Vytvor si účet a predplať si prístup.",
     freePlaySubscribe: "Odomknúť neobmedzené hry",
     freePlayCount: "voľných hier zostáva",
-    createAccount: "Vytvoriť účet",
+    createAccount: "Vytvoriť účet a predplatiť",
     alreadyHaveAccount: "Už máš účet? Prihlás sa",
     // Auth pages
     unlockPlaymaker: "Odomkni Playmaker",
@@ -557,11 +557,11 @@ const translations = {
     exportText: "Kopírovat jako text",
     copied: "Zkopírováno!",
     // Free play limit
-    freePlayLimitTitle: "Prozkoumal jsi 3 otázky.",
-    freePlayLimitDesc: "Vytvoř si účet zdarma a hraj dál.",
+    freePlayLimitTitle: "Vyzkoušel jsi 3 hry zdarma.",
+    freePlayLimitDesc: "Vytvoř si účet a předplať si přístup.",
     freePlaySubscribe: "Odemknout neomezené hry",
     freePlayCount: "volných her zbývá",
-    createAccount: "Vytvořit účet",
+    createAccount: "Vytvořit účet a předplatit",
     alreadyHaveAccount: "Už máš účet? Přihlas se",
     // Auth pages
     unlockPlaymaker: "Odemkni Playmaker",
