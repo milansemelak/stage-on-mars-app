@@ -97,12 +97,17 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-white/25 text-xs">
-          {t.authNoAccount}{" "}
-          <Link href="/auth/signup" className="text-mars/70 hover:text-mars transition-colors">
-            {t.authCreateOne}
+        <div className="space-y-2">
+          <Link href="/auth/reset" className="text-white/20 hover:text-white/40 text-xs transition-colors block">
+            {t.authForgotPassword}
           </Link>
-        </p>
+          <p className="text-white/25 text-xs">
+            {t.authNoAccount}{" "}
+            <Link href="/auth/signup" className="text-mars/70 hover:text-mars transition-colors">
+              {t.authCreateOne}
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
