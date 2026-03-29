@@ -64,7 +64,7 @@ export default function SubscribePage() {
       const data = await res.json();
 
       if (data.success) {
-        router.push("/play");
+        router.push("/play?subscribed=true");
       } else {
         setCodeError(data.error || t.authCheckoutError);
       }
