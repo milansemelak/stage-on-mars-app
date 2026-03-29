@@ -6,11 +6,18 @@ import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 
+const PERSONAL_QUESTIONS_KEYS = [
+  "personalQ1", "personalQ2", "personalQ3", "personalQ4", "personalQ5",
+  "personalQ6", "personalQ7", "personalQ8", "personalQ9", "personalQ10",
+] as const;
+
 export default function Home() {
   const { t } = useI18n();
   const { user } = useAuth();
   const router = useRouter();
   const [question, setQuestion] = useState("");
+  const [suggestionIdx] = useState(() => Math.floor(Math.random() * PERSONAL_QUESTIONS_KEYS.length));
+  const suggestion = t[PERSONAL_QUESTIONS_KEYS[suggestionIdx]] as string;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -74,6 +81,17 @@ export default function Home() {
               {t.heroSubmit}
             </button>
           </form>
+
+          {/* Question suggestion */}
+          <button
+            onClick={() => setQuestion(suggestion)}
+            className="text-white/30 hover:text-white/50 text-sm transition-colors group"
+          >
+            {t.trySuggestion}:{" "}
+            <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">
+              &ldquo;{suggestion}&rdquo;
+            </span>
+          </button>
 
           <p className="text-white/20 text-xs">
             {t.heroSubtitle}
