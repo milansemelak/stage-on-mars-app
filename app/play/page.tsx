@@ -127,21 +127,37 @@ function PlayPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Read ?q= param from landing page and auto-generate
+  // Read ?q= param or pending question from localStorage, and auto-generate
   const initialQuestionHandled = useRef(false);
   useEffect(() => {
     if (initialQuestionHandled.current) return;
-    const q = searchParams.get("q");
-    if (q?.trim()) {
-      initialQuestionHandled.current = true;
-      setQuestion(q.trim());
-      pendingFollowUp.current = true;
-    }
+
     // Handle return from Stripe checkout
     if (searchParams.get("subscribed") === "true") {
       setIsSubscribed(true);
       setSubscriptionChecked(true);
+    }
+
+    // Priority: URL param > pending question from localStorage
+    const q = searchParams.get("q");
+    const pending = localStorage.getItem(STORAGE_KEYS.pendingQuestion);
+
+    if (q?.trim()) {
+      initialQuestionHandled.current = true;
+      setQuestion(q.trim());
+      pendingFollowUp.current = true;
+      localStorage.removeItem(STORAGE_KEYS.pendingQuestion);
       // Clean URL
+      window.history.replaceState({}, "", "/play");
+    } else if (pending?.trim()) {
+      initialQuestionHandled.current = true;
+      setQuestion(pending.trim());
+      pendingFollowUp.current = true;
+      localStorage.removeItem(STORAGE_KEYS.pendingQuestion);
+    }
+
+    // Clean subscribed param from URL
+    if (searchParams.get("subscribed") === "true") {
       window.history.replaceState({}, "", "/play");
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -225,9 +241,15 @@ function PlayPage() {
   const generatePlay = useCallback(async () => {
     if (!question.trim() || generatingRef.current) return;
 
+    // Free play limit — save question and don't generate
+    if (!user && freePlayCount >= FREE_PLAY_LIMIT) {
+      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+      return;
+    }
+
     // Subscription check for logged-in users
     if (user && !isSubscribed && subscriptionChecked) {
-      // Logged in but not subscribed — redirect to subscribe
+      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
       router.push("/auth/subscribe");
       return;
     }
@@ -348,13 +370,24 @@ function PlayPage() {
 
               <div className="flex flex-col gap-3">
                 <button
-                  onClick={() => router.push("/auth/signup")}
+                  onClick={() => {
+                    // Save any pending question so it resumes after signup
+                    if (question.trim()) {
+                      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+                    }
+                    router.push("/auth/signup");
+                  }}
                   className="px-6 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-semibold transition-colors"
                 >
                   {t.createAccount}
                 </button>
                 <button
-                  onClick={() => router.push("/auth/login")}
+                  onClick={() => {
+                    if (question.trim()) {
+                      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+                    }
+                    router.push("/auth/login");
+                  }}
                   className="text-white/30 hover:text-white/50 text-sm transition-colors"
                 >
                   {t.alreadyHaveAccount}

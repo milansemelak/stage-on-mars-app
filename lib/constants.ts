@@ -6,4 +6,5 @@ export const STORAGE_KEYS = {
   lang: "som-lang",
   email: "som-email",
   playCount: "som-play-count",
+  pendingQuestion: "som-pending-question",
 } as const;

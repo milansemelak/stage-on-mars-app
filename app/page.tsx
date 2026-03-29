@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
@@ -7,6 +9,14 @@ import Link from "next/link";
 export default function Home() {
   const { t } = useI18n();
   const { user } = useAuth();
+  const router = useRouter();
+  const [question, setQuestion] = useState("");
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!question.trim()) return;
+    router.push(`/play?q=${encodeURIComponent(question.trim())}`);
+  }
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex flex-col">
@@ -17,7 +27,7 @@ export default function Home() {
             href="/auth/login"
             className="text-xs text-white/30 hover:text-white/60 transition-colors"
           >
-            Log in
+            {t.authLogin}
           </Link>
         </div>
       )}
@@ -35,16 +45,39 @@ export default function Home() {
               </p>
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight">
-              {t.heroFormula}
+              {t.heroHeadline}
             </h1>
           </div>
 
-          <Link
-            href="/play"
-            className="inline-block px-12 sm:px-16 py-4 sm:py-5 rounded-2xl bg-mars hover:bg-mars-light text-white font-black text-base sm:text-lg uppercase tracking-[0.2em] transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] hover:scale-[1.02] active:scale-[0.98]"
-          >
-            {t.heroSubmit}
-          </Link>
+          {/* Question input */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <textarea
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
+                placeholder={t.placeholder}
+                rows={2}
+                className="w-full rounded-2xl bg-white/[0.06] border border-white/15 focus:border-mars/40 px-5 py-4 text-white placeholder:text-white/20 focus:outline-none transition-colors resize-none text-base sm:text-lg"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={!question.trim()}
+              className="inline-block px-12 sm:px-16 py-4 sm:py-5 rounded-2xl bg-mars hover:bg-mars-light disabled:opacity-30 disabled:cursor-not-allowed text-white font-black text-base sm:text-lg uppercase tracking-[0.2em] transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] hover:scale-[1.02] active:scale-[0.98]"
+            >
+              {t.heroSubmit}
+            </button>
+          </form>
+
+          <p className="text-white/20 text-xs">
+            {t.heroSubtitle}
+          </p>
         </div>
       </section>
 
@@ -63,21 +96,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="px-6 pb-12 pt-8 border-t border-white/[0.04]">
-        <div className="max-w-2xl mx-auto flex items-center justify-between text-white/20 text-xs">
-          <span className="tracking-wide">Stage on Mars</span>
-          <a
-            href="https://stageonmars.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white/40 transition-colors"
-          >
-            stageonmars.com
-          </a>
-        </div>
-      </footer>
     </div>
   );
 }
