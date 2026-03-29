@@ -1,6 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { getAnthropicClient } from "@/lib/anthropic";
+import { rateLimit } from "@/lib/rate-limit";
 
 const SYSTEM_PROMPT = `You are the character generator of Stage on Mars.
 
@@ -27,6 +27,9 @@ Energy options: quiet, loud, tense, flowing, grounded, searching, burning, froze
 Return ONLY valid JSON — no markdown, no explanation.`;
 
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = rateLimit(request);
+  if (rateLimitResponse) return rateLimitResponse;
+
   try {
     const body = await request.json();
     const { question, playerCount, context, lang } = body;

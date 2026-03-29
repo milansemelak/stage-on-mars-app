@@ -58,12 +58,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#0a0a0a] text-white min-h-screen flex flex-col`}
       >
         <I18nProvider>
           <AuthGate>
             <Header />
-            <main>{children}</main>
+            <main className="flex-1">{children}</main>
+            <footer className="border-t border-white/[0.04] py-6 text-center text-white/15 text-xs">
+              &copy; {new Date().getFullYear()} Stage on Mars. All rights reserved.
+            </footer>
           </AuthGate>
         </I18nProvider>
       </body>
