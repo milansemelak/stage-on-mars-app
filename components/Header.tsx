@@ -15,12 +15,12 @@ export default function Header() {
   return (
     <header className="border-b border-white/[0.06]">
       <div className="mx-auto max-w-5xl flex items-center justify-between px-5 sm:px-8 py-4 sm:py-5">
-        <button onClick={handleLogoClick} className="flex items-center">
+        <button onClick={handleLogoClick} className="flex-shrink-0 flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.png"
             alt="Stage On Mars"
-            className="h-[60px] sm:h-[70px] w-auto invert"
+            className="h-10 sm:h-[70px] w-auto object-contain invert"
           />
         </button>
         <div className="flex items-center gap-2">
