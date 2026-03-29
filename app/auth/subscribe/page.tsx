@@ -13,9 +13,9 @@ export default function SubscribePage() {
   const [showCodeField, setShowCodeField] = useState(false);
   const router = useRouter();
 
-  // Redirect to login if not authenticated
+  // Redirect to signup (which now includes subscription) if not authenticated
   if (!authLoading && !user) {
-    router.push("/auth/login");
+    router.push("/auth/signup");
     return null;
   }
 
