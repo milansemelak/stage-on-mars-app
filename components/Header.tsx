@@ -1,21 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
 
 export default function Header() {
   const { lang, setLang, t } = useI18n();
   const { user, signOut } = useAuth();
-
-  function handleLogoClick() {
-    window.location.reload();
-  }
+  const router = useRouter();
 
   return (
     <header className="border-b border-white/[0.06]">
       <div className="mx-auto max-w-5xl flex items-center justify-between px-5 sm:px-8 py-4 sm:py-5">
-        <button onClick={handleLogoClick} className="flex-shrink-0 flex items-center">
+        <button onClick={() => router.push("/")} className="flex-shrink-0 flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.png"
@@ -33,7 +31,7 @@ export default function Header() {
                 onClick={signOut}
                 className="text-xs font-medium text-white/30 hover:text-white/70 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap"
               >
-                Log out
+                {t.authLogout}
               </button>
               <div className="w-px h-4 bg-white/10" />
             </>
@@ -43,7 +41,7 @@ export default function Header() {
                 href="/auth/login"
                 className="text-xs font-medium text-white/30 hover:text-white/70 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap"
               >
-                Log in
+                {t.authLogin}
               </Link>
               <div className="w-px h-4 bg-white/10" />
             </>
@@ -52,7 +50,7 @@ export default function Header() {
             href="/history"
             className="text-xs font-medium text-white/30 hover:text-white/70 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-white/5 whitespace-nowrap"
           >
-            Archive
+            {t.savedPlays}
           </Link>
           <div className="w-px h-4 bg-white/10" />
           <button

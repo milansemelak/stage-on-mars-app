@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
+import { useI18n } from "@/lib/i18n";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useI18n();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -27,7 +29,7 @@ export default function LoginPage() {
 
     if (signInError) {
       setError(signInError.message === "Invalid login credentials"
-        ? "Wrong email or password."
+        ? t.authWrongCredentials
         : signInError.message
       );
       setLoading(false);
@@ -42,7 +44,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm space-y-8 text-center">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold text-white tracking-tight">
-            Welcome back
+            {t.authWelcomeBack}
           </h1>
           <p className="text-white/40 text-sm">
             Stage on Mars
@@ -57,7 +59,7 @@ export default function LoginPage() {
               setEmail(e.target.value);
               setError("");
             }}
-            placeholder="Email"
+            placeholder={t.authEmail}
             autoFocus
             required
             className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
@@ -70,7 +72,7 @@ export default function LoginPage() {
               setPassword(e.target.value);
               setError("");
             }}
-            placeholder="Password"
+            placeholder={t.authPassword}
             required
             className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
           />
@@ -87,18 +89,18 @@ export default function LoginPage() {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Logging in...
+                {t.authLoggingIn}
               </span>
             ) : (
-              "Log in"
+              t.authLogin
             )}
           </button>
         </form>
 
         <p className="text-white/25 text-xs">
-          Don&apos;t have an account?{" "}
+          {t.authNoAccount}{" "}
           <Link href="/auth/signup" className="text-mars/70 hover:text-mars transition-colors">
-            Create one
+            {t.authCreateOne}
           </Link>
         </p>
       </div>

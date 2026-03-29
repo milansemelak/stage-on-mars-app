@@ -47,7 +47,7 @@ export default function HistoryPage() {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{t.savedPlays}</h1>
           <p className="text-white/40 text-sm">
-            {history.length} {history.length === 1 ? "play" : "plays"}
+            {history.length} {history.length === 1 ? t.historyPlay : t.historyPlays}
           </p>
         </div>
         <div className="flex gap-3">
@@ -77,7 +77,7 @@ export default function HistoryPage() {
               filter === "all" ? "bg-white/12 text-white" : "text-white/35 hover:text-white/60"
             }`}
           >
-            All
+            {t.historyAll}
           </button>
           <button
             onClick={() => setFilter("favorites")}
@@ -123,7 +123,7 @@ export default function HistoryPage() {
         </div>
       ) : displayed.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-white/20 text-lg">No favorites yet</p>
+          <p className="text-white/20 text-lg">{t.historyNoFavorites}</p>
         </div>
       ) : (
         <div className="space-y-8">

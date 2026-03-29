@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useI18n } from "@/lib/i18n";
 
 export default function SubscribePage() {
   const { user, loading: authLoading } = useAuth();
@@ -10,8 +11,9 @@ export default function SubscribePage() {
   const [codeError, setCodeError] = useState("");
   const [checkingCode, setCheckingCode] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [showCodeField, setShowCodeField] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
+  const { t } = useI18n();
 
   // Redirect to signup (which now includes subscription) if not authenticated
   if (!authLoading && !user) {
@@ -22,6 +24,7 @@ export default function SubscribePage() {
   async function handleSubscribe() {
     if (!user?.email) return;
     setCheckoutLoading(true);
+    setError("");
 
     try {
       const res = await fetch("/api/stripe/checkout", {
@@ -32,13 +35,14 @@ export default function SubscribePage() {
       const data = await res.json();
 
       if (data.active) {
-        // Already subscribed
         router.push("/play");
       } else if (data.url) {
         window.location.href = data.url;
+      } else {
+        setError(t.authCheckoutError);
       }
     } catch {
-      // Fail silently
+      setError(t.authCheckoutError);
     } finally {
       setCheckoutLoading(false);
     }
@@ -62,10 +66,10 @@ export default function SubscribePage() {
       if (data.success) {
         router.push("/play");
       } else {
-        setCodeError(data.error || "Invalid code.");
+        setCodeError(data.error || t.authCheckoutError);
       }
     } catch {
-      setCodeError("Something went wrong. Try again.");
+      setCodeError(t.authCheckoutError);
     } finally {
       setCheckingCode(false);
     }
@@ -84,71 +88,72 @@ export default function SubscribePage() {
       <div className="w-full max-w-sm space-y-8 text-center">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold text-white tracking-tight">
-            Unlock The Playmaker
+            {t.unlockPlaymaker}
           </h1>
           <p className="text-white/40 text-sm">
-            Unlimited plays, perspectives, and simulations.
+            {t.unlockDesc}
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
+          {/* Supernova code — primary */}
+          <form onSubmit={handleSupernovaCode} className="space-y-3">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={supernovaCode}
+                onChange={(e) => {
+                  setSupernovaCode(e.target.value);
+                  setCodeError("");
+                }}
+                placeholder={t.authSupernovaPlaceholder}
+                className="flex-1 rounded-lg bg-white/5 border border-white/20 px-4 py-3.5 text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={!supernovaCode.trim() || checkingCode}
+                className="px-5 py-3.5 rounded-lg bg-mars hover:bg-mars-light disabled:opacity-30 disabled:cursor-not-allowed text-white font-semibold transition-colors"
+              >
+                {checkingCode ? (
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
+                ) : (
+                  t.authUnlock
+                )}
+              </button>
+            </div>
+            {codeError && (
+              <p className="text-red-400/80 text-xs">{codeError}</p>
+            )}
+          </form>
+
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-white/20 text-xs">{t.authOr}</span>
+            <div className="flex-1 h-px bg-white/10" />
+          </div>
+
+          {/* Subscribe — secondary */}
           <button
             onClick={handleSubscribe}
             disabled={checkoutLoading}
-            className="w-full py-4 rounded-lg bg-mars hover:bg-mars-light disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-lg transition-colors"
+            className="w-full py-3.5 rounded-lg bg-white/[0.06] border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white/70 font-medium transition-colors"
           >
             {checkoutLoading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               </span>
             ) : (
-              "Subscribe"
+              t.authSubscribe
             )}
           </button>
 
-          {/* Supernova code */}
-          {!showCodeField ? (
-            <button
-              onClick={() => setShowCodeField(true)}
-              className="text-white/20 hover:text-white/40 text-xs transition-colors"
-            >
-              Have a Supernova code?
-            </button>
-          ) : (
-            <form onSubmit={handleSupernovaCode} className="space-y-3 pt-2">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={supernovaCode}
-                  onChange={(e) => {
-                    setSupernovaCode(e.target.value);
-                    setCodeError("");
-                  }}
-                  placeholder="Enter Supernova code"
-                  autoFocus
-                  className="flex-1 rounded-lg bg-white/5 border border-white/20 px-4 py-2.5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
-                />
-                <button
-                  type="submit"
-                  disabled={!supernovaCode.trim() || checkingCode}
-                  className="px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed text-white text-sm font-medium transition-colors"
-                >
-                  {checkingCode ? (
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
-                  ) : (
-                    "Apply"
-                  )}
-                </button>
-              </div>
-              {codeError && (
-                <p className="text-red-400/80 text-xs">{codeError}</p>
-              )}
-            </form>
+          {error && (
+            <p className="text-red-400/80 text-xs">{error}</p>
           )}
         </div>
 
         <p className="text-white/15 text-xs">
-          Logged in as {user?.email}
+          {t.authLoggedInAs} {user?.email}
         </p>
       </div>
     </div>
