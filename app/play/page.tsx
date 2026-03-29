@@ -143,13 +143,14 @@ function PlayPage() {
     const pending = localStorage.getItem(STORAGE_KEYS.pendingQuestion);
 
     if (q?.trim()) {
+      // Coming from landing page — pre-fill question but let user set context/name first
       initialQuestionHandled.current = true;
       setQuestion(q.trim());
-      pendingFollowUp.current = true;
       localStorage.removeItem(STORAGE_KEYS.pendingQuestion);
       // Clean URL
       window.history.replaceState({}, "", "/play");
     } else if (pending?.trim()) {
+      // Returning from auth flow — auto-generate since they already had a question
       initialQuestionHandled.current = true;
       setQuestion(pending.trim());
       pendingFollowUp.current = true;
