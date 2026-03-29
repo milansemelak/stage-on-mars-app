@@ -109,7 +109,6 @@ function PlayPage() {
   const [loadingMsg, setLoadingMsg] = useState(0);
   const [playCount, setPlayCount] = useState(0);
   const [freePlayCount, setFreePlayCount] = useState(0);
-  const [showAccountGate, setShowAccountGate] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [subscriptionChecked, setSubscriptionChecked] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
@@ -226,12 +225,7 @@ function PlayPage() {
   const generatePlay = useCallback(async () => {
     if (!question.trim() || generatingRef.current) return;
 
-    // Free play limit check
-    if (!user && freePlayCount >= FREE_PLAY_LIMIT) {
-      // Anonymous user — show account gate
-      setShowAccountGate(true);
-      return;
-    }
+    // Subscription check for logged-in users
     if (user && !isSubscribed && subscriptionChecked) {
       // Logged in but not subscribed — redirect to subscribe
       router.push("/auth/subscribe");
@@ -243,7 +237,6 @@ function PlayPage() {
     setError(null);
     setPlay(null);
     setAskedQuestion(question);
-    setShowAccountGate(false);
 
     try {
       const response = await fetch("/api/generate-play", {
@@ -327,12 +320,14 @@ function PlayPage() {
     );
   }
 
+  // Anonymous user with no free plays left — show gate immediately
+  const shouldShowGate = !user && freePlayCount >= FREE_PLAY_LIMIT;
+
   return (
     <div className="min-h-[calc(100vh-72px)]">
-      {/* Input section */}
-      <div className={`${!play && !loading ? "pt-8 sm:pt-16" : "pt-4 sm:pt-10"} transition-all`}>
-        <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
-          {!play && !loading && (
+      {shouldShowGate ? (
+        <div className="pt-8 sm:pt-16">
+          <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
             <div className="mb-8 sm:mb-10">
               <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
                 {t.headline}
@@ -341,88 +336,100 @@ function PlayPage() {
                 {t.subheadline}
               </p>
             </div>
-          )}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-5">
+              <div className="space-y-2">
+                <p className="text-white/70 text-base sm:text-lg font-medium">
+                  {t.freePlayLimitTitle}
+                </p>
+                <p className="text-white/35 text-sm">
+                  {t.freePlayLimitDesc}
+                </p>
+              </div>
 
-          <QuestionInput
-            question={question}
-            onChange={setQuestion}
-            onSubmit={generatePlay}
-            loading={loading}
-            context={context}
-            onContextChange={setContext}
-            clientName={clientName}
-            onClientNameChange={setClientName}
-          />
-
-          {/* Daily question suggestion — only when no play */}
-          {!play && !loading && (
-            <div className="mt-5 space-y-2">
-              <button
-                onClick={useDailyQuestion}
-                className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
-              >
-                {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
-              </button>
-
-              {/* Play counter */}
-              {playCount > 0 && (
-                <div className="text-white/15 text-xs">
-                  {playCount} {t.playsGenerated}
-                </div>
-              )}
-
-              {/* Free plays remaining indicator (only for anonymous users) */}
-              {!user && freePlayCount > 0 && freePlayCount < FREE_PLAY_LIMIT && (
-                <div className="text-white/20 text-xs">
-                  {FREE_PLAY_LIMIT - freePlayCount} {t.freePlayCount}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Loading state — skeleton */}
-      {loading && (
-        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-4 sm:mt-6">
-          <div className="py-2 flex items-center justify-center">
-            <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
-              {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
-            </p>
-          </div>
-          <PlaySkeleton />
-        </div>
-      )}
-
-      {/* Account gate — shown after 3 free plays for anonymous users */}
-      {showAccountGate && (
-        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-6">
-          <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-5 animate-fade-slide-up">
-            <div className="space-y-2">
-              <p className="text-white/70 text-base sm:text-lg font-medium">
-                {t.freePlayLimitTitle}
-              </p>
-              <p className="text-white/35 text-sm">
-                {t.freePlayLimitDesc}
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={() => router.push("/auth/signup")}
-                className="px-6 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-semibold transition-colors"
-              >
-                {t.createAccount}
-              </button>
-              <button
-                onClick={() => router.push("/auth/login")}
-                className="text-white/30 hover:text-white/50 text-sm transition-colors"
-              >
-                {t.alreadyHaveAccount}
-              </button>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => router.push("/auth/signup")}
+                  className="px-6 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-semibold transition-colors"
+                >
+                  {t.createAccount}
+                </button>
+                <button
+                  onClick={() => router.push("/auth/login")}
+                  className="text-white/30 hover:text-white/50 text-sm transition-colors"
+                >
+                  {t.alreadyHaveAccount}
+                </button>
+              </div>
             </div>
           </div>
         </div>
+      ) : (
+        <>
+          {/* Input section */}
+          <div className={`${!play && !loading ? "pt-8 sm:pt-16" : "pt-4 sm:pt-10"} transition-all`}>
+            <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
+              {!play && !loading && (
+                <div className="mb-8 sm:mb-10">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                    {t.headline}
+                  </h1>
+                  <p className="text-white/35 text-sm sm:text-base mt-1">
+                    {t.subheadline}
+                  </p>
+                </div>
+              )}
+
+              <QuestionInput
+                question={question}
+                onChange={setQuestion}
+                onSubmit={generatePlay}
+                loading={loading}
+                context={context}
+                onContextChange={setContext}
+                clientName={clientName}
+                onClientNameChange={setClientName}
+              />
+
+              {/* Daily question suggestion — only when no play */}
+              {!play && !loading && (
+                <div className="mt-5 space-y-2">
+                  <button
+                    onClick={useDailyQuestion}
+                    className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
+                  >
+                    {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
+                  </button>
+
+                  {/* Play counter */}
+                  {playCount > 0 && (
+                    <div className="text-white/15 text-xs">
+                      {playCount} {t.playsGenerated}
+                    </div>
+                  )}
+
+                  {/* Free plays remaining indicator (only for anonymous users) */}
+                  {!user && freePlayCount > 0 && freePlayCount < FREE_PLAY_LIMIT && (
+                    <div className="text-white/20 text-xs">
+                      {FREE_PLAY_LIMIT - freePlayCount} {t.freePlayCount}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Loading state — skeleton */}
+          {loading && (
+            <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-4 sm:mt-6">
+              <div className="py-2 flex items-center justify-center">
+                <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
+                  {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
+                </p>
+              </div>
+              <PlaySkeleton />
+            </div>
+          )}
+        </>
       )}
 
       {/* Error */}
