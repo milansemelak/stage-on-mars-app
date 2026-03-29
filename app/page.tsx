@@ -1,13 +1,27 @@
 "use client";
 
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 
 export default function Home() {
   const { t } = useI18n();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex flex-col">
+      {/* Top bar — Log in */}
+      {!user && (
+        <div className="flex justify-end px-6 pt-4">
+          <Link
+            href="/auth/login"
+            className="text-xs text-white/30 hover:text-white/60 transition-colors"
+          >
+            Log in
+          </Link>
+        </div>
+      )}
+
       {/* Hero */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 pt-12 pb-24">
         <div className="max-w-xl w-full text-center space-y-10 animate-fade-slide-up">

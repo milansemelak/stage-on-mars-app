@@ -333,13 +333,11 @@ PRAVIDLÁ: Používaj LEN reálne slovenské slová. Vždy diakritika. Nikdy če
       ? `JAZYK: ČEŠTINA. Celý výstup VÝHRADNĚ česky. Narace i perspektivy.
 
 PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovenské tvary (ľ, ĺ, ŕ, ô). Pokud si nejsi jistý slovem, použij jednodušší. Před odesláním ověř každé slovo.`
-      : "";
+      : "LANGUAGE: ENGLISH. The entire output MUST be in English. All play names, descriptions, character names, narration, perspectives — everything in English. NEVER use Slovak, Czech, or any other language.";
 
   const parts: string[] = [];
 
-  if (langInstruction) {
-    parts.push(langInstruction, "");
-  }
+  parts.push(langInstruction, "");
 
   parts.push(
     `The question that was explored:`,
@@ -472,7 +470,7 @@ PRAVIDLA:
 3. NIKDY neslévej slova dohromady — mezi slovy vždy mezera.
 4. NIKDY nepoužívej slovenské tvary: ľ, ĺ, ŕ, ô neexistují v češtině.
 5. Před odesláním si PŘEČTI každé slovo a ověř, že je to reálné české slovo.`
-      : "";
+      : "LANGUAGE: ENGLISH. The entire output MUST be in English. Play name, image description, character names, author role, ending — everything in English. NEVER use Slovak, Czech, or any other language.";
 
   // Inject a random creative angle to force variety across calls
   const angle = CREATIVE_ANGLES[Math.floor(Math.random() * CREATIVE_ANGLES.length)];

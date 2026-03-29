@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { MARS_SYSTEM_PROMPT, buildMarsPrompt, buildValidationPrompt } from "@/lib/prompt";
 import { Play } from "@/lib/types";
 import { rateLimit } from "@/lib/rate-limit";
-
-const anthropic = new Anthropic();
+import { getAnthropicClient } from "@/lib/anthropic";
 
 async function callWithRetry(params: Anthropic.MessageCreateParamsNonStreaming, retries = 3): Promise<Anthropic.Message> {
+  const anthropic = getAnthropicClient();
   for (let i = 0; i < retries; i++) {
     try {
       return await anthropic.messages.create(params);

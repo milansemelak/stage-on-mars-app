@@ -1,7 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
-
-const anthropic = new Anthropic();
+import { getAnthropicClient } from "@/lib/anthropic";
 
 const SYSTEM_PROMPT = `You are the character generator of Stage on Mars.
 
@@ -57,6 +56,7 @@ export async function POST(request: NextRequest) {
       `Return ONLY a JSON array of exactly ${count} objects with "name" (max 2 words) and "energy". No other text.`,
     ].join("\n");
 
+    const anthropic = getAnthropicClient();
     const message = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 1024,

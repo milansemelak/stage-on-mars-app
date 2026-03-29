@@ -132,7 +132,7 @@ const translations = {
     loadingMars: "Play begins shortly.",
     marsError: "Mars couldn't see this one. Try again.",
     stageHasSpoken: "The stage has spoken.",
-    startThePlay: "Begin",
+    startThePlay: "Start the play",
     endThePlay: "End the Play",
     whatTheStageRevealed: "Perspectives from Mars",
     replay: "Replay",
@@ -160,9 +160,11 @@ const translations = {
     copied: "Copied!",
     // Free play limit
     freePlayLimitTitle: "You've explored 3 questions.",
-    freePlayLimitDesc: "To keep playing, unlock unlimited plays.",
+    freePlayLimitDesc: "Create a free account to keep playing.",
     freePlaySubscribe: "Unlock Unlimited Plays",
     freePlayCount: "free plays remaining",
+    createAccount: "Create an account",
+    alreadyHaveAccount: "Already have an account? Log in",
   },
   sk: {
     // Header
@@ -318,9 +320,11 @@ const translations = {
     copied: "Skopírované!",
     // Free play limit
     freePlayLimitTitle: "Preskúmal si 3 otázky.",
-    freePlayLimitDesc: "Ak chceš pokračovať, odomkni neobmedzené hry.",
+    freePlayLimitDesc: "Vytvor si účet zadarmo a hraj ďalej.",
     freePlaySubscribe: "Odomknúť neobmedzené hry",
     freePlayCount: "voľných hier zostáva",
+    createAccount: "Vytvoriť účet",
+    alreadyHaveAccount: "Už máš účet? Prihlás sa",
   },
   cs: {
     // Header
@@ -476,9 +480,11 @@ const translations = {
     copied: "Zkopírováno!",
     // Free play limit
     freePlayLimitTitle: "Prozkoumal jsi 3 otázky.",
-    freePlayLimitDesc: "Chceš-li pokračovat, odemkni neomezené hry.",
+    freePlayLimitDesc: "Vytvoř si účet zdarma a hraj dál.",
     freePlaySubscribe: "Odemknout neomezené hry",
     freePlayCount: "volných her zbývá",
+    createAccount: "Vytvořit účet",
+    alreadyHaveAccount: "Už máš účet? Přihlas se",
   },
 } as const;
 

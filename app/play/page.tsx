@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useState, useEffect, useRef, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import QuestionInput from "@/components/QuestionInput";
 import PlayCard from "@/components/PlayCard";
 import { Play, HistoryEntry } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth-context";
 import { MAX_HISTORY, FREE_PLAY_LIMIT, STORAGE_KEYS } from "@/lib/constants";
 
 const LOADING_MESSAGES_KEYS = [
@@ -82,8 +83,22 @@ function PlaySkeleton() {
   );
 }
 
-export default function PlayPage() {
+export default function PlayPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[calc(100vh-72px)] flex items-center justify-center">
+        <div className="w-5 h-5 border-2 border-mars/30 border-t-mars rounded-full animate-spin" />
+      </div>
+    }>
+      <PlayPage />
+    </Suspense>
+  );
+}
+
+function PlayPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [question, setQuestion] = useState("");
   const [clientName, setClientName] = useState("");
   const [context, setContext] = useState<"personal" | "business">("personal");
@@ -94,9 +109,7 @@ export default function PlayPage() {
   const [loadingMsg, setLoadingMsg] = useState(0);
   const [playCount, setPlayCount] = useState(0);
   const [freePlayCount, setFreePlayCount] = useState(0);
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [showAccountGate, setShowAccountGate] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
@@ -121,7 +134,7 @@ export default function PlayPage() {
     if (q?.trim()) {
       initialQuestionHandled.current = true;
       setQuestion(q.trim());
-      pendingFollowUp.current = true; // triggers auto-generation via the existing useEffect
+      pendingFollowUp.current = true;
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
@@ -140,19 +153,16 @@ export default function PlayPage() {
     setPlayCount(history.length);
   }, []);
 
-  // Load free play count and subscription status
+  // Load free play count
   useEffect(() => {
     const savedCount = parseInt(localStorage.getItem(STORAGE_KEYS.playCount) || "0", 10);
     setFreePlayCount(savedCount);
-    const savedEmail = localStorage.getItem(STORAGE_KEYS.email);
-    setIsSubscribed(!!savedEmail);
   }, []);
 
   // Auto-generate when follow-up question is set
   useEffect(() => {
     if (pendingFollowUp.current && question.trim()) {
       pendingFollowUp.current = false;
-      // Small delay to let scroll finish
       setTimeout(() => generatePlay(), 300);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -168,47 +178,12 @@ export default function PlayPage() {
     return () => clearInterval(interval);
   }, [loading]);
 
-  // Called from PlayCard when Mars step completes — counts as 1 full play
-  const handlePlayCompleted = useCallback(() => {
-    const current = parseInt(localStorage.getItem(STORAGE_KEYS.playCount) || "0", 10);
-    const next = current + 1;
-    localStorage.setItem(STORAGE_KEYS.playCount, String(next));
-    setFreePlayCount(next);
-  }, []);
-
-  // Redirect to Stripe checkout for subscription
-  async function handleSubscribe() {
-    setCheckoutLoading(true);
-    try {
-      const savedEmail = localStorage.getItem(STORAGE_KEYS.email);
-      // If they already have an email, use it; otherwise prompt via checkout
-      const email = savedEmail || "";
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else if (data.active) {
-        // Already subscribed
-        setIsSubscribed(true);
-        setShowPaywall(false);
-      }
-    } catch {
-      // Fail silently — user can try again
-    } finally {
-      setCheckoutLoading(false);
-    }
-  }
-
   const generatePlay = useCallback(async () => {
     if (!question.trim() || generatingRef.current) return;
 
-    // Free play limit check
-    if (!isSubscribed && freePlayCount >= FREE_PLAY_LIMIT) {
-      setShowPaywall(true);
+    // Free play limit check — if not logged in and used all free plays
+    if (!user && freePlayCount >= FREE_PLAY_LIMIT) {
+      setShowAccountGate(true);
       return;
     }
 
@@ -217,6 +192,7 @@ export default function PlayPage() {
     setError(null);
     setPlay(null);
     setAskedQuestion(question);
+    setShowAccountGate(false);
 
     try {
       const response = await fetch("/api/generate-play", {
@@ -231,6 +207,14 @@ export default function PlayPage() {
 
       const data = await response.json();
       setPlay(data.plays[0]);
+
+      // Increment free play counter (for anonymous users)
+      if (!user) {
+        const current = parseInt(localStorage.getItem(STORAGE_KEYS.playCount) || "0", 10);
+        const next = current + 1;
+        localStorage.setItem(STORAGE_KEYS.playCount, String(next));
+        setFreePlayCount(next);
+      }
 
       // Save to localStorage
       const history: HistoryEntry[] = JSON.parse(
@@ -264,7 +248,7 @@ export default function PlayPage() {
       setLoading(false);
       generatingRef.current = false;
     }
-  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, isSubscribed, freePlayCount]);
+  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, freePlayCount]);
 
   function handlePlayUpdate(updatedPlay: Play) {
     setPlay(updatedPlay);
@@ -281,6 +265,15 @@ export default function PlayPage() {
 
   function useDailyQuestion() {
     setQuestion(dailyQuestion);
+  }
+
+  // Show loading spinner while auth is checking
+  if (authLoading) {
+    return (
+      <div className="min-h-[calc(100vh-72px)] flex items-center justify-center">
+        <div className="w-5 h-5 border-2 border-mars/30 border-t-mars rounded-full animate-spin" />
+      </div>
+    );
   }
 
   return (
@@ -326,6 +319,13 @@ export default function PlayPage() {
                   {playCount} {t.playsGenerated}
                 </div>
               )}
+
+              {/* Free plays remaining indicator (only for anonymous users) */}
+              {!user && freePlayCount > 0 && freePlayCount < FREE_PLAY_LIMIT && (
+                <div className="text-white/20 text-xs">
+                  {FREE_PLAY_LIMIT - freePlayCount} {t.freePlayCount}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -343,29 +343,33 @@ export default function PlayPage() {
         </div>
       )}
 
-      {/* Paywall */}
-      {showPaywall && (
+      {/* Account gate — shown after 3 free plays for anonymous users */}
+      {showAccountGate && (
         <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-6">
-          <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-4 animate-fade-slide-up">
-            <p className="text-white/70 text-base sm:text-lg font-medium">
-              {t.freePlayLimitTitle}
-            </p>
-            <p className="text-white/35 text-sm">
-              {t.freePlayLimitDesc}
-            </p>
-            <button
-              onClick={handleSubscribe}
-              disabled={checkoutLoading}
-              className="mt-2 px-6 py-3 rounded-lg bg-mars hover:bg-mars-light disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold transition-colors"
-            >
-              {checkoutLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                </span>
-              ) : (
-                t.freePlaySubscribe
-              )}
-            </button>
+          <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-5 animate-fade-slide-up">
+            <div className="space-y-2">
+              <p className="text-white/70 text-base sm:text-lg font-medium">
+                {t.freePlayLimitTitle}
+              </p>
+              <p className="text-white/35 text-sm">
+                {t.freePlayLimitDesc}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={() => router.push("/auth/signup")}
+                className="px-6 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-semibold transition-colors"
+              >
+                {t.createAccount}
+              </button>
+              <button
+                onClick={() => router.push("/auth/login")}
+                className="text-white/30 hover:text-white/50 text-sm transition-colors"
+              >
+                {t.alreadyHaveAccount}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -399,7 +403,6 @@ export default function PlayPage() {
             play={play}
             question={askedQuestion}
             onPlayUpdate={handlePlayUpdate}
-            onPlayCompleted={handlePlayCompleted}
             onAskQuestion={(q) => {
               setQuestion(q);
               setPlay(null);
