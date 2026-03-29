@@ -53,6 +53,13 @@ export default function SignUpPage() {
     setUserId(data.user?.id || null);
     setStep("unlock");
     setLoading(false);
+
+    // Send welcome email (fire and forget)
+    fetch("/api/welcome", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.trim() }),
+    }).catch(() => {});
   }
 
   async function handleSubscribe() {
