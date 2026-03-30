@@ -399,20 +399,12 @@ function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
-// Play the hotel bell sound — real recording
-function playBell(rings: number = 1) {
+// Play the hotel bell sound
+function playBell() {
   try {
-    const playOnce = (delay: number) => {
-      setTimeout(() => {
-        const audio = new Audio("/bell.mp3");
-        audio.volume = 0.7;
-        audio.play().catch(() => {});
-      }, delay);
-    };
-
-    for (let i = 0; i < rings; i++) {
-      playOnce(i * 600); // 600ms between rings
-    }
+    const audio = new Audio("/bell.mp3");
+    audio.volume = 0.7;
+    audio.play().catch(() => {});
   } catch {
     // Audio not available — silent fail
   }
@@ -913,7 +905,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
           {hasEnded && endingPhase >= 2 && (
             <div className="px-5 sm:px-6 pb-4 animate-fade-in flex flex-col items-center gap-3">
               <button
-                onClick={() => { playBell(3); onEnd?.(); }}
+                onClick={() => { playBell(); onEnd?.(); }}
                 className="group w-full relative"
               >
                 <div className="absolute -inset-2 bg-mars/10 blur-xl rounded-2xl animate-pulse-glow pointer-events-none" />
