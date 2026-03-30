@@ -399,6 +399,56 @@ function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
+// Hotel reception bell — synthesized with Web Audio API
+function playBell(pitch: "high" | "low" = "high") {
+  try {
+    const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+    const now = ctx.currentTime;
+
+    // Main bell tone
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = "sine";
+    osc1.frequency.value = pitch === "high" ? 1800 : 1200;
+    gain1.gain.setValueAtTime(0.3, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+
+    // Harmonic overtone
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = "sine";
+    osc2.frequency.value = pitch === "high" ? 3600 : 2400;
+    gain2.gain.setValueAtTime(0.08, now);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+
+    // Sub tone for body
+    const osc3 = ctx.createOscillator();
+    const gain3 = ctx.createGain();
+    osc3.type = "sine";
+    osc3.frequency.value = pitch === "high" ? 900 : 600;
+    gain3.gain.setValueAtTime(0.12, now);
+    gain3.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+    osc3.connect(gain3);
+    gain3.connect(ctx.destination);
+
+    osc1.start(now);
+    osc2.start(now);
+    osc3.start(now);
+    osc1.stop(now + 2);
+    osc2.stop(now + 1.2);
+    osc3.stop(now + 2.5);
+
+    // Clean up
+    setTimeout(() => ctx.close(), 3000);
+  } catch {
+    // Audio not available — silent fail
+  }
+}
+
 export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, onEnd }: Props) {
   const { t } = useI18n();
 
@@ -577,6 +627,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
       endingTriggered.current = true;
       setIsPlaying(false);
       setTimeout(() => {
+        playBell("low");
         setHasEnded(true);
         setEndingPhase(1);
       }, 2000);
@@ -588,6 +639,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   const handlePlayPause = () => {
     if (!hasStarted) {
+      playBell("high");
       setHasStarted(true);
       setHasEnded(false);
       setEndingPhase(0);
