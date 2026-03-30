@@ -399,19 +399,19 @@ function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
-// Hotel reception desk bell — sharp metallic ding with shimmer
+// Hotel front desk bell — bright, sharp *ting!* with short ring
 function playBell() {
   try {
     const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
     const now = ctx.currentTime;
 
-    // Metal bell frequencies — inharmonic partials like a real bell
+    // Bright bell partials — high fundamental, short decay, piercing
     const partials = [
-      { freq: 1480, gain: 0.35, decay: 2.0 },  // fundamental strike
-      { freq: 2960, gain: 0.15, decay: 1.2 },  // 2nd partial
-      { freq: 4150, gain: 0.08, decay: 0.8 },  // 3rd partial (inharmonic)
-      { freq: 5920, gain: 0.04, decay: 0.5 },  // high shimmer
-      { freq: 740,  gain: 0.10, decay: 2.8 },  // low body
+      { freq: 3520, gain: 0.25, decay: 1.2 },  // bright fundamental (A7)
+      { freq: 5280, gain: 0.12, decay: 0.7 },  // sharp overtone
+      { freq: 7040, gain: 0.06, decay: 0.4 },  // high shimmer
+      { freq: 2640, gain: 0.08, decay: 1.5 },  // body
+      { freq: 8800, gain: 0.03, decay: 0.25 }, // sparkle
     ];
 
     for (const p of partials) {
@@ -419,11 +419,11 @@ function playBell() {
       const gain = ctx.createGain();
       osc.type = "sine";
       osc.frequency.value = p.freq;
-      // Sharp attack — instant full volume
+      // Instant attack
       gain.gain.setValueAtTime(p.gain, now);
-      // Quick initial drop (the metallic "hit")
-      gain.gain.setValueAtTime(p.gain * 0.7, now + 0.003);
-      // Long ring-out decay
+      // Fast initial drop — the sharp "ting"
+      gain.gain.exponentialRampToValueAtTime(p.gain * 0.3, now + 0.01);
+      // Ring out
       gain.gain.exponentialRampToValueAtTime(0.0001, now + p.decay);
       osc.connect(gain);
       gain.connect(ctx.destination);
@@ -431,8 +431,8 @@ function playBell() {
       osc.stop(now + p.decay + 0.1);
     }
 
-    // Metallic click — noise burst for the hammer strike
-    const bufferSize = ctx.sampleRate * 0.008; // 8ms
+    // Sharp metallic click — very short noise burst
+    const bufferSize = ctx.sampleRate * 0.003; // 3ms
     const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const noiseData = noiseBuffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
@@ -441,19 +441,17 @@ function playBell() {
     const noise = ctx.createBufferSource();
     noise.buffer = noiseBuffer;
     const noiseGain = ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.12, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
-    // Bandpass filter for metallic character
+    noiseGain.gain.setValueAtTime(0.15, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.01);
     const filter = ctx.createBiquadFilter();
-    filter.type = "bandpass";
-    filter.frequency.value = 4000;
-    filter.Q.value = 2;
+    filter.type = "highpass";
+    filter.frequency.value = 5000;
     noise.connect(filter);
     filter.connect(noiseGain);
     noiseGain.connect(ctx.destination);
     noise.start(now);
 
-    setTimeout(() => ctx.close(), 4000);
+    setTimeout(() => ctx.close(), 2500);
   } catch {
     // Audio not available — silent fail
   }
