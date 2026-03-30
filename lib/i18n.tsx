@@ -158,16 +158,17 @@ const translations = {
     // Export
     exportText: "Copy as text",
     copied: "Copied!",
-    // Free play limit
-    freePlayLimitTitle: "You've explored 3 free plays.",
-    freePlayLimitDesc: "Create an account and subscribe to keep playing.",
-    freePlaySubscribe: "Unlock Unlimited Plays",
-    freePlayCount: "free plays remaining",
-    createAccount: "Create account & subscribe",
+    // Account gate
+    accountRequiredTitle: "Create an account to play.",
+    accountRequiredDesc: "It takes 10 seconds. Then the stage is yours.",
+    createAccount: "Create account",
     alreadyHaveAccount: "Already have an account? Log in",
+    // Trial expired
+    trialExpiredTitle: "Your free month has ended.",
+    trialExpiredDesc: "Subscribe to keep generating plays and perspectives.",
     // Auth pages
-    unlockPlaymaker: "Unlock The Playmaker",
-    unlockDesc: "Unlimited plays, perspectives, and simulations.",
+    signupTitle: "Create your account",
+    signupDesc: "Start playing in seconds.",
     authContinue: "Continue",
     authEmail: "Email",
     authPassword: "Password",
@@ -357,16 +358,17 @@ const translations = {
     // Export
     exportText: "Kopírovať ako text",
     copied: "Skopírované!",
-    // Free play limit
-    freePlayLimitTitle: "Vyskúšal si 3 hry zadarmo.",
-    freePlayLimitDesc: "Vytvor si účet a predplať si prístup.",
-    freePlaySubscribe: "Odomknúť neobmedzené hry",
-    freePlayCount: "voľných hier zostáva",
-    createAccount: "Vytvoriť účet a predplatiť",
+    // Account gate
+    accountRequiredTitle: "Vytvor si účet a hraj.",
+    accountRequiredDesc: "Trvá to 10 sekúnd. Potom je scéna tvoja.",
+    createAccount: "Vytvoriť účet",
     alreadyHaveAccount: "Už máš účet? Prihlás sa",
+    // Trial expired
+    trialExpiredTitle: "Tvoj voľný mesiac skončil.",
+    trialExpiredDesc: "Predplať si prístup a pokračuj v hraní.",
     // Auth pages
-    unlockPlaymaker: "Odomkni Playmaker",
-    unlockDesc: "Neobmedzené hry, perspektívy a simulácie.",
+    signupTitle: "Vytvor si účet",
+    signupDesc: "Začni hrať za pár sekúnd.",
     authContinue: "Pokračovať",
     authEmail: "Email",
     authPassword: "Heslo",
@@ -556,16 +558,17 @@ const translations = {
     // Export
     exportText: "Kopírovat jako text",
     copied: "Zkopírováno!",
-    // Free play limit
-    freePlayLimitTitle: "Vyzkoušel jsi 3 hry zdarma.",
-    freePlayLimitDesc: "Vytvoř si účet a předplať si přístup.",
-    freePlaySubscribe: "Odemknout neomezené hry",
-    freePlayCount: "volných her zbývá",
-    createAccount: "Vytvořit účet a předplatit",
+    // Account gate
+    accountRequiredTitle: "Vytvoř si účet a hraj.",
+    accountRequiredDesc: "Trvá to 10 sekund. Pak je scéna tvoje.",
+    createAccount: "Vytvořit účet",
     alreadyHaveAccount: "Už máš účet? Přihlas se",
+    // Trial expired
+    trialExpiredTitle: "Tvůj volný měsíc skončil.",
+    trialExpiredDesc: "Předplať si přístup a pokračuj v hraní.",
     // Auth pages
-    unlockPlaymaker: "Odemkni Playmaker",
-    unlockDesc: "Neomezené hry, perspektivy a simulace.",
+    signupTitle: "Vytvoř si účet",
+    signupDesc: "Začni hrát za pár sekund.",
     authContinue: "Pokračovat",
     authEmail: "Email",
     authPassword: "Heslo",

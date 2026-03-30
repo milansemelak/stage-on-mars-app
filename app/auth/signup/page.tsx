@@ -12,9 +12,8 @@ export default function SignUpPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCode, setShowCode] = useState(false);
-  const [supernovaCode, setSupernovaCode] = useState("");
+  const [masterCode, setMasterCode] = useState("");
   const [codeError, setCodeError] = useState("");
-  const [checkingCode, setCheckingCode] = useState(false);
   const router = useRouter();
   const supabase = createClient();
   const { t } = useI18n();
@@ -23,69 +22,6 @@ export default function SignUpPage() {
     e.preventDefault();
     if (!email.trim() || !password.trim()) return;
 
-    // If they entered a Supernova code, handle that path
-    if (showCode && supernovaCode.trim()) {
-      return handleSignUpWithCode();
-    }
-
-    // Otherwise: create account → straight to Stripe
-    setLoading(true);
-    setError("");
-
-    const { error: signUpError } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
-    });
-
-    if (signUpError) {
-      setError(signUpError.message);
-      setLoading(false);
-      return;
-    }
-
-    // Auto sign in
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
-
-    if (signInError) {
-      setError(signInError.message);
-      setLoading(false);
-      return;
-    }
-
-    // Send welcome email (fire and forget)
-    fetch("/api/welcome", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.trim() }),
-    }).catch(() => {});
-
-    // Go straight to Stripe checkout
-    try {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      const data = await res.json();
-
-      if (data.active) {
-        router.push("/play?subscribed=true");
-      } else if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError(t.authCheckoutError);
-        setLoading(false);
-      }
-    } catch {
-      setError(t.authCheckoutError);
-      setLoading(false);
-    }
-  }
-
-  async function handleSignUpWithCode() {
     setLoading(true);
     setError("");
     setCodeError("");
@@ -121,25 +57,30 @@ export default function SignUpPage() {
       body: JSON.stringify({ email: email.trim() }),
     }).catch(() => {});
 
-    // Validate Supernova code
-    try {
-      const res = await fetch("/api/auth/supernova", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: supernovaCode.trim(), userId: data.user?.id }),
-      });
-      const result = await res.json();
+    // If master player code entered, validate it
+    if (showCode && masterCode.trim() && data.user?.id) {
+      try {
+        const res = await fetch("/api/auth/supernova", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: masterCode.trim(), userId: data.user.id }),
+        });
+        const result = await res.json();
 
-      if (result.success) {
-        router.push("/play?subscribed=true");
-      } else {
-        setCodeError(result.error || t.authCheckoutError);
-        setLoading(false);
+        if (!result.success) {
+          setCodeError(result.error || t.authCheckoutError);
+          setLoading(false);
+          // Account is created, just code failed — still go to play
+          router.push("/play");
+          return;
+        }
+      } catch {
+        // Code validation failed but account was created — go to play
       }
-    } catch {
-      setCodeError(t.authCheckoutError);
-      setLoading(false);
     }
+
+    // Go straight to play — trial starts now
+    router.push("/play");
   }
 
   return (
@@ -147,10 +88,10 @@ export default function SignUpPage() {
       <div className="w-full max-w-sm space-y-8 text-center">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold text-white tracking-tight">
-            {t.unlockPlaymaker}
+            {t.signupTitle}
           </h1>
           <p className="text-white/40 text-sm">
-            {t.unlockDesc}
+            {t.signupDesc}
           </p>
         </div>
 
@@ -181,14 +122,14 @@ export default function SignUpPage() {
             className="w-full rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
           />
 
-          {/* Supernova code — collapsible */}
+          {/* Master Player Code — collapsible */}
           {showCode ? (
             <div className="space-y-2">
               <input
                 type="text"
-                value={supernovaCode}
+                value={masterCode}
                 onChange={(e) => {
-                  setSupernovaCode(e.target.value);
+                  setMasterCode(e.target.value);
                   setCodeError("");
                 }}
                 placeholder={t.authSupernovaPlaceholder}
@@ -221,10 +162,8 @@ export default function SignUpPage() {
               <span className="flex items-center justify-center gap-2">
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               </span>
-            ) : showCode && supernovaCode.trim() ? (
-              t.authUnlock
             ) : (
-              t.authSubscribe
+              t.authContinue
             )}
           </button>
         </form>

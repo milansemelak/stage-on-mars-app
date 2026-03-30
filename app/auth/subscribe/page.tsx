@@ -11,11 +11,12 @@ export default function SubscribePage() {
   const [codeError, setCodeError] = useState("");
   const [checkingCode, setCheckingCode] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [showCode, setShowCode] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
   const { t } = useI18n();
 
-  // Redirect to signup (which now includes subscription) if not authenticated
+  // Redirect to signup if not authenticated
   if (!authLoading && !user) {
     router.push("/auth/signup");
     return null;
@@ -35,7 +36,7 @@ export default function SubscribePage() {
       const data = await res.json();
 
       if (data.active) {
-        router.push("/play");
+        router.push("/play?subscribed=true");
       } else if (data.url) {
         window.location.href = data.url;
       } else {
@@ -88,55 +89,19 @@ export default function SubscribePage() {
       <div className="w-full max-w-sm space-y-8 text-center">
         <div className="space-y-3">
           <h1 className="text-2xl font-bold text-white tracking-tight">
-            {t.unlockPlaymaker}
+            {t.trialExpiredTitle}
           </h1>
           <p className="text-white/40 text-sm">
-            {t.unlockDesc}
+            {t.trialExpiredDesc}
           </p>
         </div>
 
-        <div className="space-y-5">
-          {/* Supernova code — primary */}
-          <form onSubmit={handleSupernovaCode} className="space-y-3">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={supernovaCode}
-                onChange={(e) => {
-                  setSupernovaCode(e.target.value);
-                  setCodeError("");
-                }}
-                placeholder={t.authSupernovaPlaceholder}
-                className="flex-1 rounded-lg bg-white/5 border border-white/20 px-4 py-3.5 text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
-              />
-              <button
-                type="submit"
-                disabled={!supernovaCode.trim() || checkingCode}
-                className="px-5 py-3.5 rounded-lg bg-mars hover:bg-mars-light disabled:opacity-30 disabled:cursor-not-allowed text-white font-semibold transition-colors"
-              >
-                {checkingCode ? (
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
-                ) : (
-                  t.authUnlock
-                )}
-              </button>
-            </div>
-            {codeError && (
-              <p className="text-red-400/80 text-xs">{codeError}</p>
-            )}
-          </form>
-
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-white/10" />
-            <span className="text-white/20 text-xs">{t.authOr}</span>
-            <div className="flex-1 h-px bg-white/10" />
-          </div>
-
-          {/* Subscribe — secondary */}
+        <div className="space-y-4">
+          {/* Subscribe — primary */}
           <button
             onClick={handleSubscribe}
             disabled={checkoutLoading}
-            className="w-full py-3.5 rounded-lg bg-white/[0.06] border border-white/10 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white/70 font-medium transition-colors"
+            className="w-full py-4 rounded-lg bg-mars hover:bg-mars-light disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-lg transition-colors"
           >
             {checkoutLoading ? (
               <span className="flex items-center justify-center gap-2">
@@ -149,6 +114,46 @@ export default function SubscribePage() {
 
           {error && (
             <p className="text-red-400/80 text-xs">{error}</p>
+          )}
+
+          {/* Master Player Code — collapsible */}
+          {showCode ? (
+            <form onSubmit={handleSupernovaCode} className="space-y-3">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={supernovaCode}
+                  onChange={(e) => {
+                    setSupernovaCode(e.target.value);
+                    setCodeError("");
+                  }}
+                  placeholder={t.authSupernovaPlaceholder}
+                  className="flex-1 rounded-lg bg-white/5 border border-white/20 px-4 py-3 text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-mars/50 focus:border-mars transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={!supernovaCode.trim() || checkingCode}
+                  className="px-5 py-3 rounded-lg bg-white/[0.06] border border-white/10 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-white/70 font-semibold transition-colors"
+                >
+                  {checkingCode ? (
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin inline-block" />
+                  ) : (
+                    t.authUnlock
+                  )}
+                </button>
+              </div>
+              {codeError && (
+                <p className="text-red-400/80 text-xs">{codeError}</p>
+              )}
+            </form>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowCode(true)}
+              className="text-white/25 hover:text-white/40 text-xs transition-colors"
+            >
+              {t.authSupernovaHave}
+            </button>
           )}
         </div>
 

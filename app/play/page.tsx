@@ -7,7 +7,7 @@ import PlayCard from "@/components/PlayCard";
 import { Play, HistoryEntry } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
-import { MAX_HISTORY, FREE_PLAY_LIMIT, STORAGE_KEYS } from "@/lib/constants";
+import { MAX_HISTORY, TRIAL_DAYS, STORAGE_KEYS } from "@/lib/constants";
 
 const LOADING_MESSAGES_KEYS = [
   "loading1",
@@ -108,49 +108,36 @@ function PlayPage() {
   const [askedQuestion, setAskedQuestion] = useState("");
   const [loadingMsg, setLoadingMsg] = useState(0);
   const [playCount, setPlayCount] = useState(0);
-  const [freePlayCount, setFreePlayCount] = useState(0);
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscriptionChecked, setSubscriptionChecked] = useState(false);
+  const [accessStatus, setAccessStatus] = useState<"loading" | "active" | "trial-expired" | "no-account">("loading");
   const [questionIdx, setQuestionIdx] = useState(0);
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
   const generatingRef = useRef(false);
   const pendingFollowUp = useRef(false);
 
-  // Random question suggestion — aligned with current context
+  // Random question suggestion
   const questionPool = context === "personal" ? PERSONAL_QUESTIONS_KEYS : BUSINESS_QUESTIONS_KEYS;
   const dailyQuestion = t[questionPool[questionIdx % questionPool.length]];
 
-  // Pick a random question on mount
   useEffect(() => {
     setQuestionIdx(Math.floor(Math.random() * questionPool.length));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Read ?q= param or pending question from localStorage, and auto-generate
+  // Read ?q= param or pending question from localStorage
   const initialQuestionHandled = useRef(false);
   useEffect(() => {
     if (initialQuestionHandled.current) return;
 
-    // Handle return from Stripe checkout
-    if (searchParams.get("subscribed") === "true") {
-      setIsSubscribed(true);
-      setSubscriptionChecked(true);
-    }
-
-    // Priority: URL param > pending question from localStorage
     const q = searchParams.get("q");
     const pending = localStorage.getItem(STORAGE_KEYS.pendingQuestion);
 
     if (q?.trim()) {
-      // Coming from landing page — pre-fill question but let user set context/name first
       initialQuestionHandled.current = true;
       setQuestion(q.trim());
       localStorage.removeItem(STORAGE_KEYS.pendingQuestion);
-      // Clean URL
       window.history.replaceState({}, "", "/play");
     } else if (pending?.trim()) {
-      // Returning from auth flow — auto-generate since they already had a question
       initialQuestionHandled.current = true;
       setQuestion(pending.trim());
       pendingFollowUp.current = true;
@@ -178,56 +165,91 @@ function PlayPage() {
     setPlayCount(history.length);
   }, []);
 
-  // Load free play count
+  // Determine access status
   useEffect(() => {
-    const savedCount = parseInt(localStorage.getItem(STORAGE_KEYS.playCount) || "0", 10);
-    setFreePlayCount(savedCount);
-  }, []);
+    if (authLoading) return;
 
-  // Check subscription status for logged-in users
-  useEffect(() => {
+    // No account → need to sign up
     if (!user) {
-      setSubscriptionChecked(true);
+      setAccessStatus("no-account");
       return;
     }
-    // Check Stripe subscription
+
+    // If coming back from Stripe/code with ?subscribed=true, skip checks
+    if (searchParams.get("subscribed") === "true") {
+      setAccessStatus("active");
+      return;
+    }
+
+    // Check subscription (Stripe + Supabase profile for master player code users)
+    let resolved = false;
+
     fetch("/api/stripe/verify", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: user.email }),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
+        if (resolved) return;
         if (data.active) {
-          setIsSubscribed(true);
+          resolved = true;
+          setAccessStatus("active");
+          return;
+        }
+
+        // Check Supabase profile (master player code users)
+        try {
+          const { createClient } = await import("@/lib/supabase");
+          const sb = createClient();
+          if (sb) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { data: profile } = await sb.from("profiles").select("is_subscribed").eq("id", user.id).single() as { data: any };
+            if (profile?.is_subscribed) {
+              resolved = true;
+              setAccessStatus("active");
+              return;
+            }
+          }
+        } catch {}
+
+        if (resolved) return;
+
+        // No subscription — check trial period
+        const createdAt = new Date(user.created_at || Date.now());
+        const now = new Date();
+        const daysSinceCreation = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
+
+        if (daysSinceCreation <= TRIAL_DAYS) {
+          setAccessStatus("active");
         } else {
-          // Check Supabase profile (supernova code users)
-          const supabase = (async () => {
-            const { createClient } = await import("@/lib/supabase");
-            return createClient();
-          })();
-          supabase.then((sb) => {
-            if (!sb) return;
-            sb.from("profiles").select("is_subscribed").eq("id", user.id).single()
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              .then(({ data: profile }: { data: any }) => {
-                if (profile?.is_subscribed) setIsSubscribed(true);
-              });
-          });
+          setAccessStatus("trial-expired");
         }
       })
-      .catch(() => {})
-      .finally(() => setSubscriptionChecked(true));
-  }, [user]);
+      .catch(() => {
+        // If verification fails, fall back to trial check
+        if (resolved) return;
+        const createdAt = new Date(user.created_at || Date.now());
+        const now = new Date();
+        const daysSinceCreation = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
+
+        if (daysSinceCreation <= TRIAL_DAYS) {
+          setAccessStatus("active");
+        } else {
+          setAccessStatus("trial-expired");
+        }
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, authLoading]);
 
   // Auto-generate when follow-up question is set
   useEffect(() => {
-    if (pendingFollowUp.current && question.trim()) {
+    if (pendingFollowUp.current && question.trim() && accessStatus === "active") {
       pendingFollowUp.current = false;
       setTimeout(() => generatePlay(), 300);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [question]);
+  }, [question, accessStatus]);
 
   // Cycle loading messages
   useEffect(() => {
@@ -242,14 +264,15 @@ function PlayPage() {
   const generatePlay = useCallback(async () => {
     if (!question.trim() || generatingRef.current) return;
 
-    // Free play limit — save question and don't generate
-    if (!user && freePlayCount >= FREE_PLAY_LIMIT) {
+    // No account → save question, redirect to signup
+    if (!user) {
       localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+      router.push("/auth/signup");
       return;
     }
 
-    // Subscription check for logged-in users
-    if (user && !isSubscribed && subscriptionChecked) {
+    // Trial expired → save question, redirect to subscribe
+    if (accessStatus === "trial-expired") {
       localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
       router.push("/auth/subscribe");
       return;
@@ -275,14 +298,6 @@ function PlayPage() {
       const data = await response.json();
       setPlay(data.plays[0]);
 
-      // Increment free play counter (for anonymous users)
-      if (!user) {
-        const current = parseInt(localStorage.getItem(STORAGE_KEYS.playCount) || "0", 10);
-        const next = current + 1;
-        localStorage.setItem(STORAGE_KEYS.playCount, String(next));
-        setFreePlayCount(next);
-      }
-
       // Save to localStorage
       const history: HistoryEntry[] = JSON.parse(
         localStorage.getItem(STORAGE_KEYS.playHistory) || "[]"
@@ -305,7 +320,7 @@ function PlayPage() {
       // Rotate question suggestion
       setQuestionIdx((prev) => (prev + 1) % questionPool.length);
 
-      // Scroll to play after a short delay
+      // Scroll to play
       setTimeout(() => {
         playRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 200);
@@ -315,7 +330,7 @@ function PlayPage() {
       setLoading(false);
       generatingRef.current = false;
     }
-  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, freePlayCount, isSubscribed, subscriptionChecked, router]);
+  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, accessStatus, router]);
 
   function handlePlayUpdate(updatedPlay: Play) {
     setPlay(updatedPlay);
@@ -334,8 +349,8 @@ function PlayPage() {
     setQuestion(dailyQuestion);
   }
 
-  // Show loading spinner while auth is checking
-  if (authLoading) {
+  // Loading spinner while auth is checking
+  if (authLoading || accessStatus === "loading") {
     return (
       <div className="min-h-[calc(100vh-72px)] flex items-center justify-center">
         <div className="w-5 h-5 border-2 border-mars/30 border-t-mars rounded-full animate-spin" />
@@ -343,12 +358,10 @@ function PlayPage() {
     );
   }
 
-  // Anonymous user with no free plays left — show gate immediately
-  const shouldShowGate = !user && freePlayCount >= FREE_PLAY_LIMIT;
-
-  return (
-    <div className="min-h-[calc(100vh-72px)]">
-      {shouldShowGate ? (
+  // No account gate
+  if (accessStatus === "no-account") {
+    return (
+      <div className="min-h-[calc(100vh-72px)]">
         <div className="pt-8 sm:pt-16">
           <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
             <div className="mb-8 sm:mb-10">
@@ -362,17 +375,16 @@ function PlayPage() {
             <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-5">
               <div className="space-y-2">
                 <p className="text-white/70 text-base sm:text-lg font-medium">
-                  {t.freePlayLimitTitle}
+                  {t.accountRequiredTitle}
                 </p>
                 <p className="text-white/35 text-sm">
-                  {t.freePlayLimitDesc}
+                  {t.accountRequiredDesc}
                 </p>
               </div>
 
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => {
-                    // Save any pending question so it resumes after signup
                     if (question.trim()) {
                       localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
                     }
@@ -397,73 +409,109 @@ function PlayPage() {
             </div>
           </div>
         </div>
-      ) : (
-        <>
-          {/* Input section */}
-          <div className={`${!play && !loading ? "pt-8 sm:pt-16" : "pt-4 sm:pt-10"} transition-all`}>
-            <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
-              {!play && !loading && (
-                <div className="mb-8 sm:mb-10">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-                    {t.headline}
-                  </h1>
-                  <p className="text-white/35 text-sm sm:text-base mt-1">
-                    {t.subheadline}
-                  </p>
-                </div>
-              )}
+      </div>
+    );
+  }
 
-              <QuestionInput
-                question={question}
-                onChange={setQuestion}
-                onSubmit={generatePlay}
-                loading={loading}
-                context={context}
-                onContextChange={setContext}
-                clientName={clientName}
-                onClientNameChange={setClientName}
-              />
-
-              {/* Daily question suggestion — only when no play */}
-              {!play && !loading && (
-                <div className="mt-5 space-y-2">
-                  <button
-                    onClick={useDailyQuestion}
-                    className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
-                  >
-                    {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
-                  </button>
-
-                  {/* Play counter */}
-                  {playCount > 0 && (
-                    <div className="text-white/15 text-xs">
-                      {playCount} {t.playsGenerated}
-                    </div>
-                  )}
-
-                  {/* Free plays remaining indicator (only for anonymous users) */}
-                  {!user && freePlayCount > 0 && freePlayCount < FREE_PLAY_LIMIT && (
-                    <div className="text-white/20 text-xs">
-                      {FREE_PLAY_LIMIT - freePlayCount} {t.freePlayCount}
-                    </div>
-                  )}
-                </div>
-              )}
+  // Trial expired gate
+  if (accessStatus === "trial-expired") {
+    return (
+      <div className="min-h-[calc(100vh-72px)]">
+        <div className="pt-8 sm:pt-16">
+          <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
+            <div className="mb-8 sm:mb-10">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                {t.headline}
+              </h1>
+              <p className="text-white/35 text-sm sm:text-base mt-1">
+                {t.subheadline}
+              </p>
             </div>
-          </div>
-
-          {/* Loading state — skeleton */}
-          {loading && (
-            <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-4 sm:mt-6">
-              <div className="py-2 flex items-center justify-center">
-                <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
-                  {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-5">
+              <div className="space-y-2">
+                <p className="text-white/70 text-base sm:text-lg font-medium">
+                  {t.trialExpiredTitle}
+                </p>
+                <p className="text-white/35 text-sm">
+                  {t.trialExpiredDesc}
                 </p>
               </div>
-              <PlaySkeleton />
+
+              <button
+                onClick={() => {
+                  if (question.trim()) {
+                    localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+                  }
+                  router.push("/auth/subscribe");
+                }}
+                className="px-8 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-semibold transition-colors"
+              >
+                {t.authSubscribe}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-[calc(100vh-72px)]">
+      {/* Input section */}
+      <div className={`${!play && !loading ? "pt-8 sm:pt-16" : "pt-4 sm:pt-10"} transition-all`}>
+        <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
+          {!play && !loading && (
+            <div className="mb-8 sm:mb-10">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                {t.headline}
+              </h1>
+              <p className="text-white/35 text-sm sm:text-base mt-1">
+                {t.subheadline}
+              </p>
             </div>
           )}
-        </>
+
+          <QuestionInput
+            question={question}
+            onChange={setQuestion}
+            onSubmit={generatePlay}
+            loading={loading}
+            context={context}
+            onContextChange={setContext}
+            clientName={clientName}
+            onClientNameChange={setClientName}
+          />
+
+          {/* Daily question suggestion */}
+          {!play && !loading && (
+            <div className="mt-5 space-y-2">
+              <button
+                onClick={useDailyQuestion}
+                className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
+              >
+                {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
+              </button>
+
+              {playCount > 0 && (
+                <div className="text-white/15 text-xs">
+                  {playCount} {t.playsGenerated}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Loading state */}
+      {loading && (
+        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-4 sm:mt-6">
+          <div className="py-2 flex items-center justify-center">
+            <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
+              {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
+            </p>
+          </div>
+          <PlaySkeleton />
+        </div>
       )}
 
       {/* Error */}
@@ -475,7 +523,7 @@ function PlayPage() {
         </div>
       )}
 
-      {/* Play result — animated entrance */}
+      {/* Play result */}
       {play && (
         <div ref={playRef} className="mx-auto w-full max-w-2xl px-5 sm:px-8 py-6 sm:py-8">
           <div className="flex items-center justify-between mb-4 animate-fade-slide-up">
