@@ -399,59 +399,20 @@ function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
-// Hotel front desk bell — bright, sharp *ting!* with short ring
-function playBell() {
+// Play the hotel bell sound — real recording
+function playBell(rings: number = 1) {
   try {
-    const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-    const now = ctx.currentTime;
+    const playOnce = (delay: number) => {
+      setTimeout(() => {
+        const audio = new Audio("/bell.mp3");
+        audio.volume = 0.7;
+        audio.play().catch(() => {});
+      }, delay);
+    };
 
-    // Bright bell partials — high fundamental, short decay, piercing
-    const partials = [
-      { freq: 3520, gain: 0.25, decay: 1.2 },  // bright fundamental (A7)
-      { freq: 5280, gain: 0.12, decay: 0.7 },  // sharp overtone
-      { freq: 7040, gain: 0.06, decay: 0.4 },  // high shimmer
-      { freq: 2640, gain: 0.08, decay: 1.5 },  // body
-      { freq: 8800, gain: 0.03, decay: 0.25 }, // sparkle
-    ];
-
-    for (const p of partials) {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.value = p.freq;
-      // Instant attack
-      gain.gain.setValueAtTime(p.gain, now);
-      // Fast initial drop — the sharp "ting"
-      gain.gain.exponentialRampToValueAtTime(p.gain * 0.3, now + 0.01);
-      // Ring out
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + p.decay);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + p.decay + 0.1);
+    for (let i = 0; i < rings; i++) {
+      playOnce(i * 600); // 600ms between rings
     }
-
-    // Sharp metallic click — very short noise burst
-    const bufferSize = ctx.sampleRate * 0.003; // 3ms
-    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const noiseData = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      noiseData[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-    }
-    const noise = ctx.createBufferSource();
-    noise.buffer = noiseBuffer;
-    const noiseGain = ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.15, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.01);
-    const filter = ctx.createBiquadFilter();
-    filter.type = "highpass";
-    filter.frequency.value = 5000;
-    noise.connect(filter);
-    filter.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
-    noise.start(now);
-
-    setTimeout(() => ctx.close(), 2500);
   } catch {
     // Audio not available — silent fail
   }
@@ -952,7 +913,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
           {hasEnded && endingPhase >= 2 && (
             <div className="px-5 sm:px-6 pb-4 animate-fade-in flex flex-col items-center gap-3">
               <button
-                onClick={() => { playBell(); onEnd?.(); }}
+                onClick={() => { playBell(3); onEnd?.(); }}
                 className="group w-full relative"
               >
                 <div className="absolute -inset-2 bg-mars/10 blur-xl rounded-2xl animate-pulse-glow pointer-events-none" />
