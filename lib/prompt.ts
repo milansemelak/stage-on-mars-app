@@ -212,14 +212,25 @@ Write it as 5-7 STEPS. Each step has:
   - "center" — center of the stage
   - "close-to:CharName" — moves close to another character (use their exact name)
   - "far-from:CharName" — moves away from another character
+  - "back-to-back:CharName" — near target but facing away, tension between them
+  - "circling:CharName" — orbiting around another character
+  - "blocking-path-of:CharName" — stands between target and center, blocking their way
   - "edge-left", "edge-right", "edge-top", "edge-bottom" — at the perimeter
+  - "kneeling" — lowers position, submission or planting
+  - "rising" — elevates position, power or emergence
+  - "retreating" — moves away from center toward nearest edge
+  - "approaching-center" — moves halfway toward center
+  - "facing-away" — at edge, turned outward, refusing to engage
+  - "cluster" — tight group near center
+  - "line-left", "line-right" — forming opposing lines
+  - "triangle" — forming a triangle formation
   - "frozen" — doesn't move from previous position
   - "scattered" — random position away from others
   - "circle" — part of a circle formation (default starting position)
 
 Only include characters whose position CHANGES in that step. Characters not listed stay where they were.
 
-The choreography must MATCH the narration. If the narration says "The Witness approaches The Auctioneer" then The Witness must be "close-to:The Auctioneer". If someone "steps back" they move to an edge. If someone "stands in the center" they go to "center".
+The choreography must MATCH the narration. Use the RICHEST position keyword that fits. If someone kneels, use "kneeling". If two characters are in tension, use "back-to-back:CharName". If someone blocks another's path, use "blocking-path-of:CharName". If someone orbits another, use "circling:CharName". Make every movement tell a story.
 
 Good example:
 [

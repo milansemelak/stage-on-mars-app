@@ -18,12 +18,11 @@ type Position = { x: number; y: number };
 // Stage dimensions (SVG viewBox 0 0 100 100)
 const CX = 50;
 const CY = 50;
-const EDGE_R = 30; // radius for edge positions (inside the ring)
+const EDGE_R = 30;
 
 /**
  * Resolve a position keyword to absolute x,y coordinates.
- * Keywords: center, edge-left, edge-right, edge-top, edge-bottom,
- *           close-to:CharName, far-from:CharName, scattered, circle, frozen
+ * Extended vocabulary for richer choreography.
  */
 function resolvePosition(
   keyword: string,
@@ -35,7 +34,6 @@ function resolvePosition(
   const kw = keyword.trim().toLowerCase();
 
   if (kw === "center") {
-    // Spread slightly so multiple "center" characters don't stack
     const offsetAngle = (charIndex * 2.2 + seed * 0.7) % (2 * Math.PI);
     return {
       x: CX + Math.cos(offsetAngle) * 5,
@@ -64,7 +62,132 @@ function resolvePosition(
     return { x: CX + Math.cos(angle) * 30, y: CY + Math.sin(angle) * 30 };
   }
   if (kw === "frozen") {
-    return null; // keep previous position
+    return null;
+  }
+
+  // ── New movement vocabulary ──────────────────────────────
+
+  // Kneeling — lower position (toward bottom, closer to center)
+  if (kw === "kneeling") {
+    const current = allPositions.get([...allPositions.keys()][charIndex]);
+    if (current) {
+      return { x: current.x, y: Math.min(current.y + 8, CY + EDGE_R) };
+    }
+    return { x: CX + ((seed + charIndex * 5) % 12) - 6, y: CY + 18 };
+  }
+
+  // Rising — upper position (toward top)
+  if (kw === "rising") {
+    const current = allPositions.get([...allPositions.keys()][charIndex]);
+    if (current) {
+      return { x: current.x, y: Math.max(current.y - 10, CY - EDGE_R) };
+    }
+    return { x: CX + ((seed + charIndex * 5) % 12) - 6, y: CY - 18 };
+  }
+
+  // Retreating — moves away from center toward nearest edge
+  if (kw === "retreating") {
+    const current = allPositions.get([...allPositions.keys()][charIndex]);
+    if (current) {
+      const dx = current.x - CX;
+      const dy = current.y - CY;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      return {
+        x: CX + (dx / len) * EDGE_R * 0.95,
+        y: CY + (dy / len) * EDGE_R * 0.7,
+      };
+    }
+    return { x: CX + EDGE_R * 0.8, y: CY };
+  }
+
+  // Approaching-slowly — moves toward center (not quite center)
+  if (kw === "approaching-center") {
+    const current = allPositions.get([...allPositions.keys()][charIndex]);
+    if (current) {
+      return {
+        x: current.x + (CX - current.x) * 0.5,
+        y: current.y + (CY - current.y) * 0.5,
+      };
+    }
+    return { x: CX + 8, y: CY + 5 };
+  }
+
+  // Line formation — left side
+  if (kw === "line-left") {
+    return { x: CX - 20, y: CY - 15 + (charIndex * 10) };
+  }
+  // Line formation — right side
+  if (kw === "line-right") {
+    return { x: CX + 20, y: CY - 15 + (charIndex * 10) };
+  }
+
+  // Triangle formation
+  if (kw === "triangle") {
+    const triPositions = [
+      { x: CX, y: CY - 20 },       // top
+      { x: CX - 18, y: CY + 12 },   // bottom-left
+      { x: CX + 18, y: CY + 12 },   // bottom-right
+    ];
+    return triPositions[charIndex % 3];
+  }
+
+  // Cluster — tight group near center
+  if (kw === "cluster") {
+    const angle = (charIndex * 2.4 + seed) % (2 * Math.PI);
+    const r = 6 + (charIndex % 3) * 4;
+    return { x: CX + Math.cos(angle) * r, y: CY + Math.sin(angle) * (r * 0.6) };
+  }
+
+  // back-to-back:CharName — near target but facing away
+  if (kw.startsWith("back-to-back:")) {
+    const targetName = keyword.substring(13).trim();
+    const targetPos = allPositions.get(targetName) || allPositions.get(targetName.toLowerCase());
+    if (targetPos) {
+      const dx = targetPos.x - CX;
+      const dy = targetPos.y - CY;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      return {
+        x: targetPos.x + (dx / len) * 10,
+        y: targetPos.y + (dy / len) * 6,
+      };
+    }
+    return { x: CX + 12, y: CY };
+  }
+
+  // circling:CharName — orbit position around target
+  if (kw.startsWith("circling:")) {
+    const targetName = keyword.substring(9).trim();
+    const targetPos = allPositions.get(targetName) || allPositions.get(targetName.toLowerCase());
+    if (targetPos) {
+      const orbitAngle = (seed * 1.3 + charIndex * 2.1) % (2 * Math.PI);
+      return {
+        x: targetPos.x + Math.cos(orbitAngle) * 14,
+        y: targetPos.y + Math.sin(orbitAngle) * 8,
+      };
+    }
+    return { x: CX + 14, y: CY };
+  }
+
+  // blocking-path-of:CharName — between target and center
+  if (kw.startsWith("blocking-path-of:")) {
+    const targetName = keyword.substring(17).trim();
+    const targetPos = allPositions.get(targetName) || allPositions.get(targetName.toLowerCase());
+    if (targetPos) {
+      return {
+        x: (targetPos.x + CX) / 2,
+        y: (targetPos.y + CY) / 2,
+      };
+    }
+    return { x: CX, y: CY + 8 };
+  }
+
+  // facing-away — at edge, turned outward
+  if (kw === "facing-away") {
+    const angle = (seed * 1.5 + charIndex * 2.7) % (2 * Math.PI);
+    return {
+      x: CX + Math.cos(angle) * EDGE_R * 0.85,
+      y: CY + Math.sin(angle) * EDGE_R * 0.6,
+    };
   }
 
   // close-to:CharName
@@ -72,7 +195,6 @@ function resolvePosition(
     const targetName = keyword.substring(9).trim();
     const targetPos = allPositions.get(targetName) || allPositions.get(targetName.toLowerCase());
     if (targetPos) {
-      // Spread characters around the target at a visible distance
       const offsetAngle = (charIndex * 1.8 + seed * 0.5) % (2 * Math.PI);
       return {
         x: targetPos.x + Math.cos(offsetAngle) * 12,
@@ -103,7 +225,6 @@ function resolvePosition(
 
 /**
  * Compute positions for all characters at a given step.
- * Uses AI-provided position keywords from simulationSteps.
  */
 function computeStepPositions(
   characters: Character[],
@@ -118,17 +239,14 @@ function computeStepPositions(
     return { x: CX + Math.cos(angle) * 28, y: CY + Math.sin(angle) * 15 };
   });
 
-  // Apply all steps up to and including current step
   for (let s = 0; s <= stepIndex && s < steps.length; s++) {
     const step = steps[s];
     if (!step.positions) continue;
 
-    // Build a lookup of current positions by name
     const posMap = new Map<string, Position>();
     characters.forEach((c, i) => posMap.set(c.name, positions[i]));
 
-    // First pass: resolve non-relative positions
-    // Second pass: resolve close-to / far-from (which depend on others)
+    // First pass: non-relative; Second pass: relative
     const entries = Object.entries(step.positions);
     const deferred: [number, string][] = [];
 
@@ -139,7 +257,7 @@ function computeStepPositions(
       if (idx === -1) continue;
 
       const kw = keyword.trim().toLowerCase();
-      if (kw.startsWith("close-to:") || kw.startsWith("far-from:")) {
+      if (kw.startsWith("close-to:") || kw.startsWith("far-from:") || kw.startsWith("back-to-back:") || kw.startsWith("circling:") || kw.startsWith("blocking-path-of:")) {
         deferred.push([idx, keyword]);
         continue;
       }
@@ -151,7 +269,6 @@ function computeStepPositions(
       }
     }
 
-    // Second pass for relative positions
     for (const [idx, keyword] of deferred) {
       const resolved = resolvePosition(keyword, idx, posMap, count, s * 7 + idx);
       if (resolved) {
@@ -160,18 +277,15 @@ function computeStepPositions(
     }
   }
 
-  // Separation pass — push overlapping characters apart
   separatePositions(positions);
-
   return positions;
 }
 
 /**
  * Push characters apart so they never overlap.
- * Runs multiple iterations for stability.
  */
 function separatePositions(positions: Position[]) {
-  const MIN_DIST = 16; // minimum distance between any two characters
+  const MIN_DIST = 16;
   const iterations = 5;
 
   for (let iter = 0; iter < iterations; iter++) {
@@ -185,13 +299,11 @@ function separatePositions(positions: Position[]) {
           const push = (MIN_DIST - dist) / 2;
           const nx = dx / dist;
           const ny = dy / dist;
-
           positions[i].x -= nx * push;
           positions[i].y -= ny * push;
           positions[j].x += nx * push;
           positions[j].y += ny * push;
         } else if (dist <= 0.01) {
-          // Exactly overlapping — push in a random direction
           const angle = (i * 2.3 + j * 1.7) % (2 * Math.PI);
           positions[i].x -= Math.cos(angle) * MIN_DIST / 2;
           positions[i].y -= Math.sin(angle) * MIN_DIST / 2;
@@ -202,7 +314,6 @@ function separatePositions(positions: Position[]) {
     }
   }
 
-  // Clamp to stay inside the circular stage (inside the r=42 ring)
   const MAX_R = 34;
   for (const p of positions) {
     const dx = p.x - CX;
@@ -283,14 +394,14 @@ function splitIntoSentences(text: string): string[] {
   return text.split(/(?<=[.!?])\s+/).filter((s) => s.trim().length > 0);
 }
 
-function lerp(a: number, b: number, t: number) {
-  return a + (b - a) * t;
+// Ease-out cubic for more theatrical movement
+function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
 }
 
 export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, onEnd }: Props) {
   const { t } = useI18n();
 
-  // Always add author as a special character on stage
   const authorLabel = clientName || t.author;
   const allCharacters = useMemo(() => {
     const alreadyExists = characters.some(
@@ -300,7 +411,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
     return [{ name: authorLabel, description: "author" }, ...characters];
   }, [characters, authorLabel]);
 
-  // Determine narration sentences
   const sentences = useMemo(() => {
     if (simulationSteps?.length) {
       return simulationSteps.map((s) => s.narration);
@@ -314,7 +424,15 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [hasEnded, setHasEnded] = useState(false);
-  const [endingPhase, setEndingPhase] = useState(0); // 0=not ending, 1=circle forming, 2=message visible
+  const [endingPhase, setEndingPhase] = useState(0);
+
+  // Step duration varies by narration length (longer text = more time)
+  const stepDuration = useMemo(() => {
+    if (!sentences[currentStep]) return 7000;
+    const wordCount = sentences[currentStep].split(/\s+/).length;
+    // Base 5s + 150ms per word, clamped 5-10s
+    return Math.min(Math.max(5000, 5000 + wordCount * 150), 10000);
+  }, [sentences, currentStep]);
 
   // Final circle formation for ritual ending
   const finalCirclePositions = useMemo(() => {
@@ -327,7 +445,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   // Compute target positions for current step
   const targets = useMemo(() => {
-    // During ending ritual, form a circle
     if (hasEnded) return finalCirclePositions;
     if (hasChoreography && simulationSteps) {
       return computeStepPositions(allCharacters, simulationSteps, currentStep);
@@ -335,7 +452,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
     return getFallbackPositions(allCharacters.length, currentStep);
   }, [allCharacters, simulationSteps, hasChoreography, currentStep, hasEnded, finalCirclePositions]);
 
-  // Find which characters moved this step (for highlighting)
+  // Previous positions for trails
+  const prevPositionsRef = useRef<Position[]>([]);
+
+  // Which characters moved this step
   const movedCharacters = useMemo(() => {
     if (!hasChoreography || !simulationSteps?.[currentStep]?.positions) return new Set<number>();
     const moved = new Set<number>();
@@ -349,16 +469,42 @@ export default function StageSimulation({ characters, simulation, simulationStep
     return moved;
   }, [hasChoreography, simulationSteps, currentStep, allCharacters]);
 
-  // Animated positions
+  // Connection lines — characters mentioned in the same step are connected
+  const connectionLines = useMemo(() => {
+    if (!hasChoreography || !simulationSteps?.[currentStep]?.positions) return [];
+    const movedIndices = [...movedCharacters];
+    const lines: [number, number][] = [];
+    // Connect pairs of characters that moved in the same step (max 3 lines)
+    for (let i = 0; i < movedIndices.length && lines.length < 3; i++) {
+      for (let j = i + 1; j < movedIndices.length && lines.length < 3; j++) {
+        lines.push([movedIndices[i], movedIndices[j]]);
+      }
+    }
+    return lines;
+  }, [hasChoreography, simulationSteps, currentStep, movedCharacters]);
+
+  // Animated positions with eased interpolation
   const currentPositions = useRef<Position[]>([]);
   const [renderPositions, setRenderPositions] = useState<Position[]>([]);
   const rafRef = useRef<number>(0);
+  const transitionStartRef = useRef<number>(0);
+  const transitionFromRef = useRef<Position[]>([]);
+
+  // Track when targets change to start eased transition
+  const prevTargetsRef = useRef<Position[]>([]);
+  useEffect(() => {
+    if (currentPositions.current.length === targets.length) {
+      transitionFromRef.current = currentPositions.current.map(p => ({ ...p }));
+      transitionStartRef.current = performance.now();
+      prevPositionsRef.current = currentPositions.current.map(p => ({ ...p }));
+    }
+    prevTargetsRef.current = targets;
+  }, [targets]);
 
   // Initialize
   useEffect(() => {
     if (currentPositions.current.length !== allCharacters.length) {
       const initial = allCharacters.map((c, i) => {
-        // Author starts at bottom edge
         if (c.description === "author") {
           return { x: CX, y: CY + EDGE_R };
         }
@@ -366,12 +512,16 @@ export default function StageSimulation({ characters, simulation, simulationStep
         return { x: CX + Math.cos(angle) * 28, y: CY + Math.sin(angle) * 15 };
       });
       currentPositions.current = initial;
+      transitionFromRef.current = initial.map(p => ({ ...p }));
+      prevPositionsRef.current = initial.map(p => ({ ...p }));
       setRenderPositions(initial);
     }
   }, [allCharacters]);
 
-  // Animation loop
+  // Animation loop with eased transitions
   useEffect(() => {
+    const TRANSITION_DURATION = 2500; // ms for characters to reach target
+
     const animate = (time: number) => {
       const pos = currentPositions.current;
       if (pos.length !== targets.length) {
@@ -379,15 +529,28 @@ export default function StageSimulation({ characters, simulation, simulationStep
         return;
       }
 
-      const speed = 0.015;
-      for (let i = 0; i < pos.length; i++) {
-        pos[i].x = lerp(pos[i].x, targets[i].x, speed);
-        pos[i].y = lerp(pos[i].y, targets[i].y, speed);
+      const elapsed = time - transitionStartRef.current;
+      const rawT = Math.min(elapsed / TRANSITION_DURATION, 1);
+      const t = easeOutCubic(rawT);
+
+      const from = transitionFromRef.current;
+      if (from.length === targets.length) {
+        for (let i = 0; i < pos.length; i++) {
+          pos[i].x = from[i].x + (targets[i].x - from[i].x) * t;
+          pos[i].y = from[i].y + (targets[i].y - from[i].y) * t;
+        }
+      } else {
+        // Fallback to lerp
+        for (let i = 0; i < pos.length; i++) {
+          pos[i].x += (targets[i].x - pos[i].x) * 0.02;
+          pos[i].y += (targets[i].y - pos[i].y) * 0.02;
+        }
       }
 
+      // Subtle breathing
       const rendered = pos.map((p, i) => ({
-        x: p.x + Math.sin(time * 0.001 + i * 2.5) * 0.35,
-        y: p.y + Math.cos(time * 0.0008 + i * 1.8) * 0.25,
+        x: p.x + Math.sin(time * 0.0008 + i * 2.5) * 0.3,
+        y: p.y + Math.cos(time * 0.0006 + i * 1.8) * 0.2,
       }));
 
       setRenderPositions(rendered);
@@ -400,12 +563,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
     };
   }, [targets]);
 
-  // Auto-advance narration
+  // Auto-advance narration with variable timing
   useEffect(() => {
     if (!isPlaying || currentStep >= sentences.length - 1) return;
-    const timer = setTimeout(() => setCurrentStep((p) => p + 1), 7000);
+    const timer = setTimeout(() => setCurrentStep((p) => p + 1), stepDuration);
     return () => clearTimeout(timer);
-  }, [currentStep, isPlaying, sentences.length]);
+  }, [currentStep, isPlaying, sentences.length, stepDuration]);
 
   // Auto-stop at end — trigger ritual ending
   const endingTriggered = useRef(false);
@@ -413,13 +576,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
     if (currentStep >= sentences.length - 1 && isPlaying && sentences.length > 0 && !endingTriggered.current) {
       endingTriggered.current = true;
       setIsPlaying(false);
-      // Start ritual ending after a beat — use refs so cleanup doesn't cancel
       setTimeout(() => {
         setHasEnded(true);
-        setEndingPhase(1); // circle forming
+        setEndingPhase(1);
       }, 2000);
       setTimeout(() => {
-        setEndingPhase(2); // message + button visible
+        setEndingPhase(2);
       }, 4000);
     }
   }, [currentStep, sentences.length, isPlaying]);
@@ -447,6 +609,21 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   const progress = sentences.length > 1 ? currentStep / (sentences.length - 1) : 0;
 
+  // Trail positions — ghostly echo of previous positions
+  const trails = useMemo(() => {
+    if (!hasStarted || prevPositionsRef.current.length !== renderPositions.length) return [];
+    return prevPositionsRef.current.map((prev, i) => {
+      const curr = renderPositions[i];
+      if (!curr) return null;
+      const dx = curr.x - prev.x;
+      const dy = curr.y - prev.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      // Only show trail if character moved significantly
+      if (dist < 3) return null;
+      return { from: prev, to: curr, index: i };
+    }).filter(Boolean) as { from: Position; to: Position; index: number }[];
+  }, [renderPositions, hasStarted]);
+
   return (
     <div className="rounded-2xl overflow-hidden bg-[#080808]">
       {/* Stage */}
@@ -462,7 +639,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
           }}
         />
 
-        {/* Loading overlay — text at bottom, not center */}
+        {/* Loading overlay */}
         {loading && (
           <div className="absolute inset-x-0 bottom-4 sm:bottom-6 z-10 flex justify-center">
             <div className="flex items-center gap-2.5 bg-black/60 backdrop-blur-sm rounded-full px-5 py-2.5">
@@ -472,16 +649,14 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </div>
         )}
 
-        {/* Play overlay — button at bottom of stage to avoid character overlap */}
+        {/* Play overlay */}
         {!loading && !hasStarted && (
           <button
             onClick={handlePlayPause}
             className="absolute inset-x-0 bottom-6 sm:bottom-8 z-10 flex justify-center group cursor-pointer"
           >
             <div className="relative">
-              {/* Glow */}
               <div className="absolute -inset-6 bg-mars/15 blur-2xl rounded-full animate-pulse-glow pointer-events-none" />
-              {/* Button */}
               <div className="relative px-10 sm:px-14 py-4 sm:py-5 rounded-2xl bg-mars group-hover:bg-mars-light transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] group-hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] group-active:scale-[0.97]">
                 <span className="text-white font-black text-base sm:text-lg uppercase tracking-[0.2em]">
                   {t.startThePlay}
@@ -490,8 +665,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
             </div>
           </button>
         )}
-
-        {/* No overlays on the stage — narration lives below */}
 
         <svg
           className="absolute inset-0 w-full h-full"
@@ -520,9 +693,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+            <filter id="glow-trail" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="1.2" />
+            </filter>
           </defs>
 
-          {/* LED ring — perfect circle */}
+          {/* LED ring */}
           <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="3" />
           <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
           <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
@@ -539,6 +715,56 @@ export default function StageSimulation({ characters, simulation, simulationStep
             </circle>
           )}
 
+          {/* Connection lines between interacting characters */}
+          {hasStarted && connectionLines.map(([a, b], lineIdx) => {
+            const posA = renderPositions[a];
+            const posB = renderPositions[b];
+            if (!posA || !posB) return null;
+            const charA = allCharacters[a];
+            const isAuthorLine = charA?.description === "author" || allCharacters[b]?.description === "author";
+            const lineColor = isAuthorLine
+              ? "rgba(255,215,0,0.08)"
+              : "rgba(255,85,0,0.06)";
+            return (
+              <line
+                key={`conn-${lineIdx}`}
+                x1={posA.x} y1={posA.y}
+                x2={posB.x} y2={posB.y}
+                stroke={lineColor}
+                strokeWidth="0.3"
+                strokeDasharray="1,1.5"
+              >
+                <animate attributeName="stroke-opacity" values="0;1;0" dur="3s" repeatCount="1" />
+              </line>
+            );
+          })}
+
+          {/* Movement trails */}
+          {trails.map((trail) => {
+            if (!trail) return null;
+            const char = allCharacters[trail.index];
+            const isAuthor = char?.description === "author";
+            const isAbstract = char?.description?.toLowerCase() === "abstract";
+            const trailColor = isAuthor
+              ? "rgba(255,215,0,0.12)"
+              : isAbstract
+                ? "rgba(255,255,255,0.08)"
+                : "rgba(255,85,0,0.1)";
+            return (
+              <line
+                key={`trail-${trail.index}`}
+                x1={trail.from.x} y1={trail.from.y}
+                x2={trail.to.x} y2={trail.to.y}
+                stroke={trailColor}
+                strokeWidth="0.8"
+                strokeLinecap="round"
+                filter="url(#glow-trail)"
+              >
+                <animate attributeName="stroke-opacity" values="1;0" dur="2.5s" fill="freeze" />
+              </line>
+            );
+          })}
+
           {/* Characters */}
           {renderPositions.map((pos, i) => {
             const char = allCharacters[i];
@@ -548,14 +774,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
             const isActive = hasStarted && movedCharacters.has(i);
             const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
 
-            // Author: muted gold   Concrete: orange   Abstract: white
             const colors = isAuthor
               ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)", textDim: "rgba(255,215,0,0.5)" }
               : isAbstract
                 ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)", textDim: "rgba(255,255,255,0.4)" }
                 : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)", textDim: "rgba(255,179,128,0.55)" };
 
-            // Alternate name above/below to avoid overlap
             const nameAbove = i % 2 === 0;
             const nameY = nameAbove
               ? (isActive ? -5 : -4)
@@ -577,7 +801,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
                   strokeWidth={isAuthor ? 0.3 : (isActive ? 0.4 : 0.2)}
                 />
 
-                {/* Active pulse (non-author) */}
+                {/* Active pulse */}
                 {isActive && !isAuthor && (
                   <circle cx={0} cy={0} r="4" fill="none"
                     stroke={isAbstract ? "rgba(255,255,255,0.2)" : "rgba(255,85,0,0.35)"}
@@ -608,10 +832,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
         </svg>
       </div>
 
-      {/* Narration + Controls — below the stage, never inside it */}
+      {/* Narration + Controls */}
       {hasStarted && (
         <div className="relative">
-          {/* Narration text */}
           <div className="px-6 sm:px-8 pt-4 pb-3">
             {endingPhase >= 2 ? (
               <p
@@ -630,7 +853,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
             )}
           </div>
 
-          {/* Progress bar + play/pause (during play) */}
+          {/* Progress bar + play/pause */}
           {!hasEnded && (
             <div className="px-5 sm:px-6 pb-3 flex items-center gap-3">
               <button
@@ -666,7 +889,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
             </div>
           )}
 
-          {/* End the play — solid button */}
+          {/* End the play */}
           {hasEnded && endingPhase >= 2 && (
             <div className="px-5 sm:px-6 pb-4 animate-fade-in flex flex-col items-center gap-3">
               <button
