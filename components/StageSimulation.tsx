@@ -638,8 +638,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   return (
     <div className="rounded-2xl overflow-hidden bg-[#080808]">
-      {/* Stage */}
-      <div className="relative w-full aspect-square overflow-hidden">
+      {/* Stage — taller on mobile for more presence */}
+      <div className="relative w-full aspect-[3/4] sm:aspect-square overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
