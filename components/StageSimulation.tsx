@@ -399,51 +399,61 @@ function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
-// Hotel reception bell — synthesized with Web Audio API
-function playBell(pitch: "high" | "low" = "high") {
+// Hotel reception desk bell — sharp metallic ding with shimmer
+function playBell() {
   try {
     const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
     const now = ctx.currentTime;
 
-    // Main bell tone
-    const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.type = "sine";
-    osc1.frequency.value = pitch === "high" ? 1800 : 1200;
-    gain1.gain.setValueAtTime(0.3, now);
-    gain1.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
+    // Metal bell frequencies — inharmonic partials like a real bell
+    const partials = [
+      { freq: 1480, gain: 0.35, decay: 2.0 },  // fundamental strike
+      { freq: 2960, gain: 0.15, decay: 1.2 },  // 2nd partial
+      { freq: 4150, gain: 0.08, decay: 0.8 },  // 3rd partial (inharmonic)
+      { freq: 5920, gain: 0.04, decay: 0.5 },  // high shimmer
+      { freq: 740,  gain: 0.10, decay: 2.8 },  // low body
+    ];
 
-    // Harmonic overtone
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.type = "sine";
-    osc2.frequency.value = pitch === "high" ? 3600 : 2400;
-    gain2.gain.setValueAtTime(0.08, now);
-    gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
+    for (const p of partials) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = p.freq;
+      // Sharp attack — instant full volume
+      gain.gain.setValueAtTime(p.gain, now);
+      // Quick initial drop (the metallic "hit")
+      gain.gain.setValueAtTime(p.gain * 0.7, now + 0.003);
+      // Long ring-out decay
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + p.decay);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + p.decay + 0.1);
+    }
 
-    // Sub tone for body
-    const osc3 = ctx.createOscillator();
-    const gain3 = ctx.createGain();
-    osc3.type = "sine";
-    osc3.frequency.value = pitch === "high" ? 900 : 600;
-    gain3.gain.setValueAtTime(0.12, now);
-    gain3.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
-    osc3.connect(gain3);
-    gain3.connect(ctx.destination);
+    // Metallic click — noise burst for the hammer strike
+    const bufferSize = ctx.sampleRate * 0.008; // 8ms
+    const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      noiseData[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.12, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+    // Bandpass filter for metallic character
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = 4000;
+    filter.Q.value = 2;
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+    noise.start(now);
 
-    osc1.start(now);
-    osc2.start(now);
-    osc3.start(now);
-    osc1.stop(now + 2);
-    osc2.stop(now + 1.2);
-    osc3.stop(now + 2.5);
-
-    // Clean up
-    setTimeout(() => ctx.close(), 3000);
+    setTimeout(() => ctx.close(), 4000);
   } catch {
     // Audio not available — silent fail
   }
@@ -627,7 +637,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
       endingTriggered.current = true;
       setIsPlaying(false);
       setTimeout(() => {
-        playBell("low");
+        playBell();
         setHasEnded(true);
         setEndingPhase(1);
       }, 2000);
@@ -639,7 +649,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   const handlePlayPause = () => {
     if (!hasStarted) {
-      playBell("high");
+      playBell();
       setHasStarted(true);
       setHasEnded(false);
       setEndingPhase(0);
