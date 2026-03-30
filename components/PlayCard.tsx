@@ -124,8 +124,14 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
       image: editData.image,
       authorRole: editData.authorRole,
       endingPerspective: editData.endingPerspective,
+      // Clear old simulation so it re-generates with edited play
+      simulation: undefined,
+      simulationSteps: undefined,
+      perspectives: undefined,
+      followUpQuestion: undefined,
     };
     setCurrentPlay(updated);
+    setPerspectivesRevealed(false);
     onPlayUpdate?.(updated);
     setEditing(false);
   }
@@ -172,12 +178,25 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     setTimeout(() => setCopied(false), 2000);
   }, [currentPlay, t]);
 
+  // Clear simulation when play content changes so it re-generates
+  function clearSimulation(updated: Play): Play {
+    return {
+      ...updated,
+      simulation: undefined,
+      simulationSteps: undefined,
+      perspectives: undefined,
+      followUpQuestion: undefined,
+    };
+  }
+
   function updateCharacterName(index: number, newName: string) {
     const updated = { ...currentPlay };
     updated.characters = [...updated.characters];
     updated.characters[index] = { ...updated.characters[index], name: newName };
-    setCurrentPlay(updated);
-    onPlayUpdate?.(updated);
+    const cleared = clearSimulation(updated);
+    setCurrentPlay(cleared);
+    setPerspectivesRevealed(false);
+    onPlayUpdate?.(cleared);
   }
 
   function toggleCharacterType(index: number) {
@@ -188,23 +207,29 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
       ...updated.characters[index],
       description: current === "abstract" ? "concrete" : "abstract",
     };
-    setCurrentPlay(updated);
-    onPlayUpdate?.(updated);
+    const cleared = clearSimulation(updated);
+    setCurrentPlay(cleared);
+    setPerspectivesRevealed(false);
+    onPlayUpdate?.(cleared);
   }
 
   function removeCharacter(index: number) {
     if (currentPlay.characters.length <= 2) return;
     const updated = { ...currentPlay };
     updated.characters = updated.characters.filter((_, i) => i !== index);
-    setCurrentPlay(updated);
-    onPlayUpdate?.(updated);
+    const cleared = clearSimulation(updated);
+    setCurrentPlay(cleared);
+    setPerspectivesRevealed(false);
+    onPlayUpdate?.(cleared);
   }
 
   function addCharacter() {
     const updated = { ...currentPlay };
     updated.characters = [...updated.characters, { name: "", description: "concrete" }];
-    setCurrentPlay(updated);
-    onPlayUpdate?.(updated);
+    const cleared = clearSimulation(updated);
+    setCurrentPlay(cleared);
+    setPerspectivesRevealed(false);
+    onPlayUpdate?.(cleared);
   }
 
   return (
