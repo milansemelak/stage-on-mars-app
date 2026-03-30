@@ -138,9 +138,9 @@ function PlayPage() {
       localStorage.removeItem(STORAGE_KEYS.pendingQuestion);
       window.history.replaceState({}, "", "/play");
     } else if (pending?.trim()) {
+      // Pre-fill question from auth flow but don't auto-generate
       initialQuestionHandled.current = true;
       setQuestion(pending.trim());
-      pendingFollowUp.current = true;
       localStorage.removeItem(STORAGE_KEYS.pendingQuestion);
     }
 
