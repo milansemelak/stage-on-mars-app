@@ -150,7 +150,7 @@ Every play you create MUST have:
 ## Character Design
 Characters should feel like they BELONG to the question. Name them by what they represent:
 - **FORCES FROM THE QUESTION**: If the question is about editing → Editing, Self-deception, Freedom, The Result. If about safety → Safety, Heights, Noise, Stillness.
-- **FUNCTIONAL ROLES**: King, Judge, Executioner, Surgeon, Auctioneer, Witness, Guard, Translator, Navigator, Weather, Clock, Mirror, Door, Manual, Rosnička (Weather Frog)
+- **FUNCTIONAL ROLES**: King, Surgeon, Auctioneer, Lighthouse Keeper, Gardener, Navigator, Cartographer, Conductor, Translator, Cook, Architect, Ringmaster, Ferryman, Weathervane, Mirror, Door, Rosnička (Weather Frog)
 - **ABSTRACT FORCES GIVEN A BODY**: The Asteroid, The Debt, The Before, The Permission, The Emergency Exit, The Cost, The Silence, Tomorrow, The Other Version, The Question Nobody Asked, The Bonus, The Corruption, The Shepherd Who Left
 - **CULTURAL ARCHETYPES**: Napoleon, Hamlet, Don Quixote, The Oracle, The Clown, Cassandra, Elvis, The Grandmother, The Intern, Jesus (as a character who walks in and changes the dynamic)
 
@@ -169,7 +169,9 @@ Not a fantasy landscape. A physical space made entirely of people. Describe WHER
 2-3 raw, honest words. Can suggest a music pairing energy.
 
 ## PRIME DIRECTIVE: RADICAL VARIETY
-Every play must feel invented in a different universe. Reject the first idea. Go sideways. The most interesting plays come from unexpected game mechanics — auction, trial, funeral, surgery, dance, construction, elimination, coronation, relay race, silent walk, marketplace, dispute resolution, weather system, postal relay.
+Every play must feel invented in a different universe. Reject the first idea. Go sideways.
+
+BANNED PATTERNS (overused, avoid these): courts, trials, judgments, verdicts, audits, tribunals, juries, prosecutors, defendants. These have been done to death. Instead reach for unexpected game mechanics: expedition, migration, orchestra, kitchen, laboratory, carnival, smuggling, gardening, cartography, archaeology, lighthouse, weather station, puppet show (where people ARE the puppets), chess game, radio broadcast, time capsule, recipe, surgery, postal service, dance, constellation mapping, circus, shipwreck, volcano, tide pool, bonfire, migration of birds, seed planting, demolition, translation bureau, lost and found office.
 
 Consider using MULTIPLE ACTS (2-3 short acts showing contrasting scenarios) when the question contains a tension between two forces.
 
@@ -376,55 +378,85 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
 };
 
 // Creative angles injected randomly into each request to force variety
+// Two angles are picked per request to combine mechanics + constraints
 const CREATIVE_ANGLES = [
-  // Game mechanic angles
-  "The play is an AUCTION — characters bid for something the author owns.",
-  "The play is a TRIAL — someone is being judged, and the author must deliver the verdict.",
-  "The play is a FUNERAL — something is being buried. The author is the corpse.",
+  // ── Game mechanic angles ──────────────────────────────────
+  "The play is an EXPEDITION — the author leads a group into unknown territory. Characters are supplies, dangers, and companions. Some must be left behind.",
+  "The play is an ORCHESTRA — each character is an instrument. The author conducts. Some instruments refuse to play. Some play too loud. The music reveals the answer.",
+  "The play is a KITCHEN — the author is cooking something (their answer). Characters are ingredients. Some don't mix. Some are missing. The recipe keeps changing.",
+  "The play is a LIGHTHOUSE — the author is the keeper. Ships (characters) approach in the dark. The author must choose which ones to guide to shore and which to let pass.",
+  "The play is a GARDEN — the author plants seeds (characters). Some grow wild, some refuse to root, some strangle others. The author must decide what to prune.",
+  "The play is a MIGRATION — characters are birds flying in formation. The author is the navigator. The flock keeps splitting. Where do they land?",
+  "The play is a CARNIVAL — each character runs a booth or attraction. The author walks through and must choose which games to play. Each game costs something real.",
+  "The play is a LABORATORY — the author is the scientist. Characters are elements being combined. Some reactions are explosive. Some are inert. The experiment keeps failing until it doesn't.",
+  "The play is a SHIPWRECK — characters are survivors on a raft. Space is limited. The author decides who stays, who swims, who becomes the sail.",
+  "The play is a RADIO BROADCAST — the author speaks into silence. Characters are listeners who can only respond with static, applause, or walking away. The author never knows who's still listening.",
+  "The play is a TIME CAPSULE — each character places one thing inside (a word, a gesture). The author must choose what to bury and what to keep. What's buried is lost forever.",
+  "The play is a LOST AND FOUND OFFICE — characters arrive claiming they lost something. The author has a box of found things. Nothing matches. Or does it?",
+  "The play is an ARCHAEOLOGY DIG — the author uncovers characters layer by layer. The deeper they dig, the older and more uncomfortable the truth.",
+  "The play is a PUPPET SHOW — characters are puppets and the author pulls their strings. But one puppet starts moving on its own.",
+  "The play is a VOLCANO — characters circle the rim. The author is the pressure building underneath. When it erupts, everyone must choose: run or stay.",
+  "The play is a CONSTELLATION — characters are stars. The author draws lines between them, creating meaning. But the stars keep moving.",
+  "The play is a TRANSLATION BUREAU — a message must pass through translators (characters). Each one changes the meaning. The author hears only the final version.",
+  "The play is a DEMOLITION — something old must be torn down. Characters are parts of the structure. The author swings the wrecking ball. Some parts refuse to fall.",
+  "The play is a BONFIRE — characters feed the fire (with words, secrets, offerings). The author watches what burns and what refuses to catch flame.",
+  "The play is a TIDE POOL — characters are creatures trapped when the tide went out. The author is the tide deciding whether to return.",
+  "The play is a CIRCUS — each character performs an act. The author is the ringmaster who must decide the order. The last act reveals the truth.",
+  "The play is a CHESS GAME — characters are pieces with specific moves. The author plays against an invisible opponent. The board keeps shrinking.",
   "The play is a SURGERY — something needs to be cut out. The author decides where to cut.",
   "The play is a CORONATION — the author is being crowned. But they must earn it.",
   "The play is an ELIMINATION GAME — the author removes characters one by one until truth remains.",
-  "The play is a RELAY RACE — information changes as it passes between characters.",
   "The play is a CONSTRUCTION — the author builds something from human components.",
   "The play is a BALL/DANCE — the author must dance with each possibility.",
-  "The play is a BORDER CROSSING — characters try to get past a checkpoint.",
-  "The play is a MARKETPLACE — traditional vendors vs a disruptive newcomer. The author watches who allies with whom.",
-  "The play is a DISPUTE RESOLUTION — two people face each other as opposing sides, mediators step in one by one. The author sees which approach works.",
-  "The play is a WEATHER SYSTEM — characters are forces of nature (warmth, cold, clouds, sun) and the author is the creature navigating them.",
-  "The play is a POSTAL RELAY — a message passes through characters and transforms. What arrives at the end is not what was sent.",
-  "The play is a TRAINING MANUAL — the author gets 'trained' for their role, then must perform. The training was wrong.",
-  // Constraint angles
+  "The play is a BORDER CROSSING — characters try to get past a checkpoint. The author is the border.",
+  "The play is a MARKETPLACE — traditional vendors vs a disruptive newcomer.",
+  "The play is a WEATHER SYSTEM — characters are forces of nature and the author is the creature navigating them.",
+  "The play is a SEED PLANTING — the author buries questions in the ground (characters kneel). Only some grow. The author doesn't choose which.",
+  "The play is a MAP-MAKING — characters are landmarks. The author draws the map by walking between them. The map is the answer.",
+  "The play is an AIRPORT — characters are departures and arrivals. The author has one ticket. Every gate leads somewhere different.",
+  "The play is a LIBRARY — characters are books that can only be opened once. The author picks three. The rest disappear.",
+  "The play is a BRIDGE — characters form the bridge with their bodies. The author must cross. The bridge sways, shifts, and some planks drop away.",
+  // ── Constraint angles ─────────────────────────────────────
   "The key constraint: someone cannot speak. Only move.",
   "The key constraint: all decisions must be binary — YES or NO. Nothing else.",
   "The key constraint: characters can only say ONE word each.",
   "The key constraint: the author cannot see one of the characters. Others can.",
   "The key constraint: time is limited. Something happens automatically when it runs out.",
   "The key constraint: characters cannot move from their position. Only the author moves.",
-  "The key constraint: characters must resist being eliminated — they fight to stay. The author must physically push through resistance.",
+  "The key constraint: characters must resist being eliminated — they fight to stay.",
   "The key constraint: the author watches but cannot intervene. They observe from outside the circle.",
-  // Emotional angles
+  "The key constraint: characters can only whisper. The author must lean close to hear each one.",
+  "The key constraint: every time the author speaks, one character must leave the stage.",
+  "The key constraint: characters slowly walk toward the author. The author must decide before they arrive.",
+  "The key constraint: the author must keep their eyes closed. They navigate by sound only.",
+  "The key constraint: characters can only move when the author is not looking at them.",
+  // ── Emotional angles ──────────────────────────────────────
   "The play's emotional center is grief, not hope.",
-  "Make it uncomfortably funny.",
-  "The play begins after the catastrophe, not before.",
+  "Make it uncomfortably funny. The humor reveals the truth.",
+  "The play begins after the catastrophe, not before. Everything has already happened.",
   "The question has already been answered. The play is about whether anyone will admit it.",
   "One character represents something the question-asker has already lost.",
   "The most important moment happens in complete silence.",
   "The play is set at the exact moment before something becomes irreversible.",
-  "The play reveals that the question was never about what it seemed. The real question hides underneath.",
+  "The play reveals that the question was never about what it seemed.",
   "One character secretly supports the author while appearing to oppose them.",
-  // Structural angles — from real sessions
+  "The play is nostalgic. Something beautiful is ending and everyone knows it.",
+  "The play is absurd. The logic is dream-logic. Characters behave strangely but it makes emotional sense.",
+  "The play is tender. Raw, quiet intimacy. No drama, just closeness and the discomfort of being seen.",
+  // ── Structural angles ─────────────────────────────────────
   "The author enters last, after the play has already started without them.",
   "Two characters are the same person at different points in time.",
-  "The play has 2 CONTRASTING ACTS — Act 1 shows one extreme, Act 2 shows the opposite. The insight lives in the gap between them.",
+  "The play has 2 CONTRASTING ACTS — Act 1 shows one extreme, Act 2 shows the opposite.",
   "The play has 3 short acts — each reveals a different layer.",
   "One character has been in the room before anyone arrived. They are already tired.",
   "The play's resolution requires the author to physically leave the stage.",
   "Something in the play is broken. The characters disagree about whether to fix it.",
   "One character refuses to stay in their assigned role. They keep becoming someone else.",
-  "The play defines what something IS NOT — two rows of characters, one affirms, one negates. The author picks which negations resonate.",
-  "Break the author's question into its component WORDS — each word becomes a character. The author arranges them physically.",
-  "The characters were chosen by the author from their own life. Ask: what forces are at play in YOUR question? Name them.",
+  "Break the author's question into its component WORDS — each word becomes a character.",
   "A character arrives late — an unexpected force the author didn't plan for. It changes everything.",
+  "The play runs BACKWARDS — it starts with the ending and rewinds to the beginning.",
+  "The characters vote. The author cannot vote. The result determines the ending.",
+  "Two characters are magnetically attracted. The author must keep them apart. Or let them collide.",
 ];
 
 export function buildUserPrompt(
@@ -472,8 +504,9 @@ PRAVIDLA:
 5. Před odesláním si PŘEČTI každé slovo a ověř, že je to reálné české slovo.`
       : "LANGUAGE: ENGLISH. The entire output MUST be in English. Play name, image description, character names, author role, ending — everything in English. NEVER use Slovak, Czech, or any other language.";
 
-  // Inject a random creative angle to force variety across calls
-  const angle = CREATIVE_ANGLES[Math.floor(Math.random() * CREATIVE_ANGLES.length)];
+  // Inject two random creative angles to force variety across calls
+  const shuffled = [...CREATIVE_ANGLES].sort(() => Math.random() - 0.5);
+  const angle = shuffled.slice(0, 2).join("\n");
 
   const parts: string[] = [];
 
