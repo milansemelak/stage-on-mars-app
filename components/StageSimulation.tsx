@@ -635,7 +635,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
       endingTriggered.current = true;
       setIsPlaying(false);
       setTimeout(() => {
-        playBell();
         setHasEnded(true);
         setEndingPhase(1);
       }, 2000);
@@ -953,7 +952,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
           {hasEnded && endingPhase >= 2 && (
             <div className="px-5 sm:px-6 pb-4 animate-fade-in flex flex-col items-center gap-3">
               <button
-                onClick={() => onEnd?.()}
+                onClick={() => { playBell(); onEnd?.(); }}
                 className="group w-full relative"
               >
                 <div className="absolute -inset-2 bg-mars/10 blur-xl rounded-2xl animate-pulse-glow pointer-events-none" />
