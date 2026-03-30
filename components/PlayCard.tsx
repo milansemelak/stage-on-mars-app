@@ -409,24 +409,26 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             )}
           </div>
 
-          {/* Ending Perspective */}
-          <div className="animate-fade-slide-up stagger-5">
-            <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
-            {editing ? (
-              <textarea
-                value={editData.endingPerspective}
-                onChange={(e) => setEditData({ ...editData, endingPerspective: e.target.value })}
-                rows={2}
-                className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
-              />
-            ) : (
-              <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-                {currentPlay.endingPerspective}
-              </p>
-            )}
-          </div>
+          {/* Ending Perspective — only show before simulation exists (as preview) */}
+          {!currentPlay.simulation && !marsLoading && (
+            <div className="animate-fade-slide-up stagger-5">
+              <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
+              {editing ? (
+                <textarea
+                  value={editData.endingPerspective}
+                  onChange={(e) => setEditData({ ...editData, endingPerspective: e.target.value })}
+                  rows={2}
+                  className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
+                />
+              ) : (
+                <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
+                  {currentPlay.endingPerspective}
+                </p>
+              )}
+            </div>
+          )}
 
-          {/* ── Step 2: From Mars ── */}
+          {/* ── Step 2: See what happens ── */}
           {!currentPlay.simulation && !marsLoading && (
             <div className="animate-fade-slide-up stagger-6">
               {marsError && (
@@ -464,11 +466,26 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           )}
 
-          {/* ── Perspectives from Mars ── */}
+          {/* ── Ending Perspective — after simulation, as conclusion ── */}
+          {currentPlay.simulation && perspectivesRevealed && (
+            <div
+              className="relative"
+              style={{ animation: "perspectiveReveal 0.8s ease-out forwards" }}
+            >
+              <div className="rounded-xl border border-purple-500/10 bg-purple-500/[0.03] px-5 sm:px-6 py-5">
+                <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
+                <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
+                  {currentPlay.endingPerspective}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ── Perspectives from the stage ── */}
           {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && (
             <div
               className="relative"
-              style={{ animation: currentPlay.simulation ? "perspectiveReveal 1s ease-out forwards" : undefined }}
+              style={{ animation: currentPlay.simulation ? "perspectiveReveal 1s ease-out 0.4s forwards" : undefined, opacity: currentPlay.simulation ? 0 : 1 }}
             >
               {/* Header */}
               <div className="flex items-center gap-3 mb-6">
@@ -501,7 +518,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                         key={i}
                         className="relative rounded-2xl overflow-hidden"
                         style={currentPlay.simulation ? {
-                          animation: `perspectiveItemReveal 0.8s ease-out 0.15s both`,
+                          animation: `perspectiveItemReveal 0.8s ease-out 0.6s both`,
                         } : undefined}
                       >
                         {/* Top accent line */}
@@ -531,7 +548,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                       key={i}
                       className="relative rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 sm:px-6 py-4"
                       style={currentPlay.simulation ? {
-                        animation: `perspectiveItemReveal 0.6s ease-out ${0.3 + i * 0.15}s both`,
+                        animation: `perspectiveItemReveal 0.6s ease-out ${0.7 + i * 0.15}s both`,
                       } : undefined}
                     >
                       <div className="flex gap-4 items-start">
@@ -560,50 +577,78 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           )}
 
-          {/* Follow-up question */}
+          {/* ── Follow-up question — prominent next chapter ── */}
           {currentPlay.followUpQuestion && perspectivesRevealed && (
             <div
               className="relative"
-              style={currentPlay.simulation ? { animation: "perspectiveItemReveal 0.6s ease-out 1s both" } : undefined}
+              style={currentPlay.simulation ? { animation: "perspectiveItemReveal 0.8s ease-out 1.5s both" } : undefined}
             >
+              {/* Divider */}
+              <div className="flex items-center gap-3 mb-5">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/20">{t.nextQuestion}</span>
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+              </div>
+
               <button
                 onClick={() => onAskQuestion?.(currentPlay.followUpQuestion!)}
                 className="w-full text-left group"
               >
-                <div className="rounded-xl border border-mars/10 hover:border-mars/30 bg-mars/[0.03] hover:bg-mars/[0.06] px-5 sm:px-6 py-4 transition-all">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-mars/30 block mb-2">
-                    {t.nextQuestion || "Next question"}
-                  </span>
-                  <p className="text-white/80 group-hover:text-white text-sm sm:text-base font-mercure italic leading-relaxed transition-colors">
+                <div className="rounded-2xl border border-mars/15 hover:border-mars/35 bg-gradient-to-b from-mars/[0.05] to-transparent hover:from-mars/[0.08] px-6 sm:px-8 py-6 transition-all">
+                  <p className="text-white/90 group-hover:text-white text-base sm:text-lg font-mercure italic leading-relaxed transition-colors">
                     &ldquo;{currentPlay.followUpQuestion}&rdquo;
                   </p>
-                  <span className="text-mars/40 group-hover:text-mars/70 text-xs mt-2 block transition-colors">
-                    {t.askThis || "Ask this"} →
+                  <span className="text-mars/50 group-hover:text-mars/80 text-xs font-bold uppercase tracking-widest mt-3 block transition-colors">
+                    {t.askThis}
                   </span>
                 </div>
               </button>
             </div>
           )}
 
-          {/* Actions */}
-          <div className="animate-fade-slide-up stagger-7 flex gap-3 pt-2">
-            <button
-              onClick={handlePrescribe}
-              className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
-                prescribed
-                  ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                  : "bg-white/8 border border-white/10 hover:bg-white/12 hover:border-white/20 text-white/70 hover:text-white"
-              }`}
-            >
-              {prescribed ? "✓ " + t.prescribed : t.prescribe}
-            </button>
-            <button
-              onClick={handleShare}
-              className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
-            >
-              {t.sharePlay}
-            </button>
-          </div>
+          {/* Actions — only after perspectives are revealed */}
+          {perspectivesRevealed && (
+            <div className="flex gap-3 pt-2" style={currentPlay.simulation ? { animation: "perspectiveItemReveal 0.6s ease-out 2s both" } : undefined}>
+              <button
+                onClick={handlePrescribe}
+                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
+                  prescribed
+                    ? "bg-green-500/10 border border-green-500/20 text-green-400"
+                    : "bg-white/8 border border-white/10 hover:bg-white/12 hover:border-white/20 text-white/70 hover:text-white"
+                }`}
+              >
+                {prescribed ? "✓ " + t.prescribed : t.prescribe}
+              </button>
+              <button
+                onClick={handleShare}
+                className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
+              >
+                {t.sharePlay}
+              </button>
+            </div>
+          )}
+
+          {/* Actions — before simulation (no gate needed) */}
+          {!currentPlay.simulation && !marsLoading && (
+            <div className="animate-fade-slide-up stagger-7 flex gap-3 pt-2">
+              <button
+                onClick={handlePrescribe}
+                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
+                  prescribed
+                    ? "bg-green-500/10 border border-green-500/20 text-green-400"
+                    : "bg-white/8 border border-white/10 hover:bg-white/12 hover:border-white/20 text-white/70 hover:text-white"
+                }`}
+              >
+                {prescribed ? "✓ " + t.prescribed : t.prescribe}
+              </button>
+              <button
+                onClick={handleShare}
+                className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
+              >
+                {t.sharePlay}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
