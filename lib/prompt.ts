@@ -234,19 +234,20 @@ The choreography must MATCH the narration. Use the RICHEST position keyword that
 
 ## CHOREOGRAPHY RULES
 1. Every step MUST have at least 2 characters changing position. Static stages are boring.
-2. Use at LEAST 3 different position keywords across all steps. Don't just repeat "center" and "edge-left".
-3. Create ONE moment where characters are in a relational position (back-to-back, circling, blocking-path-of). Relationships are visible.
-4. Include ONE moment of kneeling or rising. Vertical change = power shift.
-5. The final step should feel like a resolution: either cluster (unity), scattered (collapse), or a clear spatial divide (two-groups via line-left/line-right).
+2. Use at LEAST 5 different position keywords across all steps. The vocabulary is rich, use it.
+3. Create at LEAST 2 relational moments (back-to-back, circling, blocking-path-of, close-to, far-from). Relationships are visible through spatial arrangement.
+4. VARY your vertical and directional moves. Do NOT default to "kneeling". Instead, choose from the FULL range: rising, retreating, approaching-center, facing-away, circling, blocking-path-of. Use kneeling ONLY when submission, planting, or surrender is the specific story beat. Most plays should NOT have kneeling.
+5. The final step should feel like a resolution: cluster (unity), scattered (collapse), triangle (tension held), circle (ritual), or a clear spatial divide (line-left/line-right).
+6. FORBIDDEN PATTERNS: Do not start with everyone at edges and one character at center. Do not use kneeling in step 1. Do not have the same character move to center twice. Surprise us.
 
-Good example:
+Good example (notice: no kneeling, rich variety):
 [
-  {"narration": "The Gardener kneels at the center, hands pressed to the ground. The Seeds stand at the edges, waiting.", "positions": {"The Gardener": "kneeling", "Seed of Doubt": "edge-left", "Seed of Courage": "edge-right", "Seed of Silence": "edge-top"}},
-  {"narration": "The Gardener rises and approaches the first Seed. The Wind begins circling them both.", "positions": {"The Gardener": "rising", "The Wind": "circling:The Gardener"}},
-  {"narration": "Seed of Doubt refuses to be planted. It retreats. Seed of Courage steps forward.", "positions": {"Seed of Doubt": "retreating", "Seed of Courage": "approaching-center"}},
-  {"narration": "The Gardener and Courage stand back to back. Something has shifted between them.", "positions": {"The Gardener": "back-to-back:Seed of Courage", "The Wind": "facing-away"}},
-  {"narration": "Silence moves to block Courage's path. The Gardener must choose.", "positions": {"Seed of Silence": "blocking-path-of:Seed of Courage"}},
-  {"narration": "The Gardener kneels again, this time between all three. They cluster close.", "positions": {"The Gardener": "kneeling", "Seed of Doubt": "close-to:The Gardener", "Seed of Courage": "close-to:The Gardener", "Seed of Silence": "close-to:The Gardener"}}
+  {"narration": "The Conductor stands at center, arms wide. The Orchestra scatters across the stage, each facing a different direction.", "positions": {"The Conductor": "center", "First Violin": "scattered", "The Drum": "scattered", "The Silence": "edge-top"}},
+  {"narration": "First Violin circles the Conductor, testing the distance. The Drum retreats further.", "positions": {"First Violin": "circling:The Conductor", "The Drum": "retreating"}},
+  {"narration": "The Silence rises from the back of the stage. The Conductor turns away.", "positions": {"The Silence": "rising", "The Conductor": "facing-away"}},
+  {"narration": "First Violin blocks the Conductor's path. The Drum approaches for the first time.", "positions": {"First Violin": "blocking-path-of:The Conductor", "The Drum": "approaching-center"}},
+  {"narration": "The Conductor and The Silence stand back to back. The music has stopped.", "positions": {"The Conductor": "back-to-back:The Silence", "First Violin": "far-from:The Drum"}},
+  {"narration": "Everyone forms a triangle. Three points of tension, no resolution, just the shape of what remains.", "positions": {"The Conductor": "triangle", "First Violin": "triangle", "The Drum": "triangle", "The Silence": "edge-bottom"}}
 ]
 
 ## Perspectives — the 3 truths the stage revealed

@@ -409,24 +409,22 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             )}
           </div>
 
-          {/* Ending Perspective — only show before simulation exists (as preview) */}
-          {!currentPlay.simulation && !marsLoading && (
-            <div className="animate-fade-slide-up stagger-5">
-              <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
-              {editing ? (
-                <textarea
-                  value={editData.endingPerspective}
-                  onChange={(e) => setEditData({ ...editData, endingPerspective: e.target.value })}
-                  rows={2}
-                  className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
-                />
-              ) : (
-                <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-                  {currentPlay.endingPerspective}
-                </p>
-              )}
-            </div>
-          )}
+          {/* Ending Perspective — always visible, it's an instruction for live play */}
+          <div className="animate-fade-slide-up stagger-5">
+            <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
+            {editing ? (
+              <textarea
+                value={editData.endingPerspective}
+                onChange={(e) => setEditData({ ...editData, endingPerspective: e.target.value })}
+                rows={2}
+                className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
+              />
+            ) : (
+              <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
+                {currentPlay.endingPerspective}
+              </p>
+            )}
+          </div>
 
           {/* ── Step 2: See what happens ── */}
           {!currentPlay.simulation && !marsLoading && (
@@ -463,21 +461,6 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 clientName={clientName}
                 onEnd={() => setPerspectivesRevealed(true)}
               />
-            </div>
-          )}
-
-          {/* ── Ending Perspective — after simulation, as conclusion ── */}
-          {currentPlay.simulation && perspectivesRevealed && (
-            <div
-              className="relative"
-              style={{ animation: "perspectiveReveal 0.8s ease-out forwards" }}
-            >
-              <div className="rounded-xl border border-purple-500/10 bg-purple-500/[0.03] px-5 sm:px-6 py-5">
-                <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
-                <p className="text-white/70 text-sm sm:text-base leading-relaxed mt-2">
-                  {currentPlay.endingPerspective}
-                </p>
-              </div>
             </div>
           )}
 
