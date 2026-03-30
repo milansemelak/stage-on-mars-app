@@ -232,13 +232,21 @@ Only include characters whose position CHANGES in that step. Characters not list
 
 The choreography must MATCH the narration. Use the RICHEST position keyword that fits. If someone kneels, use "kneeling". If two characters are in tension, use "back-to-back:CharName". If someone blocks another's path, use "blocking-path-of:CharName". If someone orbits another, use "circling:CharName". Make every movement tell a story.
 
+## CHOREOGRAPHY RULES
+1. Every step MUST have at least 2 characters changing position. Static stages are boring.
+2. Use at LEAST 3 different position keywords across all steps. Don't just repeat "center" and "edge-left".
+3. Create ONE moment where characters are in a relational position (back-to-back, circling, blocking-path-of). Relationships are visible.
+4. Include ONE moment of kneeling or rising. Vertical change = power shift.
+5. The final step should feel like a resolution: either cluster (unity), scattered (collapse), or a clear spatial divide (two-groups via line-left/line-right).
+
 Good example:
 [
-  {"narration": "The Trees stand in a circle, motionless. The Author enters the space.", "positions": {"The Author": "edge-bottom"}},
-  {"narration": "The Author circles them slowly, studying each one. The Animal darts between them.", "positions": {"The Author": "center", "The Animal": "scattered"}},
-  {"narration": "The Author pushes the first tree out — it falls silently.", "positions": {"Tree of Fear": "edge-left"}},
-  {"narration": "The third tree leaves on its own. Three remain, standing closer.", "positions": {"Tree of Doubt": "edge-right", "Tree of Courage": "close-to:Tree of Patience"}},
-  {"narration": "The remaining trees speak their words aloud. The Author sits between them.", "positions": {"The Author": "center"}}
+  {"narration": "The Gardener kneels at the center, hands pressed to the ground. The Seeds stand at the edges, waiting.", "positions": {"The Gardener": "kneeling", "Seed of Doubt": "edge-left", "Seed of Courage": "edge-right", "Seed of Silence": "edge-top"}},
+  {"narration": "The Gardener rises and approaches the first Seed. The Wind begins circling them both.", "positions": {"The Gardener": "rising", "The Wind": "circling:The Gardener"}},
+  {"narration": "Seed of Doubt refuses to be planted. It retreats. Seed of Courage steps forward.", "positions": {"Seed of Doubt": "retreating", "Seed of Courage": "approaching-center"}},
+  {"narration": "The Gardener and Courage stand back to back. Something has shifted between them.", "positions": {"The Gardener": "back-to-back:Seed of Courage", "The Wind": "facing-away"}},
+  {"narration": "Silence moves to block Courage's path. The Gardener must choose.", "positions": {"Seed of Silence": "blocking-path-of:Seed of Courage"}},
+  {"narration": "The Gardener kneels again, this time between all three. They cluster close.", "positions": {"The Gardener": "kneeling", "Seed of Doubt": "close-to:The Gardener", "Seed of Courage": "close-to:The Gardener", "Seed of Silence": "close-to:The Gardener"}}
 ]
 
 ## Perspectives — the 3 truths the stage revealed
