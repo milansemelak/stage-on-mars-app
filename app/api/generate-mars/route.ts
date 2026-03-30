@@ -4,6 +4,7 @@ import { MARS_SYSTEM_PROMPT, buildMarsPrompt, buildValidationPrompt } from "@/li
 import { Play } from "@/lib/types";
 import { rateLimit } from "@/lib/rate-limit";
 import { getAnthropicClient } from "@/lib/anthropic";
+import { sanitizeCyrillic } from "@/lib/sanitize";
 
 async function callWithRetry(params: Anthropic.MessageCreateParamsNonStreaming, retries = 3): Promise<Anthropic.Message> {
   const anthropic = getAnthropicClient();
@@ -109,6 +110,10 @@ export async function POST(request: NextRequest) {
         console.error("Language validation failed, using original:", err);
       }
     }
+
+    // Sanitize Cyrillic characters that sometimes leak into output
+    const sanitizedJson = sanitizeCyrillic(JSON.stringify(parsed));
+    parsed = JSON.parse(sanitizedJson);
 
     // Build result with backward compat — produce both simulation (string) and simulationSteps
     const result: Record<string, unknown> = {

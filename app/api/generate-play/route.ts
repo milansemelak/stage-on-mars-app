@@ -4,6 +4,7 @@ import { SYSTEM_PROMPT, buildUserPrompt, buildValidationPrompt } from "@/lib/pro
 import { GenerateRequest, Play } from "@/lib/types";
 import { rateLimit } from "@/lib/rate-limit";
 import { getAnthropicClient } from "@/lib/anthropic";
+import { sanitizeCyrillic } from "@/lib/sanitize";
 
 async function callWithRetry(params: Anthropic.MessageCreateParamsNonStreaming, retries = 3): Promise<Anthropic.Message> {
   const anthropic = getAnthropicClient();
@@ -102,6 +103,10 @@ export async function POST(request: NextRequest) {
         console.error("Language validation failed, using original:", err);
       }
     }
+
+    // Sanitize Cyrillic characters that sometimes leak into output
+    const sanitizedJson = sanitizeCyrillic(JSON.stringify(plays));
+    plays = JSON.parse(sanitizedJson);
 
     return NextResponse.json({ plays });
   } catch (error) {

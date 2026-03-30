@@ -19,8 +19,10 @@ export function buildValidationPrompt(jsonText: string, lang: "sk" | "cs"): stri
 
 6. ZLÚČENÉ SLOVÁ — dva alebo viac slov napísaných bez medzery.
 
+7. CYRILICKÉ ZNAKY — niekedy sa objaví ruské/cyrilické písmená namiesto latinských (napr. cyrilické "л" namiesto "l", "а" namiesto "a", "о" namiesto "o", "е" namiesto "e", "с" namiesto "c"). Nahraď VŠETKY cyrilické znaky ich latinskými ekvivalentmi. Toto je kritické!
+
 ## POSTUP:
-Prejdi KAŽDÉ slovo v texte. Pri každom slove sa spýtaj: "Existuje toto v slovenčine?" Ak si nie si istý, použi jednoduchšie slovo. Ak nájdeš čokoľvek podozrivé, oprav to.
+Prejdi KAŽDÉ slovo v texte. Pri každom slove sa spýtaj: "Existuje toto v slovenčine?" Ak si nie si istý, použi jednoduchšie slovo. Ak nájdeš čokoľvek podozrivé, oprav to. Skontroluj aj či neobsahuje cyrilické znaky.
 
 NEMEŇ: štruktúru JSON, kľúče, mená postáv v poli "character" (tie môžu byť poetické), celkový význam textu.
 Vráť LEN opravený JSON, nič iné. Žiadne vysvetlenia. Žiadny markdown.
@@ -42,6 +44,8 @@ ${jsonText}`;
 4. CHYBĚJÍCÍ DIAKRITIKA — doplň správné háčky a čárky.
 
 5. SLOUČENÁ SLOVA — dvě nebo více slov napsaných bez mezery.
+
+6. CYRILICKÉ ZNAKY — někdy se objeví ruské/cyrilické písmena místo latinských (např. cyrilické "л" místo "l", "а" místo "a", "о" místo "o", "е" místo "e", "с" místo "c"). Nahraď VŠECHNY cyrilické znaky jejich latinskými ekvivalenty. Toto je kritické!
 
 NEMĚŇ: strukturu JSON, klíče, jména postav v poli "character", celkový význam textu.
 Vrať JEN opravený JSON, nic jiného. Žádné vysvětlování. Žádný markdown.
@@ -512,7 +516,8 @@ PRAVIDLÁ:
 2. NIKDY nevynechaj diakritiku: mäkčene (ď, ť, ň, ľ, č, š, ž), dĺžne (á, é, í, ó, ú, ý, ĺ, ŕ), vokáň (ô).
 3. NIKDY nezlievaj slová dohromady — medzi slovami vždy medzera.
 4. NIKDY nepoužívaj české tvary: ř, ě, ů neexistujú v slovenčine.
-5. Pred odoslaním si PREČÍTAJ každé slovo a over, že je to reálne slovenské slovo.`
+5. NIKDY nepoužívaj cyrilické znaky (ruské písmená). Použi LEN latinku so slovenskou diakritikou.
+6. Pred odoslaním si PREČÍTAJ každé slovo a over, že je to reálne slovenské slovo.`
       : lang === "cs"
       ? `JAZYK: ČEŠTINA. Celý výstup VÝHRADNĚ česky. Žádná angličtina.
 
@@ -521,7 +526,8 @@ PRAVIDLA:
 2. NIKDY nevynechej diakritiku: háčky (ď, ť, ň, č, š, ž, ř, ě), čárky (á, é, í, ó, ú, ý, ů).
 3. NIKDY neslévej slova dohromady — mezi slovy vždy mezera.
 4. NIKDY nepoužívej slovenské tvary: ľ, ĺ, ŕ, ô neexistují v češtině.
-5. Před odesláním si PŘEČTI každé slovo a ověř, že je to reálné české slovo.`
+5. NIKDY nepoužívej cyrilické znaky (ruská písmena). Použij JEN latinku s českou diakritikou.
+6. Před odesláním si PŘEČTI každé slovo a ověř, že je to reálné české slovo.`
       : "LANGUAGE: ENGLISH. The entire output MUST be in English. Play name, image description, character names, author role, ending — everything in English. NEVER use Slovak, Czech, or any other language.";
 
   // Inject two random creative angles to force variety across calls
