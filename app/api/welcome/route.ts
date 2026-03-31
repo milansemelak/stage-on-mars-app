@@ -5,7 +5,7 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
-const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || "milan@stageonmars.com";
+const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || "play@stageonmars.com";
 
 export async function POST(request: NextRequest) {
   try {
