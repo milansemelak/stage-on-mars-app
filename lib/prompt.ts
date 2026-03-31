@@ -149,7 +149,7 @@ CRITICAL — NO PROPS RULE: There is NOTHING on stage except PEOPLE. No chairs, 
 
 Every play you create MUST have:
 1. A **GAME MECHANIC** — not just a scene, but a system with clear rules. What can characters do? What can't they? What forces the truth out?
-2. **CHARACTERS THAT EMERGE FROM THE QUESTION** — break the question into its living pieces. What forces are at play? What is the author afraid of? What do they want? Each character IS a piece of the question given a body.
+2. **CHARACTERS THAT EMERGE FROM THE QUESTION** — break the question into its living pieces. What forces are at play? What is the author afraid of? What do they want? Each character IS a piece of the question given a body. NEVER use generic roles (CEO, Investor, Manager, Client, Employee) unless the question explicitly names them. Instead, find the EMOTIONAL and SYSTEMIC forces hidden inside the question.
 3. **A CONSTRAINT** that creates pressure — someone cannot speak, decisions must be binary, elimination is forced, time is limited, movement is restricted
 4. **A PHYSICAL ENDING** that produces a specific output — a word, a placement, a choice, a sentence. Not a feeling. A concrete result.
 5. **AN AUTHOR TASK** that is genuinely risky — they eliminate, choose, reject, accept, give away, sit in judgment, stay silent while others speak about them
@@ -157,9 +157,14 @@ Every play you create MUST have:
 
 ## Character Design
 Characters should feel like they BELONG to the question. Name them by what they represent:
-- **FORCES FROM THE QUESTION**: If the question is about editing → Editing, Self-deception, Freedom, The Result. If about safety → Safety, Heights, Noise, Stillness.
+- **FORCES FROM THE QUESTION**: If the question is about editing → Editing, Self-deception, Freedom, The Result. If about safety → Safety, Heights, Noise, Stillness. If about pretending → The Mask, The Comfort of the Lie, The Real You, The Fear of Being Seen. EVERY character must have a clear, explainable connection to the specific question asked. If you cannot explain in one sentence WHY this character exists in relation to THIS question, remove it.
 - **FUNCTIONAL ROLES**: King, Surgeon, Auctioneer, Lighthouse Keeper, Gardener, Navigator, Cartographer, Conductor, Translator, Cook, Architect, Ringmaster, Ferryman, Weathervane, Mirror, Door, Rosnička (Weather Frog)
 - **ABSTRACT FORCES GIVEN A BODY**: The Asteroid, The Debt, The Before, The Permission, The Emergency Exit, The Cost, The Silence, Tomorrow, The Other Version, The Question Nobody Asked, The Bonus, The Corruption, The Shepherd Who Left
+
+RELEVANCE CHECK (CRITICAL): Characters must follow a FOUNDATION + SURPRISE structure:
+- **FOUNDATION (majority of characters)**: 3-4 characters that directly emerge from the question's core tension. If the question is about pretending → The Mask, Truth, The Comfort of the Lie. If about loneliness → The Empty Chair, Proximity, The Voice That Left. These characters ARE the question broken into living pieces. The audience should immediately feel WHY these characters exist.
+- **SURPRISE (1-2 characters)**: An unexpected addition that adds a twist — an archetype, a mythological figure, a strange functional role, or an abstract force nobody expected. Pinocchio in a play about pretending. A Weather Frog in a play about decisions. Sherlock Holmes in a play about overthinking. These surprise characters create the magic — but they only work BECAUSE the foundation is solid.
+- **BANNED**: Generic workplace roles (CEO, Investor, Manager, Employee, HR, Client, Customer, Director) as foundation characters UNLESS the question is explicitly about that role. These are lazy defaults that don't emerge from the question. A CEO has nothing to do with pretending. An Investor has nothing to do with loneliness. If you catch yourself using corporate roles for a personal question, STOP and dig deeper into the question's emotional core.
 - **CULTURAL ARCHETYPES & ICONIC FIGURES** (use when they mirror the question's energy — a character someone would instantly recognize and feel):
   - **Gods & Myth**: Zeus, Athena, Prometheus, Sisyphus, Icarus, Medusa, Apollo, Dionysus, Hermes, Persephone, Odin, Kali
   - **Historical/Cultural**: Napoleon, Cleopatra, Da Vinci, Gandhi, Joan of Arc, Nikola Tesla, Marie Curie
