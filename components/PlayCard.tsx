@@ -655,16 +655,14 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           {/* Actions — only after everything is revealed */}
           {typingDone && perspectivesRevealed && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (
             <div className="flex gap-3 pt-2 animate-fade-in">
-              <button
-                onClick={handlePrescribe}
-                className={`flex-1 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all ${
-                  prescribed
-                    ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                    : "bg-mars/15 border border-mars/30 hover:bg-mars/25 hover:border-mars/50 text-mars hover:text-mars-light shadow-[0_0_20px_-4px_rgba(255,85,0,0.2)] hover:shadow-[0_0_30px_-4px_rgba(255,85,0,0.3)]"
-                }`}
+              <a
+                href="https://www.stageonmars.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all text-center bg-mars/15 border border-mars/30 hover:bg-mars/25 hover:border-mars/50 text-mars hover:text-mars-light shadow-[0_0_20px_-4px_rgba(255,85,0,0.2)] hover:shadow-[0_0_30px_-4px_rgba(255,85,0,0.3)]"
               >
-                {prescribed ? "✓ " + t.prescribed : t.prescribe}
-              </button>
+                {t.prescribe}
+              </a>
               <button
                 onClick={handleShare}
                 className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
@@ -677,16 +675,14 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           {/* Actions — before simulation (no gate needed) */}
           {!currentPlay.simulation && !marsLoading && (
             <div className="animate-fade-slide-up stagger-7 flex gap-3 pt-2">
-              <button
-                onClick={handlePrescribe}
-                className={`flex-1 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all ${
-                  prescribed
-                    ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                    : "bg-mars/15 border border-mars/30 hover:bg-mars/25 hover:border-mars/50 text-mars hover:text-mars-light shadow-[0_0_20px_-4px_rgba(255,85,0,0.2)] hover:shadow-[0_0_30px_-4px_rgba(255,85,0,0.3)]"
-                }`}
+              <a
+                href="https://www.stageonmars.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all text-center bg-mars/15 border border-mars/30 hover:bg-mars/25 hover:border-mars/50 text-mars hover:text-mars-light shadow-[0_0_20px_-4px_rgba(255,85,0,0.2)] hover:shadow-[0_0_30px_-4px_rgba(255,85,0,0.3)]"
               >
-                {prescribed ? "✓ " + t.prescribed : t.prescribe}
-              </button>
+                {t.prescribe}
+              </a>
               <button
                 onClick={handleShare}
                 className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
