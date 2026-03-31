@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Play, Perspective } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { STORAGE_KEYS, MAX_HISTORY } from "@/lib/constants";
@@ -44,6 +44,54 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
   const [perspectivesRevealed, setPerspectivesRevealed] = useState(
     !!(play.perspectives && play.perspectives.length > 0)
   );
+  // Layered perspective reveal — each one appears one at a time
+  const [visiblePerspectives, setVisiblePerspectives] = useState(
+    play.perspectives?.length || 0
+  );
+  // Typewriter for follow-up question
+  const [typedChars, setTypedChars] = useState(0);
+  const [typingDone, setTypingDone] = useState(!!(play.followUpQuestion));
+  const typingRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Cascade perspectives one by one after reveal
+  useEffect(() => {
+    if (!perspectivesRevealed || !currentPlay.perspectives?.length) return;
+    if (!currentPlay.simulation) {
+      // No simulation — show all immediately (history view)
+      setVisiblePerspectives(currentPlay.perspectives.length);
+      setTypingDone(true);
+      return;
+    }
+
+    const total = currentPlay.perspectives.length;
+    if (visiblePerspectives >= total) {
+      // All perspectives shown — start typing follow-up
+      if (currentPlay.followUpQuestion && !typingDone) {
+        const text = currentPlay.followUpQuestion;
+        let charIdx = 0;
+        typingRef.current = setInterval(() => {
+          charIdx++;
+          setTypedChars(charIdx);
+          if (charIdx >= text.length) {
+            if (typingRef.current) clearInterval(typingRef.current);
+            setTypingDone(true);
+          }
+        }, 35);
+        return () => {
+          if (typingRef.current) clearInterval(typingRef.current);
+        };
+      }
+      return;
+    }
+
+    // Reveal next perspective after delay
+    const delay = visiblePerspectives === 0 ? 800 : 2500; // first one faster, rest give time to read
+    const timer = setTimeout(() => {
+      setVisiblePerspectives((p) => p + 1);
+    }, delay);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [perspectivesRevealed, visiblePerspectives, currentPlay.perspectives?.length, currentPlay.simulation]);
 
   async function fetchFromMars() {
     setMarsLoading(true);
@@ -459,32 +507,39 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 simulation={currentPlay.simulation}
                 simulationSteps={currentPlay.simulationSteps}
                 clientName={clientName}
-                onEnd={() => setPerspectivesRevealed(true)}
+                onEnd={() => {
+                  setPerspectivesRevealed(true);
+                  setVisiblePerspectives(0);
+                  setTypedChars(0);
+                  setTypingDone(false);
+                }}
               />
             </div>
           )}
 
-          {/* ── Perspectives from the stage ── */}
+          {/* ── Perspectives — layered reveal ── */}
           {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && (
-            <div
-              className="relative"
-              style={{ animation: currentPlay.simulation ? "perspectiveReveal 1s ease-out 0.4s forwards" : undefined, opacity: currentPlay.simulation ? 0 : 1 }}
-            >
+            <div className="relative">
               {/* Header */}
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3 mb-6" style={currentPlay.simulation ? { animation: "perspectiveReveal 0.8s ease-out forwards" } : undefined}>
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
                 <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-mars/50">{t.whatTheStageRevealed}</span>
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
               </div>
 
-              {/* Perspectives */}
-              <div className="space-y-4">
+              {/* Perspectives — appear one by one */}
+              <div className="space-y-5">
                 {currentPlay.perspectives.map((p, i) => {
+                  // Only show perspectives that have been revealed
+                  const isVisible = !currentPlay.simulation || visiblePerspectives > i;
+                  if (!isVisible) return null;
+
                   const isStructured = typeof p === "object" && p !== null;
                   const perspective = isStructured ? (p as Perspective) : null;
                   const insightText = perspective ? perspective.insight : (p as string);
                   const charName = perspective?.character;
                   const isFirst = i === 0;
+                  const isLatest = currentPlay.simulation && visiblePerspectives === i + 1;
 
                   // Find matching character for color
                   const matchedChar = charName
@@ -499,12 +554,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                     return (
                       <div
                         key={i}
-                        className="relative rounded-2xl overflow-hidden"
-                        style={currentPlay.simulation ? {
-                          animation: `perspectiveItemReveal 0.8s ease-out 0.6s both`,
-                        } : undefined}
+                        className={`relative rounded-2xl overflow-hidden transition-opacity duration-1000 ${isLatest ? "animate-fade-in" : ""}`}
                       >
-                        {/* Top accent line */}
                         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
                         <div className="bg-gradient-to-b from-mars/[0.08] via-mars/[0.04] to-transparent border border-mars/15 rounded-2xl px-6 sm:px-8 pt-7 pb-8">
                           <p className="text-white/95 text-lg sm:text-xl leading-relaxed font-medium">
@@ -525,14 +576,15 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                     );
                   }
 
-                  // Supporting perspectives — each in its own subtle card
+                  // Later perspectives — when they appear, previous ones dim slightly
                   return (
                     <div
                       key={i}
-                      className="relative rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 sm:px-6 py-4"
-                      style={currentPlay.simulation ? {
-                        animation: `perspectiveItemReveal 0.6s ease-out ${0.7 + i * 0.15}s both`,
-                      } : undefined}
+                      className={`relative rounded-xl border px-5 sm:px-6 py-5 transition-all duration-1000 ${
+                        isLatest
+                          ? "animate-fade-in border-mars/15 bg-mars/[0.04]"
+                          : "border-white/[0.06] bg-white/[0.02]"
+                      }`}
                     >
                       <div className="flex gap-4 items-start">
                         <div
@@ -541,7 +593,9 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                           }`}
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-white/75 text-sm sm:text-base leading-relaxed">
+                          <p className={`text-sm sm:text-base leading-relaxed transition-colors duration-1000 ${
+                            isLatest ? "text-white/90" : "text-white/55"
+                          }`}>
                             {insightText}
                           </p>
                           {charName && (
@@ -560,12 +614,9 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           )}
 
-          {/* ── Follow-up question — prominent next chapter ── */}
-          {currentPlay.followUpQuestion && perspectivesRevealed && (
-            <div
-              className="relative"
-              style={currentPlay.simulation ? { animation: "perspectiveItemReveal 0.8s ease-out 1.5s both" } : undefined}
-            >
+          {/* ── Follow-up question — typewriter reveal ── */}
+          {currentPlay.followUpQuestion && perspectivesRevealed && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (
+            <div className="relative animate-fade-in">
               {/* Divider */}
               <div className="flex items-center gap-3 mb-5">
                 <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
@@ -574,24 +625,33 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               </div>
 
               <button
-                onClick={() => onAskQuestion?.(currentPlay.followUpQuestion!)}
-                className="w-full text-left group"
+                onClick={typingDone ? () => onAskQuestion?.(currentPlay.followUpQuestion!) : undefined}
+                className={`w-full text-left ${typingDone ? "group cursor-pointer" : "cursor-default"}`}
               >
-                <div className="rounded-2xl border border-mars/15 hover:border-mars/35 bg-gradient-to-b from-mars/[0.05] to-transparent hover:from-mars/[0.08] px-6 sm:px-8 py-6 transition-all">
+                <div className={`rounded-2xl border bg-gradient-to-b px-6 sm:px-8 py-6 transition-all ${
+                  typingDone
+                    ? "border-mars/15 hover:border-mars/35 from-mars/[0.05] to-transparent hover:from-mars/[0.08]"
+                    : "border-white/[0.06] from-white/[0.02] to-transparent"
+                }`}>
                   <p className="text-white/90 group-hover:text-white text-base sm:text-lg font-mercure italic leading-relaxed transition-colors">
-                    &ldquo;{currentPlay.followUpQuestion}&rdquo;
+                    &ldquo;{currentPlay.simulation && !typingDone
+                      ? currentPlay.followUpQuestion.slice(0, typedChars)
+                      : currentPlay.followUpQuestion
+                    }{currentPlay.simulation && !typingDone && <span className="inline-block w-[2px] h-[1em] bg-mars/60 ml-0.5 animate-pulse" />}&rdquo;
                   </p>
-                  <span className="text-mars/50 group-hover:text-mars/80 text-xs font-bold uppercase tracking-widest mt-3 block transition-colors">
-                    {t.askThis}
-                  </span>
+                  {typingDone && (
+                    <span className="text-mars/50 group-hover:text-mars/80 text-xs font-bold uppercase tracking-widest mt-3 block transition-colors animate-fade-in">
+                      {t.askThis}
+                    </span>
+                  )}
                 </div>
               </button>
             </div>
           )}
 
-          {/* Actions — only after perspectives are revealed */}
-          {perspectivesRevealed && (
-            <div className="flex gap-3 pt-2" style={currentPlay.simulation ? { animation: "perspectiveItemReveal 0.6s ease-out 2s both" } : undefined}>
+          {/* Actions — only after everything is revealed */}
+          {typingDone && perspectivesRevealed && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (
+            <div className="flex gap-3 pt-2 animate-fade-in">
               <button
                 onClick={handlePrescribe}
                 className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${

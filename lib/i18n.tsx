@@ -128,7 +128,7 @@ const translations = {
     // Play counter
     playsGenerated: "plays generated",
     // From Mars (step 2)
-    fromMars: "Play Simulation",
+    fromMars: "The Play",
     loadingMars: "Play begins shortly.",
     marsError: "Mars couldn't see this one. Try again.",
     stageHasSpoken: "The stage has spoken.",
@@ -329,7 +329,7 @@ const translations = {
     // Play counter
     playsGenerated: "hier vygenerovaných",
     // From Mars (step 2)
-    fromMars: "Simulácia Hry",
+    fromMars: "Hra",
     loadingMars: "Hra čoskoro začne.",
     marsError: "Mars to nevidel. Skús znova.",
     stageHasSpoken: "Javisko prehovorilo.",
@@ -530,7 +530,7 @@ const translations = {
     // Play counter
     playsGenerated: "her vygenerovaných",
     // From Mars (step 2)
-    fromMars: "Simulace Hry",
+    fromMars: "Hra",
     loadingMars: "Hra brzy začne.",
     marsError: "Mars to neviděl. Zkus znovu.",
     stageHasSpoken: "Jeviště promluvilo.",

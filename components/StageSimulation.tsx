@@ -437,14 +437,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
 
-  // Step duration varies by narration length (longer text = more time)
-  const stepDuration = useMemo(() => {
-    if (!sentences[currentStep]) return 7000;
-    const wordCount = sentences[currentStep].split(/\s+/).length;
-    // Base 5s + 150ms per word, clamped 5-10s
-    return Math.min(Math.max(5000, 5000 + wordCount * 150), 10000);
-  }, [sentences, currentStep]);
-
   // Final circle formation for ritual ending
   const finalCirclePositions = useMemo(() => {
     const count = allCharacters.length;
@@ -574,49 +566,48 @@ export default function StageSimulation({ characters, simulation, simulationStep
     };
   }, [targets]);
 
-  // Auto-advance narration with variable timing
-  useEffect(() => {
-    if (!isPlaying || currentStep >= sentences.length - 1) return;
-    const timer = setTimeout(() => setCurrentStep((p) => p + 1), stepDuration);
-    return () => clearTimeout(timer);
-  }, [currentStep, isPlaying, sentences.length, stepDuration]);
+  // Author-controlled: advance to next step on tap
+  const advanceStep = () => {
+    if (!hasStarted || hasEnded) return;
+    if (currentStep < sentences.length - 1) {
+      setCurrentStep((p) => p + 1);
+    } else {
+      // Last step reached — trigger ending
+      triggerEnding();
+    }
+  };
 
-  // Auto-stop at end — trigger ritual ending
+  // Trigger ritual ending
   const endingTriggered = useRef(false);
-  useEffect(() => {
-    if (currentStep >= sentences.length - 1 && isPlaying && sentences.length > 0 && !endingTriggered.current) {
-      endingTriggered.current = true;
-      setIsPlaying(false);
-      setTimeout(() => {
-        setHasEnded(true);
-        setEndingPhase(1);
-      }, 2000);
-      setTimeout(() => {
-        setEndingPhase(2);
-      }, 4000);
-    }
-  }, [currentStep, sentences.length, isPlaying]);
+  const triggerEnding = () => {
+    if (endingTriggered.current) return;
+    endingTriggered.current = true;
+    setIsPlaying(false);
+    setTimeout(() => {
+      setHasEnded(true);
+      setEndingPhase(1);
+    }, 2000);
+    setTimeout(() => {
+      setEndingPhase(2);
+    }, 4000);
+  };
 
-  const handlePlayPause = () => {
-    if (!hasStarted) {
-      playBell();
-      setHasStarted(true);
-      setHasEnded(false);
-      setEndingPhase(0);
-      endingTriggered.current = false;
-      setCurrentStep(0);
-      setIsPlaying(true);
-      return;
-    }
-    if (hasEnded || currentStep >= sentences.length - 1) {
-      setHasEnded(false);
-      setEndingPhase(0);
-      endingTriggered.current = false;
-      setCurrentStep(0);
-      setIsPlaying(true);
-      return;
-    }
-    setIsPlaying(!isPlaying);
+  const handleStart = () => {
+    playBell();
+    setHasStarted(true);
+    setHasEnded(false);
+    setEndingPhase(0);
+    endingTriggered.current = false;
+    setCurrentStep(0);
+    setIsPlaying(true);
+  };
+
+  const handleReplay = () => {
+    setHasEnded(false);
+    setEndingPhase(0);
+    endingTriggered.current = false;
+    setCurrentStep(0);
+    setIsPlaying(true);
   };
 
   const progress = sentences.length > 1 ? currentStep / (sentences.length - 1) : 0;
@@ -661,10 +652,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </div>
         )}
 
-        {/* Play overlay */}
+        {/* Start overlay */}
         {!loading && !hasStarted && (
           <button
-            onClick={handlePlayPause}
+            onClick={handleStart}
             className="absolute inset-x-0 bottom-6 sm:bottom-8 z-10 flex justify-center group cursor-pointer"
           >
             <div className="relative">
@@ -676,6 +667,15 @@ export default function StageSimulation({ characters, simulation, simulationStep
               </div>
             </div>
           </button>
+        )}
+
+        {/* Tap-to-advance overlay — covers stage area during play */}
+        {hasStarted && !hasEnded && (
+          <button
+            onClick={advanceStep}
+            className="absolute inset-0 z-10 cursor-pointer"
+            aria-label="Next step"
+          />
         )}
 
         <svg
@@ -847,7 +847,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
       {/* Narration + Controls */}
       {hasStarted && (
         <div className="relative">
-          <div className="px-6 sm:px-8 pt-4 pb-3">
+          {/* Narration text — tappable to advance */}
+          <button
+            onClick={!hasEnded ? advanceStep : undefined}
+            className={`w-full text-left px-6 sm:px-8 pt-4 pb-2 ${!hasEnded ? "cursor-pointer active:bg-white/[0.02]" : ""} transition-colors`}
+            disabled={hasEnded}
+          >
             {endingPhase >= 2 ? (
               <p
                 className="font-mercure italic text-mars/70 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
@@ -863,41 +868,26 @@ export default function StageSimulation({ characters, simulation, simulationStep
                 {sentences[currentStep]}
               </p>
             )}
-          </div>
+          </button>
 
-          {/* Progress bar + play/pause */}
+          {/* Progress dots + tap hint */}
           {!hasEnded && (
-            <div className="px-5 sm:px-6 pb-3 flex items-center gap-3">
-              <button
-                onClick={handlePlayPause}
-                className="flex-shrink-0 w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.1] flex items-center justify-center transition-colors"
-              >
-                {isPlaying ? (
-                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50">
-                    <rect x="6" y="4" width="4" height="16" />
-                    <rect x="14" y="4" width="4" height="16" />
-                  </svg>
-                ) : currentStep >= sentences.length - 1 ? (
-                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50">
-                    <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white/50 ml-0.5">
-                    <polygon points="5,3 19,12 5,21" />
-                  </svg>
-                )}
-              </button>
-
-              <div className="flex-1 h-1 bg-white/[0.06] rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-mars/50 rounded-full transition-all duration-500 ease-out"
-                  style={{ width: `${progress * 100}%` }}
-                />
+            <div className="px-5 sm:px-6 pb-3 flex items-center justify-center gap-2">
+              {/* Step dots */}
+              <div className="flex items-center gap-1.5">
+                {sentences.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`rounded-full transition-all duration-500 ${
+                      i === currentStep
+                        ? "w-2 h-2 bg-mars/60"
+                        : i < currentStep
+                          ? "w-1.5 h-1.5 bg-mars/25"
+                          : "w-1.5 h-1.5 bg-white/[0.08]"
+                    }`}
+                  />
+                ))}
               </div>
-
-              <span className="text-[9px] text-white/15 font-mono flex-shrink-0 tabular-nums">
-                {currentStep + 1}/{sentences.length}
-              </span>
             </div>
           )}
 
@@ -917,7 +907,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
               </button>
 
               <button
-                onClick={handlePlayPause}
+                onClick={handleReplay}
                 className="flex items-center gap-2 text-white/15 hover:text-white/30 text-[10px] transition-colors"
               >
                 <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current">
