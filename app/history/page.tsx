@@ -3,23 +3,27 @@
 import { useState, useEffect } from "react";
 import { Play, HistoryEntry } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
-import { STORAGE_KEYS } from "@/lib/constants";
+import { STORAGE_KEYS, userKey } from "@/lib/constants";
+import { useAuth } from "@/lib/auth-context";
 import PlayCard from "@/components/PlayCard";
 import Link from "next/link";
 
 export default function HistoryPage() {
   const { lang, t } = useI18n();
+  const { user } = useAuth();
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [filter, setFilter] = useState<"all" | "favorites">("all");
 
+  const historyKey = userKey(STORAGE_KEYS.playHistory, user?.id);
+
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.playHistory) || "[]");
+    const saved = JSON.parse(localStorage.getItem(historyKey) || "[]");
     setHistory(saved);
-  }, []);
+  }, [historyKey]);
 
   function clearHistory() {
-    localStorage.removeItem(STORAGE_KEYS.playHistory);
+    localStorage.removeItem(historyKey);
     setHistory([]);
     setShowConfirm(false);
   }
@@ -28,14 +32,14 @@ export default function HistoryPage() {
     const updated = [...history];
     updated[index] = { ...updated[index], play: updatedPlay };
     setHistory(updated);
-    localStorage.setItem(STORAGE_KEYS.playHistory, JSON.stringify(updated));
+    localStorage.setItem(historyKey, JSON.stringify(updated));
   }
 
   function toggleFavorite(index: number) {
     const updated = [...history];
     updated[index] = { ...updated[index], favorite: !updated[index].favorite };
     setHistory(updated);
-    localStorage.setItem(STORAGE_KEYS.playHistory, JSON.stringify(updated));
+    localStorage.setItem(historyKey, JSON.stringify(updated));
   }
 
   const locale = lang === "sk" ? "sk-SK" : lang === "cs" ? "cs-CZ" : "en-GB";

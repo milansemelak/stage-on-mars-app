@@ -3,7 +3,8 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Play, Perspective } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
-import { STORAGE_KEYS, MAX_HISTORY } from "@/lib/constants";
+import { STORAGE_KEYS, MAX_HISTORY, userKey } from "@/lib/constants";
+import { useAuth } from "@/lib/auth-context";
 import Prescription from "./Prescription";
 import StageSimulation from "./StageSimulation";
 
@@ -21,6 +22,7 @@ type Props = {
 
 export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted, onAskQuestion, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
   const { lang, t } = useI18n();
+  const { user } = useAuth();
   const [currentPlay, setCurrentPlay] = useState(play);
 
   // Sync when parent passes a new play (e.g. regeneration)
@@ -123,8 +125,9 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
   }
 
   function handlePrescribe() {
+    const rxKey = userKey(STORAGE_KEYS.prescriptions, user?.id);
     const prescriptions = JSON.parse(
-      localStorage.getItem(STORAGE_KEYS.prescriptions) || "[]"
+      localStorage.getItem(rxKey) || "[]"
     );
     prescriptions.unshift({
       play: currentPlay,
@@ -133,7 +136,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
       rxNumber: rxNumber || `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`,
     });
     localStorage.setItem(
-      STORAGE_KEYS.prescriptions,
+      rxKey,
       JSON.stringify(prescriptions.slice(0, MAX_HISTORY))
     );
 

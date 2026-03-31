@@ -7,7 +7,7 @@ import PlayCard from "@/components/PlayCard";
 import { Play, HistoryEntry } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
-import { MAX_HISTORY, TRIAL_DAYS, STORAGE_KEYS } from "@/lib/constants";
+import { MAX_HISTORY, TRIAL_DAYS, STORAGE_KEYS, userKey } from "@/lib/constants";
 
 const LOADING_MESSAGES_KEYS = [
   "loading1",
@@ -157,13 +157,14 @@ function PlayPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context]);
 
-  // Load play count
+  // Load play count (scoped to user)
+  const historyKey = userKey(STORAGE_KEYS.playHistory, user?.id);
   useEffect(() => {
     const history = JSON.parse(
-      localStorage.getItem(STORAGE_KEYS.playHistory) || "[]"
+      localStorage.getItem(historyKey) || "[]"
     );
     setPlayCount(history.length);
-  }, []);
+  }, [historyKey]);
 
   // Determine access status
   useEffect(() => {
@@ -298,9 +299,9 @@ function PlayPage() {
       const data = await response.json();
       setPlay(data.plays[0]);
 
-      // Save to localStorage
+      // Save to localStorage (user-scoped)
       const history: HistoryEntry[] = JSON.parse(
-        localStorage.getItem(STORAGE_KEYS.playHistory) || "[]"
+        localStorage.getItem(historyKey) || "[]"
       );
       const rxNumber = `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`;
       history.unshift({
@@ -312,7 +313,7 @@ function PlayPage() {
         clientName: clientName.trim() || undefined,
       });
       localStorage.setItem(
-        STORAGE_KEYS.playHistory,
+        historyKey,
         JSON.stringify(history.slice(0, MAX_HISTORY))
       );
       setPlayCount(Math.min(history.length, MAX_HISTORY));
@@ -330,18 +331,18 @@ function PlayPage() {
       setLoading(false);
       generatingRef.current = false;
     }
-  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, accessStatus, router]);
+  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, accessStatus, router, historyKey]);
 
   function handlePlayUpdate(updatedPlay: Play) {
     setPlay(updatedPlay);
-    const history: HistoryEntry[] = JSON.parse(localStorage.getItem(STORAGE_KEYS.playHistory) || "[]");
+    const history: HistoryEntry[] = JSON.parse(localStorage.getItem(historyKey) || "[]");
     const idx = history.findIndex(
       (e) =>
         e.play.name === updatedPlay.name && e.question === askedQuestion
     );
     if (idx !== -1) {
       history[idx].play = updatedPlay;
-      localStorage.setItem(STORAGE_KEYS.playHistory, JSON.stringify(history));
+      localStorage.setItem(historyKey, JSON.stringify(history));
     }
   }
 
