@@ -848,56 +848,35 @@ export default function StageSimulation({ characters, simulation, simulationStep
       {/* Narration + Controls */}
       {hasStarted && (
         <div className="relative">
-          {/* Narration text */}
-          <div className="px-6 sm:px-8 pt-4 pb-1">
-            {endingPhase >= 2 ? (
-              <p
-                className="font-mercure italic text-mars/70 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
-                key="ending"
-              >
-                {t.stageHasSpoken}
-              </p>
-            ) : (
+          {/* Narration — tap the whole area to advance */}
+          {!hasEnded ? (
+            <button
+              onClick={advanceStep}
+              className="w-full px-8 sm:px-10 py-5 cursor-pointer active:bg-white/[0.02] transition-colors"
+            >
               <p
                 className="font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
                 key={currentStep}
               >
                 {sentences[currentStep]}
               </p>
-            )}
-          </div>
-
-          {/* Next button + progress */}
-          {!hasEnded && (
-            <div className="px-5 sm:px-6 pb-4 flex flex-col items-center gap-2">
-              {/* Step dots */}
-              <div className="flex items-center gap-1.5">
-                {sentences.map((_, i) => (
-                  <div
-                    key={i}
-                    className={`rounded-full transition-all duration-500 ${
-                      i === currentStep
-                        ? "w-2 h-2 bg-mars/60"
-                        : i < currentStep
-                          ? "w-1.5 h-1.5 bg-mars/25"
-                          : "w-1.5 h-1.5 bg-white/[0.08]"
-                    }`}
-                  />
-                ))}
-              </div>
-
-              {/* Tap to continue button */}
-              <button
-                onClick={advanceStep}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.12] border border-white/[0.08] hover:border-white/[0.15] transition-all group"
-              >
-                <span className="text-white/35 group-hover:text-white/50 text-xs transition-colors">
-                  {currentStep < sentences.length - 1 ? t.tapToContinue : t.endThePlay}
+              <div className="mt-3 flex items-center justify-center gap-1.5">
+                <span className="text-white/20 text-[10px]">
+                  {currentStep + 1}/{sentences.length}
                 </span>
-                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-white/25 group-hover:fill-white/40 transition-colors">
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-white/20">
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
                 </svg>
-              </button>
+              </div>
+            </button>
+          ) : (
+            <div className="px-8 sm:px-10 pt-5 pb-2">
+              <p
+                className="font-mercure italic text-mars/70 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
+                key="ending"
+              >
+                {t.stageHasSpoken}
+              </p>
             </div>
           )}
 

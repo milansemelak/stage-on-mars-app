@@ -5,6 +5,8 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
+const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || "milan@stageonmars.com";
+
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
@@ -14,12 +16,22 @@ export async function POST(request: NextRequest) {
     }
 
     const resend = getResend();
-    await resend.emails.send({
-      from: "Stage on Mars <welcome@stageonmars.com>",
-      to: email,
-      subject: "Welcome to Stage on Mars",
-      html: buildWelcomeEmail(),
-    });
+
+    // Send welcome email to user + notification to admin in parallel
+    await Promise.allSettled([
+      resend.emails.send({
+        from: "Stage on Mars <welcome@stageonmars.com>",
+        to: email,
+        subject: "Welcome to Stage on Mars",
+        html: buildWelcomeEmail(),
+      }),
+      resend.emails.send({
+        from: "Stage on Mars <welcome@stageonmars.com>",
+        to: ADMIN_EMAIL,
+        subject: `New player: ${email}`,
+        html: buildAdminNotificationEmail(email),
+      }),
+    ]);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -173,6 +185,46 @@ function buildWelcomeEmail(): string {
             </td>
           </tr>
 
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+function buildAdminNotificationEmail(userEmail: string): string {
+  const now = new Date().toLocaleString("en-GB", { timeZone: "Europe/Prague" });
+  return `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin: 0; padding: 0; background-color: #0a0a0a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #0a0a0a;">
+    <tr>
+      <td align="center" style="padding: 40px 24px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 480px;">
+          <tr>
+            <td style="padding-bottom: 24px;">
+              <p style="margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,85,0,0.6);">
+                New Player Registered
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-bottom: 16px;">
+              <p style="margin: 0; font-size: 22px; font-weight: 700; color: #ffffff;">
+                ${userEmail}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p style="margin: 0; font-size: 13px; color: rgba(255,255,255,0.3);">
+                ${now} (Prague)
+              </p>
+            </td>
+          </tr>
         </table>
       </td>
     </tr>
