@@ -657,10 +657,10 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             <div className="flex gap-3 pt-2 animate-fade-in">
               <button
                 onClick={handlePrescribe}
-                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
+                className={`flex-1 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all ${
                   prescribed
                     ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                    : "bg-white/8 border border-white/10 hover:bg-white/12 hover:border-white/20 text-white/70 hover:text-white"
+                    : "bg-mars/15 border border-mars/30 hover:bg-mars/25 hover:border-mars/50 text-mars hover:text-mars-light shadow-[0_0_20px_-4px_rgba(255,85,0,0.2)] hover:shadow-[0_0_30px_-4px_rgba(255,85,0,0.3)]"
                 }`}
               >
                 {prescribed ? "✓ " + t.prescribed : t.prescribe}
@@ -679,10 +679,10 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             <div className="animate-fade-slide-up stagger-7 flex gap-3 pt-2">
               <button
                 onClick={handlePrescribe}
-                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
+                className={`flex-1 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all ${
                   prescribed
                     ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                    : "bg-white/8 border border-white/10 hover:bg-white/12 hover:border-white/20 text-white/70 hover:text-white"
+                    : "bg-mars/15 border border-mars/30 hover:bg-mars/25 hover:border-mars/50 text-mars hover:text-mars-light shadow-[0_0_20px_-4px_rgba(255,85,0,0.2)] hover:shadow-[0_0_30px_-4px_rgba(255,85,0,0.3)]"
                 }`}
               >
                 {prescribed ? "✓ " + t.prescribed : t.prescribe}
