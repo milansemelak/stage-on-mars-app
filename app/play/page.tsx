@@ -113,7 +113,7 @@ function PlayPage() {
   const { lang, t } = useI18n();
   const playRef = useRef<HTMLDivElement>(null);
   const generatingRef = useRef(false);
-  const pendingFollowUp = useRef(false);
+  const [followUpTrigger, setFollowUpTrigger] = useState(0);
 
   // Random question suggestion
   const questionPool = context === "personal" ? PERSONAL_QUESTIONS_KEYS : BUSINESS_QUESTIONS_KEYS;
@@ -243,14 +243,13 @@ function PlayPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading]);
 
-  // Auto-generate when follow-up question is set
+  // Auto-generate when follow-up question is triggered
   useEffect(() => {
-    if (pendingFollowUp.current && question.trim() && accessStatus === "active") {
-      pendingFollowUp.current = false;
-      setTimeout(() => generatePlay(), 300);
+    if (followUpTrigger > 0 && question.trim() && accessStatus === "active") {
+      setTimeout(() => generatePlay(), 100);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [question, accessStatus]);
+  }, [followUpTrigger]);
 
   // Cycle loading messages
   useEffect(() => {
@@ -546,8 +545,8 @@ function PlayPage() {
             onPlayUpdate={handlePlayUpdate}
             onAskQuestion={(q) => {
               setQuestion(q);
-              setPlay(null);
-              pendingFollowUp.current = true;
+              // Trigger auto-generation (increment counter to always fire)
+              setFollowUpTrigger((n) => n + 1);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             clientName={clientName.trim() || undefined}

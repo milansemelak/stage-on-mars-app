@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
-import Link from "next/link";
+import { STORAGE_KEYS } from "@/lib/constants";
 
 const PERSONAL_QUESTIONS_KEYS = [
   "personalQ1", "personalQ2", "personalQ3", "personalQ4", "personalQ5",
@@ -26,10 +26,11 @@ export default function Home() {
     }
   }, [user, authLoading, router]);
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!question.trim()) return;
-    router.push(`/play?q=${encodeURIComponent(question.trim())}`);
+  function handleSubmit(e?: React.FormEvent) {
+    e?.preventDefault();
+    const q = question.trim() || suggestion;
+    localStorage.setItem(STORAGE_KEYS.pendingQuestion, q);
+    router.push("/auth/signup");
   }
 
   // Show nothing while checking auth (avoids flash)
@@ -43,32 +44,63 @@ export default function Home() {
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex flex-col">
-      {/* Top bar — Log in */}
-      <div className="flex justify-end px-6 pt-4">
-        <Link
-          href="/auth/login"
-          className="text-xs text-white/30 hover:text-white/60 transition-colors"
-        >
-          {t.authLogin}
-        </Link>
-      </div>
+      {/* Hero */}
+      <section className="flex-1 flex flex-col items-center pt-12 sm:pt-0 sm:justify-center px-6 pb-10 sm:pb-24">
+        <div className="max-w-xl w-full text-center space-y-6 sm:space-y-10 animate-fade-slide-up">
 
-      {/* Hero — minimal */}
-      <section className="flex-1 flex flex-col items-center justify-center px-6 pb-32">
-        <div className="max-w-xl w-full text-center space-y-8 animate-fade-slide-up">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight">
-            {t.heroHeadline}
-          </h1>
+          {/* Formula — the core concept */}
+          <div className="space-y-3 sm:space-y-4">
+            <p className="text-mars/60 text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em]">
+              {t.heroTagline}
+            </p>
+            <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1]">
+              {t.heroFormula}
+            </h1>
+            <p className="text-white/35 text-sm sm:text-lg max-w-md mx-auto leading-relaxed">
+              {t.heroSubtitle}
+            </p>
+          </div>
+
+          {/* How it works — 3 steps */}
+          <div className="flex items-start justify-center gap-3 sm:gap-8 text-center max-w-lg mx-auto">
+            <div className="flex-1 space-y-1.5 sm:space-y-2">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-mars/10 border border-mars/20 flex items-center justify-center mx-auto">
+                <span className="text-mars text-xs sm:text-sm font-bold">1</span>
+              </div>
+              <p className="text-white/80 text-xs sm:text-sm font-semibold">{t.stepAsk}</p>
+              <p className="text-white/30 text-[11px] sm:text-xs leading-relaxed hidden sm:block">{t.stepAskDesc}</p>
+            </div>
+            <div className="pt-3 sm:pt-5 text-white/10">
+              <svg viewBox="0 0 24 24" className="w-3 h-3 sm:w-4 sm:h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+            </div>
+            <div className="flex-1 space-y-1.5 sm:space-y-2">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-mars/10 border border-mars/20 flex items-center justify-center mx-auto">
+                <span className="text-mars text-xs sm:text-sm font-bold">2</span>
+              </div>
+              <p className="text-white/80 text-xs sm:text-sm font-semibold">{t.stepPlay}</p>
+              <p className="text-white/30 text-[11px] sm:text-xs leading-relaxed hidden sm:block">{t.stepPlayDesc}</p>
+            </div>
+            <div className="pt-3 sm:pt-5 text-white/10">
+              <svg viewBox="0 0 24 24" className="w-3 h-3 sm:w-4 sm:h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+            </div>
+            <div className="flex-1 space-y-1.5 sm:space-y-2">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-mars/10 border border-mars/20 flex items-center justify-center mx-auto">
+                <span className="text-mars text-xs sm:text-sm font-bold">3</span>
+              </div>
+              <p className="text-white/80 text-xs sm:text-sm font-semibold">{t.stepSee}</p>
+              <p className="text-white/30 text-[11px] sm:text-xs leading-relaxed hidden sm:block">{t.stepSeeDesc}</p>
+            </div>
+          </div>
 
           {/* Question input */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSubmit(e);
+                  handleSubmit();
                 }
               }}
               placeholder={t.placeholder}
@@ -77,8 +109,7 @@ export default function Home() {
             />
             <button
               type="submit"
-              disabled={!question.trim()}
-              className="inline-block px-12 sm:px-16 py-4 sm:py-5 rounded-2xl bg-mars hover:bg-mars-light disabled:opacity-30 disabled:cursor-not-allowed text-white font-black text-base sm:text-lg uppercase tracking-[0.2em] transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full px-12 py-4 sm:py-5 rounded-2xl bg-mars hover:bg-mars-light text-white font-black text-base sm:text-lg uppercase tracking-[0.2em] transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] hover:scale-[1.02] active:scale-[0.98]"
             >
               {t.heroSubmit}
             </button>
