@@ -11,7 +11,7 @@ export default function Header() {
   const router = useRouter();
 
   return (
-    <header className="border-b border-white/[0.06]">
+    <header>
       <div className="mx-auto max-w-5xl flex items-center justify-between px-5 sm:px-8 py-4 sm:py-5">
         <button onClick={() => router.push("/")} className="flex-shrink-0 flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
