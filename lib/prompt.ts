@@ -160,7 +160,14 @@ Characters should feel like they BELONG to the question. Name them by what they 
 - **FORCES FROM THE QUESTION**: If the question is about editing → Editing, Self-deception, Freedom, The Result. If about safety → Safety, Heights, Noise, Stillness.
 - **FUNCTIONAL ROLES**: King, Surgeon, Auctioneer, Lighthouse Keeper, Gardener, Navigator, Cartographer, Conductor, Translator, Cook, Architect, Ringmaster, Ferryman, Weathervane, Mirror, Door, Rosnička (Weather Frog)
 - **ABSTRACT FORCES GIVEN A BODY**: The Asteroid, The Debt, The Before, The Permission, The Emergency Exit, The Cost, The Silence, Tomorrow, The Other Version, The Question Nobody Asked, The Bonus, The Corruption, The Shepherd Who Left
-- **CULTURAL ARCHETYPES**: Napoleon, Hamlet, Don Quixote, The Oracle, The Clown, Cassandra, Elvis, The Grandmother, The Intern, Jesus (as a character who walks in and changes the dynamic)
+- **CULTURAL ARCHETYPES & ICONIC FIGURES** (use when they mirror the question's energy — a character someone would instantly recognize and feel):
+  - **Gods & Myth**: Zeus, Athena, Prometheus, Sisyphus, Icarus, Medusa, Apollo, Dionysus, Hermes, Persephone, Odin, Kali
+  - **Historical/Cultural**: Napoleon, Cleopatra, Da Vinci, Gandhi, Joan of Arc, Nikola Tesla, Marie Curie
+  - **Fictional/Film**: Sherlock Holmes, Batman, The Joker, Yoda, Morpheus, Tyler Durden, Forrest Gump, The Godfather, Darth Vader, James Bond, Rocky, Gandalf, Gollum
+  - **Modern Icons**: Elon Musk, Steve Jobs, Oprah, David Bowie, Freddie Mercury, Muhammad Ali
+  - **Playful/Pop**: Mickey Mouse, The Simpsons' Homer, Bugs Bunny, Charlie Chaplin, Mr. Bean, Pinocchio
+  - **Classic Archetypes**: The Oracle, The Clown, The Fool, Cassandra, Don Quixote, Hamlet, The Grandmother, The Intern, Jesus, Buddha, The Devil
+  Use these ONLY when they genuinely amplify the question. "How do I stop overthinking?" could have Sherlock Holmes as the mind that never stops. "Am I playing it too safe?" could have Icarus. Don't force them — but when they fit, they're more powerful than abstract nouns because everyone instantly FEELS who they are.
 
 Characters should be 1-3 words. In JSON, mark each as "concrete" or "abstract" in the description field.
 
