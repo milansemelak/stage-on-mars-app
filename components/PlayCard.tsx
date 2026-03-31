@@ -631,19 +631,19 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 onClick={typingDone ? () => onAskQuestion?.(currentPlay.followUpQuestion!) : undefined}
                 className={`w-full text-left ${typingDone ? "group cursor-pointer" : "cursor-default"}`}
               >
-                <div className={`rounded-2xl border bg-gradient-to-b px-6 sm:px-8 py-6 transition-all ${
+                <div className={`rounded-2xl border px-6 sm:px-8 py-6 transition-all ${
                   typingDone
-                    ? "border-mars/15 hover:border-mars/35 from-mars/[0.05] to-transparent hover:from-mars/[0.08]"
-                    : "border-white/[0.06] from-white/[0.02] to-transparent"
+                    ? "border-mars/30 hover:border-mars/50 bg-mars/[0.08] hover:bg-mars/[0.12] shadow-[0_0_30px_-8px_rgba(255,85,0,0.15)]"
+                    : "border-mars/10 bg-mars/[0.04]"
                 }`}>
-                  <p className="text-white/90 group-hover:text-white text-base sm:text-lg font-mercure italic leading-relaxed transition-colors">
+                  <p className="text-white group-hover:text-white text-base sm:text-lg font-mercure italic leading-relaxed transition-colors">
                     &ldquo;{currentPlay.simulation && !typingDone
                       ? currentPlay.followUpQuestion.slice(0, typedChars)
                       : currentPlay.followUpQuestion
-                    }{currentPlay.simulation && !typingDone && <span className="inline-block w-[2px] h-[1em] bg-mars/60 ml-0.5 animate-pulse" />}&rdquo;
+                    }{currentPlay.simulation && !typingDone && <span className="inline-block w-[2px] h-[1em] bg-mars ml-0.5 animate-pulse" />}&rdquo;
                   </p>
                   {typingDone && (
-                    <span className="text-mars/50 group-hover:text-mars/80 text-xs font-bold uppercase tracking-widest mt-3 block transition-colors animate-fade-in">
+                    <span className="text-mars group-hover:text-mars-light text-xs font-black uppercase tracking-widest mt-3 block transition-colors animate-fade-in">
                       {t.askThis}
                     </span>
                   )}

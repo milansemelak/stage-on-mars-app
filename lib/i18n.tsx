@@ -55,7 +55,7 @@ const translations = {
     personal: "Personal",
     business: "Business",
     // Prescription
-    prescribe: "Take it to Mars!",
+    prescribe: "Experience it live",
     prescriptionTitle: "Your Play",
     prescriptionHeader: "The Stage on Mars Experience",
     prescribedFor: "Question",
@@ -285,7 +285,7 @@ const translations = {
     personal: "Osobné",
     business: "Biznis",
     // Prescription
-    prescribe: "Vezmi to na Mars!",
+    prescribe: "Zažite to naživo",
     prescriptionTitle: "Tvoja hra",
     prescriptionHeader: "Stage on Mars — Zážitok",
     prescribedFor: "Otázka",
@@ -487,7 +487,7 @@ const translations = {
     personal: "Osobní",
     business: "Byznys",
     // Prescription
-    prescribe: "Vezmi to na Mars!",
+    prescribe: "Zažijte to naživo",
     prescriptionTitle: "Tvoje hra",
     prescriptionHeader: "Stage on Mars — Zážitek",
     prescribedFor: "Otázka",
