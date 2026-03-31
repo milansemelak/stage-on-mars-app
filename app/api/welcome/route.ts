@@ -20,13 +20,13 @@ export async function POST(request: NextRequest) {
     // Send welcome email to user + notification to admin in parallel
     await Promise.allSettled([
       resend.emails.send({
-        from: "Stage on Mars <welcome@stageonmars.com>",
+        from: "Stage on Mars <play@stageonmars.com>",
         to: email,
         subject: "Welcome to Stage on Mars",
         html: buildWelcomeEmail(),
       }),
       resend.emails.send({
-        from: "Stage on Mars <welcome@stageonmars.com>",
+        from: "Stage on Mars <play@stageonmars.com>",
         to: ADMIN_EMAIL,
         subject: `New player: ${email}`,
         html: buildAdminNotificationEmail(email),
