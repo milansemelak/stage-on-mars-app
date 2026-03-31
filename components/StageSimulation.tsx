@@ -860,22 +860,21 @@ export default function StageSimulation({ characters, simulation, simulationStep
               >
                 {sentences[currentStep]}
               </p>
-              {currentStep < sentences.length - 1 ? (
-                <div className="mt-3 flex items-center justify-center gap-1.5">
-                  <span className="text-white/20 text-[10px]">
-                    {currentStep + 1}/{sentences.length}
-                  </span>
-                  <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-white/20">
-                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-                  </svg>
-                </div>
-              ) : (
-                <div className="mt-4 flex items-center justify-center animate-fade-in">
-                  <span className="text-mars/50 text-xs font-bold uppercase tracking-[0.2em]">
-                    {t.tapToContinue}
-                  </span>
-                </div>
-              )}
+              <div className="mt-4 flex items-center justify-center gap-3">
+                <span className="text-white/15 text-[10px]">
+                  {currentStep + 1}/{sentences.length}
+                </span>
+                <span className={`text-xs font-bold uppercase tracking-[0.15em] transition-all ${
+                  currentStep === 0 ? "text-mars/60" : currentStep >= sentences.length - 1 ? "text-mars/50" : "text-white/20"
+                }`}>
+                  {t.tapToContinue}
+                </span>
+                <svg viewBox="0 0 24 24" className={`w-3 h-3 transition-all ${
+                  currentStep === 0 ? "fill-mars/60" : "fill-white/15"
+                }`}>
+                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+                </svg>
+              </div>
             </button>
           ) : (
             <div className="px-8 sm:px-10 pt-5 pb-2">
