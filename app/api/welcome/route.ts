@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const resend = getResend();
 
     // Send welcome email to user + notification to admin in parallel
-    await Promise.allSettled([
+    const [welcomeResult, adminResult] = await Promise.allSettled([
       resend.emails.send({
         from: "Stage on Mars <onboarding@resend.dev>",
         to: email,
@@ -33,10 +33,26 @@ export async function POST(request: NextRequest) {
       }),
     ]);
 
-    return NextResponse.json({ success: true });
+    // Log results for debugging
+    if (welcomeResult.status === "rejected") {
+      console.error("Welcome email failed:", welcomeResult.reason);
+    } else {
+      console.log("Welcome email sent:", JSON.stringify(welcomeResult.value));
+    }
+    if (adminResult.status === "rejected") {
+      console.error("Admin email failed:", adminResult.reason);
+    } else {
+      console.log("Admin email sent:", JSON.stringify(adminResult.value));
+    }
+
+    return NextResponse.json({
+      success: true,
+      welcome: welcomeResult.status,
+      admin: adminResult.status,
+    });
   } catch (error) {
     console.error("Welcome email error:", error);
-    return NextResponse.json({ success: false }, { status: 500 });
+    return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
   }
 }
 
