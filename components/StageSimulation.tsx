@@ -669,12 +669,13 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </button>
         )}
 
-        {/* Tap-to-advance overlay — covers stage area during play */}
+        {/* Tap stage to advance too — but button below is primary */}
         {hasStarted && !hasEnded && (
-          <button
+          <div
             onClick={advanceStep}
             className="absolute inset-0 z-10 cursor-pointer"
-            aria-label="Next step"
+            role="button"
+            tabIndex={-1}
           />
         )}
 
@@ -847,12 +848,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
       {/* Narration + Controls */}
       {hasStarted && (
         <div className="relative">
-          {/* Narration text — tappable to advance */}
-          <button
-            onClick={!hasEnded ? advanceStep : undefined}
-            className={`w-full text-left px-6 sm:px-8 pt-4 pb-2 ${!hasEnded ? "cursor-pointer active:bg-white/[0.02]" : ""} transition-colors`}
-            disabled={hasEnded}
-          >
+          {/* Narration text */}
+          <div className="px-6 sm:px-8 pt-4 pb-1">
             {endingPhase >= 2 ? (
               <p
                 className="font-mercure italic text-mars/70 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
@@ -868,11 +865,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
                 {sentences[currentStep]}
               </p>
             )}
-          </button>
+          </div>
 
-          {/* Progress dots + tap hint */}
+          {/* Next button + progress */}
           {!hasEnded && (
-            <div className="px-5 sm:px-6 pb-3 flex items-center justify-center gap-2">
+            <div className="px-5 sm:px-6 pb-4 flex flex-col items-center gap-2">
               {/* Step dots */}
               <div className="flex items-center gap-1.5">
                 {sentences.map((_, i) => (
@@ -888,6 +885,19 @@ export default function StageSimulation({ characters, simulation, simulationStep
                   />
                 ))}
               </div>
+
+              {/* Tap to continue button */}
+              <button
+                onClick={advanceStep}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.08] active:bg-white/[0.12] border border-white/[0.08] hover:border-white/[0.15] transition-all group"
+              >
+                <span className="text-white/35 group-hover:text-white/50 text-xs transition-colors">
+                  {currentStep < sentences.length - 1 ? t.tapToContinue : t.endThePlay}
+                </span>
+                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-white/25 group-hover:fill-white/40 transition-colors">
+                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+                </svg>
+              </button>
             </div>
           )}
 
