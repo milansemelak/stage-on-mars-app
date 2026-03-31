@@ -275,7 +275,7 @@ const translations = {
     stepAskDesc: "Aká je tvoja najväčšia otázka?",
     stepPlay: "Hraj",
     stepPlayDesc: "Otázka sa stane hrou.",
-    stepSee: "Pozri",
+    stepSee: "Uvidíš",
     stepSeeDesc: "Uvidíš, čo si predtým nevidel.",
     // Character generator
     characterGeneratorTitle: "Generátor rolí",
@@ -477,7 +477,7 @@ const translations = {
     stepAskDesc: "Jaká je tvoje největší otázka?",
     stepPlay: "Hraj",
     stepPlayDesc: "Otázka se stane hrou.",
-    stepSee: "Podívej",
+    stepSee: "Uvidíš",
     stepSeeDesc: "Uvidíš, co jsi předtím neviděl.",
     // Character generator
     characterGeneratorTitle: "Generátor rolí",
