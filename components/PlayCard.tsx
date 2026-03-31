@@ -664,7 +664,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 {t.prescribe}
               </a>
               <button
-                onClick={handleShare}
+                onClick={handlePrescribe}
                 className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
               >
                 {t.sharePlay}
@@ -684,7 +684,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 {t.prescribe}
               </a>
               <button
-                onClick={handleShare}
+                onClick={handlePrescribe}
                 className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
               >
                 {t.sharePlay}
