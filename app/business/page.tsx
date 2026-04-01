@@ -63,7 +63,7 @@ export default function BusinessPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_50%_45%,_transparent_30%,_rgba(0,0,0,0.65)_100%)]" />
 
         <div className="relative z-10 max-w-5xl flex flex-col items-center">
-          <p className="text-mars/60 text-[10px] sm:text-sm font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4 sm:mb-6" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>Live Reality Plays for Leadership Teams</p>
+          <p className="text-mars/60 text-[10px] sm:text-sm font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4 sm:mb-6" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>Stage on Mars</p>
           <h1 className="text-[38px] sm:text-[64px] md:text-[80px] lg:text-[100px] font-bold leading-[0.88] tracking-[-0.04em] sm:tracking-[-0.05em]" style={{ textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
             Play to see
             <br />
@@ -98,35 +98,27 @@ export default function BusinessPage() {
       ═══════════════════════════════════════════════════════════════ */}
 
       <section id="experience" className="relative overflow-hidden">
+        {/* Let the photo be the hero */}
         <img src="/exp.jpg" alt="Stage on Mars — live experience" className="absolute inset-0 w-full h-full object-cover object-top" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/70 via-[#0a0a0a]/80 to-[#0a0a0a]/95" />
-        <div className="relative z-10 px-4 sm:px-6 py-16 sm:py-28">
-          <div className="max-w-4xl mx-auto">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/40 via-transparent to-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
 
-            {/* Three moments flowing vertically — like scenes in a play */}
-            <div className="space-y-12 sm:space-y-20">
-
-              {/* Moment 1 — left-aligned */}
-              <div className="max-w-md">
-                <p className="font-mercure italic text-mars/50 text-[11px] sm:text-[13px] mb-2">Before the play</p>
-                <h3 className="text-[20px] sm:text-[28px] font-bold leading-[1] tracking-[-0.03em] mb-2 sm:mb-3">Bring a real question</h3>
-                <p className="font-mercure text-[#EDEDED]/45 text-[13px] sm:text-[15px] leading-[1.5]">Something no meeting resolves. Something that shapes what happens next.</p>
-              </div>
-
-              {/* Moment 2 — centered, larger */}
-              <div className="text-center max-w-xl mx-auto">
-                <p className="font-mercure italic text-mars/50 text-[11px] sm:text-[13px] mb-2">On the stage</p>
-                <h3 className="text-[24px] sm:text-[36px] font-bold leading-[1] tracking-[-0.03em] mb-2 sm:mb-3">Play it into reality</h3>
-                <p className="font-mercure text-[#EDEDED]/45 text-[13px] sm:text-[15px] leading-[1.5]">Step into roles. Play the situation out on stage. What&apos;s hidden becomes visible.</p>
-              </div>
-
-              {/* Moment 3 — right-aligned, dramatic */}
-              <div className="max-w-md ml-auto text-right">
-                <p className="font-mercure italic text-mars/50 text-[11px] sm:text-[13px] mb-2">After</p>
-                <h3 className="text-[20px] sm:text-[28px] font-bold leading-[1] tracking-[-0.03em] mb-2 sm:mb-3">See beyond</h3>
-                <p className="font-mercure text-[#EDEDED]/45 text-[13px] sm:text-[15px] leading-[1.5]">You see what&apos;s really driving it — beyond the current reality. And what needs to shift.</p>
-              </div>
-
+        <div className="relative z-10 flex flex-col items-center justify-end min-h-[70vh] sm:min-h-[80vh] px-4 sm:px-6 pb-10 sm:pb-16">
+          {/* The journey — one line, three beats */}
+          <div className="flex items-center gap-3 sm:gap-6 text-center">
+            <div>
+              <p className="text-white font-bold text-[14px] sm:text-[20px] tracking-[-0.02em]">Bring a real question</p>
+              <p className="font-mercure text-white/40 text-[11px] sm:text-[13px] mt-1 hidden sm:block">Something no meeting resolves.</p>
+            </div>
+            <span className="text-mars/50 text-[18px] sm:text-[24px] font-light">→</span>
+            <div>
+              <p className="text-white font-bold text-[14px] sm:text-[20px] tracking-[-0.02em]">Play it on stage</p>
+              <p className="font-mercure text-white/40 text-[11px] sm:text-[13px] mt-1 hidden sm:block">What&apos;s hidden becomes visible.</p>
+            </div>
+            <span className="text-mars/50 text-[18px] sm:text-[24px] font-light">→</span>
+            <div>
+              <p className="text-white font-bold text-[14px] sm:text-[20px] tracking-[-0.02em]">See beyond</p>
+              <p className="font-mercure text-white/40 text-[11px] sm:text-[13px] mt-1 hidden sm:block">What needs to shift.</p>
             </div>
           </div>
         </div>
@@ -144,7 +136,7 @@ export default function BusinessPage() {
             alt="Stage on Mars — flagship space"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-[#0a0a0a]/70" />
           <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
             <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">Where It Happens</p>
             <h2 className="text-[24px] sm:text-[42px] md:text-[52px] font-bold leading-[0.88] tracking-[-0.04em] mb-3 sm:mb-5">
@@ -381,7 +373,7 @@ export default function BusinessPage() {
             </div>
 
             {/* iPhone with side labels */}
-            <div style={{ transform: 'scale(0.65)', transformOrigin: 'top center' }}>
+            <div style={{ transform: 'scale(0.65)', transformOrigin: 'top center', marginBottom: '-35%' }}>
               <div className="relative flex items-start justify-center">
 
                 {/* LEFT side labels — hidden on mobile */}
