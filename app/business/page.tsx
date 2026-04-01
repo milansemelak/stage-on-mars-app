@@ -4,19 +4,9 @@ import { useState, useEffect } from "react";
 
 const TESTIMONIALS = [
   {
-    name: "Igor Tóth",
-    company: "O2 Slovakia",
-    quote: "Mars helped our team stop for a moment. And sometimes that's the best thing you can do to move forward.",
-  },
-  {
-    name: "Lenka Veselá",
-    company: "MSD Merck",
-    quote: "A team under pressure that barely communicated suddenly became a group of people laughing, creating, and truly talking to each other for the first time in a long while.",
-  },
-  {
-    name: "Raul Rodriguez",
-    company: "Dajana Rodriguez",
-    quote: "You drop the titles, the ego, the learned masks and go deep. For me it was a moment that gave me completely new thoughts and a view on things I hadn't seen before.",
+    name: "Vik Maraj",
+    company: "Unstoppable Conversations",
+    quote: "Absolutely genius. The fastest way to break through corporate thinking.",
   },
   {
     name: "Radka Dohnalová",
@@ -24,37 +14,12 @@ const TESTIMONIALS = [
     quote: "The power of this format lies in its ability to shift perspectives. It lets people break free from ingrained patterns of thinking. The result is incredible.",
   },
   {
-    name: "Vik Maraj",
-    company: "Unstoppable Conversations",
-    quote: "Absolutely genius. The fastest way to break through corporate thinking.",
+    name: "Raul Rodriguez",
+    company: "Dajana Rodriguez",
+    quote: "You drop the titles, the ego, the learned masks and go deep. For me it was a moment that gave me completely new thoughts and a view on things I hadn't seen before.",
   },
 ];
 
-const PRODUCTS = [
-  {
-    name: "Creativity on Mars",
-    price: "from 55 000 CZK",
-    duration: "3 hours",
-    capacity: "max 30 people",
-    description: "A play that engages every team member and lets everyone create without limits.",
-  },
-  {
-    name: "Strategy on Mars",
-    price: "from 75 000 CZK",
-    duration: "4 hours",
-    capacity: "max 20 people",
-    description: "A play that reconnects the crew and tunes the team to one frequency.",
-    bestseller: true,
-  },
-  {
-    name: "Leaders on Mars",
-    price: "1 900 CZK / person",
-    duration: "3 hours",
-    capacity: "max 12 people",
-    description: "Experience for individuals. Bring your own question and play it out with people who lead people.",
-    individual: true,
-  },
-];
 
 function PhoneAnimation() {
   const [step, setStep] = useState(0); // 0=question, 1=generating, 2=play card, 3=stage
@@ -359,7 +324,7 @@ export default function BusinessPage() {
             href="#contact"
             className="text-[10px] sm:text-sm font-bold uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-5 sm:px-9 py-2 sm:py-2.5 rounded-full transition-all"
           >
-            Go to Mars
+            Book a Play
           </a>
         </div>
       </nav>
@@ -387,11 +352,22 @@ export default function BusinessPage() {
 
           {/* Subline with breathing room */}
           <p className="font-mercure text-[#EDEDED]/50 text-[15px] sm:text-[22px] leading-[22px] sm:leading-[32px] max-w-[280px] sm:max-w-lg mx-auto mt-5 sm:mt-10" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>
-            Turn real questions into plays. See what no meeting, report, or strategy deck can show you.
+            Your leadership team plays out the real dynamics on stage. You see what no report can show you.
           </p>
 
+          {/* Credibility line */}
+          <div className="mt-6 sm:mt-10 flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[13px] text-white/30 font-bold uppercase tracking-[0.15em]" style={{ textShadow: '0 1px 10px rgba(0,0,0,0.5)' }}>
+            <span>800+ plays created</span>
+            <span className="text-mars/40">&middot;</span>
+            <span>London</span>
+            <span className="text-mars/40">&middot;</span>
+            <span>Zurich</span>
+            <span className="text-mars/40">&middot;</span>
+            <span>Bucharest</span>
+          </div>
+
           {/* Minimal text links */}
-          <div className="mt-8 sm:mt-16 flex items-center gap-2 sm:gap-4">
+          <div className="mt-6 sm:mt-12 flex items-center gap-2 sm:gap-4">
             <a href="#experience" className="whitespace-nowrap text-[9px] sm:text-[13px] font-bold uppercase tracking-[0.08em] sm:tracking-[0.1em] text-white/70 hover:text-white border border-white/15 hover:border-white/30 px-3 sm:px-7 py-2 sm:py-2.5 rounded-full transition-all duration-300 hover:bg-white/[0.05]">
               Live Play
             </a>
@@ -539,6 +515,32 @@ export default function BusinessPage() {
                 </div>
               </div>
             </div>
+            {/* Tailor-Made — the premium option */}
+            <div className="group relative rounded-2xl border border-mars/20 hover:border-mars/40 bg-gradient-to-br from-mars/[0.06] via-mars/[0.03] to-transparent hover:from-mars/[0.10] hover:via-mars/[0.05] transition-all duration-500 overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.08)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative z-10 grid md:grid-cols-2 gap-5 md:gap-16 p-5 sm:p-12 items-center">
+                <div>
+                  <div className="w-6 sm:w-8 h-[2px] bg-mars mb-4 sm:mb-6" />
+                  <h3 className="text-[28px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Tailor-Made<br />Experience</h3>
+                  <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
+                    <span>Custom format</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>Your team, your rules</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>On request</span>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-white/55 text-[14px] sm:text-[17px] leading-[22px] sm:leading-[28px]">
+                    Your question is unique. So is the play. We design a bespoke reality play for your organization — custom format, custom duration, anywhere in the world. For leadership teams that need more than an off-the-shelf experience.
+                  </p>
+                  <a href="#contact" className="mt-5 sm:mt-8 inline-flex items-center gap-2 sm:gap-3 text-mars hover:text-white text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
+                    Design your play
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -565,9 +567,10 @@ export default function BusinessPage() {
       </section>
 
       {/* Client logos */}
-      <section className="py-16 sm:py-20 px-6 border-t border-b border-white/[0.06]">
+      <section className="py-10 sm:py-16 px-4 sm:px-6 border-t border-b border-white/[0.06]">
+        <p className="text-center text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-white/20 mb-6 sm:mb-10">Trusted by leaders at</p>
         <div className="max-w-4xl mx-auto">
-          <img src="/clients.png" alt="Clients" className="w-full invert opacity-35 mix-blend-screen" />
+          <img src="/clients.png" alt="Clients" className="w-full invert opacity-50 mix-blend-screen" />
         </div>
       </section>
 
@@ -756,7 +759,7 @@ export default function BusinessPage() {
                 href="/space"
                 className="inline-flex items-center gap-2 sm:gap-3 bg-mars hover:bg-mars-light text-white font-bold text-sm sm:text-lg px-6 sm:px-10 py-3 sm:py-4 rounded-xl transition-all shadow-[0_8px_40px_-4px_rgba(255,85,0,0.35)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.5)]"
               >
-                RENT THE SPACE
+                Experience the Stage
                 <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
               </a>
             </div>
@@ -790,7 +793,7 @@ export default function BusinessPage() {
               <p className="font-mercure text-[#EDEDED]/50 text-[16px] sm:text-[18px] leading-[26px]">
                 In 2023, joined by David Vais as partner and investor, they evolved Reality Play into a platform, opened the flagship stage, and turned Stage on Mars into a recognized brand.
               </p>
-              <p className="font-mercure text-[#EDEDED]/30 text-[15px] leading-[24px]">
+              <p className="text-white/70 text-[15px] leading-[24px] font-bold">
                 800+ reality plays created. London, Zurich, Bucharest.
               </p>
               <p className="text-[#EDEDED]/40 text-[14px] leading-[22px]">
@@ -866,14 +869,14 @@ export default function BusinessPage() {
                 type="submit"
                 className="w-full py-4 rounded-xl bg-mars hover:bg-mars-light text-white font-bold text-base uppercase tracking-[0.15em] transition-all shadow-[0_4px_30px_rgba(255,85,0,0.3)] hover:shadow-[0_4px_40px_rgba(255,85,0,0.5)]"
               >
-                Send
+                Let&apos;s Talk
               </button>
             </form>
           )}
 
           <div className="text-center space-y-2">
-            <p className="font-mercure text-[#EDEDED]/20 text-sm">or directly</p>
-            <p className="font-mercure text-[#EDEDED]/40">
+            <p className="font-mercure text-[#EDEDED]/35 text-sm">or reach us directly</p>
+            <p className="font-mercure text-[#EDEDED]/50">
               <a href="mailto:play@stageonmars.com" className="hover:text-mars transition-colors font-bold">play@stageonmars.com</a>
               {" "}&middot;{" "}
               <a href="tel:+420602336338" className="hover:text-mars transition-colors">+420 602 336 338</a>
