@@ -63,11 +63,11 @@ export default function BusinessPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_50%_45%,_transparent_30%,_rgba(0,0,0,0.65)_100%)]" />
 
         <div className="relative z-10 max-w-5xl flex flex-col items-center">
-          <p className="text-mars/60 text-[10px] sm:text-sm font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4 sm:mb-6" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>Stage on Mars</p>
-          <h1 className="text-[38px] sm:text-[64px] md:text-[80px] lg:text-[100px] font-bold leading-[0.88] tracking-[-0.04em] sm:tracking-[-0.05em]" style={{ textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
-            Play to see
+          <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] mb-4 sm:mb-6" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>Reality Play Platform</p>
+          <h1 className="text-[38px] sm:text-[64px] md:text-[80px] lg:text-[100px] font-bold leading-[0.95] tracking-[-0.04em] sm:tracking-[-0.05em]" style={{ textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
+            Going to <span className="text-mars" style={{ textShadow: '0 0 60px rgba(255,85,0,0.35), 0 0 120px rgba(255,85,0,0.15), 0 2px 40px rgba(0,0,0,0.5)' }}>Mars.</span>
             <br />
-            <span className="text-mars" style={{ textShadow: '0 0 60px rgba(255,85,0,0.35), 0 0 120px rgba(255,85,0,0.15), 0 2px 40px rgba(0,0,0,0.5)' }}>beyond reality.</span>
+            Are you coming?
           </h1>
 
           <p className="font-mercure text-[#EDEDED]/50 text-[15px] sm:text-[22px] leading-[22px] sm:leading-[32px] max-w-[280px] sm:max-w-lg mx-auto mt-5 sm:mt-10" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>
@@ -98,13 +98,11 @@ export default function BusinessPage() {
       ═══════════════════════════════════════════════════════════════ */}
 
       <section id="experience" className="relative overflow-hidden">
-        {/* Let the photo be the hero */}
         <img src="/exp.jpg" alt="Stage on Mars — live experience" className="absolute inset-0 w-full h-full object-cover object-top" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/40 via-transparent to-[#0a0a0a]" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
 
         <div className="relative z-10 flex flex-col items-center justify-end min-h-[70vh] sm:min-h-[80vh] px-4 sm:px-6 pb-10 sm:pb-16">
-          {/* The journey — one line, three beats */}
           <div className="flex items-center gap-3 sm:gap-6 text-center">
             <div>
               <p className="text-white font-bold text-[14px] sm:text-[20px] tracking-[-0.02em]">Bring a real question</p>
@@ -138,8 +136,8 @@ export default function BusinessPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-[#0a0a0a]/70" />
           <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
-            <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">Where It Happens</p>
-            <h2 className="text-[24px] sm:text-[42px] md:text-[52px] font-bold leading-[0.88] tracking-[-0.04em] mb-3 sm:mb-5">
+            <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] mb-3 sm:mb-4">Where it happens</p>
+            <h2 className="text-[22px] sm:text-[32px] md:text-[38px] font-bold leading-[0.92] tracking-[-0.03em] mb-3 sm:mb-5">
               The Flagship Stage.
             </h2>
             <p className="font-mercure text-[#EDEDED]/50 text-[13px] sm:text-[18px] max-w-[240px] sm:max-w-md mb-3 sm:mb-6">
@@ -170,18 +168,18 @@ export default function BusinessPage() {
       {/* Case studies */}
       <section className="pt-12 sm:pt-20 pb-8 sm:pb-14 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-[20px] sm:text-[36px] font-bold text-center mb-6 sm:mb-12 leading-[0.94] tracking-[-0.03em]">WHO&apos;S PLAYED THEIR REALITY?</h2>
+          <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-center mb-6 sm:mb-10">Who&apos;s played their reality</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-center">
             {[
               { tag: "700 years of tradition", name: "House of Lobkowicz", quote: "The experience opens new perspectives. It either confirms what you believe, or shows you a different reality.", author: "Alexandra Lobkowicz" },
               { tag: "Expansion to 3 countries", name: "Direct Group", quote: "Partly thanks to dreaming on Mars, Direct Group is flying forward today.", author: "Pavel Řehák" },
               { tag: "Face Your Fear", name: "Oktagon MMA", quote: "Brilliant and healing for the company and our people.", author: "Ondřej Novotný" },
             ].map((cs) => (
-              <div key={cs.name} className="space-y-4">
-                <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.2em]">{cs.tag}</p>
-                <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.025em]">{cs.name}</h4>
-                <p className="font-mercure italic text-[#EDEDED]/40 text-[16px] leading-[24px]">&ldquo;{cs.quote}&rdquo;</p>
-                <p className="text-mars/50 text-[12px] font-bold">&mdash; {cs.author}</p>
+              <div key={cs.name} className="space-y-3">
+                <p className="text-white/25 text-[10px] font-bold uppercase tracking-[0.2em]">{cs.tag}</p>
+                <h4 className="text-[16px] sm:text-[18px] font-bold tracking-[-0.02em]">{cs.name}</h4>
+                <p className="font-mercure italic text-[#EDEDED]/40 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">&ldquo;{cs.quote}&rdquo;</p>
+                <p className="text-mars/50 text-[11px] font-bold">&mdash; {cs.author}</p>
               </div>
             ))}
           </div>
@@ -190,7 +188,7 @@ export default function BusinessPage() {
 
       {/* Client logos */}
       <section className="py-10 sm:py-16 px-4 sm:px-6">
-        <p className="text-center text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-white/20 mb-6 sm:mb-10">Trusted by leaders at</p>
+        <p className="text-center text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-white/20 mb-6 sm:mb-10">Trusted by leaders at</p>
         <div className="max-w-4xl mx-auto">
           <img src="/clients.png" alt="Clients" className="w-full invert opacity-80" />
         </div>
@@ -240,8 +238,9 @@ export default function BusinessPage() {
 
       <section className="py-10 sm:py-20 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
-          <h3 className="text-[22px] sm:text-[34px] font-bold text-center mb-2 sm:mb-4 tracking-[-0.03em] leading-[0.94]">Bestselling Plays</h3>
-          <p className="font-mercure text-[#EDEDED]/40 text-center text-[12px] sm:text-[16px] mb-6 sm:mb-12">Each one starts with a question. Each one ends beyond where you started.</p>
+          <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-center mb-3 sm:mb-4">Reality plays</p>
+          <h3 className="text-[22px] sm:text-[32px] font-bold text-center mb-2 sm:mb-3 tracking-[-0.03em] leading-[0.94]">Bestselling Plays</h3>
+          <p className="font-mercure text-[#EDEDED]/40 text-center text-[12px] sm:text-[14px] mb-6 sm:mb-10">Each one starts with a question. Each one ends beyond where you started.</p>
 
           {/* Play cards — theatrical scene style */}
           <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
@@ -363,11 +362,11 @@ export default function BusinessPage() {
           <div className="max-w-5xl mx-auto">
             {/* Header */}
             <div className="text-center mb-6 sm:mb-10">
-              <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">Not ready for live?</p>
-              <h2 className="text-[24px] sm:text-[36px] md:text-[42px] font-bold leading-[0.88] tracking-[-0.04em] mb-3 sm:mb-4">
+              <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] mb-3 sm:mb-4">Not ready for live?</p>
+              <h2 className="text-[22px] sm:text-[32px] font-bold leading-[0.92] tracking-[-0.03em] mb-3 sm:mb-4">
                 Try it digitally.
               </h2>
-              <p className="font-mercure text-[#EDEDED]/40 text-[12px] sm:text-[16px] max-w-[260px] sm:max-w-md mx-auto">
+              <p className="font-mercure text-[#EDEDED]/40 text-[12px] sm:text-[14px] max-w-[260px] sm:max-w-md mx-auto">
                 Your question becomes a reality play — instantly. See what you can&apos;t see yet.
               </p>
             </div>
@@ -485,7 +484,7 @@ export default function BusinessPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent" />
             </div>
             <div className="space-y-6">
-              <p className="text-mars text-xs font-bold uppercase tracking-[0.3em]">The Team</p>
+              <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em]">The team</p>
               <p className="font-mercure text-[#EDEDED]/50 text-[16px] sm:text-[18px] leading-[26px]">
                 Originally created during the COVID pandemic by Milan Semelak and Zuzana Semelak, who laid the foundations of Reality Play through experimentation with systemic constellations, theatre, and improvisation.
               </p>
@@ -519,8 +518,9 @@ export default function BusinessPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.06)_0%,_transparent_60%)]" />
         <div className="relative z-10 max-w-xl mx-auto space-y-8">
           <div className="text-center space-y-3">
-            <h2 className="text-[24px] sm:text-[42px] font-bold leading-[0.94] tracking-[-0.03em]">What&apos;s your question?</h2>
-            <p className="font-mercure text-[#EDEDED]/30 text-[13px] sm:text-[20px]">We reply within 24 hours.</p>
+            <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] mb-3 sm:mb-4">Get in touch</p>
+            <h2 className="text-[22px] sm:text-[32px] font-bold leading-[0.94] tracking-[-0.03em]">What&apos;s your question?</h2>
+            <p className="font-mercure text-[#EDEDED]/30 text-[12px] sm:text-[14px]">We reply within 24 hours.</p>
           </div>
 
           {sent ? (
