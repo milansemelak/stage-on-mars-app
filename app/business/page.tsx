@@ -144,7 +144,7 @@ export default function BusinessPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/60" />
           <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
             <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">Where It Happens</p>
-            <h2 className="text-[32px] sm:text-[72px] md:text-[96px] font-bold leading-[0.88] tracking-[-0.04em] mb-4 sm:mb-8">
+            <h2 className="text-[28px] sm:text-[56px] md:text-[72px] font-bold leading-[0.88] tracking-[-0.04em] mb-4 sm:mb-6">
               The Flagship Stage.
             </h2>
             <p className="font-mercure text-[#EDEDED]/50 text-[14px] sm:text-[22px] max-w-[240px] sm:max-w-md mb-4 sm:mb-8">
@@ -153,6 +153,15 @@ export default function BusinessPage() {
             <div className="mt-2 sm:mt-4">
               <p className="text-[18px] sm:text-[32px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
               <p className="font-mercure text-[#EDEDED]/35 text-[12px] sm:text-[16px] mt-1 sm:mt-2">One of a kind in the world.</p>
+            </div>
+            <div className="mt-6 sm:mt-10">
+              <a
+                href="/space"
+                className="inline-flex items-center gap-2 sm:gap-3 bg-mars hover:bg-mars-light text-white font-bold text-xs sm:text-sm uppercase tracking-[0.12em] px-6 sm:px-10 py-3 sm:py-4 rounded-xl transition-all shadow-[0_8px_40px_-4px_rgba(255,85,0,0.35)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.5)]"
+              >
+                Explore the Stage
+                <svg viewBox="0 0 24 24" className="w-4 h-4 sm:w-5 sm:h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+              </a>
             </div>
           </div>
         </div>
@@ -222,17 +231,17 @@ export default function BusinessPage() {
 
       <section className="py-14 sm:py-32 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
-          <h3 className="text-[26px] sm:text-[52px] font-bold text-center mb-3 sm:mb-6 tracking-[-0.03em] leading-[0.94]">Bestselling Plays</h3>
-          <p className="font-mercure text-[#EDEDED]/40 text-center text-[13px] sm:text-[20px] mb-10 sm:mb-28">Each one starts with a question. Each one ends beyond where you started.</p>
+          <h3 className="text-[26px] sm:text-[40px] font-bold text-center mb-3 sm:mb-4 tracking-[-0.03em] leading-[0.94]">Bestselling Plays</h3>
+          <p className="font-mercure text-[#EDEDED]/40 text-center text-[13px] sm:text-[18px] mb-8 sm:mb-16">Each one starts with a question. Each one ends beyond where you started.</p>
 
           <div className="space-y-6 sm:space-y-8">
             {/* Strategy */}
             <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-5 md:gap-16 p-5 sm:p-12 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-12 p-5 sm:p-8 items-center">
                 <div>
                   <div className="w-6 sm:w-8 h-[2px] bg-mars/50 mb-4 sm:mb-6" />
-                  <h3 className="text-[28px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Strategy<br />on Mars</h3>
+                  <h3 className="text-[24px] sm:text-[38px] font-bold leading-[0.92] tracking-[-0.04em]">Strategy<br />on Mars</h3>
                   <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
                     <span>4 hours</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
@@ -256,10 +265,10 @@ export default function BusinessPage() {
             {/* Creativity */}
             <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-5 md:gap-16 p-5 sm:p-12 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-12 p-5 sm:p-8 items-center">
                 <div>
                   <div className="w-6 sm:w-8 h-[2px] bg-mars/50 mb-4 sm:mb-6" />
-                  <h3 className="text-[28px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Creativity<br />on Mars</h3>
+                  <h3 className="text-[24px] sm:text-[38px] font-bold leading-[0.92] tracking-[-0.04em]">Creativity<br />on Mars</h3>
                   <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
                     <span>3 hours</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
@@ -283,10 +292,10 @@ export default function BusinessPage() {
             {/* Leaders */}
             <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-5 md:gap-16 p-5 sm:p-12 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-12 p-5 sm:p-8 items-center">
                 <div>
                   <div className="w-6 sm:w-8 h-[2px] bg-mars/50 mb-4 sm:mb-6" />
-                  <h3 className="text-[28px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Leaders<br />on Mars</h3>
+                  <h3 className="text-[24px] sm:text-[38px] font-bold leading-[0.92] tracking-[-0.04em]">Leaders<br />on Mars</h3>
                   <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
                     <span>3 hours</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
@@ -311,10 +320,10 @@ export default function BusinessPage() {
             {/* Tailor-Made */}
             <div className="group relative rounded-2xl border border-mars/20 hover:border-mars/40 bg-gradient-to-br from-mars/[0.06] via-mars/[0.03] to-transparent hover:from-mars/[0.10] hover:via-mars/[0.05] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.08)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-5 md:gap-16 p-5 sm:p-12 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-12 p-5 sm:p-8 items-center">
                 <div>
                   <div className="w-6 sm:w-8 h-[2px] bg-mars mb-4 sm:mb-6" />
-                  <h3 className="text-[28px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Tailor-Made<br />Experience</h3>
+                  <h3 className="text-[24px] sm:text-[38px] font-bold leading-[0.92] tracking-[-0.04em]">Tailor-Made<br />Experience</h3>
                   <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
                     <span>Custom format</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
@@ -345,21 +354,21 @@ export default function BusinessPage() {
 
       <section className="relative overflow-hidden border-t border-white/[0.06]">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.06)_0%,_transparent_50%)]" />
-        <div className="relative z-10 pt-14 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6">
+        <div className="relative z-10 pt-12 sm:pt-20 pb-14 sm:pb-20 px-4 sm:px-6">
           <div className="max-w-5xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-8 sm:mb-14">
+            <div className="text-center mb-6 sm:mb-10">
               <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">Not ready for live?</p>
-              <h2 className="text-[32px] sm:text-[72px] md:text-[96px] font-bold leading-[0.88] tracking-[-0.04em] mb-4 sm:mb-6">
+              <h2 className="text-[28px] sm:text-[48px] md:text-[56px] font-bold leading-[0.88] tracking-[-0.04em] mb-3 sm:mb-5">
                 Try it digitally.
               </h2>
-              <p className="font-mercure text-[#EDEDED]/40 text-[13px] sm:text-[22px] max-w-[280px] sm:max-w-2xl mx-auto">
+              <p className="font-mercure text-[#EDEDED]/40 text-[13px] sm:text-[18px] max-w-[280px] sm:max-w-xl mx-auto">
                 Your question becomes a reality play — instantly. See what you can&apos;t see yet.
               </p>
             </div>
 
             {/* iPhone with side labels */}
-            <div style={{ transform: 'scale(0.85)', transformOrigin: 'top center' }}>
+            <div style={{ transform: 'scale(0.75)', transformOrigin: 'top center' }}>
               <div className="relative flex items-start justify-center">
 
                 {/* LEFT side labels — hidden on mobile */}
