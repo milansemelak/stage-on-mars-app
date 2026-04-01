@@ -234,115 +234,111 @@ export default function BusinessPage() {
           <h3 className="text-[22px] sm:text-[34px] font-bold text-center mb-2 sm:mb-4 tracking-[-0.03em] leading-[0.94]">Bestselling Plays</h3>
           <p className="font-mercure text-[#EDEDED]/40 text-center text-[12px] sm:text-[16px] mb-6 sm:mb-12">Each one starts with a question. Each one ends beyond where you started.</p>
 
-          <div className="space-y-4 sm:space-y-5">
+          {/* Play cards — theatrical scene style */}
+          <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
+
             {/* Strategy */}
-            <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
+            <a href="#contact" className="group relative rounded-xl overflow-hidden cursor-pointer block">
+              {/* Stage circle glow */}
+              <div className="absolute inset-0 bg-[#080808]" />
+              <div className="absolute bottom-[-30%] left-1/2 -translate-x-1/2 w-[120%] aspect-square rounded-full bg-[radial-gradient(circle,_rgba(255,85,0,0.12)_0%,_rgba(255,85,0,0.04)_40%,_transparent_70%)] group-hover:bg-[radial-gradient(circle,_rgba(255,85,0,0.20)_0%,_rgba(255,85,0,0.06)_40%,_transparent_70%)] transition-all duration-700" />
+              <svg className="absolute bottom-[-15%] left-1/2 -translate-x-1/2 w-[70%] opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-700" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-mars" /><circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-mars" /></svg>
+              <div className="relative z-10 p-5 sm:p-6 flex flex-col min-h-[220px] sm:min-h-[260px] justify-between">
                 <div>
-                  <div className="w-5 sm:w-6 h-[2px] bg-mars/50 mb-3 sm:mb-4" />
-                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Strategy<br />on Mars</h3>
-                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
-                    <span>4 hours</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>up to 20 people</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>from 75 000 CZK</span>
-                  </div>
+                  <p className="text-mars/50 text-[9px] font-bold uppercase tracking-[0.25em] mb-2">4 hours · up to 20 people</p>
+                  <h3 className="text-[22px] sm:text-[26px] font-bold leading-[0.92] tracking-[-0.03em]">Strategy<br />on Mars</h3>
                 </div>
                 <div>
-                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
+                  <p className="text-white/45 text-[12px] sm:text-[13px] leading-[18px] sm:leading-[20px] mb-3">
                     A reality play that cuts through the noise. Your leadership team plays out the real dynamics — not the ones in the report. You see what&apos;s actually driving decisions.
                   </p>
-                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
-                    I&apos;ll take my team
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                  </a>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/25 text-[11px] font-mercure">from 75 000 CZK</span>
+                    <span className="text-mars text-[10px] font-bold uppercase tracking-[0.15em] group-hover:text-white transition-colors duration-300 flex items-center gap-1">
+                      I&apos;ll take my team
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current group-hover:translate-x-1 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
 
             {/* Creativity */}
-            <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
+            <a href="#contact" className="group relative rounded-xl overflow-hidden cursor-pointer block">
+              <div className="absolute inset-0 bg-[#080808]" />
+              <div className="absolute bottom-[-30%] left-1/2 -translate-x-1/2 w-[120%] aspect-square rounded-full bg-[radial-gradient(circle,_rgba(180,120,255,0.10)_0%,_rgba(180,120,255,0.03)_40%,_transparent_70%)] group-hover:bg-[radial-gradient(circle,_rgba(180,120,255,0.18)_0%,_rgba(180,120,255,0.05)_40%,_transparent_70%)] transition-all duration-700" />
+              <svg className="absolute bottom-[-15%] left-1/2 -translate-x-1/2 w-[70%] opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-700" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-purple-400" /><circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-purple-400" /></svg>
+              <div className="relative z-10 p-5 sm:p-6 flex flex-col min-h-[220px] sm:min-h-[260px] justify-between">
                 <div>
-                  <div className="w-5 sm:w-6 h-[2px] bg-mars/50 mb-3 sm:mb-4" />
-                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Creativity<br />on Mars</h3>
-                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
-                    <span>3 hours</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>up to 30 people</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>from 55 000 CZK</span>
-                  </div>
+                  <p className="text-purple-400/50 text-[9px] font-bold uppercase tracking-[0.25em] mb-2">3 hours · up to 30 people</p>
+                  <h3 className="text-[22px] sm:text-[26px] font-bold leading-[0.92] tracking-[-0.03em]">Creativity<br />on Mars</h3>
                 </div>
                 <div>
-                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
+                  <p className="text-white/45 text-[12px] sm:text-[13px] leading-[18px] sm:leading-[20px] mb-3">
                     A reality play that unlocks your team&apos;s creative potential. Everyone plays, everyone creates — no hierarchy, no limits. What&apos;s stuck starts moving.
                   </p>
-                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
-                    I&apos;ll take my team
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                  </a>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/25 text-[11px] font-mercure">from 55 000 CZK</span>
+                    <span className="text-mars text-[10px] font-bold uppercase tracking-[0.15em] group-hover:text-white transition-colors duration-300 flex items-center gap-1">
+                      I&apos;ll take my team
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current group-hover:translate-x-1 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
 
             {/* Leaders */}
-            <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
+            <a href="#contact" className="group relative rounded-xl overflow-hidden cursor-pointer block">
+              <div className="absolute inset-0 bg-[#080808]" />
+              <div className="absolute bottom-[-30%] left-1/2 -translate-x-1/2 w-[120%] aspect-square rounded-full bg-[radial-gradient(circle,_rgba(80,200,180,0.10)_0%,_rgba(80,200,180,0.03)_40%,_transparent_70%)] group-hover:bg-[radial-gradient(circle,_rgba(80,200,180,0.18)_0%,_rgba(80,200,180,0.05)_40%,_transparent_70%)] transition-all duration-700" />
+              <svg className="absolute bottom-[-15%] left-1/2 -translate-x-1/2 w-[70%] opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-700" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-teal-400" /><circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-teal-400" /></svg>
+              <div className="relative z-10 p-5 sm:p-6 flex flex-col min-h-[220px] sm:min-h-[260px] justify-between">
                 <div>
-                  <div className="w-5 sm:w-6 h-[2px] bg-mars/50 mb-3 sm:mb-4" />
-                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Leaders<br />on Mars</h3>
-                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
-                    <span>3 hours</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>up to 12 people</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>1 900 CZK / person</span>
-                  </div>
+                  <p className="text-teal-400/50 text-[9px] font-bold uppercase tracking-[0.25em] mb-2">3 hours · up to 12 people</p>
+                  <h3 className="text-[22px] sm:text-[26px] font-bold leading-[0.92] tracking-[-0.03em]">Leaders<br />on Mars</h3>
+                  <p className="font-mercure italic text-white/30 text-[12px] mt-1">Not a team. Just you.</p>
                 </div>
                 <div>
-                  <p className="font-mercure italic text-white/35 text-[13px] sm:text-[15px] mb-2 sm:mb-3">Not a team. Just you.</p>
-                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
+                  <p className="text-white/45 text-[12px] sm:text-[13px] leading-[18px] sm:leading-[20px] mb-3">
                     Bring your own question. Play it out with people who lead people. A reality play for individuals ready to see beyond their current perspective.
                   </p>
-                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
-                    I&apos;m coming
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Tailor-Made */}
-            <div className="group relative rounded-2xl border border-mars/20 hover:border-mars/40 bg-gradient-to-br from-mars/[0.06] via-mars/[0.03] to-transparent hover:from-mars/[0.10] hover:via-mars/[0.05] transition-all duration-500 overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.08)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
-                <div>
-                  <div className="w-6 sm:w-8 h-[2px] bg-mars mb-4 sm:mb-6" />
-                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Tailor-Made<br />Experience</h3>
-                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
-                    <span>Custom format</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>Your team, your rules</span>
-                    <span className="w-1 h-1 rounded-full bg-white/20" />
-                    <span>On request</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/25 text-[11px] font-mercure">1 900 CZK / person</span>
+                    <span className="text-mars text-[10px] font-bold uppercase tracking-[0.15em] group-hover:text-white transition-colors duration-300 flex items-center gap-1">
+                      I&apos;m coming
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current group-hover:translate-x-1 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                    </span>
                   </div>
                 </div>
+              </div>
+            </a>
+
+            {/* Tailor-Made */}
+            <a href="#contact" className="group relative rounded-xl overflow-hidden cursor-pointer block">
+              <div className="absolute inset-0 bg-[#080808]" />
+              <div className="absolute bottom-[-30%] left-1/2 -translate-x-1/2 w-[120%] aspect-square rounded-full bg-[radial-gradient(circle,_rgba(255,85,0,0.08)_0%,_rgba(255,180,50,0.04)_40%,_transparent_70%)] group-hover:bg-[radial-gradient(circle,_rgba(255,85,0,0.16)_0%,_rgba(255,180,50,0.06)_40%,_transparent_70%)] transition-all duration-700" />
+              <svg className="absolute bottom-[-15%] left-1/2 -translate-x-1/2 w-[70%] opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-700" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-mars" /><circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="0.3" className="text-mars" /><circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" strokeWidth="0.2" className="text-mars" /></svg>
+              <div className="relative z-10 p-5 sm:p-6 flex flex-col min-h-[220px] sm:min-h-[260px] justify-between">
                 <div>
-                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
+                  <p className="text-mars/50 text-[9px] font-bold uppercase tracking-[0.25em] mb-2">Custom format · Your team, your rules</p>
+                  <h3 className="text-[22px] sm:text-[26px] font-bold leading-[0.92] tracking-[-0.03em]">Tailor-Made<br />Experience</h3>
+                </div>
+                <div>
+                  <p className="text-white/45 text-[12px] sm:text-[13px] leading-[18px] sm:leading-[20px] mb-3">
                     Your question is unique. So is the play. We design a bespoke reality play for your organization — custom format, custom duration, anywhere in the world. For leadership teams that need more than an off-the-shelf experience.
                   </p>
-                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
-                    Design your play
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                  </a>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/25 text-[11px] font-mercure">On request</span>
+                    <span className="text-mars text-[10px] font-bold uppercase tracking-[0.15em] group-hover:text-white transition-colors duration-300 flex items-center gap-1">
+                      Design your play
+                      <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current group-hover:translate-x-1 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </a>
+
           </div>
         </div>
       </section>
