@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import PhoneAnimation from "@/components/PhoneAnimation";
 
 const TESTIMONIALS = [
   {
@@ -53,19 +54,15 @@ export default function BusinessPage() {
       </nav>
 
       {/* ═══════════════════════════════════════════════════════════════
-          HERO — cinematic full-screen
+          HERO — cinematic full-screen, single CTA
       ═══════════════════════════════════════════════════════════════ */}
       <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-16 sm:pt-20 pb-12 sm:pb-16 relative overflow-hidden">
-        {/* Background image with cinematic treatment */}
         <img src="/space2.png" alt="" className="absolute inset-0 w-full h-full object-cover scale-105" style={{ filter: 'brightness(0.45) contrast(1.15) saturate(1.3)' }} />
-        {/* Multi-layer overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/70 via-[#0a0a0a]/50 to-[#0a0a0a]/85" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_50%_42%,_rgba(255,85,0,0.10)_0%,_transparent_70%)]" />
-        {/* Strong vignette for text pop */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_50%_45%,_transparent_30%,_rgba(0,0,0,0.65)_100%)]" />
 
         <div className="relative z-10 max-w-5xl flex flex-col items-center">
-          {/* Eyebrow */}
           <p className="text-mars/60 text-[10px] sm:text-sm font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4 sm:mb-6" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>Live Reality Plays for Leadership Teams</p>
           <h1 className="text-[38px] sm:text-[64px] md:text-[80px] lg:text-[100px] font-bold leading-[0.88] tracking-[-0.04em] sm:tracking-[-0.05em]" style={{ textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
             Play to see
@@ -73,12 +70,10 @@ export default function BusinessPage() {
             <span className="text-mars" style={{ textShadow: '0 0 60px rgba(255,85,0,0.35), 0 0 120px rgba(255,85,0,0.15), 0 2px 40px rgba(0,0,0,0.5)' }}>beyond reality.</span>
           </h1>
 
-          {/* Subline */}
           <p className="font-mercure text-[#EDEDED]/50 text-[15px] sm:text-[22px] leading-[22px] sm:leading-[32px] max-w-[280px] sm:max-w-lg mx-auto mt-5 sm:mt-10" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>
             Turn real questions into plays. See what no meeting, report, or strategy deck can show you.
           </p>
 
-          {/* Single CTA */}
           <div className="mt-8 sm:mt-14">
             <a
               href="#contact"
@@ -90,7 +85,6 @@ export default function BusinessPage() {
           </div>
         </div>
 
-        {/* Scroll hint */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
           <div className="w-5 h-8 rounded-full border border-white/30 flex items-start justify-center pt-1.5">
             <div className="w-1 h-2 rounded-full bg-white/60 animate-bounce" />
@@ -100,7 +94,7 @@ export default function BusinessPage() {
 
 
       {/* ═══════════════════════════════════════════════════════════════
-          HOW IT WORKS — 3 steps + venue
+          HOW IT WORKS — 3 steps over cinematic photo
       ═══════════════════════════════════════════════════════════════ */}
 
       <section id="experience" className="relative overflow-hidden">
@@ -115,7 +109,6 @@ export default function BusinessPage() {
             Your question becomes a reality play on stage. What&apos;s invisible becomes obvious.
           </p>
 
-          {/* 3 steps */}
           <div className="grid grid-cols-3 gap-4 sm:gap-12 text-center max-w-4xl mx-auto">
             <div className="space-y-2 sm:space-y-3">
               <p className="text-mars/40 text-[28px] sm:text-[56px] font-bold leading-none">1</p>
@@ -133,14 +126,33 @@ export default function BusinessPage() {
               <p className="font-mercure text-[#EDEDED]/40 text-[11px] sm:text-[14px] leading-[16px] sm:leading-[20px]">You see what&apos;s really driving it — beyond the current reality. And what needs to shift.</p>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Venue detail — absorbed from The Space chapter */}
-          <div className="mt-12 sm:mt-24 flex flex-col sm:flex-row items-center gap-4 sm:gap-8 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 sm:p-6 max-w-2xl mx-auto">
-            <img src="/space1.png" alt="Stage on Mars — flagship space" className="w-full sm:w-48 h-28 sm:h-32 object-cover rounded-xl" />
-            <div className="text-center sm:text-left">
-              <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-mars/50 mb-1">The Flagship Stage</p>
-              <p className="text-[18px] sm:text-[22px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
-              <p className="font-mercure text-[#EDEDED]/35 text-[12px] sm:text-[14px] mt-1">A stage built for reality play. One of a kind in the world.</p>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          THE SPACE — full-bleed cinematic venue hero
+      ═══════════════════════════════════════════════════════════════ */}
+
+      <section className="relative overflow-hidden">
+        <div className="relative h-[70vh] sm:h-[85vh]">
+          <img
+            src="/space1.png"
+            alt="Stage on Mars — flagship space"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/60" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
+            <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">Where It Happens</p>
+            <h2 className="text-[32px] sm:text-[72px] md:text-[96px] font-bold leading-[0.88] tracking-[-0.04em] mb-4 sm:mb-8">
+              The Flagship Stage.
+            </h2>
+            <p className="font-mercure text-[#EDEDED]/50 text-[14px] sm:text-[22px] max-w-[240px] sm:max-w-md mb-4 sm:mb-8">
+              A stage built for reality play.
+            </p>
+            <div className="mt-2 sm:mt-4">
+              <p className="text-[18px] sm:text-[32px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
+              <p className="font-mercure text-[#EDEDED]/35 text-[12px] sm:text-[16px] mt-1 sm:mt-2">One of a kind in the world.</p>
             </div>
           </div>
         </div>
@@ -148,7 +160,7 @@ export default function BusinessPage() {
 
 
       {/* ═══════════════════════════════════════════════════════════════
-          PROOF — case studies, logos, testimonials in one flow
+          PROOF — case studies + logos + testimonials as one flow
       ═══════════════════════════════════════════════════════════════ */}
 
       {/* Case studies */}
@@ -172,7 +184,7 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      {/* Client logos — no border, flows into next */}
+      {/* Client logos */}
       <section className="py-10 sm:py-16 px-4 sm:px-6">
         <p className="text-center text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-white/20 mb-6 sm:mb-10">Trusted by leaders at</p>
         <div className="max-w-4xl mx-auto">
@@ -180,7 +192,7 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      {/* Testimonials — on fotka5 */}
+      {/* Testimonials — cinematic photo section */}
       <section className="relative overflow-hidden py-14 sm:py-36 px-4 sm:px-6">
         <img src="/fotka5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[#0a0a0a]/85" />
@@ -205,7 +217,7 @@ export default function BusinessPage() {
 
 
       {/* ═══════════════════════════════════════════════════════════════
-          PRODUCTS — after proof, with Playmaker link
+          PRODUCTS — after proof (trust first, buy second)
       ═══════════════════════════════════════════════════════════════ */}
 
       <section className="py-14 sm:py-32 px-4 sm:px-6">
@@ -322,27 +334,122 @@ export default function BusinessPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Playmaker link card — digital teaser */}
-            <a
-              href="https://playbook.stageonmars.com/play"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden"
-            >
-              <div className="flex items-center justify-between p-5 sm:p-8">
-                <div className="flex items-center gap-4 sm:gap-6">
-                  <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-mars/10 border border-mars/20 flex items-center justify-center flex-shrink-0">
-                    <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-7 sm:h-7 fill-mars/60"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          THE PLAYMAKER — interactive phone animation, digital teaser
+      ═══════════════════════════════════════════════════════════════ */}
+
+      <section className="relative overflow-hidden border-t border-white/[0.06]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.06)_0%,_transparent_50%)]" />
+        <div className="relative z-10 pt-14 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6">
+          <div className="max-w-5xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-8 sm:mb-14">
+              <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">Not ready for live?</p>
+              <h2 className="text-[32px] sm:text-[72px] md:text-[96px] font-bold leading-[0.88] tracking-[-0.04em] mb-4 sm:mb-6">
+                Try it digitally.
+              </h2>
+              <p className="font-mercure text-[#EDEDED]/40 text-[13px] sm:text-[22px] max-w-[280px] sm:max-w-2xl mx-auto">
+                Your question becomes a reality play — instantly. See what you can&apos;t see yet.
+              </p>
+            </div>
+
+            {/* iPhone with side labels */}
+            <div style={{ transform: 'scale(0.85)', transformOrigin: 'top center' }}>
+              <div className="relative flex items-start justify-center">
+
+                {/* LEFT side labels — hidden on mobile */}
+                <div className="hidden lg:flex flex-col items-end gap-14 pt-[80px] pr-12 w-[260px] flex-shrink-0">
+                  <div className="text-right max-w-[220px]">
+                    <p className="text-mars text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Question</p>
+                    <p className="text-white/40 text-sm leading-relaxed">Ask any real question. Strategy, culture, leadership — the play starts with what matters to you.</p>
                   </div>
-                  <div>
-                    <p className="text-[16px] sm:text-[22px] font-bold tracking-[-0.02em]">The Playmaker</p>
-                    <p className="font-mercure text-[#EDEDED]/35 text-[12px] sm:text-[15px] mt-0.5">Try it digitally first — turn your question into a reality play, instantly.</p>
+                  <div className="text-right max-w-[220px]">
+                    <p className="text-mars text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Characters</p>
+                    <p className="text-white/40 text-sm leading-relaxed">AI generates characters — concrete and abstract forces that shape your reality.</p>
+                  </div>
+                  <div className="text-right max-w-[220px]">
+                    <p className="text-mars text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">The Stage</p>
+                    <p className="text-white/40 text-sm leading-relaxed">A systemic constellation — characters positioned in space, revealing what&apos;s hidden in your reality.</p>
                   </div>
                 </div>
-                <svg viewBox="0 0 24 24" className="w-5 h-5 sm:w-6 sm:h-6 fill-white/20 group-hover:fill-mars group-hover:translate-x-1 transition-all duration-300 flex-shrink-0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+
+                {/* THE iPHONE */}
+                <div className="relative flex-shrink-0 w-[300px] sm:w-[340px] lg:w-[360px]">
+                  <div className="relative rounded-[48px] border-[3px] border-white/[0.15] bg-black overflow-hidden shadow-[0_0_100px_rgba(255,85,0,0.06),0_20px_80px_rgba(0,0,0,0.7)]" style={{ aspectRatio: '393/852' }}>
+                    <div className="absolute top-0 left-0 right-0 flex justify-center pt-[10px] z-20">
+                      <div className="w-[100px] h-[28px] bg-black rounded-full" />
+                    </div>
+                    <PhoneAnimation />
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-[7px] z-20">
+                      <div className="w-[110px] h-[4px] bg-white/20 rounded-full" />
+                    </div>
+                  </div>
+                  <div className="absolute -inset-20 bg-mars/[0.04] rounded-full blur-[100px] -z-10" />
+                </div>
+
+                {/* RIGHT side labels — hidden on mobile */}
+                <div className="hidden lg:flex flex-col items-start gap-14 pt-[80px] pl-12 w-[260px] flex-shrink-0">
+                  <div className="text-left max-w-[220px]">
+                    <p className="text-mars text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Play Card</p>
+                    <p className="text-white/40 text-sm leading-relaxed">Every question generates a unique reality play — complete with setting, characters, and your role.</p>
+                  </div>
+                  <div className="text-left max-w-[220px]">
+                    <p className="text-mars text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Your Role</p>
+                    <p className="text-white/40 text-sm leading-relaxed">You&apos;re not a spectator. You&apos;re the author — you decide what happens next on the stage.</p>
+                  </div>
+                  <div className="text-left max-w-[220px]">
+                    <p className="text-mars text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5">Perspective</p>
+                    <p className="text-white/40 text-sm leading-relaxed">The play doesn&apos;t give you answers. It lets you see beyond your current reality.</p>
+                  </div>
+                </div>
               </div>
-            </a>
+
+              {/* Mobile-only labels */}
+              <div className="lg:hidden grid grid-cols-2 sm:grid-cols-3 gap-6 mt-10 px-2">
+                <div>
+                  <p className="text-mars text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Question</p>
+                  <p className="text-white/35 text-xs leading-relaxed">Ask any real question — strategy, culture, leadership.</p>
+                </div>
+                <div>
+                  <p className="text-mars text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Characters</p>
+                  <p className="text-white/35 text-xs leading-relaxed">AI generates characters — forces that shape your reality.</p>
+                </div>
+                <div>
+                  <p className="text-mars text-[10px] font-bold uppercase tracking-[0.2em] mb-1">The Stage</p>
+                  <p className="text-white/35 text-xs leading-relaxed">A constellation revealing what&apos;s hidden in your reality.</p>
+                </div>
+                <div>
+                  <p className="text-mars text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Play Card</p>
+                  <p className="text-white/35 text-xs leading-relaxed">A unique reality play with setting, characters, and your role.</p>
+                </div>
+                <div>
+                  <p className="text-mars text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Your Role</p>
+                  <p className="text-white/35 text-xs leading-relaxed">You&apos;re the author — you decide what happens next.</p>
+                </div>
+                <div>
+                  <p className="text-mars text-[10px] font-bold uppercase tracking-[0.2em] mb-1">Perspective</p>
+                  <p className="text-white/35 text-xs leading-relaxed">Not answers — a way to see beyond your current reality.</p>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="mt-10 sm:mt-14 text-center space-y-3">
+                <a
+                  href="https://playbook.stageonmars.com/play"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 text-white bg-mars hover:bg-mars-light text-sm font-bold uppercase tracking-[0.1em] px-8 py-4 rounded-xl transition-all group shadow-[0_8px_40px_-4px_rgba(255,85,0,0.35)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.5)]"
+                >
+                  Play Now
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current group-hover:translate-x-1 transition-transform"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
