@@ -238,11 +238,11 @@ export default function BusinessPage() {
             {/* Strategy */}
             <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-10 p-4 sm:p-6 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
                 <div>
-                  <div className="w-6 sm:w-8 h-[2px] bg-mars/50 mb-4 sm:mb-6" />
-                  <h3 className="text-[22px] sm:text-[30px] font-bold leading-[0.92] tracking-[-0.04em]">Strategy<br />on Mars</h3>
-                  <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
+                  <div className="w-5 sm:w-6 h-[2px] bg-mars/50 mb-3 sm:mb-4" />
+                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Strategy<br />on Mars</h3>
+                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
                     <span>4 hours</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
                     <span>up to 20 people</span>
@@ -251,10 +251,10 @@ export default function BusinessPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-white/55 text-[14px] sm:text-[17px] leading-[22px] sm:leading-[28px]">
+                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
                     A reality play that cuts through the noise. Your leadership team plays out the real dynamics — not the ones in the report. You see what&apos;s actually driving decisions.
                   </p>
-                  <a href="#contact" className="mt-5 sm:mt-8 inline-flex items-center gap-2 sm:gap-3 text-mars hover:text-white text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
+                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
                     I&apos;ll take my team
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                   </a>
@@ -265,11 +265,11 @@ export default function BusinessPage() {
             {/* Creativity */}
             <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-10 p-4 sm:p-6 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
                 <div>
-                  <div className="w-6 sm:w-8 h-[2px] bg-mars/50 mb-4 sm:mb-6" />
-                  <h3 className="text-[22px] sm:text-[30px] font-bold leading-[0.92] tracking-[-0.04em]">Creativity<br />on Mars</h3>
-                  <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
+                  <div className="w-5 sm:w-6 h-[2px] bg-mars/50 mb-3 sm:mb-4" />
+                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Creativity<br />on Mars</h3>
+                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
                     <span>3 hours</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
                     <span>up to 30 people</span>
@@ -278,10 +278,10 @@ export default function BusinessPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-white/55 text-[14px] sm:text-[17px] leading-[22px] sm:leading-[28px]">
+                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
                     A reality play that unlocks your team&apos;s creative potential. Everyone plays, everyone creates — no hierarchy, no limits. What&apos;s stuck starts moving.
                   </p>
-                  <a href="#contact" className="mt-5 sm:mt-8 inline-flex items-center gap-2 sm:gap-3 text-mars hover:text-white text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
+                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
                     I&apos;ll take my team
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                   </a>
@@ -292,11 +292,11 @@ export default function BusinessPage() {
             {/* Leaders */}
             <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-10 p-4 sm:p-6 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
                 <div>
-                  <div className="w-6 sm:w-8 h-[2px] bg-mars/50 mb-4 sm:mb-6" />
-                  <h3 className="text-[22px] sm:text-[30px] font-bold leading-[0.92] tracking-[-0.04em]">Leaders<br />on Mars</h3>
-                  <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
+                  <div className="w-5 sm:w-6 h-[2px] bg-mars/50 mb-3 sm:mb-4" />
+                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Leaders<br />on Mars</h3>
+                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
                     <span>3 hours</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
                     <span>up to 12 people</span>
@@ -306,10 +306,10 @@ export default function BusinessPage() {
                 </div>
                 <div>
                   <p className="font-mercure italic text-white/35 text-[13px] sm:text-[15px] mb-2 sm:mb-3">Not a team. Just you.</p>
-                  <p className="text-white/55 text-[14px] sm:text-[17px] leading-[22px] sm:leading-[28px]">
+                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
                     Bring your own question. Play it out with people who lead people. A reality play for individuals ready to see beyond their current perspective.
                   </p>
-                  <a href="#contact" className="mt-5 sm:mt-8 inline-flex items-center gap-2 sm:gap-3 text-mars hover:text-white text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
+                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
                     I&apos;m coming
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                   </a>
@@ -320,11 +320,11 @@ export default function BusinessPage() {
             {/* Tailor-Made */}
             <div className="group relative rounded-2xl border border-mars/20 hover:border-mars/40 bg-gradient-to-br from-mars/[0.06] via-mars/[0.03] to-transparent hover:from-mars/[0.10] hover:via-mars/[0.05] transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.08)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10 grid md:grid-cols-2 gap-4 md:gap-10 p-4 sm:p-6 items-center">
+              <div className="relative z-10 grid md:grid-cols-2 gap-3 md:gap-8 p-4 sm:p-5 items-center">
                 <div>
                   <div className="w-6 sm:w-8 h-[2px] bg-mars mb-4 sm:mb-6" />
-                  <h3 className="text-[22px] sm:text-[30px] font-bold leading-[0.92] tracking-[-0.04em]">Tailor-Made<br />Experience</h3>
-                  <div className="mt-3 sm:mt-6 flex items-center gap-3 sm:gap-5 text-white/30 text-[11px] sm:text-sm">
+                  <h3 className="text-[20px] sm:text-[24px] font-bold leading-[0.92] tracking-[-0.04em]">Tailor-Made<br />Experience</h3>
+                  <div className="mt-2 sm:mt-3 flex items-center gap-2 sm:gap-4 text-white/30 text-[10px] sm:text-xs">
                     <span>Custom format</span>
                     <span className="w-1 h-1 rounded-full bg-white/20" />
                     <span>Your team, your rules</span>
@@ -333,10 +333,10 @@ export default function BusinessPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-white/55 text-[14px] sm:text-[17px] leading-[22px] sm:leading-[28px]">
+                  <p className="text-white/55 text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px]">
                     Your question is unique. So is the play. We design a bespoke reality play for your organization — custom format, custom duration, anywhere in the world. For leadership teams that need more than an off-the-shelf experience.
                   </p>
-                  <a href="#contact" className="mt-5 sm:mt-8 inline-flex items-center gap-2 sm:gap-3 text-mars hover:text-white text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
+                  <a href="#contact" className="mt-3 sm:mt-5 inline-flex items-center gap-2 text-mars hover:text-white text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] group/link transition-colors duration-300">
                     Design your play
                     <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                   </a>
