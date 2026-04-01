@@ -99,31 +99,34 @@ export default function BusinessPage() {
 
       <section id="experience" className="relative overflow-hidden">
         <img src="/exp.jpg" alt="Stage on Mars — live experience" className="absolute inset-0 w-full h-full object-cover object-top" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/85 to-[#0a0a0a]/95" />
-        <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 text-center pt-20 sm:pt-40 pb-12 sm:pb-24">
-          <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">How It Works</p>
-          <h2 className="text-[26px] sm:text-[40px] md:text-[48px] font-bold leading-[0.88] tracking-[-0.04em] mb-3 sm:mb-4">
-            Play it. See it.
-          </h2>
-          <p className="font-mercure text-[#EDEDED]/60 text-[13px] sm:text-[17px] mb-8 sm:mb-14 max-w-[280px] sm:max-w-xl">
-            Your question becomes a reality play on stage. What&apos;s invisible becomes obvious.
-          </p>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/70 via-[#0a0a0a]/80 to-[#0a0a0a]/95" />
+        <div className="relative z-10 px-4 sm:px-6 py-16 sm:py-28">
+          <div className="max-w-4xl mx-auto">
 
-          <div className="grid grid-cols-3 gap-4 sm:gap-12 text-center max-w-4xl mx-auto">
-            <div className="space-y-2 sm:space-y-3">
-              <p className="text-mars/40 text-[24px] sm:text-[40px] font-bold leading-none">1</p>
-              <h3 className="text-[12px] sm:text-[18px] font-bold tracking-[-0.02em]">Bring a real question</h3>
-              <p className="font-mercure text-[#EDEDED]/40 text-[11px] sm:text-[14px] leading-[16px] sm:leading-[20px]">Something no meeting resolves. Something that shapes what happens next.</p>
-            </div>
-            <div className="space-y-2 sm:space-y-3">
-              <p className="text-mars/40 text-[24px] sm:text-[40px] font-bold leading-none">2</p>
-              <h3 className="text-[12px] sm:text-[18px] font-bold tracking-[-0.02em]">Play it into reality</h3>
-              <p className="font-mercure text-[#EDEDED]/40 text-[11px] sm:text-[14px] leading-[16px] sm:leading-[20px]">Step into roles. Play the situation out on stage. What&apos;s hidden becomes visible.</p>
-            </div>
-            <div className="space-y-2 sm:space-y-3">
-              <p className="text-mars/40 text-[24px] sm:text-[40px] font-bold leading-none">3</p>
-              <h3 className="text-[12px] sm:text-[18px] font-bold tracking-[-0.02em]">See beyond</h3>
-              <p className="font-mercure text-[#EDEDED]/40 text-[11px] sm:text-[14px] leading-[16px] sm:leading-[20px]">You see what&apos;s really driving it — beyond the current reality. And what needs to shift.</p>
+            {/* Three moments flowing vertically — like scenes in a play */}
+            <div className="space-y-12 sm:space-y-20">
+
+              {/* Moment 1 — left-aligned */}
+              <div className="max-w-md">
+                <p className="font-mercure italic text-mars/50 text-[11px] sm:text-[13px] mb-2">Before the play</p>
+                <h3 className="text-[20px] sm:text-[28px] font-bold leading-[1] tracking-[-0.03em] mb-2 sm:mb-3">Bring a real question</h3>
+                <p className="font-mercure text-[#EDEDED]/45 text-[13px] sm:text-[15px] leading-[1.5]">Something no meeting resolves. Something that shapes what happens next.</p>
+              </div>
+
+              {/* Moment 2 — centered, larger */}
+              <div className="text-center max-w-xl mx-auto">
+                <p className="font-mercure italic text-mars/50 text-[11px] sm:text-[13px] mb-2">On the stage</p>
+                <h3 className="text-[24px] sm:text-[36px] font-bold leading-[1] tracking-[-0.03em] mb-2 sm:mb-3">Play it into reality</h3>
+                <p className="font-mercure text-[#EDEDED]/45 text-[13px] sm:text-[15px] leading-[1.5]">Step into roles. Play the situation out on stage. What&apos;s hidden becomes visible.</p>
+              </div>
+
+              {/* Moment 3 — right-aligned, dramatic */}
+              <div className="max-w-md ml-auto text-right">
+                <p className="font-mercure italic text-mars/50 text-[11px] sm:text-[13px] mb-2">After</p>
+                <h3 className="text-[20px] sm:text-[28px] font-bold leading-[1] tracking-[-0.03em] mb-2 sm:mb-3">See beyond</h3>
+                <p className="font-mercure text-[#EDEDED]/45 text-[13px] sm:text-[15px] leading-[1.5]">You see what&apos;s really driving it — beyond the current reality. And what needs to shift.</p>
+              </div>
+
             </div>
           </div>
         </div>
@@ -201,26 +204,40 @@ export default function BusinessPage() {
         </div>
       </section>
 
-      {/* Testimonials — cinematic photo section */}
-      <section className="relative overflow-hidden py-12 sm:py-24 px-4 sm:px-6">
+      {/* Testimonials — cinematic, each quote gets its own moment */}
+      <section className="relative overflow-hidden py-12 sm:py-20 px-4 sm:px-6">
         <img src="/fotka5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[#0a0a0a]/85" />
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <p className="text-mars/50 text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-8 sm:mb-20 text-center">What they say about us</p>
-          <div className="space-y-8 sm:space-y-16">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={t.name} className={`${i % 2 === 0 ? 'sm:pr-24' : 'sm:pl-24'}`}>
-                <p className="font-mercure italic text-white/90 text-[15px] sm:text-[18px] leading-[1.6] tracking-[-0.2px] mb-3 sm:mb-4">
+        <div className="relative z-10 max-w-5xl mx-auto">
+
+          {/* Hero quote — the short killer one, massive */}
+          <div className="text-center mb-12 sm:mb-20">
+            <p className="font-mercure italic text-white text-[24px] sm:text-[42px] md:text-[52px] leading-[1.15] tracking-[-0.02em] max-w-4xl mx-auto">
+              &ldquo;{TESTIMONIALS[0].quote}&rdquo;
+            </p>
+            <div className="flex items-center justify-center gap-3 mt-5 sm:mt-8">
+              <div className="w-8 h-[2px] bg-mars/50" />
+              <p className="text-white/80 font-bold text-[13px] sm:text-[15px]">{TESTIMONIALS[0].name}</p>
+              <p className="font-mercure text-white/40 text-[13px] sm:text-[15px]">{TESTIMONIALS[0].company}</p>
+            </div>
+          </div>
+
+          {/* Two supporting quotes side by side */}
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-12">
+            {TESTIMONIALS.slice(1).map((t) => (
+              <div key={t.name} className="border-l-2 border-mars/20 pl-5 sm:pl-6">
+                <p className="font-mercure italic text-white/70 text-[14px] sm:text-[16px] leading-[1.6] tracking-[-0.2px] mb-3">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-[2px] bg-mars/50" />
-                  <p className="text-white/90 font-bold text-sm">{t.name}</p>
-                  <p className="font-mercure text-white/50 text-sm">{t.company}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-white/70 font-bold text-[12px] sm:text-[13px]">{t.name}</p>
+                  <p className="text-white/30 text-[12px] sm:text-[13px]">·</p>
+                  <p className="font-mercure text-white/35 text-[12px] sm:text-[13px]">{t.company}</p>
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
