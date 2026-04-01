@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import AppShell from "@/components/AppShell";
 import AuthGate from "@/components/AuthGate";
 import { I18nProvider } from "@/lib/i18n";
 
@@ -62,11 +62,7 @@ export default function RootLayout({
       >
         <I18nProvider>
           <AuthGate>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <footer className="border-t border-white/[0.04] py-6 text-center text-white/15 text-xs">
-              &copy; {new Date().getFullYear()} Stage on Mars. All rights reserved.
-            </footer>
+            <AppShell>{children}</AppShell>
           </AuthGate>
         </I18nProvider>
       </body>
