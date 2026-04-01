@@ -344,7 +344,7 @@ export default function BusinessPage() {
         <div className="relative z-10 max-w-5xl flex flex-col items-center">
           {/* Headline — massive, cinematic */}
           <p className="text-mars/60 text-[10px] sm:text-sm font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-4 sm:mb-6" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>The Reality Play Platform</p>
-          <h1 className="text-[38px] sm:text-[80px] md:text-[112px] lg:text-[128px] font-bold leading-[0.88] tracking-[-0.04em] sm:tracking-[-0.05em]" style={{ textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
+          <h1 className="text-[38px] sm:text-[64px] md:text-[80px] lg:text-[100px] font-bold leading-[0.88] tracking-[-0.04em] sm:tracking-[-0.05em]" style={{ textShadow: '0 2px 40px rgba(0,0,0,0.5)' }}>
             Play to see
             <br />
             <span className="text-mars" style={{ textShadow: '0 0 60px rgba(255,85,0,0.35), 0 0 120px rgba(255,85,0,0.15), 0 2px 40px rgba(0,0,0,0.5)' }}>beyond reality.</span>
@@ -352,22 +352,11 @@ export default function BusinessPage() {
 
           {/* Subline with breathing room */}
           <p className="font-mercure text-[#EDEDED]/50 text-[15px] sm:text-[22px] leading-[22px] sm:leading-[32px] max-w-[280px] sm:max-w-lg mx-auto mt-5 sm:mt-10" style={{ textShadow: '0 1px 20px rgba(0,0,0,0.6)' }}>
-            Your leadership team plays out the real dynamics on stage. You see what no report can show you.
+            Turn real questions into plays. See what no meeting, report, or strategy deck can show you.
           </p>
 
-          {/* Credibility line */}
-          <div className="mt-6 sm:mt-10 flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[13px] text-white/30 font-bold uppercase tracking-[0.15em]" style={{ textShadow: '0 1px 10px rgba(0,0,0,0.5)' }}>
-            <span>800+ plays created</span>
-            <span className="text-mars/40">&middot;</span>
-            <span>London</span>
-            <span className="text-mars/40">&middot;</span>
-            <span>Zurich</span>
-            <span className="text-mars/40">&middot;</span>
-            <span>Bucharest</span>
-          </div>
-
           {/* Minimal text links */}
-          <div className="mt-6 sm:mt-12 flex items-center gap-2 sm:gap-4">
+          <div className="mt-8 sm:mt-16 flex items-center gap-2 sm:gap-4">
             <a href="#experience" className="whitespace-nowrap text-[9px] sm:text-[13px] font-bold uppercase tracking-[0.08em] sm:tracking-[0.1em] text-white/70 hover:text-white border border-white/15 hover:border-white/30 px-3 sm:px-7 py-2 sm:py-2.5 rounded-full transition-all duration-300 hover:bg-white/[0.05]">
               Live Play
             </a>
@@ -396,13 +385,13 @@ export default function BusinessPage() {
       {/* Chapter photo + steps overlay */}
       <section id="experience" className="relative overflow-hidden">
         <img src="/exp.jpg" alt="Stage on Mars — live experience" className="absolute inset-0 w-full h-full object-cover object-top" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/75 to-[#0a0a0a]/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/85 to-[#0a0a0a]/95" />
         <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 text-center pt-20 sm:pt-40 pb-12 sm:pb-24">
           <p className="text-mars text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-3 sm:mb-4">01 — Live Reality Play</p>
-          <h2 className="text-[32px] sm:text-[72px] md:text-[96px] font-bold leading-[0.88] tracking-[-0.04em] mb-3 sm:mb-4">
+          <h2 className="text-[32px] sm:text-[56px] md:text-[72px] font-bold leading-[0.88] tracking-[-0.04em] mb-3 sm:mb-4">
             Play it. See it.
           </h2>
-          <p className="font-mercure text-[#EDEDED]/50 text-[14px] sm:text-[22px] mb-10 sm:mb-20 max-w-[280px] sm:max-w-none">
+          <p className="font-mercure text-[#EDEDED]/60 text-[14px] sm:text-[20px] mb-10 sm:mb-20 max-w-[280px] sm:max-w-xl">
             Your question becomes a reality play on stage. What&apos;s invisible becomes obvious.
           </p>
 
@@ -570,7 +559,7 @@ export default function BusinessPage() {
       <section className="py-10 sm:py-16 px-4 sm:px-6 border-t border-b border-white/[0.06]">
         <p className="text-center text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-white/20 mb-6 sm:mb-10">Trusted by leaders at</p>
         <div className="max-w-4xl mx-auto">
-          <img src="/clients.png" alt="Clients" className="w-full invert opacity-50 mix-blend-screen" />
+          <img src="/clients.png" alt="Clients" className="w-full invert opacity-80" />
         </div>
       </section>
 
