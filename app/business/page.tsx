@@ -391,15 +391,15 @@ export default function BusinessPage() {
           </p>
 
           {/* Minimal text links */}
-          <div className="mt-14 sm:mt-16 flex items-center gap-3 sm:gap-4">
-            <a href="#experience" className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.12em] text-white/70 hover:text-white border border-white/15 hover:border-white/30 px-5 sm:px-7 py-2.5 rounded-full transition-all duration-300 hover:bg-white/[0.05]">
-              Live Reality Play
+          <div className="mt-14 sm:mt-16 flex items-center gap-2.5 sm:gap-4">
+            <a href="#experience" className="whitespace-nowrap text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.1em] text-white/70 hover:text-white border border-white/15 hover:border-white/30 px-4 sm:px-7 py-2.5 rounded-full transition-all duration-300 hover:bg-white/[0.05]">
+              Live Play
             </a>
-            <a href="#playmaker" className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.12em] text-white border border-mars/40 hover:border-mars bg-mars/10 hover:bg-mars/20 px-5 sm:px-7 py-2.5 rounded-full transition-all duration-300">
-              Digital Playmaker
+            <a href="#playmaker" className="whitespace-nowrap text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.1em] text-white border border-mars/40 hover:border-mars bg-mars/10 hover:bg-mars/20 px-4 sm:px-7 py-2.5 rounded-full transition-all duration-300">
+              Digital Play
             </a>
-            <a href="#space" className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.12em] text-white/70 hover:text-white border border-white/15 hover:border-white/30 px-5 sm:px-7 py-2.5 rounded-full transition-all duration-300 hover:bg-white/[0.05]">
-              The Stage
+            <a href="#space" className="whitespace-nowrap text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.1em] text-white/70 hover:text-white border border-white/15 hover:border-white/30 px-4 sm:px-7 py-2.5 rounded-full transition-all duration-300 hover:bg-white/[0.05]">
+              The Playspace
             </a>
           </div>
         </div>
@@ -454,81 +454,89 @@ export default function BusinessPage() {
       {/* Products */}
       <section className="py-20 sm:py-32 px-6">
         <div className="max-w-5xl mx-auto">
-          <h3 className="text-[36px] sm:text-[52px] font-bold text-center mb-6 tracking-[-0.03em] leading-[0.94]">Three reality plays.</h3>
+          <h3 className="text-[36px] sm:text-[52px] font-bold text-center mb-6 tracking-[-0.03em] leading-[0.94]">Bestselling Plays</h3>
           <p className="font-mercure text-[#EDEDED]/40 text-center text-lg sm:text-[20px] mb-20 sm:mb-28 whitespace-nowrap">Each one starts with a question. Each one ends beyond where you started.</p>
 
-          <div className="space-y-16 sm:space-y-20">
+          <div className="space-y-6 sm:space-y-8">
             {/* Strategy — the main one */}
-            <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-              <div>
-                <h3 className="text-[36px] sm:text-[48px] font-bold leading-[0.95] tracking-[-0.03em]">Strategy<br />on Mars</h3>
-                <div className="mt-6 flex items-center gap-5 text-white/30 text-sm">
-                  <span>4 hours</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>up to 20 people</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>from 75 000 CZK</span>
+            <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative z-10 grid md:grid-cols-2 gap-8 md:gap-16 p-8 sm:p-12 items-center">
+                <div>
+                  <div className="w-8 h-[2px] bg-mars/50 mb-6" />
+                  <h3 className="text-[40px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Strategy<br />on Mars</h3>
+                  <div className="mt-6 flex items-center gap-5 text-white/30 text-sm">
+                    <span>4 hours</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>up to 20 people</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>from 75 000 CZK</span>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-white/55 text-[17px] leading-[28px]">
+                    A reality play that cuts through the noise. Your leadership team plays out the real dynamics — not the ones in the report. You see what&apos;s actually driving decisions.
+                  </p>
+                  <a href="#contact" className="mt-8 inline-flex items-center gap-3 text-mars hover:text-white text-[13px] font-bold uppercase tracking-[0.15em] group/link transition-colors duration-300">
+                    I&apos;ll take my team
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                  </a>
                 </div>
               </div>
-              <div>
-                <p className="text-white/60 text-[17px] leading-[28px]">
-                  A reality play that cuts through the noise. Your leadership team plays out the real dynamics — not the ones in the report. You see what&apos;s actually driving decisions.
-                </p>
-                <a href="#contact" className="mt-8 inline-flex items-center gap-3 text-mars text-[13px] font-bold uppercase tracking-[0.15em] group">
-                  I&apos;ll take my team
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover:translate-x-1 transition-transform"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                </a>
-              </div>
             </div>
-
-            <div className="h-[1px] bg-white/[0.06]" />
 
             {/* Creativity */}
-            <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-              <div>
-                <h3 className="text-[36px] sm:text-[48px] font-bold leading-[0.95] tracking-[-0.03em]">Creativity<br />on Mars</h3>
-                <div className="mt-6 flex items-center gap-5 text-white/30 text-sm">
-                  <span>3 hours</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>up to 30 people</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>from 55 000 CZK</span>
+            <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative z-10 grid md:grid-cols-2 gap-8 md:gap-16 p-8 sm:p-12 items-center">
+                <div>
+                  <div className="w-8 h-[2px] bg-mars/50 mb-6" />
+                  <h3 className="text-[40px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Creativity<br />on Mars</h3>
+                  <div className="mt-6 flex items-center gap-5 text-white/30 text-sm">
+                    <span>3 hours</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>up to 30 people</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>from 55 000 CZK</span>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <p className="text-white/60 text-[17px] leading-[28px]">
-                  A reality play that unlocks your team&apos;s creative potential. Everyone plays, everyone creates — no hierarchy, no limits. What&apos;s stuck starts moving.
-                </p>
-                <a href="#contact" className="mt-8 inline-flex items-center gap-3 text-mars text-[13px] font-bold uppercase tracking-[0.15em] group">
-                  I&apos;ll take my team
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover:translate-x-1 transition-transform"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                </a>
+                <div>
+                  <p className="text-white/55 text-[17px] leading-[28px]">
+                    A reality play that unlocks your team&apos;s creative potential. Everyone plays, everyone creates — no hierarchy, no limits. What&apos;s stuck starts moving.
+                  </p>
+                  <a href="#contact" className="mt-8 inline-flex items-center gap-3 text-mars hover:text-white text-[13px] font-bold uppercase tracking-[0.15em] group/link transition-colors duration-300">
+                    I&apos;ll take my team
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div className="h-[1px] bg-white/[0.06]" />
-
             {/* Leaders */}
-            <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
-              <div>
-                <h3 className="text-[36px] sm:text-[48px] font-bold leading-[0.95] tracking-[-0.03em]">Leaders<br />on Mars</h3>
-                <div className="mt-6 flex items-center gap-5 text-white/30 text-sm">
-                  <span>3 hours</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>up to 12 people</span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span>1 900 CZK / person</span>
+            <div className="group relative rounded-2xl border border-white/[0.06] hover:border-mars/20 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,85,0,0.06)_0%,_transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative z-10 grid md:grid-cols-2 gap-8 md:gap-16 p-8 sm:p-12 items-center">
+                <div>
+                  <div className="w-8 h-[2px] bg-mars/50 mb-6" />
+                  <h3 className="text-[40px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.04em]">Leaders<br />on Mars</h3>
+                  <div className="mt-6 flex items-center gap-5 text-white/30 text-sm">
+                    <span>3 hours</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>up to 12 people</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span>1 900 CZK / person</span>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <p className="font-mercure italic text-white/40 text-[15px] mb-3">Not a team. Just you.</p>
-                <p className="text-white/60 text-[17px] leading-[28px]">
-                  Bring your own question. Play it out with people who lead people. A reality play for individuals ready to see beyond their current perspective.
-                </p>
-                <a href="#contact" className="mt-8 inline-flex items-center gap-3 text-mars text-[13px] font-bold uppercase tracking-[0.15em] group">
-                  I&apos;m coming
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover:translate-x-1 transition-transform"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                </a>
+                <div>
+                  <p className="font-mercure italic text-white/35 text-[15px] mb-3">Not a team. Just you.</p>
+                  <p className="text-white/55 text-[17px] leading-[28px]">
+                    Bring your own question. Play it out with people who lead people. A reality play for individuals ready to see beyond their current perspective.
+                  </p>
+                  <a href="#contact" className="mt-8 inline-flex items-center gap-3 text-mars hover:text-white text-[13px] font-bold uppercase tracking-[0.15em] group/link transition-colors duration-300">
+                    I&apos;m coming
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current group-hover/link:translate-x-1.5 transition-transform duration-300"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

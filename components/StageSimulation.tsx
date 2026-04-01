@@ -628,9 +628,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
   }, [renderPositions, hasStarted]);
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-[#080808]">
-      {/* Stage — taller on mobile for more presence */}
-      <div className="relative w-full aspect-[3/4] sm:aspect-square overflow-hidden">
+    <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col min-h-[75vh] sm:min-h-[70vh]">
+      {/* Stage — fills available space */}
+      <div className="relative w-full flex-1 min-h-0 overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
@@ -652,22 +652,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
           </div>
         )}
 
-        {/* Start overlay */}
-        {!loading && !hasStarted && (
-          <button
-            onClick={handleStart}
-            className="absolute inset-x-0 bottom-6 sm:bottom-8 z-10 flex justify-center group cursor-pointer"
-          >
-            <div className="relative">
-              <div className="absolute -inset-6 bg-mars/15 blur-2xl rounded-full animate-pulse-glow pointer-events-none" />
-              <div className="relative px-10 sm:px-14 py-4 sm:py-5 rounded-2xl bg-mars group-hover:bg-mars-light transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] group-hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] group-active:scale-[0.97]">
-                <span className="text-white font-black text-base sm:text-lg uppercase tracking-[0.2em]">
-                  {t.startThePlay}
-                </span>
-              </div>
-            </div>
-          </button>
-        )}
+        {/* Start overlay — hidden here, rendered below stage */}
+        {false && !loading && !hasStarted && null}
 
         {/* Tap stage to advance too — but button below is primary */}
         {hasStarted && !hasEnded && (
@@ -845,9 +831,26 @@ export default function StageSimulation({ characters, simulation, simulationStep
         </svg>
       </div>
 
+      {/* Start button — pinned at bottom */}
+      {!loading && !hasStarted && (
+        <div className="shrink-0 px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
+          <button
+            onClick={handleStart}
+            className="group w-full relative cursor-pointer"
+          >
+            <div className="absolute -inset-2 bg-mars/15 blur-2xl rounded-2xl animate-pulse-glow pointer-events-none" />
+            <div className="relative w-full py-5 rounded-2xl bg-mars group-hover:bg-mars-light transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] group-hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] group-active:scale-[0.97] text-center">
+              <span className="text-white font-black text-base sm:text-lg uppercase tracking-[0.2em]">
+                {t.startThePlay}
+              </span>
+            </div>
+          </button>
+        </div>
+      )}
+
       {/* Narration + Controls */}
       {hasStarted && (
-        <div className="relative">
+        <div className="relative shrink-0">
           {/* Narration — tap the whole area to advance */}
           {!hasEnded ? (
             <button
