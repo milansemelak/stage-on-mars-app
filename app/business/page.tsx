@@ -328,10 +328,10 @@ export default function BusinessPage() {
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
             <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-            <h1 className="text-[clamp(28px,7vw,80px)] font-bold leading-[0.95] tracking-[-0.04em] text-center">
-              Play with reality.
+            <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center">
+              <span className="whitespace-nowrap">Play with reality.</span>
               <br />
-              <span className="text-mars">See what&apos;s possible.</span>
+              <span className="whitespace-nowrap text-mars">See what&apos;s possible.</span>
             </h1>
           </div>
 
