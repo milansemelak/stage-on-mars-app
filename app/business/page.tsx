@@ -123,6 +123,8 @@ export default function BusinessPage() {
   const [context, setContext] = useState<"personal" | "business">("business");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [plays, setPlays] = useState<Play[]>([]);
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [play, setPlay] = useState<Play | null>(null);
   const [askedQuestion, setAskedQuestion] = useState("");
   const [error, setError] = useState("");
@@ -145,7 +147,9 @@ export default function BusinessPage() {
     setSubmitted(true);
     setLoading(true);
     setError("");
+    setPlays([]);
     setPlay(null);
+    setSelectedIdx(null);
     setAskedQuestion(question);
     setShowDigital(false);
 
@@ -156,18 +160,26 @@ export default function BusinessPage() {
       const res = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, context, lang: "en" }),
+        body: JSON.stringify({ question, context, lang: "en", count: 3 }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
-      if (data.plays?.[0]) {
-        setPlay(data.plays[0]);
+      if (data.plays?.length) {
+        setPlays(data.plays);
       }
     } catch {
       setError("Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }
+  }
+
+  function selectPlay(idx: number) {
+    setSelectedIdx(idx);
+    setPlay(plays[idx]);
+    setShowDigital(false);
+    setSimLoading(false);
+    setSimReady(false);
   }
 
   async function fetchSimulation(currentPlay: Play) {
@@ -209,7 +221,9 @@ export default function BusinessPage() {
   function reset() {
     setQuestion("");
     setSubmitted(false);
+    setPlays([]);
     setPlay(null);
+    setSelectedIdx(null);
     setAskedQuestion("");
     setError("");
     setShowDigital(false);
@@ -302,13 +316,13 @@ export default function BusinessPage() {
       </section>
 
 
-      {/* ── RESULTS: Live invitation → Digital play → Social proof ── */}
+      {/* ── RESULTS ── */}
       {submitted && (
         <section ref={resultRef} className="relative px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
 
             {/* The question echo */}
-            <div className="text-center mb-12 sm:mb-20 pt-8 sm:pt-12">
+            <div className="text-center mb-12 sm:mb-16 pt-8 sm:pt-12">
               <p className="text-white/10 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
               <p className="font-mercure italic text-white/30 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{askedQuestion}&rdquo;</p>
               <button onClick={reset} className="text-white/10 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/40 transition-colors">
@@ -316,179 +330,259 @@ export default function BusinessPage() {
               </button>
             </div>
 
-            {/* ═══ LIVE PLAY INVITATION ═══ */}
-            <div className="relative rounded-3xl overflow-hidden mb-6 sm:mb-8">
-              {/* Background: space photo with overlay */}
-              <div className="absolute inset-0">
-                <img src="/space1.png" alt="" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a]/90 via-[#0a0a0a]/75 to-[#0a0a0a]/85" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-              </div>
-              <div className="absolute inset-0 border border-mars/[0.1] rounded-3xl" />
-              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
-
-              <div className="relative z-10 p-8 sm:p-12 md:p-16 lg:p-20">
-                {/* Label */}
-                <div className="inline-flex items-center gap-2 mb-10 sm:mb-14">
-                  <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">We designed your live play</p>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-[44px] sm:text-[64px] md:text-[80px] lg:text-[96px] font-black tracking-[-0.04em] leading-[0.88] mb-6 sm:mb-8">
-                  {liveRec.theme}
-                  <br />
-                  <span className="text-mars">on Mars</span>
-                </h3>
-
-                <p className="font-mercure text-white/35 text-[15px] sm:text-[18px] md:text-[20px] leading-[1.7] mb-10 sm:mb-14 max-w-xl">
-                  {liveRec.pitch}
-                </p>
-
-                {/* Details strip */}
-                <div className="flex flex-wrap gap-6 sm:gap-10 mb-10 sm:mb-14">
-                  {[
-                    { label: "Duration", value: liveRec.duration },
-                    { label: "Players", value: liveRec.people },
-                    { label: "Stage", value: "Praha flagship" },
-                    { label: "Guide", value: "Systemic facilitator" },
-                  ].map((item) => (
-                    <div key={item.label}>
-                      <p className="text-white/12 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
-                      <p className="text-white/50 text-[13px] sm:text-[14px] font-bold">{item.value}</p>
-                    </div>
+            {/* Loading state */}
+            {loading && (
+              <div className="text-center py-20 sm:py-28">
+                <div className="inline-flex gap-2 mb-6">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
                   ))}
                 </div>
+                <p className="text-white/30 text-[14px] sm:text-[15px] font-mercure italic">Designing your plays...</p>
+              </div>
+            )}
 
-                {/* CTA */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
-                  <a
-                    href="#contact"
-                    className="inline-flex items-center gap-3 text-[12px] sm:text-[14px] font-black uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-8 sm:px-10 py-4 sm:py-5 rounded-2xl transition-all shadow-[0_8px_40px_-4px_rgba(255,85,0,0.3)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.45)]"
-                  >
-                    Book this play
-                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                  </a>
-                  <p className="text-white/20 text-[12px] sm:text-[13px]">{liveRec.price}</p>
+            {error && !loading && (
+              <div className="text-center py-16">
+                <p className="text-mars/60 text-[14px] mb-4">{error}</p>
+                <button onClick={generate} className="text-mars text-[12px] font-bold uppercase tracking-[0.15em] hover:text-white transition-colors">
+                  Try again →
+                </button>
+              </div>
+            )}
+
+            {/* ═══ 3 PLAY OPTIONS ═══ */}
+            {plays.length > 0 && !loading && selectedIdx === null && (
+              <div className="space-y-4 sm:space-y-6">
+                <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-center mb-6 sm:mb-8">Choose your play</p>
+
+                <div className="grid gap-4 sm:gap-5">
+                  {plays.map((p, i) => {
+                    const isLeader = i === 2;
+                    const label = isLeader ? "Leaders on Mars" : `${deriveTheme(askedQuestion)} on Mars`;
+                    const tag = isLeader ? "Personal leadership" : "For your team";
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => selectPlay(i)}
+                        className={`relative w-full text-left rounded-3xl border overflow-hidden transition-all duration-300 group hover:scale-[1.01] ${
+                          isLeader
+                            ? "border-mars/[0.15] bg-mars/[0.03] hover:border-mars/[0.25]"
+                            : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
+                        }`}
+                      >
+                        {isLeader && (
+                          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
+                        )}
+                        <div className="p-6 sm:p-8 md:p-10">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className={`w-1.5 h-1.5 rounded-full ${isLeader ? "bg-mars" : "bg-white/20"}`} />
+                                <p className={`text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold ${isLeader ? "text-mars/50" : "text-white/20"}`}>{tag}</p>
+                              </div>
+                              <h3 className="text-[22px] sm:text-[28px] md:text-[34px] font-black tracking-[-0.03em] leading-[0.95] group-hover:text-white transition-colors">
+                                {p.name}
+                              </h3>
+                              <p className="text-white/20 text-[11px] sm:text-[12px] mt-2 font-mercure italic">
+                                {p.mood} · {p.characters.length} characters · {p.duration}
+                              </p>
+                              <p className="text-white/30 text-[13px] sm:text-[14px] leading-[1.6] mt-4 max-w-xl">
+                                {p.image}
+                              </p>
+                            </div>
+                            <div className="shrink-0 mt-2">
+                              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all ${
+                                isLeader
+                                  ? "bg-mars/10 group-hover:bg-mars/20"
+                                  : "bg-white/[0.04] group-hover:bg-white/[0.08]"
+                              }`}>
+                                <svg viewBox="0 0 24 24" className={`w-5 h-5 fill-current ${isLeader ? "text-mars/50" : "text-white/20"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-            </div>
+            )}
 
 
-            {/* ═══ DIGITAL PLAY — natural transition ═══ */}
-            <div className="relative mt-0">
-              {!showDigital && play && !loading ? (
-                <button
-                  onClick={openDigital}
-                  className="w-full relative rounded-3xl border border-white/[0.06] bg-white/[0.02] hover:border-mars/[0.15] hover:bg-white/[0.03] transition-all duration-500 group overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
-                    <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-3">Or try it right here</p>
-                    <p className="text-white/50 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
-                      Simulate this play digitally
-                    </p>
-                    <p className="font-mercure text-white/15 text-[12px] sm:text-[14px] mt-3 group-hover:text-white/25 transition-colors">
-                      AI-generated reality play you can walk through now
-                    </p>
-                    <div className="mt-6 inline-flex items-center gap-2 text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/70 transition-colors">
-                      <span>Open Playmaker</span>
-                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
-                    </div>
+            {/* ═══ SELECTED PLAY — Live invitation ═══ */}
+            {selectedIdx !== null && play && (
+              <>
+                {/* Back to options */}
+                <div className="mb-6 sm:mb-8">
+                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
+                    ← Back to all plays
+                  </button>
+                </div>
+
+                {/* Live play card */}
+                <div className="relative rounded-3xl overflow-hidden mb-6 sm:mb-8">
+                  <div className="absolute inset-0">
+                    <img src="/space1.png" alt="" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a]/90 via-[#0a0a0a]/75 to-[#0a0a0a]/85" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
                   </div>
-                </button>
-              ) : showDigital && play ? (
-                <div className="relative">
-                  <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
+                  <div className="absolute inset-0 border border-mars/[0.1] rounded-3xl" />
+                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
 
-                  {/* Header */}
-                  <div className="flex items-center justify-between mb-6 sm:mb-8">
-                    <div className="flex items-center gap-2">
+                  <div className="relative z-10 p-8 sm:p-12 md:p-16 lg:p-20">
+                    <div className="inline-flex items-center gap-2 mb-10 sm:mb-14">
                       <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                      <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                      <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">
+                        {selectedIdx === 2 ? "Your leadership play" : "Your team play"}
+                      </p>
                     </div>
-                    <button onClick={() => setShowDigital(false)} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
-                      Close
-                    </button>
-                  </div>
 
-                  {/* Play title bar */}
-                  <div className="mb-6 sm:mb-8">
-                    <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
-                    <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
-                  </div>
+                    <h3 className="text-[40px] sm:text-[56px] md:text-[72px] lg:text-[86px] font-black tracking-[-0.04em] leading-[0.88] mb-6 sm:mb-8">
+                      {selectedIdx === 2 ? "Leaders" : liveRec.theme}
+                      <br />
+                      <span className="text-mars">on Mars</span>
+                    </h3>
 
-                  {/* ── STAGE SIMULATION — the hero ── */}
-                  <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+                    <p className="font-mercure text-white/35 text-[15px] sm:text-[18px] md:text-[20px] leading-[1.7] mb-10 sm:mb-14 max-w-xl">
+                      {play.image}
+                    </p>
 
-                    {simLoading && (
-                      <div className="text-center py-20 sm:py-28">
-                        <div className="inline-flex gap-2 mb-5">
-                          {[0, 1, 2].map((i) => (
-                            <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
-                          ))}
+                    <div className="flex flex-wrap gap-6 sm:gap-10 mb-10 sm:mb-14">
+                      {[
+                        { label: "Duration", value: liveRec.duration },
+                        { label: "Players", value: selectedIdx === 2 ? "you + guide" : liveRec.people },
+                        { label: "Stage", value: "Praha flagship" },
+                        { label: "Characters", value: `${play.characters.length}` },
+                      ].map((item) => (
+                        <div key={item.label}>
+                          <p className="text-white/12 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
+                          <p className="text-white/50 text-[13px] sm:text-[14px] font-bold">{item.value}</p>
                         </div>
-                        <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">Choreographing the stage...</p>
-                      </div>
-                    )}
+                      ))}
+                    </div>
 
-                    {simReady && play.simulation && play.simulationSteps && (
-                      <div className="p-4 sm:p-6">
-                        <StageSimulation
-                          steps={play.simulationSteps}
-                          characters={play.characters}
-                          simulation={play.simulation}
-                        />
-                      </div>
-                    )}
-
-                    {/* Perspectives — revealed after simulation */}
-                    {simReady && play.perspectives && play.perspectives.length > 0 && (
-                      <div className="p-6 sm:p-8 border-t border-white/[0.04]">
-                        <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives</p>
-                        <div className="space-y-3">
-                          {play.perspectives.map((p, i) => {
-                            const perspective = typeof p === "object" ? (p as Perspective) : null;
-                            return (
-                              <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
-                                {perspective ? (
-                                  <>
-                                    <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
-                                    <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
-                                  </>
-                                ) : (
-                                  <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Follow-up question — outside the card */}
-                  {simReady && play.followUpQuestion && (
-                    <div className="text-center mt-10 sm:mt-14">
-                      <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
-                      <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
-                      <button
-                        onClick={() => {
-                          const followUp = play.followUpQuestion!;
-                          reset();
-                          setTimeout(() => {
-                            setQuestion(followUp);
-                          }, 100);
-                        }}
-                        className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
+                      <a
+                        href="#contact"
+                        className="inline-flex items-center gap-3 text-[12px] sm:text-[14px] font-black uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-8 sm:px-10 py-4 sm:py-5 rounded-2xl transition-all shadow-[0_8px_40px_-4px_rgba(255,85,0,0.3)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.45)]"
                       >
-                        Ask this question →
-                      </button>
+                        Book this play
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                      </a>
+                      <p className="text-white/20 text-[12px] sm:text-[13px]">{liveRec.price}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ═══ DIGITAL SIMULATION ═══ */}
+                <div className="relative mt-0">
+                  {!showDigital ? (
+                    <button
+                      onClick={openDigital}
+                      className="w-full relative rounded-3xl border border-white/[0.06] bg-white/[0.02] hover:border-mars/[0.15] hover:bg-white/[0.03] transition-all duration-500 group overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
+                        <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-3">Or try it right here</p>
+                        <p className="text-white/50 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
+                          Simulate this play digitally
+                        </p>
+                        <p className="font-mercure text-white/15 text-[12px] sm:text-[14px] mt-3 group-hover:text-white/25 transition-colors">
+                          AI-generated reality play you can walk through now
+                        </p>
+                        <div className="mt-6 inline-flex items-center gap-2 text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/70 transition-colors">
+                          <span>Open Playmaker</span>
+                          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+                        </div>
+                      </div>
+                    </button>
+                  ) : (
+                    <div className="relative">
+                      <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
+
+                      <div className="flex items-center justify-between mb-6 sm:mb-8">
+                        <div className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                          <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                        </div>
+                        <button onClick={() => setShowDigital(false)} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
+                          Close
+                        </button>
+                      </div>
+
+                      <div className="mb-6 sm:mb-8">
+                        <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
+                        <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
+                      </div>
+
+                      <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+                        {simLoading && (
+                          <div className="text-center py-20 sm:py-28">
+                            <div className="inline-flex gap-2 mb-5">
+                              {[0, 1, 2].map((i) => (
+                                <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                              ))}
+                            </div>
+                            <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">Choreographing the stage...</p>
+                          </div>
+                        )}
+
+                        {simReady && play.simulation && play.simulationSteps && (
+                          <div className="p-4 sm:p-6">
+                            <StageSimulation
+                              simulationSteps={play.simulationSteps}
+                              characters={play.characters}
+                              simulation={play.simulation}
+                            />
+                          </div>
+                        )}
+
+                        {simReady && play.perspectives && play.perspectives.length > 0 && (
+                          <div className="p-6 sm:p-8 border-t border-white/[0.04]">
+                            <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives</p>
+                            <div className="space-y-3">
+                              {play.perspectives.map((p, i) => {
+                                const perspective = typeof p === "object" ? (p as Perspective) : null;
+                                return (
+                                  <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
+                                    {perspective ? (
+                                      <>
+                                        <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                        <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                      </>
+                                    ) : (
+                                      <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {simReady && play.followUpQuestion && (
+                        <div className="text-center mt-10 sm:mt-14">
+                          <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                          <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                          <button
+                            onClick={() => {
+                              const followUp = play.followUpQuestion!;
+                              reset();
+                              setTimeout(() => { setQuestion(followUp); }, 100);
+                            }}
+                            className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
+                          >
+                            Ask this question →
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-              ) : null}
-            </div>
+              </>
+            )}
 
           </div>
         </section>

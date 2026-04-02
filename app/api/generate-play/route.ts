@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body: GenerateRequest = await request.json();
-    const { question, context, lang, clientName } = body;
+    const { question, context, lang, clientName, count } = body;
 
     if (!question || !question.trim()) {
       return NextResponse.json(
@@ -41,13 +41,13 @@ export async function POST(request: NextRequest) {
 
     const message = await callWithRetry({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 4096,
+      max_tokens: count === 3 ? 8192 : 4096,
       temperature: 1.0,
       system: SYSTEM_PROMPT,
       messages: [
         {
           role: "user",
-          content: buildUserPrompt(question, context, lang, clientName),
+          content: buildUserPrompt(question, context, lang, clientName, count),
         },
       ],
     });

@@ -43,6 +43,7 @@ export type GenerateRequest = {
   context?: string;
   lang?: "en" | "sk" | "cs";
   clientName?: string;
+  count?: number;
 };
 
 export type GenerateResponse = {

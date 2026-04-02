@@ -196,7 +196,7 @@ BANNED PATTERNS (overused, avoid these): courts, trials, judgments, verdicts, au
 Consider using MULTIPLE ACTS (2-3 short acts showing contrasting scenarios) when the question contains a tension between two forces.
 
 ## Output Format
-Return a JSON array with exactly 1 play object:
+Return a JSON array with play objects (the user prompt specifies how many):
 [{
   "name": "Play Name (2-5 words, like a game title)",
   "image": "Game setup — where people stand and what each person represents. NO props or objects, only people (2-3 sentences)",
@@ -503,7 +503,8 @@ export function buildUserPrompt(
   question: string,
   context?: string,
   lang?: "en" | "sk" | "cs",
-  clientName?: string
+  clientName?: string,
+  count?: number
 ): string {
   const contextInstruction =
     context === "business"
@@ -559,19 +560,48 @@ PRAVIDLA:
     parts.push(langInstruction, "");
   }
 
-  parts.push(
-    `Generate 1 Systemic Play for this question:`,
-    "",
-    `"${question}"`,
-    "",
-    contextInstruction,
-    "",
-    `Creative angle for this play: ${angle}`,
-    "",
-    "Remember: A play is a GAME WITH RULES, not a scene. EVERYTHING on stage is played by PEOPLE — no chairs, no props, no objects. Characters are defined by FUNCTION (what they DO). There must be a CONSTRAINT that creates pressure. The ending must produce a CONCRETE OUTPUT (a word, a choice, a placement). The author's task must be genuinely risky.",
-    "",
-    "Do NOT include simulation or perspectives — this is Step 1 only.",
-  );
+  if (count && count === 3) {
+    // Business page: generate 3 plays with different angles
+    const angle2 = shuffled.slice(2, 4).join("\n");
+    const angle3 = shuffled.slice(4, 6).join("\n");
+    parts.push(
+      `Generate 3 DIFFERENT Systemic Plays for this question:`,
+      "",
+      `"${question}"`,
+      "",
+      `PLAY 1 — TEAM PLAY (for the whole team, business context):`,
+      contextInstruction,
+      `Creative angle: ${angle}`,
+      "",
+      `PLAY 2 — TEAM PLAY (completely different game mechanic, different characters, different approach):`,
+      contextInstruction,
+      `Creative angle: ${angle2}`,
+      "",
+      `PLAY 3 — LEADERS ON MARS (personal leadership play for the person who asked the question, designed to confront them directly):`,
+      `Context: PERSONAL LEADERSHIP question. This play is for the leader alone, not the team. Go deep. The author is confronted by forces from WITHIN themselves: their blind spots, their fears, their shadows. Use game mechanics that force genuine vulnerability: mirrors, coronations, funerals, confessions, walks through their own past. Characters should represent inner forces, not organizational roles.`,
+      `Creative angle: ${angle3}`,
+      "",
+      "CRITICAL: Each play MUST be radically different from the others. Different game mechanic. Different characters. Different mood. If two plays feel similar, delete one and start over.",
+      "",
+      "Remember: A play is a GAME WITH RULES, not a scene. EVERYTHING on stage is played by PEOPLE — no chairs, no props, no objects. Characters are defined by FUNCTION (what they DO). There must be a CONSTRAINT that creates pressure. The ending must produce a CONCRETE OUTPUT (a word, a choice, a placement). The author's task must be genuinely risky.",
+      "",
+      "Do NOT include simulation or perspectives — this is Step 1 only.",
+    );
+  } else {
+    parts.push(
+      `Generate 1 Systemic Play for this question:`,
+      "",
+      `"${question}"`,
+      "",
+      contextInstruction,
+      "",
+      `Creative angle for this play: ${angle}`,
+      "",
+      "Remember: A play is a GAME WITH RULES, not a scene. EVERYTHING on stage is played by PEOPLE — no chairs, no props, no objects. Characters are defined by FUNCTION (what they DO). There must be a CONSTRAINT that creates pressure. The ending must produce a CONCRETE OUTPUT (a word, a choice, a placement). The author's task must be genuinely risky.",
+      "",
+      "Do NOT include simulation or perspectives — this is Step 1 only.",
+    );
+  }
 
   if (clientName) {
     parts.push(
@@ -580,7 +610,7 @@ PRAVIDLA:
     );
   }
 
-  parts.push("", "Return ONLY a JSON array with 1 play object. No other text.");
+  parts.push("", `Return ONLY a JSON array with ${count === 3 ? "3 play objects" : "1 play object"}. No other text.`);
 
   if (lang === "sk") {
     parts.push("", "POSLEDNÁ KONTROLA: Prečítaj si KAŽDÉ slovo vo výstupe. Je to reálne slovenské slovo? Existuje v slovníku? Ak nie, nahraď ho. Slová ako 'súvet', 'odvážnosť', 'Hrobník', 'Smútočník' NEEXISTUJÚ.");
