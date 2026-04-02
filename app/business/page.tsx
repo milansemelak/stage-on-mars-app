@@ -1495,7 +1495,7 @@ export default function BusinessPage() {
                 <div className="relative mt-0">
                   {!showDigital ? (
                     <button
-                      onClick={openDigital}
+                      onClick={() => openDigital()}
                       className="w-full relative rounded-3xl border border-white/[0.12] bg-white/[0.05] hover:border-mars/[0.15] hover:bg-white/[0.06] transition-all duration-500 group overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
