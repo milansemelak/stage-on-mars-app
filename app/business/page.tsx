@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import type { Play } from "@/lib/types";
-import PlayCard from "@/components/PlayCard";
+import type { Play, Perspective } from "@/lib/types";
+import StageSimulation from "@/components/StageSimulation";
 
 /* ── Fade-in on scroll ── */
 function useFadeIn() {
@@ -126,7 +126,9 @@ export default function BusinessPage() {
   const [play, setPlay] = useState<Play | null>(null);
   const [askedQuestion, setAskedQuestion] = useState("");
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState<"live" | "digital">("live");
+  const [showDigital, setShowDigital] = useState(false);
+  const [simLoading, setSimLoading] = useState(false);
+  const [simReady, setSimReady] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
   // Contact form
@@ -145,7 +147,7 @@ export default function BusinessPage() {
     setError("");
     setPlay(null);
     setAskedQuestion(question);
-    setActiveTab("live");
+    setShowDigital(false);
 
     // Scroll to results
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
@@ -168,12 +170,51 @@ export default function BusinessPage() {
     }
   }
 
+  async function fetchSimulation(currentPlay: Play) {
+    setSimLoading(true);
+    setSimReady(false);
+    try {
+      const res = await fetch("/api/generate-mars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ play: currentPlay, question: askedQuestion || question, lang: "en" }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      const updated = {
+        ...currentPlay,
+        simulation: data.simulation,
+        simulationSteps: data.simulationSteps,
+        perspectives: data.perspectives,
+        followUpQuestion: data.followUpQuestion || undefined,
+      };
+      setPlay(updated);
+      setSimReady(true);
+    } catch {
+      setError("Simulation failed. Try again.");
+    } finally {
+      setSimLoading(false);
+    }
+  }
+
+  function openDigital() {
+    setShowDigital(true);
+    if (play && !play.simulation) {
+      fetchSimulation(play);
+    } else if (play?.simulation) {
+      setSimReady(true);
+    }
+  }
+
   function reset() {
     setQuestion("");
     setSubmitted(false);
     setPlay(null);
     setAskedQuestion("");
     setError("");
+    setShowDigital(false);
+    setSimLoading(false);
+    setSimReady(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -224,8 +265,10 @@ export default function BusinessPage() {
 
           <div className="text-center mb-10 sm:mb-14">
             <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-            <h1 className="text-[30px] sm:text-[48px] md:text-[56px] font-bold leading-[0.95] tracking-[-0.04em]">
-              Play with reality to see<br />what&apos;s <span className="text-mars">possible.</span>
+            <h1 className="text-[36px] sm:text-[56px] md:text-[72px] lg:text-[86px] font-bold leading-[0.92] tracking-[-0.04em]">
+              Play with reality.
+              <br />
+              <span className="text-mars">See what&apos;s possible.</span>
             </h1>
           </div>
 
@@ -234,7 +277,7 @@ export default function BusinessPage() {
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              placeholder="What's your question?"
+              placeholder="What's the one question that could change your reality?"
               rows={3}
               className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white/90 placeholder:text-white/20 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem]"
               onKeyDown={(e) => {
@@ -259,180 +302,252 @@ export default function BusinessPage() {
       </section>
 
 
-      {/* ── RESULTS: The page reshapes around your question ── */}
+      {/* ── RESULTS: Live invitation → Digital play → Social proof ── */}
       {submitted && (
-        <section ref={resultRef} className="relative px-4 sm:px-6 pb-16 sm:pb-28">
-          <div className="max-w-3xl mx-auto">
+        <section ref={resultRef} className="relative px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
 
             {/* The question echo */}
-            <div className="text-center mb-10 sm:mb-16 pt-8 sm:pt-12">
-              <p className="font-mercure italic text-white/20 text-[13px] sm:text-[15px]">&ldquo;{askedQuestion}&rdquo;</p>
-              <button onClick={reset} className="text-white/10 text-[10px] uppercase tracking-[0.15em] mt-3 hover:text-white/25 transition-colors">
-                Change question
+            <div className="text-center mb-12 sm:mb-20 pt-8 sm:pt-12">
+              <p className="text-white/10 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
+              <p className="font-mercure italic text-white/30 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{askedQuestion}&rdquo;</p>
+              <button onClick={reset} className="text-white/10 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/40 transition-colors">
+                Ask something else
               </button>
             </div>
 
-            {/* LIVE / DIGITAL tabs */}
-            <div className="flex justify-center gap-1 mb-10 sm:mb-14">
-              <button
-                onClick={() => setActiveTab("live")}
-                className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] transition-all ${
-                  activeTab === "live"
-                    ? "bg-mars text-white"
-                    : "bg-white/[0.04] text-white/30 hover:text-white/50"
-                }`}
-              >
-                Live on stage
-              </button>
-              <button
-                onClick={() => setActiveTab("digital")}
-                className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] transition-all ${
-                  activeTab === "digital"
-                    ? "bg-mars text-white"
-                    : "bg-white/[0.04] text-white/30 hover:text-white/50"
-                }`}
-              >
-                Digital play
-              </button>
-            </div>
+            {/* ═══ LIVE PLAY INVITATION ═══ */}
+            <div className="relative rounded-3xl overflow-hidden mb-6 sm:mb-8">
+              {/* Background: space photo with overlay */}
+              <div className="absolute inset-0">
+                <img src="/space1.png" alt="" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a]/90 via-[#0a0a0a]/75 to-[#0a0a0a]/85" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+              </div>
+              <div className="absolute inset-0 border border-mars/[0.1] rounded-3xl" />
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
 
+              <div className="relative z-10 p-8 sm:p-12 md:p-16 lg:p-20">
+                {/* Label */}
+                <div className="inline-flex items-center gap-2 mb-10 sm:mb-14">
+                  <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">We designed your live play</p>
+                </div>
 
-            {/* ── LIVE TAB ── */}
-            {activeTab === "live" && (
-              <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 sm:p-10 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(255,85,0,0.04)_0%,_transparent_60%)]" />
-                <div className="relative z-10">
-                  <p className="text-mars/40 text-[10px] uppercase tracking-[0.2em] mb-5">Your question becomes a live play</p>
+                {/* Title */}
+                <h3 className="text-[44px] sm:text-[64px] md:text-[80px] lg:text-[96px] font-black tracking-[-0.04em] leading-[0.88] mb-6 sm:mb-8">
+                  {liveRec.theme}
+                  <br />
+                  <span className="text-mars">on Mars</span>
+                </h3>
 
-                  <h3 className="text-[28px] sm:text-[40px] font-bold tracking-[-0.03em] mb-2">{liveRec.name}</h3>
-                  <p className="text-white/20 text-[12px] sm:text-[13px] mb-6">{liveRec.duration} · {liveRec.people} · {liveRec.price}</p>
+                <p className="font-mercure text-white/35 text-[15px] sm:text-[18px] md:text-[20px] leading-[1.7] mb-10 sm:mb-14 max-w-xl">
+                  {liveRec.pitch}
+                </p>
 
-                  <p className="font-mercure text-white/35 text-[14px] sm:text-[16px] leading-[1.7] mb-8 max-w-xl">
-                    {liveRec.pitch}
-                  </p>
+                {/* Details strip */}
+                <div className="flex flex-wrap gap-6 sm:gap-10 mb-10 sm:mb-14">
+                  {[
+                    { label: "Duration", value: liveRec.duration },
+                    { label: "Players", value: liveRec.people },
+                    { label: "Stage", value: "Praha flagship" },
+                    { label: "Guide", value: "Systemic facilitator" },
+                  ].map((item) => (
+                    <div key={item.label}>
+                      <p className="text-white/12 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
+                      <p className="text-white/50 text-[13px] sm:text-[14px] font-bold">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
 
+                {/* CTA */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
                   <a
                     href="#contact"
-                    className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-6 sm:px-8 py-3 rounded-full transition-all"
+                    className="inline-flex items-center gap-3 text-[12px] sm:text-[14px] font-black uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-8 sm:px-10 py-4 sm:py-5 rounded-2xl transition-all shadow-[0_8px_40px_-4px_rgba(255,85,0,0.3)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.45)]"
                   >
                     Book this play
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                    <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                   </a>
+                  <p className="text-white/20 text-[12px] sm:text-[13px]">{liveRec.price}</p>
                 </div>
               </div>
-            )}
+            </div>
 
 
-            {/* ── DIGITAL TAB ── */}
-            {activeTab === "digital" && (
-              <div>
-                {loading && (
-                  <div className="text-center py-16">
-                    <div className="inline-flex gap-1.5 mb-4">
-                      {[0, 1, 2].map((i) => (
-                        <div key={i} className="w-2 h-2 rounded-full bg-mars" style={{ animation: `glow-pulse 1s ease-in-out ${i * 0.2}s infinite` }} />
-                      ))}
+            {/* ═══ DIGITAL PLAY — natural transition ═══ */}
+            <div className="relative mt-0">
+              {!showDigital && play && !loading ? (
+                <button
+                  onClick={openDigital}
+                  className="w-full relative rounded-3xl border border-white/[0.06] bg-white/[0.02] hover:border-mars/[0.15] hover:bg-white/[0.03] transition-all duration-500 group overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
+                    <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-3">Or try it right here</p>
+                    <p className="text-white/50 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
+                      Simulate this play digitally
+                    </p>
+                    <p className="font-mercure text-white/15 text-[12px] sm:text-[14px] mt-3 group-hover:text-white/25 transition-colors">
+                      AI-generated reality play you can walk through now
+                    </p>
+                    <div className="mt-6 inline-flex items-center gap-2 text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/70 transition-colors">
+                      <span>Open Playmaker</span>
+                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
                     </div>
-                    <p className="text-white/25 text-[13px]">Creating your play...</p>
                   </div>
-                )}
+                </button>
+              ) : showDigital && play ? (
+                <div className="relative">
+                  <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
 
-                {error && (
-                  <div className="text-center py-12">
-                    <p className="text-mars/60 text-[13px]">{error}</p>
-                    <button onClick={generate} className="text-mars text-[11px] font-bold uppercase tracking-[0.15em] mt-4 hover:text-white transition-colors">
-                      Try again →
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-6 sm:mb-8">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                      <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                    </div>
+                    <button onClick={() => setShowDigital(false)} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
+                      Close
                     </button>
                   </div>
-                )}
 
-                {play && !loading && (
-                  <div>
-                    <PlayCard
-                      play={play}
-                      question={askedQuestion}
-                      onPlayUpdate={(updated) => setPlay(updated)}
-                      onAskQuestion={(q) => {
-                        setQuestion(q);
-                        setAskedQuestion(q);
-                        setLoading(true);
-                        setPlay(null);
-                        fetch("/api/generate-play", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ question: q, context, lang: "en" }),
-                        })
-                          .then((r) => r.json())
-                          .then((data) => { if (data.plays?.[0]) setPlay(data.plays[0]); })
-                          .catch(() => setError("Failed to generate."))
-                          .finally(() => setLoading(false));
-                      }}
-                    />
+                  {/* Play title bar */}
+                  <div className="mb-6 sm:mb-8">
+                    <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
+                    <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
                   </div>
-                )}
-              </div>
-            )}
+
+                  {/* ── STAGE SIMULATION — the hero ── */}
+                  <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+
+                    {simLoading && (
+                      <div className="text-center py-20 sm:py-28">
+                        <div className="inline-flex gap-2 mb-5">
+                          {[0, 1, 2].map((i) => (
+                            <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                          ))}
+                        </div>
+                        <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">Choreographing the stage...</p>
+                      </div>
+                    )}
+
+                    {simReady && play.simulation && play.simulationSteps && (
+                      <div className="p-4 sm:p-6">
+                        <StageSimulation
+                          steps={play.simulationSteps}
+                          characters={play.characters}
+                          simulation={play.simulation}
+                        />
+                      </div>
+                    )}
+
+                    {/* Perspectives — revealed after simulation */}
+                    {simReady && play.perspectives && play.perspectives.length > 0 && (
+                      <div className="p-6 sm:p-8 border-t border-white/[0.04]">
+                        <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives</p>
+                        <div className="space-y-3">
+                          {play.perspectives.map((p, i) => {
+                            const perspective = typeof p === "object" ? (p as Perspective) : null;
+                            return (
+                              <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
+                                {perspective ? (
+                                  <>
+                                    <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                    <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                  </>
+                                ) : (
+                                  <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Follow-up question — outside the card */}
+                  {simReady && play.followUpQuestion && (
+                    <div className="text-center mt-10 sm:mt-14">
+                      <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                      <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                      <button
+                        onClick={() => {
+                          const followUp = play.followUpQuestion!;
+                          reset();
+                          setTimeout(() => {
+                            setQuestion(followUp);
+                          }, 100);
+                        }}
+                        className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
+                      >
+                        Ask this question →
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : null}
+            </div>
 
           </div>
         </section>
       )}
 
 
-      {/* ── PROOF — always visible ── */}
+      {/* ── SOCIAL PROOF — always visible below ── */}
+      <FadeIn className="py-10 sm:py-16 px-4 mt-8 sm:mt-12">
+        <div className="max-w-3xl mx-auto">
+          <img src="/clients.png" alt="Clients" className="w-full invert opacity-[0.3]" />
+        </div>
+      </FadeIn>
+
+      <section className="py-12 sm:py-20">
+        <Voices />
+      </section>
+
+      {/* THE SPACE */}
       {!submitted && (
-        <>
-          <FadeIn className="py-10 sm:py-16 px-4">
-            <div className="max-w-3xl mx-auto">
-              <img src="/clients.png" alt="Clients" className="w-full invert opacity-[0.3]" />
-            </div>
-          </FadeIn>
-
-          <section className="py-12 sm:py-20">
-            <Voices />
-          </section>
-
-          {/* THE SPACE */}
-          <section className="relative h-[45vh] sm:h-[65vh]">
-            <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/40" />
-            <div className="absolute inset-0 flex items-end px-6 sm:px-12 pb-8 sm:pb-12">
-              <div className="flex items-end justify-between w-full">
-                <div>
-                  <p className="text-white/70 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
-                  <p className="font-mercure text-white/20 text-[11px] sm:text-[13px] mt-1">The flagship stage.</p>
-                </div>
-                <a href="/space" className="text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">Explore →</a>
+        <section className="relative h-[45vh] sm:h-[65vh]">
+          <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/40" />
+          <div className="absolute inset-0 flex items-end px-6 sm:px-12 pb-8 sm:pb-12">
+            <div className="flex items-end justify-between w-full">
+              <div>
+                <p className="text-white/70 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
+                <p className="font-mercure text-white/20 text-[11px] sm:text-[13px] mt-1">The flagship stage.</p>
               </div>
+              <a href="/space" className="text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">Explore →</a>
             </div>
-          </section>
-
-          {/* TEAM */}
-          <FadeIn className="py-16 sm:py-28 px-4 sm:px-6">
-            <div className="max-w-3xl mx-auto">
-              <div className="grid sm:grid-cols-2 gap-8 sm:gap-14 items-center">
-                <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
-                  <img src="/team.jpg" alt="Stage on Mars team" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/50 via-transparent to-transparent" />
-                </div>
-                <div className="space-y-4">
-                  <p className="font-mercure text-white/30 text-[13px] sm:text-[15px] leading-[1.7]">
-                    Born during COVID. Systemic constellations meets theatre meets improvisation.
-                  </p>
-                  <p className="font-mercure text-white/30 text-[13px] sm:text-[15px] leading-[1.7]">
-                    In 2023, David Vais joined. Platform built. Stage opened. Brand born.
-                  </p>
-                  <p className="text-white/50 text-[12px] sm:text-[13px] font-bold mt-4">
-                    800+ reality plays. London, Zurich, Bucharest.
-                  </p>
-                  <p className="text-white/15 text-[11px]">
-                    Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
-                  </p>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-        </>
+          </div>
+        </section>
       )}
+
+      {/* TEAM */}
+      <FadeIn className="py-16 sm:py-28 px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="grid sm:grid-cols-2 gap-8 sm:gap-14 items-center">
+            <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
+              <img src="/team.jpg" alt="Stage on Mars team" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/50 via-transparent to-transparent" />
+            </div>
+            <div className="space-y-4">
+              <p className="font-mercure text-white/30 text-[13px] sm:text-[15px] leading-[1.7]">
+                Born during COVID. Systemic constellations meets theatre meets improvisation.
+              </p>
+              <p className="font-mercure text-white/30 text-[13px] sm:text-[15px] leading-[1.7]">
+                In 2023, David Vais joined. Platform built. Stage opened. Brand born.
+              </p>
+              <p className="text-white/50 text-[12px] sm:text-[13px] font-bold mt-4">
+                800+ reality plays. London, Zurich, Bucharest.
+              </p>
+              <p className="text-white/15 text-[11px]">
+                Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
+              </p>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
 
 
       {/* ── CONTACT ── */}
