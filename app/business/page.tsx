@@ -532,7 +532,28 @@ export default function BusinessPage() {
                     >
                       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
-                        <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-3">Or try it right here</p>
+                        <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
+
+                        {/* Phone mockup icon */}
+                        <div className="inline-block mb-5 group-hover:scale-105 transition-transform duration-500">
+                          <div className="relative w-[44px] h-[72px] sm:w-[52px] sm:h-[84px] mx-auto">
+                            {/* Phone frame */}
+                            <div className="absolute inset-0 rounded-[10px] sm:rounded-[12px] border-2 border-white/15 group-hover:border-mars/30 transition-colors duration-500" />
+                            {/* Screen */}
+                            <div className="absolute inset-[3px] rounded-[7px] sm:rounded-[9px] bg-gradient-to-b from-mars/15 via-mars/5 to-transparent overflow-hidden">
+                              {/* Screen content — tiny stage dots */}
+                              <div className="absolute top-[30%] left-1/2 -translate-x-1/2 flex gap-[3px]">
+                                <div className="w-[3px] h-[3px] rounded-full bg-mars/60" />
+                                <div className="w-[3px] h-[3px] rounded-full bg-white/30" />
+                                <div className="w-[3px] h-[3px] rounded-full bg-white/30" />
+                              </div>
+                              <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[60%] h-[2px] bg-white/10 rounded-full" />
+                            </div>
+                            {/* Notch */}
+                            <div className="absolute top-[3px] left-1/2 -translate-x-1/2 w-[12px] sm:w-[14px] h-[3px] bg-[#0a0a0a] rounded-full" />
+                          </div>
+                        </div>
+
                         <p className="text-white/50 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
                           Simulate this play digitally
                         </p>
