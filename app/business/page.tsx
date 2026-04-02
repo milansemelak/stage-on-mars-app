@@ -923,7 +923,7 @@ export default function BusinessPage() {
             <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
-            <p className="text-mars text-[13px] sm:text-[15px] font-bold uppercase tracking-[0.2em] mb-5 sm:mb-6">Your team&apos;s question deserves a stage</p>
+            <p className="text-mars/70 text-[11px] sm:text-[13px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
             <h1 className="text-[clamp(32px,7vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center">
               Play with reality.
               <br />
@@ -1423,67 +1423,43 @@ export default function BusinessPage() {
             )}
 
 
-            {/* ═══ SELECTED PRODUCT — Live invitation ═══ */}
+            {/* ═══ SELECTED PRODUCT — compact stage box ═══ */}
             {selectedIdx !== null && products[selectedIdx] && (
               <>
                 {/* Back to options */}
-                <div className="mb-6 sm:mb-8">
-                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
+                <div className="mb-4 sm:mb-6">
+                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/50 text-[13px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                     ← Back to all plays
                   </button>
                 </div>
 
-                {/* Live play card */}
-                <div className="relative rounded-3xl overflow-hidden mb-6 sm:mb-8">
-                  <div className="absolute inset-0">
-                    <img src="/space1.png" alt="" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a]/90 via-[#0a0a0a]/75 to-[#0a0a0a]/85" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-                  </div>
-                  <div className="absolute inset-0 border border-mars/[0.1] rounded-3xl" />
-                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
+                {/* Play detail — stage box */}
+                <div className="max-w-3xl mx-auto mb-6 sm:mb-8">
+                  <div className="rounded-2xl border border-mars/[0.15] bg-mars/[0.03] overflow-hidden">
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                    <div className="p-6 sm:p-8">
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                        <p className="text-mars/70 text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold">{products[selectedIdx].tag}</p>
+                      </div>
 
-                  <div className="relative z-10 p-8 sm:p-12 md:p-16 lg:p-20">
-                    <div className="inline-flex items-center gap-2 mb-10 sm:mb-14">
-                      <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                      <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">
-                        {products[selectedIdx].tag}
-                      </p>
-                    </div>
+                      <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1] mb-3">
+                        {products[selectedIdx].theme}{" "}
+                        <span className="text-mars">on Mars</span>
+                      </h3>
 
-                    <h3 className="text-[40px] sm:text-[56px] md:text-[72px] lg:text-[86px] font-black tracking-[-0.04em] leading-[0.88] mb-6 sm:mb-8">
-                      {products[selectedIdx].theme}
-                      {" "}
-                      <span className="text-mars">on Mars</span>
-                    </h3>
+                      <p className="text-white/65 text-[14px] sm:text-[15px] leading-[1.6] mb-6 max-w-lg">{products[selectedIdx].pitch}</p>
 
-                    <p className="font-mercure text-white/55 text-[15px] sm:text-[18px] md:text-[20px] leading-[1.7] mb-10 sm:mb-14 max-w-xl">
-                      {products[selectedIdx].pitch}
-                    </p>
+                      <div className="flex flex-wrap gap-6 mb-6 text-[13px]">
+                        <div><span className="text-white/40">{products[selectedIdx].duration}</span></div>
+                        <div><span className="text-white/40">{products[selectedIdx].people}</span></div>
+                        <div><span className="text-white/40">{products[selectedIdx].price}</span></div>
+                      </div>
 
-                    <div className="flex flex-wrap gap-6 sm:gap-10 mb-10 sm:mb-14">
-                      {[
-                        { label: "Duration", value: products[selectedIdx].duration },
-                        { label: "Players", value: products[selectedIdx].people },
-                        { label: "Stage", value: "Praha flagship" },
-                        { label: "Guide", value: "Systemic facilitator" },
-                      ].map((item) => (
-                        <div key={item.label}>
-                          <p className="text-white/30 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
-                          <p className="text-white/70 text-[13px] sm:text-[14px] font-bold">{item.value}</p>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
-                      <a
-                        href="#contact"
-                        className="inline-flex items-center gap-3 text-[12px] sm:text-[14px] font-black uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-8 sm:px-10 py-4 sm:py-5 rounded-2xl transition-all shadow-[0_8px_40px_-4px_rgba(255,85,0,0.3)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.45)]"
-                      >
+                      <a href="#contact" className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.15em] text-mars hover:text-mars-light transition-colors">
                         Book this play
-                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                       </a>
-                      <p className="text-white/60 text-[13px] sm:text-[14px]">{products[selectedIdx].price}</p>
                     </div>
                   </div>
                 </div>
