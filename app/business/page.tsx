@@ -534,23 +534,43 @@ export default function BusinessPage() {
                       <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
                         <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
 
-                        {/* Phone mockup icon */}
+                        {/* Phone mockup with real stage UI */}
                         <div className="inline-block mb-5 group-hover:scale-105 transition-transform duration-500">
-                          <div className="relative w-[44px] h-[72px] sm:w-[52px] sm:h-[84px] mx-auto">
+                          <div className="relative w-[64px] h-[120px] sm:w-[80px] sm:h-[150px] mx-auto">
                             {/* Phone frame */}
-                            <div className="absolute inset-0 rounded-[10px] sm:rounded-[12px] border-2 border-white/15 group-hover:border-mars/30 transition-colors duration-500" />
-                            {/* Screen */}
-                            <div className="absolute inset-[3px] rounded-[7px] sm:rounded-[9px] bg-gradient-to-b from-mars/15 via-mars/5 to-transparent overflow-hidden">
-                              {/* Screen content — tiny stage dots */}
-                              <div className="absolute top-[30%] left-1/2 -translate-x-1/2 flex gap-[3px]">
-                                <div className="w-[3px] h-[3px] rounded-full bg-mars/60" />
-                                <div className="w-[3px] h-[3px] rounded-full bg-white/30" />
-                                <div className="w-[3px] h-[3px] rounded-full bg-white/30" />
-                              </div>
-                              <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[60%] h-[2px] bg-white/10 rounded-full" />
-                            </div>
+                            <div className="absolute inset-0 rounded-[12px] sm:rounded-[16px] border-2 border-white/15 group-hover:border-mars/30 transition-colors duration-500 bg-[#111]" />
                             {/* Notch */}
-                            <div className="absolute top-[3px] left-1/2 -translate-x-1/2 w-[12px] sm:w-[14px] h-[3px] bg-[#0a0a0a] rounded-full" />
+                            <div className="absolute top-[4px] left-1/2 -translate-x-1/2 w-[16px] sm:w-[20px] h-[3px] sm:h-[4px] bg-[#0a0a0a] rounded-full z-10" />
+                            {/* Screen */}
+                            <div className="absolute inset-[4px] sm:inset-[5px] rounded-[8px] sm:rounded-[11px] bg-[#0a0a0a] overflow-hidden">
+                              {/* Header bar */}
+                              <div className="px-[4px] pt-[8px] sm:pt-[10px]">
+                                <div className="w-[55%] h-[2px] sm:h-[2.5px] bg-white/20 rounded-full mb-[3px]" />
+                                <div className="w-[30%] h-[1.5px] bg-mars/30 rounded-full" />
+                              </div>
+                              {/* Stage circle */}
+                              <div className="relative mx-auto mt-[6px] sm:mt-[8px] w-[32px] h-[32px] sm:w-[42px] sm:h-[42px]">
+                                <div className="absolute inset-0 rounded-full border border-white/10" />
+                                <div className="absolute inset-[3px] sm:inset-[4px] rounded-full border border-dashed border-white/[0.06]" />
+                                {/* Character dots on stage */}
+                                <div className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[4px] h-[4px] sm:w-[5px] sm:h-[5px] rounded-full bg-mars/70" />
+                                <div className="absolute top-[55%] left-[25%] w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/30" />
+                                <div className="absolute top-[50%] right-[22%] w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/30" />
+                                <div className="absolute bottom-[18%] left-[45%] w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/20" />
+                              </div>
+                              {/* Narration text lines */}
+                              <div className="px-[5px] sm:px-[6px] mt-[5px] sm:mt-[7px] space-y-[2px]">
+                                <div className="w-full h-[1.5px] bg-white/8 rounded-full" />
+                                <div className="w-[80%] h-[1.5px] bg-white/8 rounded-full" />
+                                <div className="w-[60%] h-[1.5px] bg-white/6 rounded-full" />
+                              </div>
+                              {/* Bottom nav dots */}
+                              <div className="absolute bottom-[5px] sm:bottom-[7px] left-1/2 -translate-x-1/2 flex gap-[2px] sm:gap-[3px]">
+                                <div className="w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-mars/50" />
+                                <div className="w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/10" />
+                                <div className="w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/10" />
+                              </div>
+                            </div>
                           </div>
                         </div>
 
