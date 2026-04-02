@@ -1263,7 +1263,7 @@ export default function BusinessPage() {
                     <div key={i} className="rounded-xl border border-mars/[0.1] bg-mars/[0.02] p-5 flex flex-col">
                       <h4 className="text-[20px] sm:text-[22px] font-black tracking-[-0.03em] leading-[1] mb-1">
                         <span className="text-mars">{play.theme}</span>{" "}
-                        <span className="text-mars/60">on Mars</span>
+                        <span className="text-mars">on Mars</span>
                       </h4>
                       <p className="text-white/70 text-[9px] uppercase tracking-[0.15em] mt-1 mb-3">{play.desc}</p>
                       <p className="text-white/70 text-[11px] sm:text-[12px] leading-[1.55] flex-1">{play.pitch}</p>
