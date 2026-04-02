@@ -299,14 +299,6 @@ export default function BusinessPage() {
         @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
       `}</style>
 
-      {/* NAV */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-1000 ${entered ? "opacity-100" : "opacity-0"}`}>
-        <div className="max-w-6xl mx-auto flex items-center justify-end px-4 sm:px-6 py-4 sm:py-6">
-          <a href="#contact" className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-5 sm:px-7 py-2 sm:py-2.5 rounded-full transition-all">
-            Book a Play
-          </a>
-        </div>
-      </nav>
 
 
       {/* ── HERO: The question IS the experience ── */}
