@@ -339,7 +339,7 @@ export default function Home() {
               <div className="mx-6 sm:mx-10 h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
               <div className="px-6 sm:px-10 py-6 sm:py-8">
                 <p className="text-white/15 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-5">Trusted by</p>
-                <img src="/clients.png" alt="Clients" className="w-full max-w-md mx-auto invert opacity-[0.2] hover:opacity-[0.35] transition-opacity duration-700" />
+                <img src="/clients.png" alt="Clients" className="w-full max-w-md mx-auto invert opacity-[0.25] hover:opacity-[0.4] transition-opacity duration-700 mix-blend-screen" />
               </div>
             </div>
 
