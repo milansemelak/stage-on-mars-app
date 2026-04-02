@@ -12,7 +12,7 @@ function useFadeIn() {
     if (!el) return;
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { el.classList.add("is-visible"); obs.unobserve(el); } },
-      { threshold: 0.15 }
+      { threshold: 0.05 }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -762,7 +762,11 @@ export default function BusinessPage() {
   const [showDigital, setShowDigital] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
   const [simReady, setSimReady] = useState(false);
+  const [simPhase, setSimPhase] = useState<"cast" | "stage" | "perspectives">("cast");
+  const [simEnded, setSimEnded] = useState(false);
+  const [inlineDigital, setInlineDigital] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
+  const inlineRef = useRef<HTMLDivElement>(null);
 
   // Contact form
   const [formData, setFormData] = useState({ name: "", email: "", company: companyName, question: "" });
@@ -826,9 +830,11 @@ export default function BusinessPage() {
     setShowDigital(true);
     setPlayLoading(true);
     setError("");
+    setSimPhase("cast");
+    setSimEnded(false);
 
     try {
-      // Step 1: Generate the real play via API
+      // Step 1: Generate the play
       const res = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -840,7 +846,7 @@ export default function BusinessPage() {
         const generatedPlay = data.plays[0];
         setPlay(generatedPlay);
         setPlayLoading(false);
-        // Step 2: Auto-generate simulation
+        // Step 2: Generate choreography in background — user will start when ready
         fetchSimulation(generatedPlay);
       }
     } catch {
@@ -861,6 +867,9 @@ export default function BusinessPage() {
     setShowDigital(false);
     setSimLoading(false);
     setSimReady(false);
+    setSimPhase("cast");
+    setSimEnded(false);
+    setInlineDigital(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -880,17 +889,18 @@ export default function BusinessPage() {
     <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] overflow-x-hidden">
 
       <style jsx global>{`
-        .fade-section { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
+        .fade-section { opacity: 0; transform: translateY(12px); transition: opacity 0.7s ease, transform 0.7s ease; }
         .fade-section.is-visible { opacity: 1; transform: translateY(0); }
         @keyframes glow-pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.15); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
 
 
       {/* ── HERO: The question IS the experience ── */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "pt-24 sm:pt-32"} flex flex-col items-center px-4 relative overflow-hidden transition-all duration-700`}>
 
         {/* Layered ambient glows */}
         <div
@@ -921,72 +931,73 @@ export default function BusinessPage() {
             </h1>
           </div>
 
-          <div className="w-full max-w-lg">
+          <div className="w-full max-w-3xl">
 
-          {/* THE INPUT — mars-atmospheric container */}
+          {/* THE INPUT — stage box design */}
           <div className="relative group/input">
-            {/* Outer glow ring — reacts to focus */}
-            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-b from-mars/30 via-white/[0.08] to-transparent opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-700 blur-[1px]" />
-            {/* Subtle ambient glow behind the box */}
-            <div className="absolute -inset-6 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-1000" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
+            {/* Ambient glow behind — reacts to focus */}
+            <div className="absolute -inset-8 sm:-inset-12 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
 
-            <div className="relative rounded-2xl border border-white/[0.12] group-focus-within/input:border-mars/25 bg-white/[0.025] backdrop-blur-sm px-5 sm:px-6 pt-5 pb-4 transition-all duration-500">
-              {/* Tiny label */}
-              <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] mb-3">Your question</p>
+            <div className="relative rounded-2xl border border-white/[0.06] group-focus-within/input:border-white/[0.1] bg-white/[0.015] transition-all duration-700 overflow-hidden">
+              {/* Top accent line */}
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
 
-              <textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What question would you put on stage?"
-                rows={2}
-                className="w-full bg-transparent border-0 px-0 pt-0 pb-2 text-white text-[17px] sm:text-[20px] placeholder:text-white/35 focus:outline-none resize-none leading-relaxed"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                }}
-              />
+              <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
+                <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Your question</p>
 
-              {/* Divider line */}
-              <div className="h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent my-2" />
+                <textarea
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="What question would you put on stage?"
+                  rows={2}
+                  className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                  style={{ caretColor: "#FF5500" }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                  }}
+                />
 
-              <input
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Company name (optional)"
-                className="w-full bg-transparent border-0 px-0 py-2 text-white/60 placeholder:text-white/25 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
-              />
+                {/* Divider */}
+                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mt-2 mb-3" />
+
+                <input
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Company name (optional)"
+                  className="w-full bg-transparent border-0 px-0 py-1 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
+                />
+              </div>
             </div>
           </div>
 
           <button
             onClick={generate}
             disabled={!question.trim()}
-            className={`w-full mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.25em] uppercase transition-all duration-500 ${
+            className={`w-full mt-6 sm:mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.25em] uppercase transition-all duration-500 ${
               question.trim()
                 ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)]"
-                : "text-white/20 border border-white/[0.12] cursor-not-allowed"
+                : "text-white/20 border border-white/[0.08] cursor-not-allowed"
             }`}
           >
             Play
           </button>
 
 
-          </div>{/* end max-w-lg */}
+          </div>{/* end max-w-3xl */}
 
           {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
-          {!submitted && (
-            <div className="w-full max-w-3xl mt-16 sm:mt-24">
+          {!submitted && !inlineDigital && (
+            <div className="w-full max-w-3xl mt-8 sm:mt-10">
               <button
                 onClick={() => {
                   if (!question.trim()) return;
-                  setSubmitted(true);
                   setAskedQuestion(question);
-                  setProducts(deriveProducts(question, companyName));
-                  setSelectedIdx(0);
+                  setInlineDigital(true);
                   openDigital();
-                  setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                  setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
                 }}
                 disabled={!question.trim()}
-                className={`w-full group transition-all duration-500 ${!question.trim() ? "opacity-30 cursor-not-allowed" : "opacity-100 hover:scale-[1.01]"}`}
+                className={`w-full group transition-all duration-500 ${!question.trim() ? "opacity-70" : "opacity-100 hover:scale-[1.01]"}`}
               >
                 <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
                   <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
@@ -1048,17 +1059,235 @@ export default function BusinessPage() {
             </div>
           )}
 
+          {/* ── INLINE DIGITAL PLAYMAKER ── */}
+          {inlineDigital && !submitted && (
+            <div ref={inlineRef} className="w-full max-w-3xl mt-6 sm:mt-8">
+              <div className="relative">
+                <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
+
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6 sm:mb-8">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                    <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                  </div>
+                  <button onClick={() => { setInlineDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
+                    Close
+                  </button>
+                </div>
+
+                {/* Loading state */}
+                {playLoading && (
+                  <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                    <div className="text-center py-20 sm:py-28">
+                      <div className="inline-flex gap-2 mb-5">
+                        {[0, 1, 2].map((i) => (
+                          <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                        ))}
+                      </div>
+                      <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Gaming interface */}
+                {play && !playLoading && (
+                  <div className="space-y-4">
+
+                    {/* Phase nav tabs */}
+                    <div className="flex items-center gap-1 rounded-xl bg-white/[0.02] border border-white/[0.06] p-1">
+                      {[
+                        { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
+                        { id: "stage" as const, label: "Stage", icon: "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15l3.5-4.5 2.5 3.01L14.5 9l4.5 6H5z" },
+                        { id: "perspectives" as const, label: "Perspectives", icon: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" },
+                      ].map((tab) => (
+                        <button
+                          key={tab.id}
+                          onClick={() => {
+                            if (tab.id === "stage" && !simReady) return;
+                            if (tab.id === "perspectives" && !simEnded) return;
+                            setSimPhase(tab.id);
+                          }}
+                          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-bold transition-all ${
+                            simPhase === tab.id
+                              ? "bg-white/[0.06] text-white/80"
+                              : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
+                              ? "text-white/10 cursor-not-allowed"
+                              : "text-white/25 hover:text-white/40"
+                          }`}
+                        >
+                          <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d={tab.icon} /></svg>
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Cast phase */}
+                    {simPhase === "cast" && (
+                      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                        <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
+                          <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
+                          <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
+                        </div>
+                        <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                          <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {play.characters.map((char, i) => (
+                              <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
+                                <div className="flex items-center gap-2.5 mb-2.5">
+                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">{char.name.charAt(0)}</div>
+                                  <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
+                                </div>
+                                <p className="text-white/25 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        {play.image && (
+                          <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
+                            <p className="text-mars/30 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                            <p className="text-white/35 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
+                          </div>
+                        )}
+                        <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                          <button
+                            onClick={() => { if (simReady) setSimPhase("stage"); }}
+                            disabled={!simReady}
+                            className={`w-full py-4 rounded-xl text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] transition-all ${
+                              simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.02] border border-white/[0.04] text-white/15 cursor-wait"
+                            }`}
+                          >
+                            {simReady ? (
+                              <span className="flex items-center justify-center gap-2">
+                                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
+                                Enter the Stage
+                              </span>
+                            ) : (
+                              <span className="flex items-center justify-center gap-2">
+                                <div className="inline-flex gap-1.5">
+                                  {[0, 1, 2].map((i) => (
+                                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                                  ))}
+                                </div>
+                                Choreographing the stage...
+                              </span>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Stage phase */}
+                    {simPhase === "stage" && simReady && play.simulationSteps && (
+                      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                        <div className="p-4 sm:p-6">
+                          <StageSimulation simulationSteps={play.simulationSteps} characters={play.characters} simulation={play.simulation} onEnd={() => { setSimEnded(true); setSimPhase("perspectives"); }} />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Perspectives phase */}
+                    {simPhase === "perspectives" && simEnded && (
+                      <div className="space-y-4">
+                        {play.perspectives && play.perspectives.length > 0 && (
+                          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                            <div className="p-6 sm:p-8">
+                              <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                              <div className="space-y-3">
+                                {play.perspectives.map((p, i) => {
+                                  const perspective = typeof p === "object" ? (p as Perspective) : null;
+                                  return (
+                                    <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
+                                      {perspective ? (
+                                        <div className="flex gap-3">
+                                          <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">{perspective.character.charAt(0)}</div>
+                                          <div>
+                                            <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                            <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                        {play.followUpQuestion && (
+                          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                            <div className="text-center py-8 sm:py-10 px-6">
+                              <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                              <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                              <button onClick={() => { const followUp = play.followUpQuestion!; reset(); setTimeout(() => { setQuestion(followUp); }, 100); }} className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
+                                Ask this question →
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                        <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.04] text-white/20 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/35 hover:border-white/[0.08] transition-all">
+                          ← Back to cast
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {error && <p className="text-red-400/60 text-[12px] mt-4 text-center">{error}</p>}
+              </div>
+            </div>
+          )}
+
+          {/* ── BESTSELLING PLAYS ── */}
+          {!submitted && (
+            <div className="w-full max-w-3xl mt-6 sm:mt-8">
+              <div className="rounded-2xl border border-mars/[0.12] bg-mars/[0.03] overflow-hidden">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-2">
+                  <p className="text-mars/50 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-1">Bestselling plays</p>
+                  <p className="text-white/20 text-[11px] font-mercure">Most booked by leadership teams</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-6 sm:px-8 pb-6 sm:pb-8">
+                  {[
+                    { theme: "Strategy", desc: "Half-day · 8–30 people", pitch: "Where is your company really heading — and what's pulling it off course? Your team maps the forces on stage. The real strategy emerges." },
+                    { theme: "Vision", desc: "Half-day · 8–30 people", pitch: "What does your company look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it." },
+                    { theme: "Creativity", desc: "Half-day · 8–30 people", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
+                  ].map((play, i) => (
+                    <div key={i} className="rounded-xl border border-mars/[0.1] bg-mars/[0.02] p-5 flex flex-col">
+                      <h4 className="text-[20px] sm:text-[22px] font-black tracking-[-0.03em] leading-[1] mb-1">
+                        <span className="text-mars">{play.theme}</span>{" "}
+                        <span className="text-mars/40">on Mars</span>
+                      </h4>
+                      <p className="text-white/15 text-[9px] uppercase tracking-[0.15em] mt-1 mb-3">{play.desc}</p>
+                      <p className="text-white/30 text-[11px] sm:text-[12px] leading-[1.55] flex-1">{play.pitch}</p>
+                      <a href="#contact" className="mt-4 block w-full text-center py-2.5 rounded-lg border border-mars/15 text-mars/60 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:text-mars/80 hover:border-mars/25 transition-all">
+                        I want this
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </section>
 
 
       {/* ── RESULTS ── */}
       {submitted && (
-        <section ref={resultRef} className="relative px-4 sm:px-6">
+        <section ref={resultRef} className="relative px-4">
           <div className="max-w-5xl mx-auto">
 
             {/* The question echo */}
-            <div className="text-center mb-12 sm:mb-16 pt-8 sm:pt-12">
+            <div className="text-center mb-8 sm:mb-10 pt-4 sm:pt-6">
               <p className="text-white/10 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
               <p className="font-mercure italic text-white/30 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{askedQuestion}&rdquo;</p>
               <button onClick={reset} className="text-white/10 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/40 transition-colors">
@@ -1091,11 +1320,12 @@ export default function BusinessPage() {
                           {/* Tag */}
                           <p className={`text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/25"}`}>{p.tag}</p>
 
-                          {/* Theme — big bold keyword */}
-                          <h3 className={`text-[32px] sm:text-[38px] font-black tracking-[-0.04em] leading-[0.9] mb-1 ${isLeader ? "text-mars" : "text-white/90"}`}>
-                            {p.theme}
+                          {/* Theme — full play name */}
+                          <h3 className={`text-[28px] sm:text-[34px] font-black tracking-[-0.04em] leading-[0.95] mb-4 ${isLeader ? "" : ""}`}>
+                            <span className={isLeader ? "text-mars" : "text-white/90"}>{p.theme}</span>
+                            {" "}
+                            <span className={isLeader ? "text-mars/50" : "text-white/35"}>on Mars</span>
                           </h3>
-                          <p className="text-white/25 text-[12px] sm:text-[13px] font-medium tracking-[-0.01em] mb-4">on Mars</p>
 
                           {/* Pitch */}
                           <p className="text-white/30 text-[12px] sm:text-[13px] leading-[1.55] mb-6 flex-1">
@@ -1120,6 +1350,74 @@ export default function BusinessPage() {
                       </button>
                     );
                   })}
+                </div>
+
+                {/* ── DIGITAL PLAYMAKER — below product cards ── */}
+                <div className="mt-8 sm:mt-10">
+                  <button
+                    onClick={() => {
+                      setSelectedIdx(0);
+                      openDigital();
+                    }}
+                    className="w-full group transition-all duration-500 hover:scale-[1.005]"
+                  >
+                    <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+
+                      <div className="grid sm:grid-cols-2 items-center">
+                        {/* Left — phone mockup */}
+                        <div className="flex items-center justify-center py-8 sm:py-12">
+                          <div className="group-hover:scale-105 transition-transform duration-700">
+                            <svg width="80" height="150" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[100px] sm:h-[188px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
+                              <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
+                              <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow3)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                              <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
+                              <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+                              <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                              <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
+                              <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                              <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
+                              <circle cx="45" cy="68" r="24" fill="url(#stageGlow3)" />
+                              <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
+                              <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
+                              <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
+                              <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
+                              <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                              <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                              <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                              <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
+                              <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
+                              <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
+                              <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
+                              <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                              <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                              <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
+                              <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
+                              <defs>
+                                <radialGradient id="stageGlow3" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
+                                <linearGradient id="phoneGlow3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
+                              </defs>
+                            </svg>
+                          </div>
+                        </div>
+
+                        {/* Right — copy */}
+                        <div className="px-6 sm:px-8 pb-8 sm:py-12 text-left">
+                          <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                          <h3 className="text-[20px] sm:text-[24px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
+                            Or try it right here.
+                          </h3>
+                          <p className="text-white/25 text-[12px] sm:text-[13px] leading-[1.6] mb-5 max-w-xs">
+                            AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
+                          </p>
+                          <div className="inline-flex items-center gap-2 text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
+                            <span>Open Playmaker</span>
+                            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
                 </div>
               </div>
             )}
@@ -1155,7 +1453,7 @@ export default function BusinessPage() {
 
                     <h3 className="text-[40px] sm:text-[56px] md:text-[72px] lg:text-[86px] font-black tracking-[-0.04em] leading-[0.88] mb-6 sm:mb-8">
                       {products[selectedIdx].theme}
-                      <br />
+                      {" "}
                       <span className="text-mars">on Mars</span>
                     </h3>
 
@@ -1287,6 +1585,7 @@ export default function BusinessPage() {
                     <div className="relative">
                       <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
 
+                      {/* Header */}
                       <div className="flex items-center justify-between mb-6 sm:mb-8">
                         <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
@@ -1297,75 +1596,215 @@ export default function BusinessPage() {
                         </button>
                       </div>
 
-                      {play && (
-                        <div className="mb-6 sm:mb-8">
-                          <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
-                          <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
-                        </div>
-                      )}
-
-                      <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
-                        {(playLoading || simLoading) && (
+                      {/* Loading state */}
+                      {playLoading && (
+                        <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
                           <div className="text-center py-20 sm:py-28">
                             <div className="inline-flex gap-2 mb-5">
                               {[0, 1, 2].map((i) => (
                                 <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
                               ))}
                             </div>
-                            <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">
-                              {playLoading ? "Creating your play..." : "Choreographing the stage..."}
-                            </p>
+                            <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
                           </div>
-                        )}
+                        </div>
+                      )}
 
-                        {simReady && play && play.simulation && play.simulationSteps && (
-                          <div className="p-4 sm:p-6">
-                            <StageSimulation
-                              simulationSteps={play.simulationSteps}
-                              characters={play.characters}
-                              simulation={play.simulation}
-                            />
+                      {/* ── GAMING INTERFACE ── */}
+                      {play && !playLoading && (
+                        <div className="space-y-4">
+
+                          {/* Phase nav tabs */}
+                          <div className="flex items-center gap-1 rounded-xl bg-white/[0.02] border border-white/[0.06] p-1">
+                            {[
+                              { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
+                              { id: "stage" as const, label: "Stage", icon: "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15l3.5-4.5 2.5 3.01L14.5 9l4.5 6H5z" },
+                              { id: "perspectives" as const, label: "Perspectives", icon: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" },
+                            ].map((tab) => (
+                              <button
+                                key={tab.id}
+                                onClick={() => {
+                                  if (tab.id === "stage" && !simReady) return;
+                                  if (tab.id === "perspectives" && !simEnded) return;
+                                  setSimPhase(tab.id);
+                                }}
+                                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-bold transition-all ${
+                                  simPhase === tab.id
+                                    ? "bg-white/[0.06] text-white/80"
+                                    : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
+                                    ? "text-white/10 cursor-not-allowed"
+                                    : "text-white/25 hover:text-white/40"
+                                }`}
+                              >
+                                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d={tab.icon} /></svg>
+                                {tab.label}
+                              </button>
+                            ))}
                           </div>
-                        )}
 
-                        {simReady && play && play.perspectives && play.perspectives.length > 0 && (
-                          <div className="p-6 sm:p-8 border-t border-white/[0.04]">
-                            <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives</p>
-                            <div className="space-y-3">
-                              {play.perspectives.map((p, i) => {
-                                const perspective = typeof p === "object" ? (p as Perspective) : null;
-                                return (
-                                  <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
-                                    {perspective ? (
-                                      <>
-                                        <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
-                                        <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
-                                      </>
-                                    ) : (
-                                      <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
-                                    )}
-                                  </div>
-                                );
-                              })}
+                          {/* ── CAST PHASE ── */}
+                          {simPhase === "cast" && (
+                            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+
+                              {/* Play header */}
+                              <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
+                                <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
+                                <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
+                              </div>
+
+                              {/* Character cards */}
+                              <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                                <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                  {play.characters.map((char, i) => (
+                                    <div
+                                      key={i}
+                                      className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all"
+                                      style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}
+                                    >
+                                      <div className="flex items-center gap-2.5 mb-2.5">
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">
+                                          {char.name.charAt(0)}
+                                        </div>
+                                        <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
+                                      </div>
+                                      <p className="text-white/25 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Play suggestion / narrative setup */}
+                              {play.image && (
+                                <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
+                                  <p className="text-mars/30 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                                  <p className="text-white/35 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
+                                </div>
+                              )}
+
+                              {/* Start button */}
+                              <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                                <button
+                                  onClick={() => {
+                                    if (simReady) {
+                                      setSimPhase("stage");
+                                    }
+                                  }}
+                                  disabled={!simReady}
+                                  className={`w-full py-4 rounded-xl text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] transition-all ${
+                                    simReady
+                                      ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer"
+                                      : "bg-white/[0.02] border border-white/[0.04] text-white/15 cursor-wait"
+                                  }`}
+                                >
+                                  {simReady ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
+                                      Enter the Stage
+                                    </span>
+                                  ) : (
+                                    <span className="flex items-center justify-center gap-2">
+                                      <div className="inline-flex gap-1.5">
+                                        {[0, 1, 2].map((i) => (
+                                          <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                                        ))}
+                                      </div>
+                                      Choreographing the stage...
+                                    </span>
+                                  )}
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </div>
+                          )}
 
-                      {simReady && play && play.followUpQuestion && (
-                        <div className="text-center mt-10 sm:mt-14">
-                          <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
-                          <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
-                          <button
-                            onClick={() => {
-                              const followUp = play.followUpQuestion!;
-                              reset();
-                              setTimeout(() => { setQuestion(followUp); }, 100);
-                            }}
-                            className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
-                          >
-                            Ask this question →
-                          </button>
+                          {/* ── STAGE PHASE ── */}
+                          {simPhase === "stage" && simReady && play.simulationSteps && (
+                            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                              <div className="p-4 sm:p-6">
+                                <StageSimulation
+                                  simulationSteps={play.simulationSteps}
+                                  characters={play.characters}
+                                  simulation={play.simulation}
+                                  onEnd={() => {
+                                    setSimEnded(true);
+                                    setSimPhase("perspectives");
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          )}
+
+                          {/* ── PERSPECTIVES PHASE ── */}
+                          {simPhase === "perspectives" && simEnded && (
+                            <div className="space-y-4">
+                              {/* Perspectives cards */}
+                              {play.perspectives && play.perspectives.length > 0 && (
+                                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                                  <div className="p-6 sm:p-8">
+                                    <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                                    <div className="space-y-3">
+                                      {play.perspectives.map((p, i) => {
+                                        const perspective = typeof p === "object" ? (p as Perspective) : null;
+                                        return (
+                                          <div
+                                            key={i}
+                                            className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all"
+                                            style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}
+                                          >
+                                            {perspective ? (
+                                              <div className="flex gap-3">
+                                                <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">
+                                                  {perspective.character.charAt(0)}
+                                                </div>
+                                                <div>
+                                                  <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                                  <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                                </div>
+                                              </div>
+                                            ) : (
+                                              <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                            )}
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Follow-up question */}
+                              {play.followUpQuestion && (
+                                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                                  <div className="text-center py-8 sm:py-10 px-6">
+                                    <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                                    <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                                    <button
+                                      onClick={() => {
+                                        const followUp = play.followUpQuestion!;
+                                        reset();
+                                        setTimeout(() => { setQuestion(followUp); }, 100);
+                                      }}
+                                      className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
+                                    >
+                                      Ask this question →
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Replay button */}
+                              <button
+                                onClick={() => { setSimEnded(false); setSimPhase("cast"); }}
+                                className="w-full py-3 rounded-xl border border-white/[0.04] text-white/20 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/35 hover:border-white/[0.08] transition-all"
+                              >
+                                ← Back to cast
+                              </button>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -1380,14 +1819,14 @@ export default function BusinessPage() {
 
 
       {/* ── SOCIAL PROOF + VOICES — compact atmospheric block ── */}
-      <FadeIn className="py-16 sm:py-24 px-4 mt-8 sm:mt-12">
+      <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
           <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
             {/* Top accent */}
             <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
 
             {/* Voices quote — top section */}
-            <div className="px-6 sm:px-10 pt-8 sm:pt-10 pb-6 sm:pb-8">
+            <div className="px-6 sm:px-10 pt-6 sm:pt-8 pb-4 sm:pb-5">
               <Voices />
             </div>
 
@@ -1395,9 +1834,9 @@ export default function BusinessPage() {
             <div className="mx-6 sm:mx-10 h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
             {/* Client logos — transparent blend */}
-            <div className="px-6 sm:px-10 py-6 sm:py-8">
-              <p className="text-white/15 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-5">Trusted by</p>
-              <img src="/clients.png" alt="Clients" className="w-full max-w-xl mx-auto invert opacity-[0.25] hover:opacity-[0.4] transition-opacity duration-700 mix-blend-screen" />
+            <div className="px-6 sm:px-10 py-4 sm:py-5">
+              <p className="text-white/15 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-3">Trusted by</p>
+              <img src="/Frame-52.png" alt="Clients" className="w-full max-w-xl mx-auto opacity-[0.4] hover:opacity-[0.6] transition-opacity duration-700" />
             </div>
           </div>
         </div>
@@ -1405,7 +1844,7 @@ export default function BusinessPage() {
 
       {/* ── THE SPACE — Stage box ── */}
       {!submitted && (
-        <FadeIn className="px-4 sm:px-6 pb-6 sm:pb-8">
+        <FadeIn className="px-4 py-3 sm:py-4">
           <div className="max-w-3xl mx-auto">
             <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
@@ -1431,7 +1870,7 @@ export default function BusinessPage() {
       )}
 
       {/* ── TEAM — Stage box ── */}
-      <FadeIn className="px-4 sm:px-6 pb-6 sm:pb-8">
+      <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
           <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
             <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
@@ -1467,7 +1906,7 @@ export default function BusinessPage() {
 
 
       {/* ── CONTACT — Stage box ── */}
-      <FadeIn className="px-4 sm:px-6 pb-16 sm:pb-24">
+      <FadeIn className="px-4 pt-3 sm:pt-4 pb-16 sm:pb-24">
         <div className="max-w-3xl mx-auto">
           <div id="contact" className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
             <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
