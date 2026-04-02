@@ -45,7 +45,7 @@ function Voices() {
   }, []);
   return (
     <div className="h-[120px] sm:h-[140px] flex flex-col items-center justify-center text-center">
-      <p className={`font-mercure italic text-white/50 text-[14px] sm:text-[18px] md:text-[22px] leading-[1.4] max-w-xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+      <p className={`font-mercure italic text-white/70 text-[14px] sm:text-[18px] md:text-[22px] leading-[1.4] max-w-xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
         &ldquo;{VOICES[idx].text}&rdquo;
       </p>
       <p className={`text-mars/25 text-[10px] mt-3 transition-all duration-700 delay-100 ${visible ? "opacity-100" : "opacity-0"}`}>
@@ -923,7 +923,7 @@ export default function BusinessPage() {
             <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
-            <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
+            <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
             <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
               Play with reality.
               <br />
@@ -938,19 +938,19 @@ export default function BusinessPage() {
             {/* Ambient glow behind — reacts to focus */}
             <div className="absolute -inset-8 sm:-inset-12 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
 
-            <div className="relative rounded-2xl border border-white/[0.06] group-focus-within/input:border-white/[0.1] bg-white/[0.015] transition-all duration-700 overflow-hidden">
+            <div className="relative rounded-2xl border border-white/[0.12] group-focus-within/input:border-white/[0.1] bg-white/[0.04] transition-all duration-700 overflow-hidden">
               {/* Top accent line */}
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
               <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
-                <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Your question</p>
+                <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Your question</p>
 
                 <textarea
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="What question would you put on stage?"
                   rows={2}
-                  className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                  className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/65 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                   style={{ caretColor: "#FF5500" }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
@@ -958,13 +958,13 @@ export default function BusinessPage() {
                 />
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mt-2 mb-3" />
+                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent mt-2 mb-3" />
 
                 <input
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="Company name (optional)"
-                  className="w-full bg-transparent border-0 px-0 py-1 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
+                  className="w-full bg-transparent border-0 px-0 py-1 text-white/70 placeholder:text-white/60 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
                 />
               </div>
             </div>
@@ -976,7 +976,7 @@ export default function BusinessPage() {
             className={`w-full mt-6 sm:mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.25em] uppercase transition-all duration-500 ${
               question.trim()
                 ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)]"
-                : "text-white/20 border border-white/[0.08] cursor-not-allowed"
+                : "text-white/60 border border-white/[0.15] cursor-not-allowed"
             }`}
           >
             Play
@@ -999,8 +999,8 @@ export default function BusinessPage() {
                 disabled={!question.trim()}
                 className={`w-full group transition-all duration-500 ${!question.trim() ? "opacity-70" : "opacity-100 hover:scale-[1.01]"}`}
               >
-                <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
                   <div className="grid sm:grid-cols-2 items-center">
                     {/* Left — phone mockup */}
@@ -1041,14 +1041,14 @@ export default function BusinessPage() {
 
                     {/* Right — copy */}
                     <div className="px-6 sm:px-8 pb-10 sm:py-14 text-left">
-                      <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                      <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
                       <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
                         Try it right here.
                       </h3>
-                      <p className="text-white/25 text-[13px] sm:text-[14px] leading-[1.6] mb-6 max-w-xs">
+                      <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-6 max-w-xs">
                         AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
                       </p>
-                      <div className="inline-flex items-center gap-2 text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
+                      <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
                         <span>Open Playmaker</span>
                         <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                       </div>
@@ -1069,24 +1069,24 @@ export default function BusinessPage() {
                 <div className="flex items-center justify-between mb-6 sm:mb-8">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                    <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                    <p className="text-mars/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
                   </div>
-                  <button onClick={() => { setInlineDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
+                  <button onClick={() => { setInlineDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                     Close
                   </button>
                 </div>
 
                 {/* Loading state */}
                 {playLoading && (
-                  <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                  <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                     <div className="text-center py-20 sm:py-28">
                       <div className="inline-flex gap-2 mb-5">
                         {[0, 1, 2].map((i) => (
                           <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
                         ))}
                       </div>
-                      <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
+                      <p className="text-white/65 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
                     </div>
                   </div>
                 )}
@@ -1096,7 +1096,7 @@ export default function BusinessPage() {
                   <div className="space-y-4">
 
                     {/* Phase nav tabs */}
-                    <div className="flex items-center gap-1 rounded-xl bg-white/[0.02] border border-white/[0.06] p-1">
+                    <div className="flex items-center gap-1 rounded-xl bg-white/[0.05] border border-white/[0.12] p-1">
                       {[
                         { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
                         { id: "stage" as const, label: "Stage", icon: "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15l3.5-4.5 2.5 3.01L14.5 9l4.5 6H5z" },
@@ -1113,8 +1113,8 @@ export default function BusinessPage() {
                             simPhase === tab.id
                               ? "bg-white/[0.06] text-white/80"
                               : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
-                              ? "text-white/10 cursor-not-allowed"
-                              : "text-white/25 hover:text-white/40"
+                              ? "text-white/25 cursor-not-allowed"
+                              : "text-white/65 hover:text-white/60"
                           }`}
                         >
                           <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d={tab.icon} /></svg>
@@ -1125,30 +1125,30 @@ export default function BusinessPage() {
 
                     {/* Cast phase */}
                     {simPhase === "cast" && (
-                      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                        <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                      <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                         <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
                           <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
-                          <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
+                          <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
                         </div>
                         <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                          <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                          <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {play.characters.map((char, i) => (
-                              <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
+                              <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
                                 <div className="flex items-center gap-2.5 mb-2.5">
                                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">{char.name.charAt(0)}</div>
                                   <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
                                 </div>
-                                <p className="text-white/25 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
+                                <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
                               </div>
                             ))}
                           </div>
                         </div>
                         {play.image && (
                           <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
-                            <p className="text-mars/30 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
-                            <p className="text-white/35 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
+                            <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                            <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
                           </div>
                         )}
                         <div className="px-6 sm:px-8 pb-6 sm:pb-8">
@@ -1156,7 +1156,7 @@ export default function BusinessPage() {
                             onClick={() => { if (simReady) setSimPhase("stage"); }}
                             disabled={!simReady}
                             className={`w-full py-4 rounded-xl text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] transition-all ${
-                              simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.02] border border-white/[0.04] text-white/15 cursor-wait"
+                              simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
                             }`}
                           >
                             {simReady ? (
@@ -1181,8 +1181,8 @@ export default function BusinessPage() {
 
                     {/* Stage phase */}
                     {simPhase === "stage" && simReady && play.simulationSteps && (
-                      <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                        <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                      <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                         <div className="p-4 sm:p-6">
                           <StageSimulation simulationSteps={play.simulationSteps} characters={play.characters} simulation={play.simulation} onEnd={() => { setSimEnded(true); setSimPhase("perspectives"); }} />
                         </div>
@@ -1193,25 +1193,25 @@ export default function BusinessPage() {
                     {simPhase === "perspectives" && simEnded && (
                       <div className="space-y-4">
                         {play.perspectives && play.perspectives.length > 0 && (
-                          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                          <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                             <div className="p-6 sm:p-8">
-                              <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                              <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
                               <div className="space-y-3">
                                 {play.perspectives.map((p, i) => {
                                   const perspective = typeof p === "object" ? (p as Perspective) : null;
                                   return (
-                                    <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
+                                    <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
                                       {perspective ? (
                                         <div className="flex gap-3">
                                           <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">{perspective.character.charAt(0)}</div>
                                           <div>
-                                            <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
-                                            <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                            <p className="text-mars/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                            <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
                                           </div>
                                         </div>
                                       ) : (
-                                        <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                        <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
                                       )}
                                     </div>
                                   );
@@ -1221,18 +1221,18 @@ export default function BusinessPage() {
                           </div>
                         )}
                         {play.followUpQuestion && (
-                          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                          <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                             <div className="text-center py-8 sm:py-10 px-6">
-                              <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
-                              <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
-                              <button onClick={() => { const followUp = play.followUpQuestion!; reset(); setTimeout(() => { setQuestion(followUp); }, 100); }} className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
+                              <p className="text-white/30 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                              <p className="font-mercure italic text-white/55 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                              <button onClick={() => { const followUp = play.followUpQuestion!; reset(); setTimeout(() => { setQuestion(followUp); }, 100); }} className="text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
                                 Ask this question →
                               </button>
                             </div>
                           </div>
                         )}
-                        <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.04] text-white/20 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/35 hover:border-white/[0.08] transition-all">
+                        <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all">
                           ← Back to cast
                         </button>
                       </div>
@@ -1251,8 +1251,8 @@ export default function BusinessPage() {
               <div className="rounded-2xl border border-mars/[0.12] bg-mars/[0.03] overflow-hidden">
                 <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                 <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-2">
-                  <p className="text-mars/50 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-1">Bestselling plays</p>
-                  <p className="text-white/20 text-[11px] font-mercure">Most booked by leadership teams</p>
+                  <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-1">Bestselling plays</p>
+                  <p className="text-white/60 text-[11px] font-mercure">Most booked by leadership teams</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-6 sm:px-8 pb-6 sm:pb-8">
                   {[
@@ -1263,10 +1263,10 @@ export default function BusinessPage() {
                     <div key={i} className="rounded-xl border border-mars/[0.1] bg-mars/[0.02] p-5 flex flex-col">
                       <h4 className="text-[20px] sm:text-[22px] font-black tracking-[-0.03em] leading-[1] mb-1">
                         <span className="text-mars">{play.theme}</span>{" "}
-                        <span className="text-mars/40">on Mars</span>
+                        <span className="text-mars/60">on Mars</span>
                       </h4>
-                      <p className="text-white/15 text-[9px] uppercase tracking-[0.15em] mt-1 mb-3">{play.desc}</p>
-                      <p className="text-white/30 text-[11px] sm:text-[12px] leading-[1.55] flex-1">{play.pitch}</p>
+                      <p className="text-white/70 text-[9px] uppercase tracking-[0.15em] mt-1 mb-3">{play.desc}</p>
+                      <p className="text-white/70 text-[11px] sm:text-[12px] leading-[1.55] flex-1">{play.pitch}</p>
                       <a href="#contact" className="mt-4 block w-full text-center py-2.5 rounded-lg border border-mars/15 text-mars/60 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:text-mars/80 hover:border-mars/25 transition-all">
                         I want this
                       </a>
@@ -1288,9 +1288,9 @@ export default function BusinessPage() {
 
             {/* The question echo */}
             <div className="text-center mb-8 sm:mb-10 pt-4 sm:pt-6">
-              <p className="text-white/10 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
-              <p className="font-mercure italic text-white/30 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{askedQuestion}&rdquo;</p>
-              <button onClick={reset} className="text-white/10 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/40 transition-colors">
+              <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
+              <p className="font-mercure italic text-white/70 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{askedQuestion}&rdquo;</p>
+              <button onClick={reset} className="text-white/25 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/60 transition-colors">
                 Ask something else
               </button>
             </div>
@@ -1298,7 +1298,7 @@ export default function BusinessPage() {
             {/* ═══ 3 PRODUCT OPTIONS — commercial menu ═══ */}
             {products.length > 0 && selectedIdx === null && (
               <div>
-                <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-center mb-8 sm:mb-10">Choose your play</p>
+                <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-center mb-8 sm:mb-10">Choose your play</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
                   {products.map((p, i) => {
@@ -1310,7 +1310,7 @@ export default function BusinessPage() {
                         className={`relative w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 group hover:scale-[1.02] flex flex-col ${
                           isLeader
                             ? "border-mars/20 bg-gradient-to-b from-mars/[0.06] to-mars/[0.01] hover:border-mars/35 hover:shadow-[0_0_40px_-10px_rgba(255,85,0,0.2)]"
-                            : "border-white/[0.08] bg-gradient-to-b from-white/[0.03] to-transparent hover:border-white/[0.15] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
+                            : "border-white/[0.15] bg-gradient-to-b from-white/[0.03] to-transparent hover:border-white/[0.15] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
                         }`}
                       >
                         {/* Top accent line */}
@@ -1318,34 +1318,34 @@ export default function BusinessPage() {
 
                         <div className="p-5 sm:p-6 flex flex-col flex-1">
                           {/* Tag */}
-                          <p className={`text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/25"}`}>{p.tag}</p>
+                          <p className={`text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/65"}`}>{p.tag}</p>
 
                           {/* Theme — full play name */}
                           <h3 className={`text-[28px] sm:text-[34px] font-black tracking-[-0.04em] leading-[0.95] mb-4 ${isLeader ? "" : ""}`}>
                             <span className={isLeader ? "text-mars" : "text-white/90"}>{p.theme}</span>
                             {" "}
-                            <span className={isLeader ? "text-mars/50" : "text-white/35"}>on Mars</span>
+                            <span className={isLeader ? "text-mars/70" : "text-white/55"}>on Mars</span>
                           </h3>
 
                           {/* Pitch */}
-                          <p className="text-white/30 text-[12px] sm:text-[13px] leading-[1.55] mb-6 flex-1">
+                          <p className="text-white/70 text-[12px] sm:text-[13px] leading-[1.55] mb-6 flex-1">
                             {p.pitch}
                           </p>
 
                           {/* Bottom stats bar */}
-                          <div className={`border-t pt-4 mt-auto ${isLeader ? "border-mars/10" : "border-white/[0.06]"}`}>
+                          <div className={`border-t pt-4 mt-auto ${isLeader ? "border-mars/10" : "border-white/[0.12]"}`}>
                             <div className="flex items-end justify-between">
                               <div className="space-y-1">
-                                <p className="text-white/20 text-[10px]">{p.duration} · {p.people}</p>
+                                <p className="text-white/60 text-[10px]">{p.duration} · {p.people}</p>
                               </div>
-                              <p className={`text-[14px] sm:text-[15px] font-bold tracking-tight ${isLeader ? "text-mars/70" : "text-white/40"}`}>{p.price}</p>
+                              <p className={`text-[14px] sm:text-[15px] font-bold tracking-tight ${isLeader ? "text-mars/70" : "text-white/60"}`}>{p.price}</p>
                             </div>
                           </div>
                         </div>
 
                         {/* Hover arrow */}
                         <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <svg viewBox="0 0 24 24" className={`w-4 h-4 fill-current ${isLeader ? "text-mars/50" : "text-white/20"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                          <svg viewBox="0 0 24 24" className={`w-4 h-4 fill-current ${isLeader ? "text-mars/70" : "text-white/60"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                         </div>
                       </button>
                     );
@@ -1361,8 +1361,8 @@ export default function BusinessPage() {
                     }}
                     className="w-full group transition-all duration-500 hover:scale-[1.005]"
                   >
-                    <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                      <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                    <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
                       <div className="grid sm:grid-cols-2 items-center">
                         {/* Left — phone mockup */}
@@ -1403,14 +1403,14 @@ export default function BusinessPage() {
 
                         {/* Right — copy */}
                         <div className="px-6 sm:px-8 pb-8 sm:py-12 text-left">
-                          <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                          <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
                           <h3 className="text-[20px] sm:text-[24px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
                             Or try it right here.
                           </h3>
-                          <p className="text-white/25 text-[12px] sm:text-[13px] leading-[1.6] mb-5 max-w-xs">
+                          <p className="text-white/65 text-[12px] sm:text-[13px] leading-[1.6] mb-5 max-w-xs">
                             AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
                           </p>
-                          <div className="inline-flex items-center gap-2 text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
+                          <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
                             <span>Open Playmaker</span>
                             <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                           </div>
@@ -1428,7 +1428,7 @@ export default function BusinessPage() {
               <>
                 {/* Back to options */}
                 <div className="mb-6 sm:mb-8">
-                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
+                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                     ← Back to all plays
                   </button>
                 </div>
@@ -1446,7 +1446,7 @@ export default function BusinessPage() {
                   <div className="relative z-10 p-8 sm:p-12 md:p-16 lg:p-20">
                     <div className="inline-flex items-center gap-2 mb-10 sm:mb-14">
                       <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                      <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">
+                      <p className="text-mars/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">
                         {products[selectedIdx].tag}
                       </p>
                     </div>
@@ -1457,7 +1457,7 @@ export default function BusinessPage() {
                       <span className="text-mars">on Mars</span>
                     </h3>
 
-                    <p className="font-mercure text-white/35 text-[15px] sm:text-[18px] md:text-[20px] leading-[1.7] mb-10 sm:mb-14 max-w-xl">
+                    <p className="font-mercure text-white/55 text-[15px] sm:text-[18px] md:text-[20px] leading-[1.7] mb-10 sm:mb-14 max-w-xl">
                       {products[selectedIdx].pitch}
                     </p>
 
@@ -1469,8 +1469,8 @@ export default function BusinessPage() {
                         { label: "Guide", value: "Systemic facilitator" },
                       ].map((item) => (
                         <div key={item.label}>
-                          <p className="text-white/12 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
-                          <p className="text-white/50 text-[13px] sm:text-[14px] font-bold">{item.value}</p>
+                          <p className="text-white/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
+                          <p className="text-white/70 text-[13px] sm:text-[14px] font-bold">{item.value}</p>
                         </div>
                       ))}
                     </div>
@@ -1483,7 +1483,7 @@ export default function BusinessPage() {
                         Book this play
                         <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                       </a>
-                      <p className="text-white/20 text-[12px] sm:text-[13px]">{products[selectedIdx].price}</p>
+                      <p className="text-white/60 text-[12px] sm:text-[13px]">{products[selectedIdx].price}</p>
                     </div>
                   </div>
                 </div>
@@ -1493,11 +1493,11 @@ export default function BusinessPage() {
                   {!showDigital ? (
                     <button
                       onClick={openDigital}
-                      className="w-full relative rounded-3xl border border-white/[0.06] bg-white/[0.02] hover:border-mars/[0.15] hover:bg-white/[0.03] transition-all duration-500 group overflow-hidden"
+                      className="w-full relative rounded-3xl border border-white/[0.12] bg-white/[0.05] hover:border-mars/[0.15] hover:bg-white/[0.06] transition-all duration-500 group overflow-hidden"
                     >
                       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
-                        <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
+                        <p className="text-white/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
 
                         {/* Phone mockup — SVG with real stage UI */}
                         <div className="inline-block mb-6 group-hover:scale-[1.03] transition-transform duration-700">
@@ -1569,13 +1569,13 @@ export default function BusinessPage() {
                           </svg>
                         </div>
 
-                        <p className="text-white/50 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
+                        <p className="text-white/70 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
                           Simulate this play digitally
                         </p>
-                        <p className="font-mercure text-white/15 text-[12px] sm:text-[14px] mt-3 group-hover:text-white/25 transition-colors">
+                        <p className="font-mercure text-white/70 text-[12px] sm:text-[14px] mt-3 group-hover:text-white/65 transition-colors">
                           AI-generated reality play you can walk through now
                         </p>
-                        <div className="mt-6 inline-flex items-center gap-2 text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/70 transition-colors">
+                        <div className="mt-6 inline-flex items-center gap-2 text-mars/60 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/70 transition-colors">
                           <span>Open Playmaker</span>
                           <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
                         </div>
@@ -1589,23 +1589,23 @@ export default function BusinessPage() {
                       <div className="flex items-center justify-between mb-6 sm:mb-8">
                         <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                          <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                          <p className="text-mars/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
                         </div>
-                        <button onClick={() => setShowDigital(false)} className="text-white/15 text-[10px] uppercase tracking-[0.15em] hover:text-white/30 transition-colors">
+                        <button onClick={() => setShowDigital(false)} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                           Close
                         </button>
                       </div>
 
                       {/* Loading state */}
                       {playLoading && (
-                        <div className="rounded-3xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+                        <div className="rounded-3xl border border-white/[0.12] bg-white/[0.05] overflow-hidden">
                           <div className="text-center py-20 sm:py-28">
                             <div className="inline-flex gap-2 mb-5">
                               {[0, 1, 2].map((i) => (
                                 <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
                               ))}
                             </div>
-                            <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
+                            <p className="text-white/65 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
                           </div>
                         </div>
                       )}
@@ -1615,7 +1615,7 @@ export default function BusinessPage() {
                         <div className="space-y-4">
 
                           {/* Phase nav tabs */}
-                          <div className="flex items-center gap-1 rounded-xl bg-white/[0.02] border border-white/[0.06] p-1">
+                          <div className="flex items-center gap-1 rounded-xl bg-white/[0.05] border border-white/[0.12] p-1">
                             {[
                               { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
                               { id: "stage" as const, label: "Stage", icon: "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15l3.5-4.5 2.5 3.01L14.5 9l4.5 6H5z" },
@@ -1632,8 +1632,8 @@ export default function BusinessPage() {
                                   simPhase === tab.id
                                     ? "bg-white/[0.06] text-white/80"
                                     : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
-                                    ? "text-white/10 cursor-not-allowed"
-                                    : "text-white/25 hover:text-white/40"
+                                    ? "text-white/25 cursor-not-allowed"
+                                    : "text-white/65 hover:text-white/60"
                                 }`}
                               >
                                 <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d={tab.icon} /></svg>
@@ -1644,23 +1644,23 @@ export default function BusinessPage() {
 
                           {/* ── CAST PHASE ── */}
                           {simPhase === "cast" && (
-                            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                            <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
                               {/* Play header */}
                               <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
                                 <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
-                                <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
+                                <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
                               </div>
 
                               {/* Character cards */}
                               <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                                <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                                <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                   {play.characters.map((char, i) => (
                                     <div
                                       key={i}
-                                      className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all"
+                                      className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all"
                                       style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}
                                     >
                                       <div className="flex items-center gap-2.5 mb-2.5">
@@ -1669,7 +1669,7 @@ export default function BusinessPage() {
                                         </div>
                                         <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
                                       </div>
-                                      <p className="text-white/25 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
+                                      <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
                                     </div>
                                   ))}
                                 </div>
@@ -1678,8 +1678,8 @@ export default function BusinessPage() {
                               {/* Play suggestion / narrative setup */}
                               {play.image && (
                                 <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
-                                  <p className="text-mars/30 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
-                                  <p className="text-white/35 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
+                                  <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                                  <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
                                 </div>
                               )}
 
@@ -1695,7 +1695,7 @@ export default function BusinessPage() {
                                   className={`w-full py-4 rounded-xl text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] transition-all ${
                                     simReady
                                       ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer"
-                                      : "bg-white/[0.02] border border-white/[0.04] text-white/15 cursor-wait"
+                                      : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
                                   }`}
                                 >
                                   {simReady ? (
@@ -1720,8 +1720,8 @@ export default function BusinessPage() {
 
                           {/* ── STAGE PHASE ── */}
                           {simPhase === "stage" && simReady && play.simulationSteps && (
-                            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                            <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                               <div className="p-4 sm:p-6">
                                 <StageSimulation
                                   simulationSteps={play.simulationSteps}
@@ -1741,17 +1741,17 @@ export default function BusinessPage() {
                             <div className="space-y-4">
                               {/* Perspectives cards */}
                               {play.perspectives && play.perspectives.length > 0 && (
-                                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                                <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                                   <div className="p-6 sm:p-8">
-                                    <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                                    <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
                                     <div className="space-y-3">
                                       {play.perspectives.map((p, i) => {
                                         const perspective = typeof p === "object" ? (p as Perspective) : null;
                                         return (
                                           <div
                                             key={i}
-                                            className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4 hover:border-white/[0.08] transition-all"
+                                            className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all"
                                             style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}
                                           >
                                             {perspective ? (
@@ -1760,12 +1760,12 @@ export default function BusinessPage() {
                                                   {perspective.character.charAt(0)}
                                                 </div>
                                                 <div>
-                                                  <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
-                                                  <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                                  <p className="text-mars/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                                  <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
                                                 </div>
                                               </div>
                                             ) : (
-                                              <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                              <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
                                             )}
                                           </div>
                                         );
@@ -1777,18 +1777,18 @@ export default function BusinessPage() {
 
                               {/* Follow-up question */}
                               {play.followUpQuestion && (
-                                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                                <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                                   <div className="text-center py-8 sm:py-10 px-6">
-                                    <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
-                                    <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                                    <p className="text-white/30 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                                    <p className="font-mercure italic text-white/55 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
                                     <button
                                       onClick={() => {
                                         const followUp = play.followUpQuestion!;
                                         reset();
                                         setTimeout(() => { setQuestion(followUp); }, 100);
                                       }}
-                                      className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
+                                      className="text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
                                     >
                                       Ask this question →
                                     </button>
@@ -1799,7 +1799,7 @@ export default function BusinessPage() {
                               {/* Replay button */}
                               <button
                                 onClick={() => { setSimEnded(false); setSimPhase("cast"); }}
-                                className="w-full py-3 rounded-xl border border-white/[0.04] text-white/20 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/35 hover:border-white/[0.08] transition-all"
+                                className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all"
                               >
                                 ← Back to cast
                               </button>
@@ -1821,9 +1821,9 @@ export default function BusinessPage() {
       {/* ── SOCIAL PROOF + VOICES — compact atmospheric block ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
-          <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+          <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
             {/* Top accent */}
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
             {/* Voices quote — top section */}
             <div className="px-6 sm:px-10 pt-6 sm:pt-8 pb-4 sm:pb-5">
@@ -1831,12 +1831,12 @@ export default function BusinessPage() {
             </div>
 
             {/* Divider */}
-            <div className="mx-6 sm:mx-10 h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+            <div className="mx-6 sm:mx-10 h-[1px] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
 
             {/* Client logos — transparent blend */}
             <div className="px-6 sm:px-10 py-4 sm:py-5">
-              <p className="text-white/15 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-3">Trusted by</p>
-              <img src="/Frame-52.png" alt="Clients" className="w-full max-w-xl mx-auto opacity-[0.4] hover:opacity-[0.6] transition-opacity duration-700" />
+              <p className="text-white/70 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-3">Trusted by</p>
+              <img src="/Frame-52.png" alt="Clients" className="w-full max-w-xl mx-auto opacity-[0.6] hover:opacity-[0.8] transition-opacity duration-700" />
             </div>
           </div>
         </div>
@@ -1846,8 +1846,8 @@ export default function BusinessPage() {
       {!submitted && (
         <FadeIn className="px-4 py-3 sm:py-4">
           <div className="max-w-3xl mx-auto">
-            <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+            <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
               {/* Photo */}
               <div className="relative h-[35vh] sm:h-[50vh]">
                 <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
@@ -1856,11 +1856,11 @@ export default function BusinessPage() {
               {/* Info bar below photo */}
               <div className="px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-1.5">The stage</p>
+                  <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-1.5">The stage</p>
                   <p className="text-white/80 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
-                  <p className="text-white/25 text-[12px] sm:text-[13px] mt-0.5">The flagship space. Where reality plays happen.</p>
+                  <p className="text-white/65 text-[12px] sm:text-[13px] mt-0.5">The flagship space. Where reality plays happen.</p>
                 </div>
-                <a href="/space" className="shrink-0 text-mars/50 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
+                <a href="/space" className="shrink-0 text-mars/70 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
                   Explore →
                 </a>
               </div>
@@ -1872,7 +1872,7 @@ export default function BusinessPage() {
       {/* ── TEAM — Stage box ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
-          <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+          <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
             <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
             <div className="grid sm:grid-cols-2">
               {/* Team photo inside stage */}
@@ -1883,18 +1883,18 @@ export default function BusinessPage() {
               </div>
               {/* Team info */}
               <div className="p-6 sm:p-8 flex flex-col justify-center space-y-4">
-                <p className="text-mars/30 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold">The crew</p>
-                <p className="font-mercure text-white/35 text-[13px] sm:text-[14px] leading-[1.7]">
+                <p className="text-mars/70 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold">The crew</p>
+                <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
                   Born during COVID. Systemic constellations meets theatre meets improvisation.
                 </p>
-                <p className="font-mercure text-white/35 text-[13px] sm:text-[14px] leading-[1.7]">
+                <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
                   In 2023, David Vais joined. Platform built. Stage opened. Brand born.
                 </p>
                 <div className="pt-2">
-                  <p className="text-white/50 text-[11px] sm:text-[12px] font-bold">
+                  <p className="text-white/70 text-[11px] sm:text-[12px] font-bold">
                     800+ reality plays. London, Zurich, Bucharest.
                   </p>
-                  <p className="text-white/15 text-[10px] mt-2">
+                  <p className="text-white/70 text-[10px] mt-2">
                     Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
                   </p>
                 </div>
@@ -1908,38 +1908,38 @@ export default function BusinessPage() {
       {/* ── CONTACT — Stage box ── */}
       <FadeIn className="px-4 pt-3 sm:pt-4 pb-16 sm:pb-24">
         <div className="max-w-3xl mx-auto">
-          <div id="contact" className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+          <div id="contact" className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
             <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
 
             <div className="p-6 sm:p-10">
               <div className="max-w-md mx-auto space-y-8">
                 <div className="text-center">
-                  <p className="text-mars/30 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4">Get on stage</p>
+                  <p className="text-mars/70 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4">Get on stage</p>
                   <h2 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">
                     {submitted ? "Let\u2019s make it happen." : "What\u2019s your question?"}
                   </h2>
-                  <p className="font-mercure text-white/20 text-[12px] sm:text-[13px] mt-2">We reply within 24 hours.</p>
+                  <p className="font-mercure text-white/60 text-[12px] sm:text-[13px] mt-2">We reply within 24 hours.</p>
                 </div>
 
                 {sent ? (
                   <div className="text-center py-8">
-                    <p className="font-mercure text-white/40 text-[14px]">Thank you. We&apos;ll be in touch.</p>
+                    <p className="font-mercure text-white/60 text-[14px]">Thank you. We&apos;ll be in touch.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleContactSubmit} className="space-y-2.5">
                     <div className="grid sm:grid-cols-2 gap-2.5">
-                      <input name="name" value={formData.name} onChange={handleContactChange} placeholder="Name" required className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors" />
-                      <input name="company" value={formData.company} onChange={handleContactChange} placeholder="Company" className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors" />
+                      <input name="name" value={formData.name} onChange={handleContactChange} placeholder="Name" required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                      <input name="company" value={formData.company} onChange={handleContactChange} placeholder="Company" className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
                     </div>
-                    <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder="Email" required className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors" />
-                    <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder="Your question" rows={3} className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors resize-none" />
+                    <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder="Email" required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                    <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder="Your question" rows={3} className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors resize-none" />
                     <button type="submit" className="w-full py-3.5 rounded-xl bg-mars hover:bg-mars-light text-white text-[11px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]">
                       Let&apos;s Talk
                     </button>
                   </form>
                 )}
 
-                <p className="text-center font-mercure text-white/10 text-[11px]">
+                <p className="text-center font-mercure text-white/25 text-[11px]">
                   <a href="mailto:play@stageonmars.com" className="hover:text-mars transition-colors">play@stageonmars.com</a>
                   {" · "}
                   <a href="tel:+420602336338" className="hover:text-mars transition-colors">+420 602 336 338</a>
@@ -1953,12 +1953,12 @@ export default function BusinessPage() {
 
       {/* FOOTER */}
       <footer className="py-6 px-6 border-t border-white/[0.03]">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-white/10 text-[10px]">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-white/25 text-[10px]">
           <span>&copy; {new Date().getFullYear()} Stage on Mars</span>
           <div className="flex gap-4">
-            <a href="https://www.instagram.com/stage_on_mars" target="_blank" rel="noopener noreferrer" className="hover:text-white/25 transition-colors">Instagram</a>
-            <a href="https://www.linkedin.com/company/stageonmars" target="_blank" rel="noopener noreferrer" className="hover:text-white/25 transition-colors">LinkedIn</a>
-            <a href="https://playbook.stageonmars.com" className="hover:text-white/25 transition-colors">Playbook</a>
+            <a href="https://www.instagram.com/stage_on_mars" target="_blank" rel="noopener noreferrer" className="hover:text-white/65 transition-colors">Instagram</a>
+            <a href="https://www.linkedin.com/company/stageonmars" target="_blank" rel="noopener noreferrer" className="hover:text-white/65 transition-colors">LinkedIn</a>
+            <a href="https://playbook.stageonmars.com" className="hover:text-white/65 transition-colors">Playbook</a>
           </div>
         </div>
       </footer>
