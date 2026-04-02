@@ -163,6 +163,7 @@ function deriveProducts(question: string): ProductCard[] {
 export default function BusinessPage() {
   const [entered, setEntered] = useState(false);
   const [question, setQuestion] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [context, setContext] = useState<"personal" | "business">("business");
   const [submitted, setSubmitted] = useState(false);
   const [products, setProducts] = useState<ProductCard[]>([]);
@@ -177,7 +178,7 @@ export default function BusinessPage() {
   const resultRef = useRef<HTMLDivElement>(null);
 
   // Contact form
-  const [formData, setFormData] = useState({ name: "", email: "", company: "", question: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", company: companyName, question: "" });
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
@@ -244,7 +245,7 @@ export default function BusinessPage() {
       const res = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: askedQuestion, context, lang: "en" }),
+        body: JSON.stringify({ question: askedQuestion, context, lang: "en", clientName: companyName || undefined }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
@@ -345,6 +346,14 @@ export default function BusinessPage() {
                 if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
               }}
             />
+            <div className="border-t border-white/[0.06] px-5 sm:px-6 py-3">
+              <input
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                placeholder="Company name"
+                className="w-full bg-transparent text-white/70 placeholder:text-white/20 focus:outline-none text-[13px] sm:text-[14px]"
+              />
+            </div>
           </div>
 
           <button
