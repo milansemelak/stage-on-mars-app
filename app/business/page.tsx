@@ -295,12 +295,13 @@ export default function BusinessPage() {
         .fade-section { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
         .fade-section.is-visible { opacity: 1; transform: translateY(0); }
         @keyframes glow-pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.15); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
       `}</style>
 
       {/* NAV */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-1000 ${entered ? "opacity-100" : "opacity-0"}`}>
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-4 sm:py-6">
-          <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-12 md:h-14 w-auto invert" />
+        <div className="max-w-6xl mx-auto flex items-center justify-end px-4 sm:px-6 py-4 sm:py-6">
           <a href="#contact" className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.15em] text-[#0a0a0a] bg-mars hover:bg-mars-light px-5 sm:px-7 py-2 sm:py-2.5 rounded-full transition-all">
             Book a Play
           </a>
@@ -309,18 +310,29 @@ export default function BusinessPage() {
 
 
       {/* ── HERO: The question IS the experience ── */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-4 relative">
+      <section className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
 
-        {/* Ambient glow */}
+        {/* Layered ambient glows */}
         <div
-          className={`absolute w-[400px] h-[400px] rounded-full transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.06) 0%, transparent 70%)", top: "30%", left: "50%", transform: "translate(-50%, -50%)" }}
+          className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.07) 0%, transparent 60%)", top: "25%", left: "50%", transform: "translate(-50%, -50%)" }}
+        />
+        <div
+          className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[1000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "60%", left: "30%", transform: "translate(-50%, -50%)" }}
+        />
+        <div
+          className={`absolute w-[200px] h-[200px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.03) 0%, transparent 70%)", top: "40%", left: "75%", transform: "translate(-50%, -50%)" }}
         />
 
         <div className={`relative z-10 w-full max-w-lg transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           <div className="text-center mb-10 sm:mb-14">
-            <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
+            {/* Logo with subtle float */}
+            <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
+              <img src="/logo.png" alt="Stage On Mars" className="h-12 sm:h-16 md:h-20 w-auto invert mx-auto" />
+            </div>
             <h1 className="text-[36px] sm:text-[56px] md:text-[72px] lg:text-[86px] font-bold leading-[0.92] tracking-[-0.04em]">
               Play with reality.
               <br />
@@ -328,14 +340,14 @@ export default function BusinessPage() {
             </h1>
           </div>
 
-          {/* THE INPUT */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.04] overflow-hidden focus-within:border-white/20 transition-colors">
+          {/* THE INPUT — elevated glass effect */}
+          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] overflow-hidden focus-within:border-mars/20 transition-all duration-500 backdrop-blur-sm shadow-[0_4px_30px_-4px_rgba(0,0,0,0.5)]">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="What's the one question that could change your reality?"
               rows={3}
-              className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white/90 placeholder:text-white/20 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem]"
+              className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white/90 placeholder:text-white/15 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem]"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
               }}
@@ -345,10 +357,10 @@ export default function BusinessPage() {
           <button
             onClick={generate}
             disabled={!question.trim()}
-            className={`w-full mt-3 py-5 rounded-2xl font-black text-xl sm:text-2xl tracking-widest uppercase transition-all duration-300 ${
+            className={`w-full mt-3 py-5 rounded-2xl font-black text-xl sm:text-2xl tracking-widest uppercase transition-all duration-500 ${
               question.trim()
-                ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.35)]"
-                : "bg-mars text-white/40 cursor-not-allowed opacity-50"
+                ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.5)] hover:scale-[1.01]"
+                : "bg-white/[0.04] text-white/15 cursor-not-allowed border border-white/[0.04]"
             }`}
           >
             Play
