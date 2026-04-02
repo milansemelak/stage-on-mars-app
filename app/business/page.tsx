@@ -736,90 +736,110 @@ export default function BusinessPage() {
         </div>
       </FadeIn>
 
-      {/* THE SPACE */}
+      {/* ── THE SPACE — Stage box ── */}
       {!submitted && (
-        <section className="relative h-[45vh] sm:h-[65vh]">
-          <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/40" />
-          <div className="absolute inset-0 flex items-end px-6 sm:px-12 pb-8 sm:pb-12">
-            <div className="flex items-end justify-between w-full">
-              <div>
-                <p className="text-white/70 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
-                <p className="font-mercure text-white/20 text-[11px] sm:text-[13px] mt-1">The flagship stage.</p>
+        <FadeIn className="px-4 sm:px-6 pb-6 sm:pb-8">
+          <div className="max-w-3xl mx-auto">
+            <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+              <div className="relative h-[35vh] sm:h-[50vh]">
+                <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover rounded-t-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/30" />
+                <div className="absolute inset-0 flex items-end p-6 sm:p-8">
+                  <div className="flex items-end justify-between w-full">
+                    <div>
+                      <p className="text-white/70 text-[15px] sm:text-[18px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
+                      <p className="font-mercure text-white/20 text-[11px] sm:text-[13px] mt-1">The flagship stage.</p>
+                    </div>
+                    <a href="/space" className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">Explore →</a>
+                  </div>
+                </div>
               </div>
-              <a href="/space" className="text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">Explore →</a>
             </div>
           </div>
-        </section>
+        </FadeIn>
       )}
 
-      {/* TEAM */}
-      <FadeIn className="py-16 sm:py-28 px-4 sm:px-6">
+      {/* ── TEAM — Stage box ── */}
+      <FadeIn className="px-4 sm:px-6 pb-6 sm:pb-8">
         <div className="max-w-3xl mx-auto">
-          <div className="grid sm:grid-cols-2 gap-8 sm:gap-14 items-center">
-            <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
-              <img src="/team.jpg" alt="Stage on Mars team" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/50 via-transparent to-transparent" />
-            </div>
-            <div className="space-y-4">
-              <p className="font-mercure text-white/30 text-[13px] sm:text-[15px] leading-[1.7]">
-                Born during COVID. Systemic constellations meets theatre meets improvisation.
-              </p>
-              <p className="font-mercure text-white/30 text-[13px] sm:text-[15px] leading-[1.7]">
-                In 2023, David Vais joined. Platform built. Stage opened. Brand born.
-              </p>
-              <p className="text-white/50 text-[12px] sm:text-[13px] font-bold mt-4">
-                800+ reality plays. London, Zurich, Bucharest.
-              </p>
-              <p className="text-white/15 text-[11px]">
-                Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
-              </p>
+          <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+            <div className="grid sm:grid-cols-2">
+              {/* Team photo inside stage */}
+              <div className="relative aspect-[4/3] sm:aspect-auto">
+                <img src="/team.jpg" alt="Stage on Mars team" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/30 hidden sm:block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent sm:hidden" />
+              </div>
+              {/* Team info */}
+              <div className="p-6 sm:p-8 flex flex-col justify-center space-y-4">
+                <p className="text-mars/30 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold">The crew</p>
+                <p className="font-mercure text-white/35 text-[13px] sm:text-[14px] leading-[1.7]">
+                  Born during COVID. Systemic constellations meets theatre meets improvisation.
+                </p>
+                <p className="font-mercure text-white/35 text-[13px] sm:text-[14px] leading-[1.7]">
+                  In 2023, David Vais joined. Platform built. Stage opened. Brand born.
+                </p>
+                <div className="pt-2">
+                  <p className="text-white/50 text-[11px] sm:text-[12px] font-bold">
+                    800+ reality plays. London, Zurich, Bucharest.
+                  </p>
+                  <p className="text-white/15 text-[10px] mt-2">
+                    Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </FadeIn>
 
 
-      {/* ── CONTACT ── */}
-      <section id="contact" className="py-16 sm:py-28 px-4 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_60%)]" />
+      {/* ── CONTACT — Stage box ── */}
+      <FadeIn className="px-4 sm:px-6 pb-16 sm:pb-24">
+        <div className="max-w-3xl mx-auto">
+          <div id="contact" className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
 
-
-        <FadeIn>
-          <div className="max-w-md mx-auto space-y-8 relative z-10">
-            <div className="text-center">
-              <h2 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">
-                {submitted ? "Let\u2019s make it happen." : "What\u2019s your question?"}
-              </h2>
-              <p className="font-mercure text-white/20 text-[12px] sm:text-[13px] mt-2">We reply within 24 hours.</p>
-            </div>
-
-            {sent ? (
-              <div className="text-center py-8">
-                <p className="font-mercure text-white/40 text-[14px]">Thank you. We&apos;ll be in touch.</p>
-              </div>
-            ) : (
-              <form onSubmit={handleContactSubmit} className="space-y-2.5">
-                <div className="grid sm:grid-cols-2 gap-2.5">
-                  <input name="name" value={formData.name} onChange={handleContactChange} placeholder="Name" required className="font-mercure w-full rounded-lg bg-white/[0.03] border border-white/[0.05] focus:border-mars/20 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/12 focus:outline-none transition-colors" />
-                  <input name="company" value={formData.company} onChange={handleContactChange} placeholder="Company" className="font-mercure w-full rounded-lg bg-white/[0.03] border border-white/[0.05] focus:border-mars/20 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/12 focus:outline-none transition-colors" />
+            <div className="p-6 sm:p-10">
+              <div className="max-w-md mx-auto space-y-8">
+                <div className="text-center">
+                  <p className="text-mars/30 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4">Get on stage</p>
+                  <h2 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">
+                    {submitted ? "Let\u2019s make it happen." : "What\u2019s your question?"}
+                  </h2>
+                  <p className="font-mercure text-white/20 text-[12px] sm:text-[13px] mt-2">We reply within 24 hours.</p>
                 </div>
-                <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder="Email" required className="font-mercure w-full rounded-lg bg-white/[0.03] border border-white/[0.05] focus:border-mars/20 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/12 focus:outline-none transition-colors" />
-                <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder="Your question" rows={3} className="font-mercure w-full rounded-lg bg-white/[0.03] border border-white/[0.05] focus:border-mars/20 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/12 focus:outline-none transition-colors resize-none" />
-                <button type="submit" className="w-full py-3 rounded-lg bg-mars hover:bg-mars-light text-white text-[11px] font-bold uppercase tracking-[0.15em] transition-all">
-                  Let&apos;s Talk
-                </button>
-              </form>
-            )}
 
-            <p className="text-center font-mercure text-white/10 text-[11px]">
-              <a href="mailto:play@stageonmars.com" className="hover:text-mars transition-colors">play@stageonmars.com</a>
-              {" · "}
-              <a href="tel:+420602336338" className="hover:text-mars transition-colors">+420 602 336 338</a>
-            </p>
+                {sent ? (
+                  <div className="text-center py-8">
+                    <p className="font-mercure text-white/40 text-[14px]">Thank you. We&apos;ll be in touch.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleContactSubmit} className="space-y-2.5">
+                    <div className="grid sm:grid-cols-2 gap-2.5">
+                      <input name="name" value={formData.name} onChange={handleContactChange} placeholder="Name" required className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors" />
+                      <input name="company" value={formData.company} onChange={handleContactChange} placeholder="Company" className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors" />
+                    </div>
+                    <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder="Email" required className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors" />
+                    <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder="Your question" rows={3} className="font-mercure w-full rounded-xl bg-white/[0.03] border border-white/[0.06] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/15 focus:outline-none transition-colors resize-none" />
+                    <button type="submit" className="w-full py-3.5 rounded-xl bg-mars hover:bg-mars-light text-white text-[11px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]">
+                      Let&apos;s Talk
+                    </button>
+                  </form>
+                )}
+
+                <p className="text-center font-mercure text-white/10 text-[11px]">
+                  <a href="mailto:play@stageonmars.com" className="hover:text-mars transition-colors">play@stageonmars.com</a>
+                  {" · "}
+                  <a href="tel:+420602336338" className="hover:text-mars transition-colors">+420 602 336 338</a>
+                </p>
+              </div>
+            </div>
           </div>
-        </FadeIn>
-      </section>
+        </div>
+      </FadeIn>
 
 
       {/* FOOTER */}
