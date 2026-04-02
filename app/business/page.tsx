@@ -899,68 +899,79 @@ export default function BusinessPage() {
 
 
 
-      {/* ── HERO ── */}
-      <section className={`${submitted ? "pt-12 sm:pt-20" : "pt-16 sm:pt-24"} flex flex-col items-center px-4 relative overflow-hidden transition-all duration-700`}>
+      {/* ── HERO — full atmospheric stage ── */}
+      <section className="relative overflow-hidden">
 
-        {/* Single ambient glow */}
-        <div
-          className={`absolute w-[500px] h-[500px] rounded-full transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.06) 0%, transparent 60%)", top: "20%", left: "50%", transform: "translate(-50%, -50%)" }}
-        />
+        {/* Hero image — full bleed */}
+        {!submitted && (
+          <div className="relative">
+            <div className="relative h-[70vh] sm:h-[80vh]">
+              <img src="/space1.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/30 to-[#0a0a0a]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/40 via-transparent to-[#0a0a0a]/40" />
+            </div>
 
-        <div className={`relative z-10 w-full max-w-3xl transition-all duration-[1200ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+            {/* Content overlaid on image */}
+            <div className={`absolute inset-0 flex flex-col justify-end px-4 pb-0 transition-all duration-[1200ms] ${entered ? "opacity-100" : "opacity-0"}`}>
+              <div className="max-w-3xl mx-auto w-full">
+                {/* Logo bar */}
+                <div className="flex items-center gap-3 mb-6">
+                  <img src="/logo.png" alt="Stage On Mars" className="h-6 sm:h-8 w-auto invert opacity-80" />
+                </div>
 
-          {/* Logo + headline — compact */}
-          <div className="flex items-center gap-3 mb-8 sm:mb-10">
-            <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-9 w-auto invert" />
-            <span className="text-white/30 text-[13px]">·</span>
-            <span className="text-white/40 text-[13px] sm:text-[14px] uppercase tracking-[0.2em]">Reality Play Platform</span>
-          </div>
-
-          <h1 className="text-[28px] sm:text-[44px] md:text-[56px] font-bold leading-[1.05] tracking-[-0.03em] mb-8 sm:mb-10">
-            Play with reality.
-            <br />
-            <span className="text-mars">See what&apos;s possible.</span>
-          </h1>
-
-          {/* Input — integrated, no box-in-box */}
-          <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-            <div className="p-5 sm:p-6">
-              <textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What question would you put on stage?"
-                rows={2}
-                className="w-full bg-transparent border-0 px-0 py-0 text-white text-[17px] sm:text-[20px] placeholder:text-white/40 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
-                style={{ caretColor: "#FF5500" }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                }}
-              />
-              <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.08]">
-                <input
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Company name (optional)"
-                  className="flex-1 bg-transparent border-0 px-0 text-white/70 placeholder:text-white/30 focus:outline-none text-[14px]"
-                />
-                <button
-                  onClick={generate}
-                  disabled={!question.trim()}
-                  className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
-                    question.trim()
-                      ? "bg-mars hover:bg-mars-light text-white"
-                      : "bg-white/[0.06] text-white/25 cursor-not-allowed"
-                  }`}
-                >
-                  Play
-                </button>
+                <h1 className="text-[32px] sm:text-[48px] md:text-[60px] font-bold leading-[1.02] tracking-[-0.03em] mb-2">
+                  Play with reality.
+                </h1>
+                <h1 className="text-[32px] sm:text-[48px] md:text-[60px] font-bold leading-[1.02] tracking-[-0.03em] text-mars mb-0">
+                  See what&apos;s possible.
+                </h1>
               </div>
             </div>
           </div>
+        )}
 
-        </div>{/* end max-w-3xl */}
+        {/* Input section — below hero image */}
+        <div className={`${submitted ? "pt-16 sm:pt-24" : "-mt-1"} px-4 pb-0`}>
+          <div className={`max-w-3xl mx-auto w-full transition-all duration-[1200ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+
+            <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+              <div className="p-5 sm:p-6">
+                <textarea
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="What question would you put on stage?"
+                  rows={2}
+                  className="w-full bg-transparent border-0 px-0 py-0 text-white text-[17px] sm:text-[20px] placeholder:text-white/40 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                  style={{ caretColor: "#FF5500" }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                  }}
+                />
+                <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.08]">
+                  <input
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Company name (optional)"
+                    className="flex-1 bg-transparent border-0 px-0 text-white/70 placeholder:text-white/30 focus:outline-none text-[14px]"
+                  />
+                  <button
+                    onClick={generate}
+                    disabled={!question.trim()}
+                    className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
+                      question.trim()
+                        ? "bg-mars hover:bg-mars-light text-white"
+                        : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                    }`}
+                  >
+                    Play
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>{/* end input section */}
 
           {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
           {!submitted && !inlineDigital && (
