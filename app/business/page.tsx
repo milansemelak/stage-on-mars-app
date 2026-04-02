@@ -122,35 +122,36 @@ type ProductCard = {
   price: string;
 };
 
-function deriveProducts(question: string): ProductCard[] {
+function deriveProducts(question: string, company: string): ProductCard[] {
   const themes = deriveThemes(question);
+  const co = company || "Your company";
   return [
     {
       theme: themes[0],
       name: `${themes[0]} on Mars`,
-      tag: "For your team",
-      pitch: "A live reality play designed around your question. Your team steps on stage and plays out the real dynamics. No slides. No theory. You see what you couldn't see before.",
-      duration: "3–4 hours",
-      people: "up to 20 people",
-      price: "from 55 000 CZK",
+      tag: `${co} × Team`,
+      pitch: `Your team steps on stage and plays out the real ${themes[0].toLowerCase()} dynamics at ${co}. No slides. No theory. You see what you couldn't see before.`,
+      duration: "3–4 h",
+      people: "up to 20",
+      price: "from €2 200",
     },
     {
       theme: themes[1],
       name: `${themes[1]} on Mars`,
-      tag: "For your team",
-      pitch: "A different angle on the same question. Different game mechanic, different characters, different perspective. The question stays. The play changes everything.",
-      duration: "3–4 hours",
-      people: "up to 20 people",
-      price: "from 55 000 CZK",
+      tag: `${co} × Team`,
+      pitch: `A different angle on the same question. Different game, different characters, different perspective. Same ${co}. Everything shifts.`,
+      duration: "3–4 h",
+      people: "up to 20",
+      price: "from €2 200",
     },
     {
       theme: "Leaders",
       name: "Leaders on Mars",
       tag: "Personal leadership",
-      pitch: "This one is for you. Not the team. You step on stage alone and confront the forces you've been avoiding. Your blind spots. Your patterns. What you already know but won't say out loud.",
-      duration: "2–3 hours",
+      pitch: `This one is for you. Not the team. You step on stage alone and confront the forces shaping ${co} from the inside. Your blind spots. Your patterns.`,
+      duration: "2–3 h",
       people: "you + guide",
-      price: "from 35 000 CZK",
+      price: "from €1 400",
     },
   ];
 }
@@ -190,7 +191,7 @@ export default function BusinessPage() {
     if (!question.trim()) return;
     setSubmitted(true);
     setAskedQuestion(question);
-    setProducts(deriveProducts(question));
+    setProducts(deriveProducts(question, companyName));
     setSelectedIdx(null);
     setPlay(null);
     setError("");
@@ -398,54 +399,56 @@ export default function BusinessPage() {
               </button>
             </div>
 
-            {/* ═══ 3 PRODUCT OPTIONS — instant, no API ═══ */}
+            {/* ═══ 3 PRODUCT OPTIONS — commercial menu ═══ */}
             {products.length > 0 && selectedIdx === null && (
-              <div className="space-y-4 sm:space-y-6">
-                <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-center mb-6 sm:mb-8">Choose your play</p>
+              <div>
+                <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-center mb-8 sm:mb-10">Choose your play</p>
 
-                <div className="grid gap-4 sm:gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
                   {products.map((p, i) => {
                     const isLeader = i === 2;
                     return (
                       <button
                         key={i}
                         onClick={() => selectProduct(i)}
-                        className={`relative w-full text-left rounded-3xl border overflow-hidden transition-all duration-300 group hover:scale-[1.01] ${
+                        className={`relative w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 group hover:scale-[1.02] flex flex-col ${
                           isLeader
-                            ? "border-mars/[0.15] bg-mars/[0.03] hover:border-mars/[0.25]"
-                            : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
+                            ? "border-mars/20 bg-gradient-to-b from-mars/[0.06] to-mars/[0.01] hover:border-mars/35 hover:shadow-[0_0_40px_-10px_rgba(255,85,0,0.2)]"
+                            : "border-white/[0.08] bg-gradient-to-b from-white/[0.03] to-transparent hover:border-white/[0.15] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
                         }`}
                       >
-                        {isLeader && (
-                          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
-                        )}
-                        <div className="p-6 sm:p-8 md:p-10">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-3">
-                                <div className={`w-1.5 h-1.5 rounded-full ${isLeader ? "bg-mars" : "bg-white/20"}`} />
-                                <p className={`text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold ${isLeader ? "text-mars/50" : "text-white/20"}`}>{p.tag}</p>
+                        {/* Top accent line */}
+                        <div className={`h-[2px] ${isLeader ? "bg-gradient-to-r from-mars/40 via-mars to-mars/40" : "bg-gradient-to-r from-transparent via-white/10 to-transparent"}`} />
+
+                        <div className="p-5 sm:p-6 flex flex-col flex-1">
+                          {/* Tag */}
+                          <p className={`text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/25"}`}>{p.tag}</p>
+
+                          {/* Theme — big bold keyword */}
+                          <h3 className={`text-[32px] sm:text-[38px] font-black tracking-[-0.04em] leading-[0.9] mb-1 ${isLeader ? "text-mars" : "text-white/90"}`}>
+                            {p.theme}
+                          </h3>
+                          <p className="text-white/25 text-[12px] sm:text-[13px] font-medium tracking-[-0.01em] mb-4">on Mars</p>
+
+                          {/* Pitch */}
+                          <p className="text-white/30 text-[12px] sm:text-[13px] leading-[1.55] mb-6 flex-1">
+                            {p.pitch}
+                          </p>
+
+                          {/* Bottom stats bar */}
+                          <div className={`border-t pt-4 mt-auto ${isLeader ? "border-mars/10" : "border-white/[0.06]"}`}>
+                            <div className="flex items-end justify-between">
+                              <div className="space-y-1">
+                                <p className="text-white/20 text-[10px]">{p.duration} · {p.people}</p>
                               </div>
-                              <h3 className="text-[22px] sm:text-[28px] md:text-[34px] font-black tracking-[-0.03em] leading-[0.95] group-hover:text-white transition-colors">
-                                {p.name}
-                              </h3>
-                              <p className="text-white/20 text-[11px] sm:text-[12px] mt-2">
-                                {p.duration} · {p.people} · {p.price}
-                              </p>
-                              <p className="font-mercure text-white/30 text-[13px] sm:text-[14px] leading-[1.6] mt-4 max-w-xl">
-                                {p.pitch}
-                              </p>
-                            </div>
-                            <div className="shrink-0 mt-2">
-                              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all ${
-                                isLeader
-                                  ? "bg-mars/10 group-hover:bg-mars/20"
-                                  : "bg-white/[0.04] group-hover:bg-white/[0.08]"
-                              }`}>
-                                <svg viewBox="0 0 24 24" className={`w-5 h-5 fill-current ${isLeader ? "text-mars/50" : "text-white/20"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                              </div>
+                              <p className={`text-[14px] sm:text-[15px] font-bold tracking-tight ${isLeader ? "text-mars/70" : "text-white/40"}`}>{p.price}</p>
                             </div>
                           </div>
+                        </div>
+
+                        {/* Hover arrow */}
+                        <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <svg viewBox="0 0 24 24" className={`w-4 h-4 fill-current ${isLeader ? "text-mars/50" : "text-white/20"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                         </div>
                       </button>
                     );
