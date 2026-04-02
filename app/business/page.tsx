@@ -971,7 +971,6 @@ export default function BusinessPage() {
             </div>
 
           </div>
-        </div>{/* end input section */}
 
           {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
           {!submitted && !inlineDigital && (
