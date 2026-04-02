@@ -44,11 +44,11 @@ function Voices() {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className="h-[160px] sm:h-[200px] flex flex-col items-center justify-center text-center px-4">
-      <p className={`font-mercure italic text-white/60 text-[16px] sm:text-[24px] md:text-[28px] leading-[1.35] max-w-2xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+    <div className="h-[120px] sm:h-[140px] flex flex-col items-center justify-center text-center">
+      <p className={`font-mercure italic text-white/50 text-[14px] sm:text-[18px] md:text-[22px] leading-[1.4] max-w-xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
         &ldquo;{VOICES[idx].text}&rdquo;
       </p>
-      <p className={`text-white/15 text-[11px] mt-4 transition-all duration-700 delay-100 ${visible ? "opacity-100" : "opacity-0"}`}>
+      <p className={`text-mars/25 text-[10px] mt-3 transition-all duration-700 delay-100 ${visible ? "opacity-100" : "opacity-0"}`}>
         {VOICES[idx].name} · {VOICES[idx].co}
       </p>
     </div>
@@ -712,16 +712,29 @@ export default function BusinessPage() {
       )}
 
 
-      {/* ── SOCIAL PROOF — always visible below ── */}
-      <FadeIn className="py-10 sm:py-16 px-4 mt-8 sm:mt-12">
+      {/* ── SOCIAL PROOF + VOICES — compact atmospheric block ── */}
+      <FadeIn className="py-16 sm:py-24 px-4 mt-8 sm:mt-12">
         <div className="max-w-3xl mx-auto">
-          <img src="/clients.png" alt="Clients" className="w-full invert opacity-[0.3]" />
+          <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+            {/* Top accent */}
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+
+            {/* Voices quote — top section */}
+            <div className="px-6 sm:px-10 pt-8 sm:pt-10 pb-6 sm:pb-8">
+              <Voices />
+            </div>
+
+            {/* Divider */}
+            <div className="mx-6 sm:mx-10 h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+
+            {/* Client logos — compact */}
+            <div className="px-6 sm:px-10 py-6 sm:py-8">
+              <p className="text-white/15 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-5">Trusted by</p>
+              <img src="/clients.png" alt="Clients" className="w-full max-w-xl mx-auto invert opacity-[0.2] hover:opacity-[0.35] transition-opacity duration-700" />
+            </div>
+          </div>
         </div>
       </FadeIn>
-
-      <section className="py-12 sm:py-20">
-        <Voices />
-      </section>
 
       {/* THE SPACE */}
       {!submitted && (
