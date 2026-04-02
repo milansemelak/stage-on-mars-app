@@ -937,7 +937,7 @@ export default function BusinessPage() {
               <textarea
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What's the one question that could change your reality?"
+                placeholder="What question would you put on stage?"
                 rows={2}
                 className="w-full bg-transparent border-0 px-0 pt-0 pb-2 text-white text-[17px] sm:text-[20px] placeholder:text-white/35 focus:outline-none resize-none leading-relaxed"
                 onKeyDown={(e) => {
