@@ -3,11 +3,12 @@
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 
-const STANDALONE_ROUTES = ["/business"];
+const STANDALONE_ROUTES_PREFIX = ["/business"];
+const STANDALONE_ROUTES_EXACT = ["/"];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isStandalone = STANDALONE_ROUTES.some((r) => pathname.startsWith(r));
+  const isStandalone = STANDALONE_ROUTES_EXACT.includes(pathname) || STANDALONE_ROUTES_PREFIX.some((r) => pathname.startsWith(r));
 
   if (isStandalone) {
     return <>{children}</>;
