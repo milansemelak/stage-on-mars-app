@@ -381,6 +381,40 @@ export default function BusinessPage() {
             Play
           </button>
 
+          {/* Digital Playmaker teaser — always visible below input */}
+          {!submitted && (
+            <button
+              onClick={() => {
+                if (!question.trim()) return;
+                setSubmitted(true);
+                setAskedQuestion(question);
+                setProducts(deriveProducts(question, companyName));
+                // Skip product selection, go straight to digital
+                setSelectedIdx(0);
+                openDigital();
+                setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+              }}
+              disabled={!question.trim()}
+              className={`w-full mt-3 group transition-all duration-500 ${!question.trim() ? "opacity-30 cursor-not-allowed" : "opacity-100"}`}
+            >
+              <div className="flex items-center justify-center gap-3 py-3">
+                {/* Mini phone icon */}
+                <svg width="18" height="32" viewBox="0 0 90 170" fill="none" className="opacity-40 group-hover:opacity-70 transition-opacity">
+                  <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.2)" strokeWidth="2" fill="#111" />
+                  <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+                  <circle cx="45" cy="65" r="18" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                  <circle cx="45" cy="55" r="2.5" fill="rgba(255,85,0,0.7)" />
+                  <circle cx="35" cy="70" r="2" fill="rgba(255,255,255,0.3)" />
+                  <circle cx="55" cy="68" r="2" fill="rgba(255,255,255,0.3)" />
+                  <rect x="15" y="95" width="60" height="20" rx="4" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                </svg>
+                <span className="text-white/20 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/50 transition-colors">
+                  Or try it digitally now
+                </span>
+              </div>
+            </button>
+          )}
+
         </div>
       </section>
 
