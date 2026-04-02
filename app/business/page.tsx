@@ -326,43 +326,41 @@ export default function BusinessPage() {
             <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
               <img src="/logo.png" alt="Stage On Mars" className="h-12 sm:h-16 md:h-20 w-auto invert mx-auto" />
             </div>
-            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] whitespace-nowrap">
+            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] text-center">
               Play with reality.
             </h1>
-            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] text-mars whitespace-nowrap">
+            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] text-mars text-center">
               See what&apos;s possible.
             </h1>
           </div>
 
           {/* THE INPUT */}
-          <div className="rounded-2xl border border-white/15 bg-white/[0.06] overflow-hidden focus-within:border-mars/30 transition-all duration-500 shadow-[0_4px_30px_-4px_rgba(0,0,0,0.5)]">
+          <div className="space-y-4">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="What's the one question that could change your reality?"
               rows={3}
-              className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white placeholder:text-white/30 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem]"
+              className="w-full rounded-xl bg-transparent border-b border-white/10 focus:border-mars/40 px-1 sm:px-2 pt-4 pb-3 text-white text-[17px] sm:text-[20px] placeholder:text-white/20 focus:outline-none resize-none leading-relaxed min-h-[6rem] transition-colors"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
               }}
             />
-            <div className="border-t border-white/[0.06] px-5 sm:px-6 py-3">
-              <input
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="Company name"
-                className="w-full bg-transparent text-white/70 placeholder:text-white/20 focus:outline-none text-[13px] sm:text-[14px]"
-              />
-            </div>
+            <input
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="Company name"
+              className="w-full bg-transparent border-b border-white/[0.06] focus:border-white/15 px-1 sm:px-2 py-3 text-white/60 placeholder:text-white/15 focus:outline-none text-[14px] sm:text-[15px] transition-colors"
+            />
           </div>
 
           <button
             onClick={generate}
             disabled={!question.trim()}
-            className={`w-full mt-3 py-5 rounded-2xl font-black text-xl sm:text-2xl tracking-widest uppercase transition-all duration-500 ${
+            className={`w-full mt-8 py-5 sm:py-6 rounded-full font-black text-lg sm:text-xl tracking-[0.2em] uppercase transition-all duration-500 ${
               question.trim()
-                ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.5)] hover:scale-[1.01]"
-                : "bg-white/[0.06] text-white/25 cursor-not-allowed border border-white/[0.06]"
+                ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)] hover:shadow-[0_0_80px_-8px_rgba(255,85,0,0.6)]"
+                : "bg-transparent text-white/10 border border-white/[0.06] cursor-not-allowed"
             }`}
           >
             Play
