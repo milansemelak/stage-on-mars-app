@@ -325,21 +325,22 @@ export default function BusinessPage() {
             <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
               <img src="/logo.png" alt="Stage On Mars" className="h-12 sm:h-16 md:h-20 w-auto invert mx-auto" />
             </div>
-            <h1 className="text-[36px] sm:text-[56px] md:text-[72px] lg:text-[86px] font-bold leading-[0.92] tracking-[-0.04em]">
+            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] whitespace-nowrap">
               Play with reality.
-              <br />
-              <span className="text-mars">See what&apos;s possible.</span>
+            </h1>
+            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] text-mars whitespace-nowrap">
+              See what&apos;s possible.
             </h1>
           </div>
 
-          {/* THE INPUT — elevated glass effect */}
-          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.03] overflow-hidden focus-within:border-mars/20 transition-all duration-500 backdrop-blur-sm shadow-[0_4px_30px_-4px_rgba(0,0,0,0.5)]">
+          {/* THE INPUT */}
+          <div className="rounded-2xl border border-white/15 bg-white/[0.06] overflow-hidden focus-within:border-mars/30 transition-all duration-500 shadow-[0_4px_30px_-4px_rgba(0,0,0,0.5)]">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="What's the one question that could change your reality?"
               rows={3}
-              className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white/90 placeholder:text-white/15 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem]"
+              className="w-full bg-transparent px-5 sm:px-6 pt-5 pb-3 text-white placeholder:text-white/30 focus:outline-none resize-none text-base sm:text-lg leading-relaxed min-h-[7rem]"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
               }}
@@ -352,7 +353,7 @@ export default function BusinessPage() {
             className={`w-full mt-3 py-5 rounded-2xl font-black text-xl sm:text-2xl tracking-widest uppercase transition-all duration-500 ${
               question.trim()
                 ? "bg-mars hover:bg-mars-light text-white shadow-[0_8px_40px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_12px_50px_-4px_rgba(255,85,0,0.5)] hover:scale-[1.01]"
-                : "bg-white/[0.04] text-white/15 cursor-not-allowed border border-white/[0.04]"
+                : "bg-white/[0.06] text-white/25 cursor-not-allowed border border-white/[0.06]"
             }`}
           >
             Play
