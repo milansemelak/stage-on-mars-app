@@ -335,13 +335,13 @@ export default function BusinessPage() {
           </div>
 
           {/* THE INPUT */}
-          <div className="space-y-4">
+          <div className="space-y-0">
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="What's the one question that could change your reality?"
-              rows={3}
-              className="w-full rounded-xl bg-transparent border-b border-white/10 focus:border-mars/40 px-1 sm:px-2 pt-4 pb-3 text-white text-[17px] sm:text-[20px] placeholder:text-white/20 focus:outline-none resize-none leading-relaxed min-h-[6rem] transition-colors"
+              rows={2}
+              className="w-full bg-transparent border-b border-white/10 focus:border-mars/40 px-0 pt-2 pb-3 text-white text-[17px] sm:text-[20px] placeholder:text-white/20 focus:outline-none resize-none leading-relaxed transition-colors"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
               }}
@@ -350,17 +350,17 @@ export default function BusinessPage() {
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               placeholder="Company name"
-              className="w-full bg-transparent border-b border-white/[0.06] focus:border-white/15 px-1 sm:px-2 py-3 text-white/60 placeholder:text-white/15 focus:outline-none text-[14px] sm:text-[15px] transition-colors"
+              className="w-full bg-transparent border-b border-white/[0.06] focus:border-white/15 px-0 py-3 text-white/60 placeholder:text-white/15 focus:outline-none text-[14px] sm:text-[15px] transition-colors"
             />
           </div>
 
           <button
             onClick={generate}
             disabled={!question.trim()}
-            className={`w-full mt-8 py-5 sm:py-6 rounded-full font-black text-lg sm:text-xl tracking-[0.2em] uppercase transition-all duration-500 ${
+            className={`w-full mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.25em] uppercase transition-all duration-500 ${
               question.trim()
-                ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)] hover:shadow-[0_0_80px_-8px_rgba(255,85,0,0.6)]"
-                : "bg-transparent text-white/10 border border-white/[0.06] cursor-not-allowed"
+                ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)]"
+                : "text-white/10 border border-white/[0.06] cursor-not-allowed"
             }`}
           >
             Play
