@@ -55,61 +55,241 @@ function Voices() {
   );
 }
 
-/* ── Dynamic "X on Mars" naming from question ── */
-type LiveFormat = {
-  name: string;
-  theme: string;
-  duration: string;
-  people: string;
-  price: string;
-  pitch: string;
-};
+/* ══════════════════════════════════════════════════════════════════
+   PLAY 1: BUSINESS CONTEXT — What business domain is the question about?
+   Maps to formal business categories: Strategy, Growth, Culture, etc.
+   ══════════════════════════════════════════════════════════════════ */
 
-const THEME_MAP: [RegExp, string][] = [
-  [/strateg|decision|direction|priorit/i, "Strategy"],
-  [/creat|innovat|idea|inspir|imagin/i, "Creativity"],
-  [/trust|relationship|conflict|tension|team dynam/i, "Trust"],
-  [/vision|future|dream|ambition|purpose|mission/i, "Vision"],
-  [/fear|afraid|risk|uncertain|anxiety|worry/i, "Courage"],
-  [/stuck|block|stagnat|plateau|comfort zone/i, "Breakthrough"],
-  [/grow|scale|expand|bigger|next level/i, "Growth"],
-  [/lead|manage|ceo|founder|boss|authority/i, "Leadership"],
-  [/cultur|value|identity|who are we|belong/i, "Identity"],
-  [/chang|transform|transition|restructur|pivot/i, "Transformation"],
-  [/talent|hire|retain|people leav|turnover/i, "Talent"],
-  [/communi|speak|listen|silent|voice|heard/i, "Voice"],
-  [/power|control|dominan|hierarchy|ego/i, "Power"],
-  [/money|profit|revenue|cost|budget|financ/i, "Value"],
-  [/customer|client|market|brand|compet/i, "Market"],
-  [/family|partner|marriage|parent|child/i, "Connection"],
-  [/health|burnout|exhaust|energy|balanc/i, "Balance"],
-  [/success|failure|win|lose|perform/i, "Performance"],
-  [/impossible|crazy|never|can.t|no way/i, "Impossible"],
+const BUSINESS_MAP: [RegExp, string, string][] = [
+  // [pattern, theme, pitch fragment]
+  // Strategy & Direction
+  [/strateg|direction|priorit|roadmap|plan ahead|where.*(go|head)|what.*(focus|next)/i, "Strategy", "strategic direction"],
+  [/decision|choose|dilemma|trade.?off|which way|crossroad/i, "Decisions", "decision-making"],
+  [/vision|future|long.?term|5 year|ten year|horizon|where.*heading/i, "Vision", "vision and future"],
+
+  // Growth & Scale
+  [/grow|growth|scale|expand|10x|100x|double|triple|bigger|accelerat/i, "Growth", "growth dynamics"],
+  [/market|position|competit|differenti|niche|segment|share/i, "Market", "market positioning"],
+  [/revenue|profit|margin|monetiz|pricing|cost|budget|financ|money|cash/i, "Value", "value creation"],
+  [/product|launch|ship|release|mvp|feature|build.*product/i, "Product", "product development"],
+  [/customer|client|user|retention|churn|loyalt|acquisition/i, "Customers", "customer relationships"],
+  [/brand|reputation|perception|image|story|narrative|position/i, "Brand", "brand identity"],
+  [/sales|selling|pipeline|conversion|deal|close|prospect/i, "Sales", "sales performance"],
+
+  // People & Organization
+  [/team|collaborat|together|silos|align|department|cross.?function/i, "Team", "team dynamics"],
+  [/cultur|value|who are we|belong|dna|way we work|spirit/i, "Culture", "company culture"],
+  [/talent|hire|recruit|retain|people leav|turnover|employer brand/i, "Talent", "talent and people"],
+  [/lead|leader|manage|ceo|founder|boss|authority|c.?suite|executive/i, "Leadership", "leadership"],
+  [/trust|psycholog|safe|conflict|tension|friction|dysfunct/i, "Trust", "trust and safety"],
+  [/communi|speak|listen|silent|voice|heard|feedback|transparen/i, "Voice", "communication"],
+  [/power|control|dominan|hierarchy|ego|politic|influenc/i, "Power", "power dynamics"],
+  [/diversity|inclusion|equity|belonging|bias|represent/i, "Belonging", "diversity and belonging"],
+
+  // Change & Transformation
+  [/chang|transform|transition|restructur|pivot|reinvent|disrupt/i, "Transformation", "transformation"],
+  [/innovat|creat|new idea|experiment|lab|prototype|disrupt/i, "Innovation", "innovation"],
+  [/digit|tech|ai|automat|machine|software|platform/i, "Digital", "digital transformation"],
+  [/merger|acqui|integrat|consolidat|m&a|takeover/i, "Integration", "integration"],
+  [/agil|speed|fast|slow|bureaucra|process|efficienc/i, "Agility", "organizational agility"],
+
+  // Performance & Results
+  [/perform|result|kpi|metric|target|goal|okr|objective/i, "Performance", "performance"],
+  [/success|failure|win|lose|best|worst|peak|bottom/i, "Performance", "success and failure"],
+  [/stuck|block|stagnant|plateau|comfort zone|rut/i, "Breakthrough", "breaking through"],
+  [/burnout|exhaust|energy|balanc|wellbeing|mental health|stress/i, "Balance", "balance and energy"],
+
+  // Purpose & Meaning
+  [/purpose|meaning|why|impact|legacy|matter|contribut/i, "Purpose", "purpose"],
+  [/sustainab|esg|responsib|planet|climate|green|impact/i, "Impact", "impact and responsibility"],
+  [/ethic|moral|right thing|integrity|principle/i, "Integrity", "integrity"],
+
+  // Fear & Risk
+  [/fear|afraid|risk|uncertain|anxiety|worry|danger|threat/i, "Courage", "courage under uncertainty"],
+  [/crisis|emergency|survival|existential|collapse|fail/i, "Survival", "survival and crisis"],
+  [/impossible|crazy|never|can.t|no way|dream|moonshot/i, "Impossible", "the impossible"],
 ];
 
-function deriveThemes(question: string): string[] {
-  const matched: string[] = [];
-  for (const [pattern, theme] of THEME_MAP) {
-    if (pattern.test(question)) matched.push(theme);
-    if (matched.length >= 2) break;
+/* ══════════════════════════════════════════════════════════════════
+   PLAY 2: CREATIVE CONTEXT — What's the dramatic essence of the question?
+   Extracts the evocative word, metaphor, or action from the question.
+   "How do we 10x?" → "10x on Mars"
+   "How do we conquer Europe?" → "Conquerors on Mars"
+   ══════════════════════════════════════════════════════════════════ */
+
+const CREATIVE_EXTRACTIONS: [RegExp, string][] = [
+  // Numbers and multipliers
+  [/\b(10x|100x|2x|3x|5x)\b/i, "$1"],
+  [/\b(million|billion|trillion)\b/i, "$1"],
+
+  // Power verbs → noun forms
+  [/\bconquer\w*/i, "Conquerors"],
+  [/\bdominat\w*/i, "Dominators"],
+  [/\bdisrupt\w*/i, "Disruptors"],
+  [/\brevolut\w*/i, "Revolutionaries"],
+  [/\btransform\w*/i, "Shapeshifters"],
+  [/\breinvent\w*/i, "Reinventors"],
+  [/\bdestroy\w*/i, "Destroyers"],
+  [/\bbuild\w*/i, "Builders"],
+  [/\bcreate|creat\w*/i, "Creators"],
+  [/\binvent\w*/i, "Inventors"],
+  [/\bpioneer\w*/i, "Pioneers"],
+  [/\bexplor\w*/i, "Explorers"],
+  [/\bsurvi\w*/i, "Survivors"],
+  [/\bfight\w*/i, "Fighters"],
+  [/\bwin\b/i, "Winners"],
+  [/\blos[ei]\w*/i, "Losers"],
+  [/\bescap\w*/i, "Escapists"],
+  [/\bchase|chas\w*/i, "Chasers"],
+  [/\bhunt\w*/i, "Hunters"],
+  [/\bbreak\w*/i, "Breakers"],
+  [/\bcrush\w*/i, "Crushers"],
+  [/\blaunch\w*/i, "Launchers"],
+  [/\blead\w*/i, "Leaders"],
+  [/\brunning|run\b/i, "Runners"],
+  [/\bsell\w*/i, "Sellers"],
+  [/\bsteal\w*/i, "Stealers"],
+  [/\bawaken\w*|wake/i, "Awakeners"],
+  [/\bheal\w*/i, "Healers"],
+  [/\bunlock\w*/i, "Unlockers"],
+  [/\bscale\b/i, "Scalers"],
+
+  // Geography / Markets
+  [/\b(europe|asia|america|africa|global|world|international)\b/i, "$1"],
+  [/\b(china|india|usa|uk|germany|japan|brazil|middle east)\b/i, "$1"],
+  [/\b(czech|slovak|poland|hungary|balkan|nordic|baltic)\b/i, "$1"],
+
+  // Metaphors and concepts
+  [/\bnumber one|#1|first\b/i, "#1"],
+  [/\bunicorn\b/i, "Unicorn"],
+  [/\brocket\b/i, "Rocket"],
+  [/\bempire\b/i, "Empire"],
+  [/\bkingdom\b/i, "Kingdom"],
+  [/\bwar\b/i, "War"],
+  [/\bpeace\b/i, "Peace"],
+  [/\bfire\b/i, "Fire"],
+  [/\bstorm\b/i, "Storm"],
+  [/\bwave\b/i, "Wave"],
+  [/\bdark\w*\b/i, "Darkness"],
+  [/\blight\b/i, "Light"],
+  [/\bsilent|silence\b/i, "Silence"],
+  [/\bloud\b/i, "Noise"],
+  [/\bchaos\b/i, "Chaos"],
+  [/\border\b/i, "Order"],
+  [/\bfreedom\b/i, "Freedom"],
+  [/\brebel\w*/i, "Rebels"],
+  [/\boutcast\w*/i, "Outcasts"],
+  [/\bunderdog\w*/i, "Underdogs"],
+  [/\bgiant\w*/i, "Giants"],
+  [/\bmonster\w*/i, "Monsters"],
+  [/\bghost\w*/i, "Ghosts"],
+  [/\bshadow\w*/i, "Shadows"],
+  [/\bmirror\w*/i, "Mirrors"],
+  [/\bmask\w*/i, "Masks"],
+  [/\bwall\w*/i, "Walls"],
+  [/\bbridge\w*/i, "Bridges"],
+  [/\bdoor\w*/i, "Doors"],
+  [/\bkey\b/i, "Keys"],
+  [/\bbox\b/i, "Box"],
+  [/\bcage\b/i, "Cage"],
+  [/\broot\w*/i, "Roots"],
+  [/\bseed\w*/i, "Seeds"],
+  [/\bflam\w*|burn\w*/i, "Flames"],
+  [/\bice|frozen|cold\b/i, "Ice"],
+  [/\bstars?\b/i, "Stars"],
+  [/\bmoon\b/i, "Moon"],
+  [/\bsun\b/i, "Sun"],
+  [/\bocean|sea\b/i, "Ocean"],
+  [/\bmountain\b/i, "Mountain"],
+  [/\bjungle\b/i, "Jungle"],
+  [/\bdesert\b/i, "Desert"],
+];
+
+/* ── Derive business theme (Play 1) ── */
+function deriveBusinessTheme(question: string): string {
+  for (const [pattern, theme] of BUSINESS_MAP) {
+    if (pattern.test(question)) return theme;
   }
-  // Fallback: extract keyword
-  if (matched.length === 0) {
-    const words = question.replace(/[?.,!]/g, "").split(/\s+/).filter(w => w.length > 4);
-    if (words.length > 0) {
-      const w = words[Math.floor(words.length / 2)];
-      matched.push(w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
-    } else {
-      matched.push("Reality");
+  // Fallback: extract a meaningful noun
+  const nouns = question.replace(/[?.,!'"]/g, "").split(/\s+/).filter(w => w.length > 4 && !/^(about|could|would|should|where|there|their|these|those|which|while|after|before|being|doing|going|having|making|taking|using|what|when|with|from|into|than|then|them|they|this|that|have|will|been|were|does|didn|don|isn|aren|wasn|weren|can|how|who|why|our|your)$/i.test(w));
+  if (nouns.length > 0) {
+    const w = nouns[0];
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  }
+  return "Reality";
+}
+
+/* ── Derive creative theme (Play 2) ── */
+function deriveCreativeTheme(question: string): string {
+  // Try creative extractions first
+  for (const [pattern, replacement] of CREATIVE_EXTRACTIONS) {
+    const match = question.match(pattern);
+    if (match) {
+      // Handle backreferences
+      if (replacement.includes("$1") && match[1]) {
+        return match[1].charAt(0).toUpperCase() + match[1].slice(1);
+      }
+      return replacement;
     }
   }
-  // Ensure we have 2 themes
-  if (matched.length === 1) {
-    const secondOptions = ["Breakthrough", "Transformation", "Vision", "Performance", "Identity"];
-    const second = secondOptions.find(t => t !== matched[0]) || "Reality";
-    matched.push(second);
+
+  // Fallback: find the most dramatic/interesting word in the question
+  const q = question.replace(/[?.,!'"]/g, "").toLowerCase();
+  const words = q.split(/\s+/).filter(w => w.length > 3);
+  // Skip common words, find the juicy one
+  const boring = new Set(["about","could","would","should","where","there","their","these","those","which","while","after","before","being","doing","going","having","making","taking","using","what","when","with","from","into","than","then","them","they","this","that","have","will","been","were","does","your","need","want","know","think","feel","like","just","more","most","very","really","still","also","even","each","much","many","some","such","only","back","over","down","come","made","find","here","thing","give","every","good","well","work","make","help","keep","turn","start","might","could","first","never","under","other","again","next","last","long","great","little","right","look","tell","mean","must","call","hand","high","because","between","same","different","through","another","people","company","question","play"]);
+  const interesting = words.filter(w => !boring.has(w));
+
+  if (interesting.length > 0) {
+    // Take the most "active" word (prefer later words as they tend to be more specific)
+    const w = interesting[interesting.length - 1];
+    return w.charAt(0).toUpperCase() + w.slice(1);
   }
-  return matched;
+
+  return "Unknown";
+}
+
+/* ── Business-themed pitch descriptions ── */
+const BUSINESS_PITCHES: Record<string, string> = {
+  Strategy: "Where is {co} really heading — and what's pulling it off course? Your team maps the forces on stage. The real strategy emerges.",
+  Decisions: "The choices {co} is avoiding get played out live. Characters embody the trade-offs. You see the cost of indecision.",
+  Vision: "What does {co} look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it.",
+  Growth: "What's actually blocking {co} from growing? Your team plays out the growth dynamics. The bottleneck reveals itself.",
+  Market: "Where does {co} really stand? Competitors, customers, blind spots — all on stage. The market tells you what you're missing.",
+  Value: "Follow the money at {co}. Where value is created, where it leaks, who controls it. The financial dynamics play out live.",
+  Product: "Your product vision meets reality on stage. Users, builders, and blockers step into the play. You see what ships and what stalls.",
+  Customers: "Your customers step on stage at {co}. What they really think. What they don't say. The relationship plays out in real time.",
+  Brand: "What does {co} really stand for? Not the deck — the truth. Characters play your brand from the inside and outside.",
+  Sales: "The sale that won't close. The pipeline that's stuck. Your team plays out the real dynamics between {co} and the market.",
+  Team: "What's the real dynamic inside {co}? Who leads, who follows, who's silent? The team shows itself on stage.",
+  Culture: "The culture of {co} — not the values on the wall, but the ones in the hallway. Your team plays it out. You see the gap.",
+  Talent: "Why do people join {co}? Why do they leave? The talent forces play out on stage. You see what you're really offering.",
+  Leadership: "What kind of leader does {co} need right now? Not the job description — the real force. Your team plays it out.",
+  Trust: "The trust that's missing at {co}. Where it broke, who broke it, what would rebuild it. All on stage.",
+  Voice: "Who speaks at {co}? Who stays silent? The communication dynamics play out live. You hear what's been unsaid.",
+  Power: "Who really holds power at {co}? Not the org chart — the invisible lines. Your team plays the power dynamics live.",
+  Belonging: "Who belongs at {co} and who doesn't feel it? The inclusion dynamics play out on stage. You see the invisible walls.",
+  Transformation: "What is {co} becoming? The old and the new collide on stage. Your team plays the forces of change.",
+  Innovation: "Where does innovation live at {co} — and what kills it? The creative forces and the blockers meet on stage.",
+  Digital: "The digital future of {co} meets the human reality. Technology, people, resistance — all played out live.",
+  Integration: "Two worlds becoming one at {co}. The cultures, the fears, the opportunities. Integration plays out on stage.",
+  Agility: "What slows {co} down? Bureaucracy, fear, habit? The forces of speed and friction meet on stage.",
+  Performance: "What drives results at {co} — and what sabotages them? Performance dynamics play out live.",
+  Breakthrough: "What's keeping {co} stuck? The invisible walls, the comfort zones. Your team breaks through them on stage.",
+  Balance: "The energy at {co} — where it flows and where it burns out. Your team plays the balance between drive and destruction.",
+  Purpose: "Why does {co} exist? Not the mission statement — the real reason. Purpose meets reality on stage.",
+  Impact: "What mark is {co} leaving on the world? The impact you intend vs. the impact you create. Played out live.",
+  Integrity: "The gap between what {co} says and what it does. Characters play both sides. You see the truth.",
+  Courage: "What is {co} afraid of? The fears that shape decisions, the risks nobody takes. Courage meets reality on stage.",
+  Survival: "Is {co} in danger? The survival forces play out live — threats, allies, blind spots. You see what's really at stake.",
+  Impossible: "The thing {co} thinks it can't do. Characters embody the impossibility — then your team plays through it.",
+};
+
+const DEFAULT_BUSINESS_PITCH = "Your team steps on stage and plays out the real {theme} dynamics at {co}. No slides. No theory. You see what you couldn't see before.";
+
+/* ── Creative-themed pitch descriptions ── */
+function getCreativePitch(theme: string, co: string): string {
+  return `"${theme}" becomes a character on stage. Your team at ${co} steps into a play where ${theme.toLowerCase()} drives the story. Different game. Different rules. New perspective.`;
 }
 
 type ProductCard = {
@@ -123,23 +303,29 @@ type ProductCard = {
 };
 
 function deriveProducts(question: string, company: string): ProductCard[] {
-  const themes = deriveThemes(question);
-  const co = company || "Your company";
+  const bizTheme = deriveBusinessTheme(question);
+  const creativeTheme = deriveCreativeTheme(question);
+  const co = company || "your company";
+
+  // Business pitch with company name
+  let bizPitch = BUSINESS_PITCHES[bizTheme] || DEFAULT_BUSINESS_PITCH;
+  bizPitch = bizPitch.replace(/\{co\}/g, co).replace(/\{theme\}/g, bizTheme.toLowerCase());
+
   return [
     {
-      theme: themes[0],
-      name: `${themes[0]} on Mars`,
-      tag: `${co} × Team`,
-      pitch: `Your team steps on stage and plays out the real ${themes[0].toLowerCase()} dynamics at ${co}. No slides. No theory. You see what you couldn't see before.`,
+      theme: bizTheme,
+      name: `${bizTheme} on Mars`,
+      tag: `${company || "Your team"} × Business`,
+      pitch: bizPitch,
       duration: "3–4 h",
       people: "up to 20",
       price: "from €2 200",
     },
     {
-      theme: themes[1],
-      name: `${themes[1]} on Mars`,
-      tag: `${co} × Team`,
-      pitch: `A different angle on the same question. Different game, different characters, different perspective. Same ${co}. Everything shifts.`,
+      theme: creativeTheme,
+      name: `${creativeTheme} on Mars`,
+      tag: `${company || "Your team"} × Creative`,
+      pitch: getCreativePitch(creativeTheme, co),
       duration: "3–4 h",
       people: "up to 20",
       price: "from €2 200",
@@ -148,7 +334,7 @@ function deriveProducts(question: string, company: string): ProductCard[] {
       theme: "Leaders",
       name: "Leaders on Mars",
       tag: "Personal leadership",
-      pitch: `This one is for you. Not the team. You step on stage alone and confront the forces shaping ${co} from the inside. Your blind spots. Your patterns.`,
+      pitch: `This one is for you. Not the team. You step on stage alone and confront the forces shaping ${co} from the inside. Your blind spots. Your patterns. What you already know but won't say out loud.`,
       duration: "2–3 h",
       people: "you + guide",
       price: "from €1 400",
