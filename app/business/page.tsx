@@ -534,44 +534,74 @@ export default function BusinessPage() {
                       <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
                         <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
 
-                        {/* Phone mockup with real stage UI */}
-                        <div className="inline-block mb-5 group-hover:scale-105 transition-transform duration-500">
-                          <div className="relative w-[64px] h-[120px] sm:w-[80px] sm:h-[150px] mx-auto">
-                            {/* Phone frame */}
-                            <div className="absolute inset-0 rounded-[12px] sm:rounded-[16px] border-2 border-white/15 group-hover:border-mars/30 transition-colors duration-500 bg-[#111]" />
-                            {/* Notch */}
-                            <div className="absolute top-[4px] left-1/2 -translate-x-1/2 w-[16px] sm:w-[20px] h-[3px] sm:h-[4px] bg-[#0a0a0a] rounded-full z-10" />
-                            {/* Screen */}
-                            <div className="absolute inset-[4px] sm:inset-[5px] rounded-[8px] sm:rounded-[11px] bg-[#0a0a0a] overflow-hidden">
-                              {/* Header bar */}
-                              <div className="px-[4px] pt-[8px] sm:pt-[10px]">
-                                <div className="w-[55%] h-[2px] sm:h-[2.5px] bg-white/20 rounded-full mb-[3px]" />
-                                <div className="w-[30%] h-[1.5px] bg-mars/30 rounded-full" />
-                              </div>
-                              {/* Stage circle */}
-                              <div className="relative mx-auto mt-[6px] sm:mt-[8px] w-[32px] h-[32px] sm:w-[42px] sm:h-[42px]">
-                                <div className="absolute inset-0 rounded-full border border-white/10" />
-                                <div className="absolute inset-[3px] sm:inset-[4px] rounded-full border border-dashed border-white/[0.06]" />
-                                {/* Character dots on stage */}
-                                <div className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[4px] h-[4px] sm:w-[5px] sm:h-[5px] rounded-full bg-mars/70" />
-                                <div className="absolute top-[55%] left-[25%] w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/30" />
-                                <div className="absolute top-[50%] right-[22%] w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/30" />
-                                <div className="absolute bottom-[18%] left-[45%] w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/20" />
-                              </div>
-                              {/* Narration text lines */}
-                              <div className="px-[5px] sm:px-[6px] mt-[5px] sm:mt-[7px] space-y-[2px]">
-                                <div className="w-full h-[1.5px] bg-white/8 rounded-full" />
-                                <div className="w-[80%] h-[1.5px] bg-white/8 rounded-full" />
-                                <div className="w-[60%] h-[1.5px] bg-white/6 rounded-full" />
-                              </div>
-                              {/* Bottom nav dots */}
-                              <div className="absolute bottom-[5px] sm:bottom-[7px] left-1/2 -translate-x-1/2 flex gap-[2px] sm:gap-[3px]">
-                                <div className="w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-mars/50" />
-                                <div className="w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/10" />
-                                <div className="w-[3px] h-[3px] sm:w-[4px] sm:h-[4px] rounded-full bg-white/10" />
-                              </div>
-                            </div>
-                          </div>
+                        {/* Phone mockup — SVG with real stage UI */}
+                        <div className="inline-block mb-6 group-hover:scale-[1.03] transition-transform duration-700">
+                          <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
+                            {/* Phone body */}
+                            <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
+                            <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                            {/* Dynamic Island */}
+                            <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
+                            {/* Screen area */}
+                            <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+
+                            {/* -- Screen content -- */}
+                            {/* Play title */}
+                            <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                            <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
+
+                            {/* Stage circle */}
+                            <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                            <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
+                            {/* Stage glow */}
+                            <circle cx="45" cy="68" r="24" fill="url(#stageGlow)" />
+
+                            {/* Characters on stage */}
+                            <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)">
+                              <animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)">
+                              <animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)">
+                              <animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)">
+                              <animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" />
+                            </circle>
+
+                            {/* Connection lines between characters */}
+                            <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                            <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+
+                            {/* Narration box */}
+                            <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                            <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
+                            <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
+                            <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
+
+                            {/* Step indicators */}
+                            <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
+                            <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                            <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+
+                            {/* Progress bar */}
+                            <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
+                            <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
+
+                            {/* Gradients */}
+                            <defs>
+                              <radialGradient id="stageGlow" cx="0.5" cy="0.5" r="0.5">
+                                <stop offset="0%" stopColor="rgba(255,85,0,0.06)" />
+                                <stop offset="100%" stopColor="transparent" />
+                              </radialGradient>
+                              <linearGradient id="phoneGlow" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="rgba(255,85,0,0.4)" />
+                                <stop offset="50%" stopColor="rgba(255,85,0,0.1)" />
+                                <stop offset="100%" stopColor="transparent" />
+                              </linearGradient>
+                            </defs>
+                          </svg>
                         </div>
 
                         <p className="text-white/50 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
