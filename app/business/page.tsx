@@ -799,14 +799,15 @@ export default function BusinessPage() {
     setSimReady(false);
   }
 
-  async function fetchSimulation(currentPlay: Play) {
+  async function fetchSimulation(currentPlay: Play, overrideQuestion?: string) {
     setSimLoading(true);
     setSimReady(false);
     try {
+      const q = overrideQuestion || askedQuestion || question;
       const res = await fetch("/api/generate-mars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play: currentPlay, question: askedQuestion || question, lang: "en" }),
+        body: JSON.stringify({ play: currentPlay, question: q, lang: "en" }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
@@ -826,19 +827,20 @@ export default function BusinessPage() {
     }
   }
 
-  async function openDigital() {
+  async function openDigital(overrideQuestion?: string) {
     setShowDigital(true);
     setPlayLoading(true);
     setError("");
     setSimPhase("cast");
     setSimEnded(false);
 
+    const q = overrideQuestion || askedQuestion;
     try {
       // Step 1: Generate the play
       const res = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: askedQuestion, context, lang: "en", clientName: companyName || undefined }),
+        body: JSON.stringify({ question: q, context, lang: "en", clientName: companyName || undefined }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
@@ -847,7 +849,7 @@ export default function BusinessPage() {
         setPlay(generatedPlay);
         setPlayLoading(false);
         // Step 2: Generate choreography in background — user will start when ready
-        fetchSimulation(generatedPlay);
+        fetchSimulation(generatedPlay, q);
       }
     } catch {
       setError("Something went wrong. Try again.");
@@ -900,21 +902,42 @@ export default function BusinessPage() {
 
 
       {/* ── HERO: The question IS the experience ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "pt-24 sm:pt-32"} flex flex-col items-center px-4 relative overflow-hidden transition-all duration-700`}>
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-[85vh] sm:min-h-[90vh] flex"} flex flex-col items-center justify-center px-4 relative overflow-hidden transition-all duration-700`}>
 
-        {/* Layered ambient glows */}
-        <div
-          className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.07) 0%, transparent 60%)", top: "25%", left: "50%", transform: "translate(-50%, -50%)" }}
-        />
-        <div
-          className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[1000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "60%", left: "30%", transform: "translate(-50%, -50%)" }}
-        />
-        <div
-          className={`absolute w-[200px] h-[200px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.03) 0%, transparent 70%)", top: "40%", left: "75%", transform: "translate(-50%, -50%)" }}
-        />
+        {/* Abstract stage light — dramatic cone from top */}
+        {!submitted && (
+          <>
+            {/* Main spotlight cone */}
+            <div
+              className={`absolute transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{
+                top: "-20%",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "120%",
+                height: "80%",
+                background: "conic-gradient(from 180deg at 50% 0%, transparent 35%, rgba(255,85,0,0.06) 45%, rgba(255,85,0,0.12) 50%, rgba(255,85,0,0.06) 55%, transparent 65%)",
+              }}
+            />
+            {/* Warm center glow */}
+            <div
+              className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[2500ms] delay-500 ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(ellipse, rgba(255,85,0,0.14) 0%, rgba(255,85,0,0.04) 40%, transparent 70%)", top: "20%", left: "50%", transform: "translate(-50%, -50%)" }}
+            />
+            {/* Subtle side accent left */}
+            <div
+              className={`absolute w-[400px] h-[400px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.05) 0%, transparent 70%)", top: "50%", left: "15%", transform: "translate(-50%, -50%)" }}
+            />
+            {/* Subtle side accent right */}
+            <div
+              className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[2000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "45%", left: "80%", transform: "translate(-50%, -50%)" }}
+            />
+            {/* Noise/grain texture overlay for depth */}
+            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "256px" }} />
+          </>
+        )}
 
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
@@ -937,15 +960,15 @@ export default function BusinessPage() {
 
             {/* THE INPUT — stage box design */}
             <div className="relative group/input">
-              <div className="absolute -inset-8 sm:-inset-12 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
+              <div className="absolute -inset-8 sm:-inset-16 rounded-3xl opacity-40 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
 
-              <div className="relative rounded-2xl border border-white/[0.06] group-focus-within/input:border-white/[0.1] bg-white/[0.015] transition-all duration-700 overflow-hidden">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+              <div className="relative rounded-2xl border border-white/[0.10] group-focus-within/input:border-mars/20 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.04)] group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.08)]">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
                 <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What question would you put on stage?"
+                    placeholder="What does my company need right now?"
                     rows={2}
                     className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
@@ -982,14 +1005,14 @@ export default function BusinessPage() {
             <div className="w-full max-w-3xl mx-auto mt-8 sm:mt-10">
               <button
                 onClick={() => {
-                  if (!question.trim()) return;
-                  setAskedQuestion(question);
+                  const q = question.trim() || "What does my company need right now?";
+                  setAskedQuestion(q);
+                  if (!question.trim()) setQuestion(q);
                   setInlineDigital(true);
-                  openDigital();
+                  openDigital(q);
                   setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
                 }}
-                disabled={!question.trim()}
-                className={`w-full group transition-all duration-500 ${!question.trim() ? "opacity-70" : "opacity-100 hover:scale-[1.01]"}`}
+                className="w-full group transition-all duration-500 opacity-100 hover:scale-[1.01]"
               >
                 <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                   <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
@@ -1237,35 +1260,47 @@ export default function BusinessPage() {
             </div>
           )}
 
-          {/* ── BESTSELLING PLAYS ── */}
+          {/* ── BESTSELLING PLAYS — luxury product cards ── */}
           {!submitted && (
-            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-8">
-              <div className="rounded-2xl border border-mars/[0.12] bg-mars/[0.03] overflow-hidden">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-                <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-2">
-                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-1">Bestselling plays</p>
-                  <p className="text-white/60 text-[11px] font-mercure">Most booked by leadership teams</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-6 sm:px-8 pb-6 sm:pb-8">
-                  {[
-                    { theme: "Strategy", desc: "Half-day · 8–30 people", pitch: "Where is your company really heading — and what's pulling it off course? Your team maps the forces on stage. The real strategy emerges." },
-                    { theme: "Vision", desc: "Half-day · 8–30 people", pitch: "What does your company look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it." },
-                    { theme: "Creativity", desc: "Half-day · 8–30 people", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
-                  ].map((play, i) => (
-                    <div key={i} className="rounded-xl border border-mars/[0.1] bg-mars/[0.02] p-5 flex flex-col">
-                      <h4 className="text-[20px] sm:text-[22px] font-black tracking-[-0.03em] leading-[1] mb-1">
-                        <span className="text-mars">{play.theme}</span>{" "}
-                        <span className="text-mars">on Mars</span>
-                      </h4>
-                      <p className="text-white/70 text-[9px] uppercase tracking-[0.15em] mt-1 mb-3">{play.desc}</p>
-                      <p className="text-white/70 text-[13px] sm:text-[14px] leading-[1.55] flex-1">{play.pitch}</p>
-                      <a href="#contact" className="mt-4 block w-full text-center py-2.5 rounded-lg border border-mars/15 text-mars/60 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:text-mars/80 hover:border-mars/25 transition-all">
-                        I want this
-                      </a>
-                    </div>
-                  ))}
-                </div>
+            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-8 space-y-5">
+              <div className="px-1 mb-1">
+                <p className="text-mars/50 text-[10px] uppercase tracking-[0.4em]">Bestselling plays</p>
               </div>
+              {[
+                { theme: "Strategy", photo: "/luxury2.jpg", photoPos: "50% 30%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "Where is your company really heading — and what's pulling it off course? Your team maps the forces on stage." },
+                { theme: "Vision", photo: "/luxury4.jpg", photoPos: "50% 50%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it." },
+                { theme: "Creativity", photo: "/luxury1.jpg", photoPos: "50% 40%", duration: "Half-day", people: "8–25", price: "from €2 200", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
+              ].map((play, i) => (
+                <div key={i} className="group rounded-2xl border border-white/[0.08] hover:border-mars/15 overflow-hidden bg-white/[0.02] transition-all duration-500">
+                  {/* Photo — contained */}
+                  <div className="relative h-[180px] sm:h-[220px] overflow-hidden">
+                    <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.02] group-hover:scale-100" style={{ objectPosition: play.photoPos }} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/20" />
+                  </div>
+                  {/* Product details */}
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
+                        <span className="text-white/90">{play.theme}</span>{" "}
+                        <span className="text-mars/60">on Mars</span>
+                      </h4>
+                      <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
+                    </div>
+                    {/* Specs row */}
+                    <div className="flex items-center gap-3 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
+                      <span>{play.duration}</span>
+                      <span className="text-white/10">·</span>
+                      <span>{play.people} people</span>
+                      <span className="text-white/10">·</span>
+                      <span>On stage or at your venue</span>
+                    </div>
+                    <p className="text-white/45 text-[13px] leading-[1.6] mb-5">{play.pitch}</p>
+                    <a href="#contact" className="inline-block px-6 py-2.5 rounded-lg border border-mars/20 text-mars/70 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars/10 hover:text-mars hover:border-mars/30 transition-all duration-300">
+                      Book this play
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
@@ -1276,7 +1311,7 @@ export default function BusinessPage() {
       {/* ── RESULTS ── */}
       {submitted && (
         <section ref={resultRef} className="relative px-4">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-3xl mx-auto">
 
             {/* The question echo */}
             <div className="text-center mb-8 sm:mb-10 pt-4 sm:pt-6">
@@ -1426,7 +1461,7 @@ export default function BusinessPage() {
                 </div>
 
                 {/* Play detail — stage box */}
-                <div className="max-w-3xl mx-auto mb-6 sm:mb-8">
+                <div className="mb-6 sm:mb-8">
                   <div className="rounded-2xl border border-mars/[0.15] bg-mars/[0.03] overflow-hidden">
                     <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                     <div className="p-6 sm:p-8">
@@ -1786,25 +1821,62 @@ export default function BusinessPage() {
       )}
 
 
-      {/* ── SOCIAL PROOF + VOICES — compact atmospheric block ── */}
+      {/* ── SOCIAL PROOF — cinematic success block ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
-          <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-            {/* Top accent */}
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+          <div className="relative rounded-2xl overflow-hidden">
+            {/* Background photo */}
+            <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.15]" style={{ objectPosition: "50% 35%" }} />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/60 to-[#0a0a0a]/90" />
+            <div className="absolute inset-0 border border-white/[0.08] rounded-2xl pointer-events-none" />
 
-            {/* Voices quote — top section */}
-            <div className="px-6 sm:px-10 pt-6 sm:pt-8 pb-4 sm:pb-5">
-              <Voices />
-            </div>
+            <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-12">
+              {/* Stats row */}
+              <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
+                <div className="text-center">
+                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
+                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Reality plays</p>
+                </div>
+                <div className="w-px h-10 bg-white/[0.08]" />
+                <div className="text-center">
+                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
+                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Countries</p>
+                </div>
+                <div className="w-px h-10 bg-white/[0.08]" />
+                <div className="text-center">
+                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
+                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Founded</p>
+                </div>
+              </div>
 
-            {/* Divider */}
-            <div className="mx-6 sm:mx-10 h-[1px] bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
+              {/* Voices quote */}
+              <div className="mb-8 sm:mb-10">
+                <Voices />
+              </div>
 
-            {/* Client logos — transparent blend */}
-            <div className="px-6 sm:px-10 py-4 sm:py-5">
-              <p className="text-white/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] text-center mb-3">Trusted by</p>
-              <img src="/Frame-52.png" alt="Clients" className="w-full max-w-xl mx-auto opacity-[0.6] hover:opacity-[0.8] transition-opacity duration-700" />
+              {/* Divider */}
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-6 sm:mb-8" />
+
+              {/* Trusted by — refined text list */}
+              <p className="text-white/25 text-[9px] uppercase tracking-[0.3em] text-center mb-4">Trusted by</p>
+              <p className="text-white/40 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
+                Forbes{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Škoda{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                YPO{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                PwC{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                O₂{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                UniCredit{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Oktagon MMA{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                House of Lobkowicz{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                London Business School{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Česká spořitelna{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Lasvit{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Ipsen{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                MSD
+              </p>
+              <p className="text-white/15 text-[10px] text-center mt-4 font-mercure italic">
+                London · Zurich · Bucharest · Prague
+              </p>
             </div>
           </div>
         </div>
