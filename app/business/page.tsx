@@ -320,7 +320,7 @@ export default function BusinessPage() {
           style={{ background: "radial-gradient(circle, rgba(255,85,0,0.03) 0%, transparent 70%)", top: "40%", left: "75%", transform: "translate(-50%, -50%)" }}
         />
 
-        <div className={`relative z-10 w-full max-w-lg transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           <div className="text-center mb-10 sm:mb-14">
             {/* Logo with subtle float */}
@@ -328,12 +328,14 @@ export default function BusinessPage() {
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
             <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-            <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center">
-              <span className="whitespace-nowrap">Play with reality.</span>
+            <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
+              Play with reality.
               <br />
-              <span className="whitespace-nowrap text-mars">See what&apos;s possible.</span>
+              <span className="text-mars">See what&apos;s possible.</span>
             </h1>
           </div>
+
+          <div className="w-full max-w-lg">
 
           {/* THE INPUT — mars-atmospheric container */}
           <div className="relative group/input">
@@ -415,6 +417,7 @@ export default function BusinessPage() {
             </button>
           )}
 
+          </div>{/* end max-w-lg */}
         </div>
       </section>
 
