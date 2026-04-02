@@ -902,7 +902,7 @@ export default function BusinessPage() {
 
 
       {/* ── HERO: The question IS the experience ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-[85vh] sm:min-h-[90vh] flex"} flex flex-col items-center justify-center px-4 relative overflow-hidden transition-all duration-700`}>
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "sm:min-h-[90vh] sm:flex"} flex flex-col items-center sm:justify-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
 
         {/* Abstract stage light — dramatic cone from top */}
         {!submitted && (
@@ -968,7 +968,7 @@ export default function BusinessPage() {
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What does my company need right now?"
+                    placeholder="What question would you put on stage?"
                     rows={2}
                     className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
