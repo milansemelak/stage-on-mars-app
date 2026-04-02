@@ -899,91 +899,68 @@ export default function BusinessPage() {
 
 
 
-      {/* ── HERO: The question IS the experience ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "pt-24 sm:pt-32"} flex flex-col items-center px-4 relative overflow-hidden transition-all duration-700`}>
+      {/* ── HERO ── */}
+      <section className={`${submitted ? "pt-12 sm:pt-20" : "pt-16 sm:pt-24"} flex flex-col items-center px-4 relative overflow-hidden transition-all duration-700`}>
 
-        {/* Layered ambient glows */}
+        {/* Single ambient glow */}
         <div
-          className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.07) 0%, transparent 60%)", top: "25%", left: "50%", transform: "translate(-50%, -50%)" }}
-        />
-        <div
-          className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[1000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "60%", left: "30%", transform: "translate(-50%, -50%)" }}
-        />
-        <div
-          className={`absolute w-[200px] h-[200px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
-          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.03) 0%, transparent 70%)", top: "40%", left: "75%", transform: "translate(-50%, -50%)" }}
+          className={`absolute w-[500px] h-[500px] rounded-full transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.06) 0%, transparent 60%)", top: "20%", left: "50%", transform: "translate(-50%, -50%)" }}
         />
 
-        <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div className={`relative z-10 w-full max-w-3xl transition-all duration-[1200ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
 
-          <div className="text-center mb-10 sm:mb-14">
-            {/* Logo with subtle float */}
-            <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
-              <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
-            </div>
-            <p className="text-mars/70 text-[11px] sm:text-[13px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-            <h1 className="text-[clamp(32px,7vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center">
-              Play with reality.
-              <br />
-              <span className="text-mars">See what&apos;s possible.</span>
-            </h1>
+          {/* Logo + headline — compact */}
+          <div className="flex items-center gap-3 mb-8 sm:mb-10">
+            <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-9 w-auto invert" />
+            <span className="text-white/30 text-[13px]">·</span>
+            <span className="text-white/40 text-[13px] sm:text-[14px] uppercase tracking-[0.2em]">Reality Play Platform</span>
           </div>
 
-          <div className="w-full max-w-3xl">
+          <h1 className="text-[28px] sm:text-[44px] md:text-[56px] font-bold leading-[1.05] tracking-[-0.03em] mb-8 sm:mb-10">
+            Play with reality.
+            <br />
+            <span className="text-mars">See what&apos;s possible.</span>
+          </h1>
 
-          {/* THE INPUT — stage box design */}
-          <div className="relative group/input">
-            {/* Ambient glow behind — reacts to focus */}
-            <div className="absolute -inset-8 sm:-inset-12 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
-
-            <div className="relative rounded-2xl border border-white/[0.12] group-focus-within/input:border-white/[0.1] bg-white/[0.04] transition-all duration-700 overflow-hidden">
-              {/* Top accent line */}
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-
-              <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
-                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Your question</p>
-
-                <textarea
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="What question would you put on stage?"
-                  rows={2}
-                  className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/65 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
-                  style={{ caretColor: "#FF5500" }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                  }}
-                />
-
-                {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent mt-2 mb-3" />
-
+          {/* Input — integrated, no box-in-box */}
+          <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+            <div className="p-5 sm:p-6">
+              <textarea
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="What question would you put on stage?"
+                rows={2}
+                className="w-full bg-transparent border-0 px-0 py-0 text-white text-[17px] sm:text-[20px] placeholder:text-white/40 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                style={{ caretColor: "#FF5500" }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                }}
+              />
+              <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.08]">
                 <input
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="Company name (optional)"
-                  className="w-full bg-transparent border-0 px-0 py-1 text-white/70 placeholder:text-white/60 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
+                  className="flex-1 bg-transparent border-0 px-0 text-white/70 placeholder:text-white/30 focus:outline-none text-[14px]"
                 />
+                <button
+                  onClick={generate}
+                  disabled={!question.trim()}
+                  className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
+                    question.trim()
+                      ? "bg-mars hover:bg-mars-light text-white"
+                      : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                  }`}
+                >
+                  Play
+                </button>
               </div>
             </div>
           </div>
 
-          <button
-            onClick={generate}
-            disabled={!question.trim()}
-            className={`w-full mt-6 sm:mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.25em] uppercase transition-all duration-500 ${
-              question.trim()
-                ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)]"
-                : "text-white/60 border border-white/[0.15] cursor-not-allowed"
-            }`}
-          >
-            Play
-          </button>
-
-
-          </div>{/* end max-w-3xl */}
+        </div>{/* end max-w-3xl */}
 
           {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
           {!submitted && !inlineDigital && (
