@@ -323,14 +323,14 @@ export default function BusinessPage() {
 
           <div className="text-center mb-10 sm:mb-14">
             {/* Logo with subtle float */}
-            <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
-              <img src="/logo.png" alt="Stage On Mars" className="h-12 sm:h-16 md:h-20 w-auto invert mx-auto" />
+            <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
+              <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
-            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] text-center">
+            <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
+            <h1 className="text-[clamp(28px,7vw,80px)] font-bold leading-[0.95] tracking-[-0.04em] text-center">
               Play with reality.
-            </h1>
-            <h1 className="text-[28px] sm:text-[48px] md:text-[64px] lg:text-[80px] font-bold leading-[0.95] tracking-[-0.04em] text-mars text-center">
-              See what&apos;s possible.
+              <br />
+              <span className="text-mars">See what&apos;s possible.</span>
             </h1>
           </div>
 
