@@ -899,82 +899,87 @@ export default function BusinessPage() {
 
 
 
-      {/* ── HERO — full atmospheric stage ── */}
-      <section className="relative overflow-hidden">
+      {/* ── HERO: The question IS the experience ── */}
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "pt-24 sm:pt-32"} flex flex-col items-center px-4 relative overflow-hidden transition-all duration-700`}>
 
-        {/* Hero image — full bleed */}
-        {!submitted && (
-          <div className="relative">
-            <div className="relative h-[70vh] sm:h-[80vh]">
-              <img src="/space1.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/30 to-[#0a0a0a]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/40 via-transparent to-[#0a0a0a]/40" />
-            </div>
+        {/* Layered ambient glows */}
+        <div
+          className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.07) 0%, transparent 60%)", top: "25%", left: "50%", transform: "translate(-50%, -50%)" }}
+        />
+        <div
+          className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[1000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "60%", left: "30%", transform: "translate(-50%, -50%)" }}
+        />
+        <div
+          className={`absolute w-[200px] h-[200px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
+          style={{ background: "radial-gradient(circle, rgba(255,85,0,0.03) 0%, transparent 70%)", top: "40%", left: "75%", transform: "translate(-50%, -50%)" }}
+        />
 
-            {/* Content overlaid on image */}
-            <div className={`absolute inset-0 flex flex-col justify-end px-4 pb-0 transition-all duration-[1200ms] ${entered ? "opacity-100" : "opacity-0"}`}>
-              <div className="max-w-3xl mx-auto w-full">
-                {/* Logo bar */}
-                <div className="flex items-center gap-3 mb-6">
-                  <img src="/logo.png" alt="Stage On Mars" className="h-6 sm:h-8 w-auto invert opacity-80" />
-                </div>
+        <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
-                <h1 className="text-[32px] sm:text-[48px] md:text-[60px] font-bold leading-[1.02] tracking-[-0.03em] mb-2">
-                  Play with reality.
-                </h1>
-                <h1 className="text-[32px] sm:text-[48px] md:text-[60px] font-bold leading-[1.02] tracking-[-0.03em] text-mars mb-0">
-                  See what&apos;s possible.
-                </h1>
+          {!submitted && (
+            <div className="text-center mb-10 sm:mb-14">
+              {/* Logo with subtle float */}
+              <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
+                <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </div>
+              <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
+              <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
+                Play with reality.
+                <br />
+                <span className="text-mars">See what&apos;s possible.</span>
+              </h1>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Input section — below hero image */}
-        <div className={`${submitted ? "pt-16 sm:pt-24" : "-mt-1"} px-4 pb-0`}>
-          <div className={`max-w-3xl mx-auto w-full transition-all duration-[1200ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className="w-full max-w-3xl">
 
-            <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-              <div className="p-5 sm:p-6">
-                <textarea
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="What question would you put on stage?"
-                  rows={2}
-                  className="w-full bg-transparent border-0 px-0 py-0 text-white text-[17px] sm:text-[20px] placeholder:text-white/40 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
-                  style={{ caretColor: "#FF5500" }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                  }}
-                />
-                <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.08]">
-                  <input
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="Company name (optional)"
-                    className="flex-1 bg-transparent border-0 px-0 text-white/70 placeholder:text-white/30 focus:outline-none text-[14px]"
+            {/* THE INPUT — stage box design */}
+            <div className="relative group/input">
+              <div className="absolute -inset-8 sm:-inset-12 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
+
+              <div className="relative rounded-2xl border border-white/[0.06] group-focus-within/input:border-white/[0.1] bg-white/[0.015] transition-all duration-700 overflow-hidden">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+                <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
+                  <textarea
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="What question would you put on stage?"
+                    rows={2}
+                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                    style={{ caretColor: "#FF5500" }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                    }}
                   />
-                  <button
-                    onClick={generate}
-                    disabled={!question.trim()}
-                    className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
-                      question.trim()
-                        ? "bg-mars hover:bg-mars-light text-white"
-                        : "bg-white/[0.06] text-white/25 cursor-not-allowed"
-                    }`}
-                  >
-                    Play
-                  </button>
+                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
+                    <input
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="Company name (optional)"
+                      className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[14px]"
+                    />
+                    <button
+                      onClick={generate}
+                      disabled={!question.trim()}
+                      className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
+                        question.trim()
+                          ? "bg-mars hover:bg-mars-light text-white"
+                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                      }`}
+                    >
+                      Play
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-
-          </div>
+          </div>{/* end max-w-3xl */}
 
           {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
           {!submitted && !inlineDigital && (
-            <div className="w-full max-w-3xl mt-8 sm:mt-10">
+            <div className="w-full max-w-3xl mx-auto mt-8 sm:mt-10">
               <button
                 onClick={() => {
                   if (!question.trim()) return;
@@ -1048,7 +1053,7 @@ export default function BusinessPage() {
 
           {/* ── INLINE DIGITAL PLAYMAKER ── */}
           {inlineDigital && !submitted && (
-            <div ref={inlineRef} className="w-full max-w-3xl mt-6 sm:mt-8">
+            <div ref={inlineRef} className="w-full max-w-3xl mx-auto mt-6 sm:mt-8">
               <div className="relative">
                 <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
 
@@ -1234,7 +1239,7 @@ export default function BusinessPage() {
 
           {/* ── BESTSELLING PLAYS ── */}
           {!submitted && (
-            <div className="w-full max-w-3xl mt-6 sm:mt-8">
+            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-8">
               <div className="rounded-2xl border border-mars/[0.12] bg-mars/[0.03] overflow-hidden">
                 <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                 <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-2">
