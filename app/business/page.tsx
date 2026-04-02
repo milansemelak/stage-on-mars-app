@@ -823,18 +823,21 @@ export default function BusinessPage() {
           <div className="max-w-3xl mx-auto">
             <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+              {/* Photo */}
               <div className="relative h-[35vh] sm:h-[50vh]">
-                <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover rounded-t-none" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-[#0a0a0a]/30" />
-                <div className="absolute inset-0 flex items-end p-6 sm:p-8">
-                  <div className="flex items-end justify-between w-full">
-                    <div>
-                      <p className="text-white/70 text-[15px] sm:text-[18px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
-                      <p className="font-mercure text-white/20 text-[11px] sm:text-[13px] mt-1">The flagship stage.</p>
-                    </div>
-                    <a href="/space" className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">Explore →</a>
-                  </div>
+                <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/20" />
+              </div>
+              {/* Info bar below photo */}
+              <div className="px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-1.5">The stage</p>
+                  <p className="text-white/80 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
+                  <p className="text-white/25 text-[12px] sm:text-[13px] mt-0.5">The flagship space. Where reality plays happen.</p>
                 </div>
+                <a href="/space" className="shrink-0 text-mars/50 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
+                  Explore →
+                </a>
               </div>
             </div>
           </div>
