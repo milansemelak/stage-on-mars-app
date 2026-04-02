@@ -337,33 +337,33 @@ export default function BusinessPage() {
           {/* THE INPUT — mars-atmospheric container */}
           <div className="relative group/input">
             {/* Outer glow ring — reacts to focus */}
-            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-b from-mars/20 via-white/[0.04] to-transparent opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-700 blur-[1px]" />
+            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-b from-mars/30 via-white/[0.08] to-transparent opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-700 blur-[1px]" />
             {/* Subtle ambient glow behind the box */}
             <div className="absolute -inset-6 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-1000" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
 
-            <div className="relative rounded-2xl border border-white/[0.06] group-focus-within/input:border-mars/15 bg-white/[0.015] backdrop-blur-sm px-5 sm:px-6 pt-5 pb-4 transition-all duration-500">
+            <div className="relative rounded-2xl border border-white/[0.12] group-focus-within/input:border-mars/25 bg-white/[0.025] backdrop-blur-sm px-5 sm:px-6 pt-5 pb-4 transition-all duration-500">
               {/* Tiny label */}
-              <p className="text-white/15 text-[9px] uppercase tracking-[0.25em] mb-3">Your question</p>
+              <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] mb-3">Your question</p>
 
               <textarea
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="What's the one question that could change your reality?"
                 rows={2}
-                className="w-full bg-transparent border-0 px-0 pt-0 pb-2 text-white text-[17px] sm:text-[20px] placeholder:text-white/20 focus:outline-none resize-none leading-relaxed"
+                className="w-full bg-transparent border-0 px-0 pt-0 pb-2 text-white text-[17px] sm:text-[20px] placeholder:text-white/35 focus:outline-none resize-none leading-relaxed"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                 }}
               />
 
               {/* Divider line */}
-              <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent my-2" />
+              <div className="h-px bg-gradient-to-r from-transparent via-white/[0.1] to-transparent my-2" />
 
               <input
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
                 placeholder="Company name (optional)"
-                className="w-full bg-transparent border-0 px-0 py-2 text-white/50 placeholder:text-white/12 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
+                className="w-full bg-transparent border-0 px-0 py-2 text-white/60 placeholder:text-white/25 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
               />
             </div>
           </div>
@@ -374,7 +374,7 @@ export default function BusinessPage() {
             className={`w-full mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.25em] uppercase transition-all duration-500 ${
               question.trim()
                 ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)]"
-                : "text-white/10 border border-white/[0.06] cursor-not-allowed"
+                : "text-white/20 border border-white/[0.12] cursor-not-allowed"
             }`}
           >
             Play
