@@ -334,24 +334,38 @@ export default function BusinessPage() {
             </h1>
           </div>
 
-          {/* THE INPUT */}
-          <div className="space-y-0">
-            <textarea
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder="What's the one question that could change your reality?"
-              rows={2}
-              className="w-full bg-transparent border-b border-white/10 focus:border-mars/40 px-0 pt-2 pb-3 text-white text-[17px] sm:text-[20px] placeholder:text-white/20 focus:outline-none resize-none leading-relaxed transition-colors"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-              }}
-            />
-            <input
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              placeholder="Company name"
-              className="w-full bg-transparent border-b border-white/[0.06] focus:border-white/15 px-0 py-3 text-white/60 placeholder:text-white/15 focus:outline-none text-[14px] sm:text-[15px] transition-colors"
-            />
+          {/* THE INPUT — mars-atmospheric container */}
+          <div className="relative group/input">
+            {/* Outer glow ring — reacts to focus */}
+            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-b from-mars/20 via-white/[0.04] to-transparent opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-700 blur-[1px]" />
+            {/* Subtle ambient glow behind the box */}
+            <div className="absolute -inset-6 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-1000" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
+
+            <div className="relative rounded-2xl border border-white/[0.06] group-focus-within/input:border-mars/15 bg-white/[0.015] backdrop-blur-sm px-5 sm:px-6 pt-5 pb-4 transition-all duration-500">
+              {/* Tiny label */}
+              <p className="text-white/15 text-[9px] uppercase tracking-[0.25em] mb-3">Your question</p>
+
+              <textarea
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="What's the one question that could change your reality?"
+                rows={2}
+                className="w-full bg-transparent border-0 px-0 pt-0 pb-2 text-white text-[17px] sm:text-[20px] placeholder:text-white/20 focus:outline-none resize-none leading-relaxed"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                }}
+              />
+
+              {/* Divider line */}
+              <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent my-2" />
+
+              <input
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                placeholder="Company name (optional)"
+                className="w-full bg-transparent border-0 px-0 py-2 text-white/50 placeholder:text-white/12 focus:outline-none text-[13px] sm:text-[14px] tracking-wide"
+              />
+            </div>
           </div>
 
           <button
