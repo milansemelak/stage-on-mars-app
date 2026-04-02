@@ -923,8 +923,8 @@ export default function BusinessPage() {
             <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
-            <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-            <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
+            <p className="text-mars text-[13px] sm:text-[15px] font-bold uppercase tracking-[0.2em] mb-5 sm:mb-6">Your team&apos;s question deserves a stage</p>
+            <h1 className="text-[clamp(32px,7vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center">
               Play with reality.
               <br />
               <span className="text-mars">See what&apos;s possible.</span>
@@ -943,7 +943,7 @@ export default function BusinessPage() {
               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
               <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
-                <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Your question</p>
+                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Your question</p>
 
                 <textarea
                   value={question}
@@ -1041,7 +1041,7 @@ export default function BusinessPage() {
 
                     {/* Right — copy */}
                     <div className="px-6 sm:px-8 pb-10 sm:py-14 text-left">
-                      <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                      <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
                       <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
                         Try it right here.
                       </h3>
@@ -1069,7 +1069,7 @@ export default function BusinessPage() {
                 <div className="flex items-center justify-between mb-6 sm:mb-8">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                    <p className="text-mars/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                    <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
                   </div>
                   <button onClick={() => { setInlineDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                     Close
@@ -1109,7 +1109,7 @@ export default function BusinessPage() {
                             if (tab.id === "perspectives" && !simEnded) return;
                             setSimPhase(tab.id);
                           }}
-                          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-bold transition-all ${
+                          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] sm:text-[14px] uppercase tracking-[0.15em] font-bold transition-all ${
                             simPhase === tab.id
                               ? "bg-white/[0.06] text-white/80"
                               : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
@@ -1132,7 +1132,7 @@ export default function BusinessPage() {
                           <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
                         </div>
                         <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                          <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                          <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {play.characters.map((char, i) => (
                               <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
@@ -1155,7 +1155,7 @@ export default function BusinessPage() {
                           <button
                             onClick={() => { if (simReady) setSimPhase("stage"); }}
                             disabled={!simReady}
-                            className={`w-full py-4 rounded-xl text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] transition-all ${
+                            className={`w-full py-4 rounded-xl text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] transition-all ${
                               simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
                             }`}
                           >
@@ -1196,7 +1196,7 @@ export default function BusinessPage() {
                           <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                             <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                             <div className="p-6 sm:p-8">
-                              <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                              <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
                               <div className="space-y-3">
                                 {play.perspectives.map((p, i) => {
                                   const perspective = typeof p === "object" ? (p as Perspective) : null;
@@ -1251,7 +1251,7 @@ export default function BusinessPage() {
               <div className="rounded-2xl border border-mars/[0.12] bg-mars/[0.03] overflow-hidden">
                 <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                 <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-2">
-                  <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-1">Bestselling plays</p>
+                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-1">Bestselling plays</p>
                   <p className="text-white/60 text-[11px] font-mercure">Most booked by leadership teams</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-6 sm:px-8 pb-6 sm:pb-8">
@@ -1266,8 +1266,8 @@ export default function BusinessPage() {
                         <span className="text-mars">on Mars</span>
                       </h4>
                       <p className="text-white/70 text-[9px] uppercase tracking-[0.15em] mt-1 mb-3">{play.desc}</p>
-                      <p className="text-white/70 text-[11px] sm:text-[12px] leading-[1.55] flex-1">{play.pitch}</p>
-                      <a href="#contact" className="mt-4 block w-full text-center py-2.5 rounded-lg border border-mars/15 text-mars/60 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:text-mars/80 hover:border-mars/25 transition-all">
+                      <p className="text-white/70 text-[13px] sm:text-[14px] leading-[1.55] flex-1">{play.pitch}</p>
+                      <a href="#contact" className="mt-4 block w-full text-center py-2.5 rounded-lg border border-mars/15 text-mars/60 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:text-mars/80 hover:border-mars/25 transition-all">
                         I want this
                       </a>
                     </div>
@@ -1298,7 +1298,7 @@ export default function BusinessPage() {
             {/* ═══ 3 PRODUCT OPTIONS — commercial menu ═══ */}
             {products.length > 0 && selectedIdx === null && (
               <div>
-                <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-center mb-8 sm:mb-10">Choose your play</p>
+                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] text-center mb-8 sm:mb-10">Choose your play</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
                   {products.map((p, i) => {
@@ -1318,7 +1318,7 @@ export default function BusinessPage() {
 
                         <div className="p-5 sm:p-6 flex flex-col flex-1">
                           {/* Tag */}
-                          <p className={`text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/65"}`}>{p.tag}</p>
+                          <p className={`text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/65"}`}>{p.tag}</p>
 
                           {/* Theme — full play name */}
                           <h3 className={`text-[28px] sm:text-[34px] font-black tracking-[-0.04em] leading-[0.95] mb-4 ${isLeader ? "" : ""}`}>
@@ -1328,7 +1328,7 @@ export default function BusinessPage() {
                           </h3>
 
                           {/* Pitch */}
-                          <p className="text-white/70 text-[12px] sm:text-[13px] leading-[1.55] mb-6 flex-1">
+                          <p className="text-white/70 text-[13px] sm:text-[14px] leading-[1.55] mb-6 flex-1">
                             {p.pitch}
                           </p>
 
@@ -1403,11 +1403,11 @@ export default function BusinessPage() {
 
                         {/* Right — copy */}
                         <div className="px-6 sm:px-8 pb-8 sm:py-12 text-left">
-                          <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                          <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
                           <h3 className="text-[20px] sm:text-[24px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
                             Or try it right here.
                           </h3>
-                          <p className="text-white/65 text-[12px] sm:text-[13px] leading-[1.6] mb-5 max-w-xs">
+                          <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-5 max-w-xs">
                             AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
                           </p>
                           <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
@@ -1446,7 +1446,7 @@ export default function BusinessPage() {
                   <div className="relative z-10 p-8 sm:p-12 md:p-16 lg:p-20">
                     <div className="inline-flex items-center gap-2 mb-10 sm:mb-14">
                       <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                      <p className="text-mars/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">
+                      <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">
                         {products[selectedIdx].tag}
                       </p>
                     </div>
@@ -1469,7 +1469,7 @@ export default function BusinessPage() {
                         { label: "Guide", value: "Systemic facilitator" },
                       ].map((item) => (
                         <div key={item.label}>
-                          <p className="text-white/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
+                          <p className="text-white/30 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-1">{item.label}</p>
                           <p className="text-white/70 text-[13px] sm:text-[14px] font-bold">{item.value}</p>
                         </div>
                       ))}
@@ -1483,7 +1483,7 @@ export default function BusinessPage() {
                         Book this play
                         <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                       </a>
-                      <p className="text-white/60 text-[12px] sm:text-[13px]">{products[selectedIdx].price}</p>
+                      <p className="text-white/60 text-[13px] sm:text-[14px]">{products[selectedIdx].price}</p>
                     </div>
                   </div>
                 </div>
@@ -1497,7 +1497,7 @@ export default function BusinessPage() {
                     >
                       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
-                        <p className="text-white/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
+                        <p className="text-white/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
 
                         {/* Phone mockup — SVG with real stage UI */}
                         <div className="inline-block mb-6 group-hover:scale-[1.03] transition-transform duration-700">
@@ -1589,7 +1589,7 @@ export default function BusinessPage() {
                       <div className="flex items-center justify-between mb-6 sm:mb-8">
                         <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                          <p className="text-mars/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                          <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
                         </div>
                         <button onClick={() => setShowDigital(false)} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                           Close
@@ -1628,7 +1628,7 @@ export default function BusinessPage() {
                                   if (tab.id === "perspectives" && !simEnded) return;
                                   setSimPhase(tab.id);
                                 }}
-                                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-bold transition-all ${
+                                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] sm:text-[14px] uppercase tracking-[0.15em] font-bold transition-all ${
                                   simPhase === tab.id
                                     ? "bg-white/[0.06] text-white/80"
                                     : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
@@ -1655,7 +1655,7 @@ export default function BusinessPage() {
 
                               {/* Character cards */}
                               <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                                <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                                <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                   {play.characters.map((char, i) => (
                                     <div
@@ -1692,7 +1692,7 @@ export default function BusinessPage() {
                                     }
                                   }}
                                   disabled={!simReady}
-                                  className={`w-full py-4 rounded-xl text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] transition-all ${
+                                  className={`w-full py-4 rounded-xl text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] transition-all ${
                                     simReady
                                       ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer"
                                       : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
@@ -1744,7 +1744,7 @@ export default function BusinessPage() {
                                 <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                                   <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                                   <div className="p-6 sm:p-8">
-                                    <p className="text-mars/70 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                                    <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
                                     <div className="space-y-3">
                                       {play.perspectives.map((p, i) => {
                                         const perspective = typeof p === "object" ? (p as Perspective) : null;
@@ -1835,7 +1835,7 @@ export default function BusinessPage() {
 
             {/* Client logos — transparent blend */}
             <div className="px-6 sm:px-10 py-4 sm:py-5">
-              <p className="text-white/70 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-3">Trusted by</p>
+              <p className="text-white/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] text-center mb-3">Trusted by</p>
               <img src="/Frame-52.png" alt="Clients" className="w-full max-w-xl mx-auto opacity-[0.6] hover:opacity-[0.8] transition-opacity duration-700" />
             </div>
           </div>
@@ -1843,31 +1843,29 @@ export default function BusinessPage() {
       </FadeIn>
 
       {/* ── THE SPACE — Stage box ── */}
-      {!submitted && (
-        <FadeIn className="px-4 py-3 sm:py-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-              {/* Photo */}
-              <div className="relative h-[35vh] sm:h-[50vh]">
-                <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/20" />
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+            {/* Photo */}
+            <div className="relative h-[35vh] sm:h-[50vh]">
+              <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/20" />
+            </div>
+            {/* Info bar below photo */}
+            <div className="px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-1.5">The stage</p>
+                <p className="text-white/90 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
+                <p className="text-white/65 text-[13px] sm:text-[14px] mt-0.5">The flagship space. Where reality plays happen.</p>
               </div>
-              {/* Info bar below photo */}
-              <div className="px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-mars/60 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-1.5">The stage</p>
-                  <p className="text-white/80 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
-                  <p className="text-white/65 text-[12px] sm:text-[13px] mt-0.5">The flagship space. Where reality plays happen.</p>
-                </div>
-                <a href="/space" className="shrink-0 text-mars/70 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
-                  Explore →
-                </a>
-              </div>
+              <a href="/space" className="shrink-0 text-mars/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
+                Explore →
+              </a>
             </div>
           </div>
-        </FadeIn>
-      )}
+        </div>
+      </FadeIn>
 
       {/* ── TEAM — Stage box ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
@@ -1883,7 +1881,7 @@ export default function BusinessPage() {
               </div>
               {/* Team info */}
               <div className="p-6 sm:p-8 flex flex-col justify-center space-y-4">
-                <p className="text-mars/70 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold">The crew</p>
+                <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">The crew</p>
                 <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
                   Born during COVID. Systemic constellations meets theatre meets improvisation.
                 </p>
@@ -1891,7 +1889,7 @@ export default function BusinessPage() {
                   In 2023, David Vais joined. Platform built. Stage opened. Brand born.
                 </p>
                 <div className="pt-2">
-                  <p className="text-white/70 text-[11px] sm:text-[12px] font-bold">
+                  <p className="text-white/70 text-[13px] sm:text-[14px] font-bold">
                     800+ reality plays. London, Zurich, Bucharest.
                   </p>
                   <p className="text-white/70 text-[10px] mt-2">
@@ -1914,11 +1912,11 @@ export default function BusinessPage() {
             <div className="p-6 sm:p-10">
               <div className="max-w-md mx-auto space-y-8">
                 <div className="text-center">
-                  <p className="text-mars/70 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-4">Get on stage</p>
+                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-4">Get on stage</p>
                   <h2 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">
                     {submitted ? "Let\u2019s make it happen." : "What\u2019s your question?"}
                   </h2>
-                  <p className="font-mercure text-white/60 text-[12px] sm:text-[13px] mt-2">We reply within 24 hours.</p>
+                  <p className="font-mercure text-white/60 text-[13px] sm:text-[14px] mt-2">We reply within 24 hours.</p>
                 </div>
 
                 {sent ? (
