@@ -383,41 +383,85 @@ export default function BusinessPage() {
             Play
           </button>
 
-          {/* Digital Playmaker teaser — always visible below input */}
-          {!submitted && (
-            <button
-              onClick={() => {
-                if (!question.trim()) return;
-                setSubmitted(true);
-                setAskedQuestion(question);
-                setProducts(deriveProducts(question, companyName));
-                // Skip product selection, go straight to digital
-                setSelectedIdx(0);
-                openDigital();
-                setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
-              }}
-              disabled={!question.trim()}
-              className={`w-full mt-3 group transition-all duration-500 ${!question.trim() ? "opacity-30 cursor-not-allowed" : "opacity-100"}`}
-            >
-              <div className="flex items-center justify-center gap-3 py-3">
-                {/* Mini phone icon */}
-                <svg width="18" height="32" viewBox="0 0 90 170" fill="none" className="opacity-40 group-hover:opacity-70 transition-opacity">
-                  <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.2)" strokeWidth="2" fill="#111" />
-                  <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
-                  <circle cx="45" cy="65" r="18" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
-                  <circle cx="45" cy="55" r="2.5" fill="rgba(255,85,0,0.7)" />
-                  <circle cx="35" cy="70" r="2" fill="rgba(255,255,255,0.3)" />
-                  <circle cx="55" cy="68" r="2" fill="rgba(255,255,255,0.3)" />
-                  <rect x="15" y="95" width="60" height="20" rx="4" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-                </svg>
-                <span className="text-white/20 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/50 transition-colors">
-                  Or try it digitally now
-                </span>
-              </div>
-            </button>
-          )}
 
           </div>{/* end max-w-lg */}
+
+          {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
+          {!submitted && (
+            <div className="w-full max-w-3xl mt-16 sm:mt-24">
+              <button
+                onClick={() => {
+                  if (!question.trim()) return;
+                  setSubmitted(true);
+                  setAskedQuestion(question);
+                  setProducts(deriveProducts(question, companyName));
+                  setSelectedIdx(0);
+                  openDigital();
+                  setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                }}
+                disabled={!question.trim()}
+                className={`w-full group transition-all duration-500 ${!question.trim() ? "opacity-30 cursor-not-allowed" : "opacity-100 hover:scale-[1.01]"}`}
+              >
+                <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+
+                  <div className="grid sm:grid-cols-2 items-center">
+                    {/* Left — phone mockup */}
+                    <div className="flex items-center justify-center py-10 sm:py-14">
+                      <div className="group-hover:scale-105 transition-transform duration-700">
+                        <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
+                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
+                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow2)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                          <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
+                          <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+                          <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                          <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
+                          <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                          <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
+                          <circle cx="45" cy="68" r="24" fill="url(#stageGlow2)" />
+                          <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
+                          <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
+                          <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
+                          <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
+                          <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                          <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                          <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                          <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
+                          <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
+                          <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
+                          <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
+                          <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                          <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                          <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
+                          <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
+                          <defs>
+                            <radialGradient id="stageGlow2" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
+                            <linearGradient id="phoneGlow2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Right — copy */}
+                    <div className="px-6 sm:px-8 pb-10 sm:py-14 text-left">
+                      <p className="text-mars/40 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                      <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
+                        Try it right here.
+                      </h3>
+                      <p className="text-white/25 text-[13px] sm:text-[14px] leading-[1.6] mb-6 max-w-xs">
+                        AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
+                      </p>
+                      <div className="inline-flex items-center gap-2 text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
+                        <span>Open Playmaker</span>
+                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
+          )}
+
         </div>
       </section>
 
