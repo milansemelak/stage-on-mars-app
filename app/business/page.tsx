@@ -924,18 +924,18 @@ export default function BusinessPage() {
                 src="/space5.png"
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: "50% 50%", filter: "grayscale(0.75) contrast(1.2) brightness(0.75)" }}
+                style={{ objectPosition: "50% 70%", filter: "grayscale(0.75) contrast(1.2) brightness(0.75)" }}
               />
               {/* Warm mars tint — brings back the red stage lighting */}
               <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,85,0,0.03) 0%, rgba(255,85,0,0.06) 50%, rgba(255,85,0,0.04) 100%)", mixBlendMode: "color" }} />
               {/* Heavy grain texture — Helmut Newton film look */}
               <div className="absolute inset-0 opacity-[0.18]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "200px" }} />
               {/* Soft vignette — just darken edges, let the stage be seen */}
-              <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 85% 75% at 50% 50%, transparent 25%, rgba(10,10,10,0.3) 55%, rgba(10,10,10,0.8) 90%)" }} />
+              <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 85% 75% at 50% 60%, transparent 25%, rgba(10,10,10,0.3) 55%, rgba(10,10,10,0.8) 90%)" }} />
               {/* Bottom fade — clean cut to page bg */}
               <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 5%, transparent 100%)" }} />
-              {/* Top subtle darkening for logo readability */}
-              <div className="absolute top-0 left-0 right-0 h-[15%]" style={{ background: "linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, transparent 100%)" }} />
+              {/* Top blackout — hides the ceiling completely */}
+              <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: "linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 30%, transparent 100%)" }} />
             </div>
           </>
         )}
