@@ -913,107 +913,66 @@ export default function BusinessPage() {
 
 
       {/* ── HERO: You are stepping on stage ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-[100svh] flex"} flex-col items-center justify-center px-4 pt-12 sm:pt-0 pb-8 sm:pb-0 relative overflow-hidden transition-all duration-700`}>
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-[80vh] flex"} flex-col items-center justify-center px-4 pt-12 sm:pt-0 pb-8 sm:pb-0 relative overflow-hidden transition-all duration-700`}>
 
-        {/* Stage photo background — space5.png, the circular stage with red LED ring */}
+        {/* Clean dark background — subtle warm glow only */}
         {!submitted && (
-          <>
-            {/* Photo container — locked to viewport height, doesn't bleed into playmaker/cards */}
-            <div className={`absolute top-0 left-0 right-0 h-screen transition-opacity duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}>
-              <img
-                src="/space5.png"
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: "50% 70%", filter: "grayscale(0.7) contrast(1.15) brightness(0.9)" }}
-              />
-              {/* Warm mars tint — brings back the red stage lighting */}
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,85,0,0.04) 0%, rgba(255,85,0,0.08) 50%, rgba(255,85,0,0.04) 100%)", mixBlendMode: "color" }} />
-              {/* Grain texture — Helmut Newton film look */}
-              <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "200px" }} />
-              {/* Soft vignette — gentle edge darkening */}
-              <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 90% 80% at 50% 55%, transparent 30%, rgba(10,10,10,0.25) 55%, rgba(10,10,10,0.75) 90%)" }} />
-              {/* Bottom fade — dissolve into page bg, starts late so input stays on stage */}
-              <div className="absolute bottom-0 left-0 right-0 h-[25%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 15%, transparent 100%)" }} />
-              {/* Top fade — hides the ceiling */}
-              <div className="absolute top-0 left-0 right-0 h-[30%]" style={{ background: "linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 25%, transparent 100%)" }} />
-            </div>
-          </>
+          <div className={`absolute inset-0 transition-opacity duration-[2000ms] ${entered ? "opacity-100" : "opacity-0"}`}>
+            <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(255,85,0,0.04) 0%, transparent 70%)" }} />
+          </div>
         )}
 
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           {!submitted && (
-            <div className="text-center mb-6 sm:mb-10">
-              {/* Logo with subtitle */}
-              <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
-                <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
-                <p className="text-white/30 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] mt-3">Reality Play Platform</p>
-              </div>
-              <h1 className="text-center leading-[1.1]">
-                <span className="block text-[clamp(22px,4.5vw,52px)] font-bold tracking-[-0.02em] text-white/90" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.9), 0 0 80px rgba(0,0,0,0.5)" }}>Play with reality.</span>
-                <span className="block text-[clamp(22px,4.5vw,52px)] font-bold tracking-[-0.02em] text-mars" style={{ textShadow: "0 0 30px rgba(255,85,0,0.4), 0 0 60px rgba(255,85,0,0.2), 0 2px 30px rgba(0,0,0,0.9)" }}>See what&apos;s possible.</span>
+            <div className="text-center mb-10 sm:mb-14">
+              <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert mx-auto mb-10 sm:mb-14 opacity-70" />
+              <h1 className="text-[clamp(28px,5.5vw,64px)] font-bold leading-[1.1] tracking-[-0.03em] text-white/90">
+                Play with reality.
+                <br />
+                <span className="text-mars">See what&apos;s possible.</span>
               </h1>
             </div>
           )}
 
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-xl">
 
-            {/* THE INPUT — stage platform surface */}
+            {/* THE INPUT — clean, minimal */}
             <div className="relative group/input">
-
-              {/* The stage platform — like the circular stage floor from space5 */}
-              <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden transition-all duration-700" style={{
-                background: "radial-gradient(ellipse 120% 100% at 50% 100%, rgba(255,85,0,0.04) 0%, rgba(10,10,10,0.85) 40%, rgba(10,10,10,0.92) 100%)",
-                boxShadow: "0 0 0 1px rgba(255,85,0,0.15), 0 0 30px rgba(255,85,0,0.05), 0 20px 60px rgba(0,0,0,0.5)",
-              }}>
-                {/* Red LED ring glow on focus */}
-                <div className="absolute inset-0 rounded-[28px] sm:rounded-[36px] opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1000ms] pointer-events-none" style={{
-                  boxShadow: "0 0 0 1.5px rgba(255,85,0,0.3), 0 0 25px rgba(255,85,0,0.08), 0 0 60px rgba(255,85,0,0.04)",
-                }} />
-
-                <div className="px-6 sm:px-10 pt-7 sm:pt-9 pb-6 sm:pb-8">
-
-                  <textarea
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What question would you put on stage?"
-                    rows={2}
-                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[24px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.4] tracking-[-0.01em] text-center"
-                    style={{ caretColor: "#FF5500" }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                    }}
-                  />
-
-                  {/* Divider — stage floor line */}
-                  <div className="mt-4 sm:mt-5 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent group-focus-within/input:via-mars/50 transition-all duration-700" />
-
-                  <div className="flex items-center justify-center gap-4 sm:gap-5 mt-4 sm:mt-5">
-                    <input
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="Company name (optional)"
-                      className="bg-transparent border-0 px-0 text-white/50 placeholder:text-white/25 focus:outline-none text-[13px] sm:text-[14px] text-center w-[200px]"
-                    />
-                    <button
-                      onClick={generate}
-                      disabled={!question.trim()}
-                      className={`shrink-0 px-8 sm:px-10 py-3 sm:py-3.5 rounded-full font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.2em] transition-all duration-300 ${
-                        question.trim()
-                          ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_30px_rgba(255,85,0,0.3)]"
-                          : "border border-white/[0.12] text-white/30 cursor-not-allowed"
-                      }`}
-                    >
-                      Play
-                    </button>
-                  </div>
-
-                  {/* Playmaker link removed — now a separate section below */}
-                </div>
+              <textarea
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="What question would you put on stage?"
+                rows={2}
+                className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em] text-center"
+                style={{ caretColor: "#FF5500" }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                }}
+              />
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mt-4 group-focus-within/input:via-mars/30 transition-all duration-700" />
+              <div className="flex items-center justify-center gap-4 mt-5">
+                <input
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Company name (optional)"
+                  className="bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px] text-center w-[180px]"
+                />
+                <button
+                  onClick={generate}
+                  disabled={!question.trim()}
+                  className={`shrink-0 px-7 py-2.5 rounded-full font-bold text-[13px] uppercase tracking-[0.15em] transition-all duration-300 ${
+                    question.trim()
+                      ? "bg-mars hover:bg-mars-light text-white"
+                      : "border border-white/[0.10] text-white/25 cursor-not-allowed"
+                  }`}
+                >
+                  Play
+                </button>
               </div>
-
             </div>
-          </div>{/* end max-w-2xl */}
+
+          </div>{/* end max-w-xl */}
 
           {/* Playmaker card removed — integrated into the input box above */}
 
