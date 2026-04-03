@@ -949,10 +949,9 @@ export default function BusinessPage() {
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
                 <p className="text-white/30 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] mt-3">Reality Play Platform</p>
               </div>
-              <h1 className="text-[clamp(28px,6.5vw,80px)] font-black leading-[0.95] tracking-[-0.04em] text-center text-white" style={{ textShadow: "0 2px 20px rgba(0,0,0,1), 0 4px 60px rgba(0,0,0,0.8), 0 0 120px rgba(0,0,0,0.6)" }}>
-                Play with reality.
-                <br />
-                <span className="text-mars" style={{ textShadow: "0 0 30px rgba(255,85,0,0.6), 0 0 80px rgba(255,85,0,0.3), 0 2px 20px rgba(0,0,0,1)" }}>See what&apos;s possible.</span>
+              <h1 className="text-center leading-[1.1]">
+                <span className="block text-[clamp(22px,4.5vw,52px)] font-bold tracking-[-0.02em] text-white/90" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.9), 0 0 80px rgba(0,0,0,0.5)" }}>Play with reality.</span>
+                <span className="block text-[clamp(22px,4.5vw,52px)] font-bold tracking-[-0.02em] text-mars" style={{ textShadow: "0 0 30px rgba(255,85,0,0.4), 0 0 60px rgba(255,85,0,0.2), 0 2px 30px rgba(0,0,0,0.9)" }}>See what&apos;s possible.</span>
               </h1>
             </div>
           )}
