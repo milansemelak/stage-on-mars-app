@@ -111,6 +111,14 @@ const BUSINESS_MAP: [RegExp, string, string][] = [
   [/toxic|bully|harassment|hostile|abusive|fear.*culture/i, "Toxicity", "toxic dynamics"],
   [/loyalty|devotion|commit|dedic|allegianc/i, "Loyalty", "loyalty"],
   [/ego|narciss|self.*import|arrog|humble|humil/i, "Ego", "ego"],
+  [/stupid|dumb|idiot|incompeten|mediocr|averag|lazy|useless|clueless|hopeless/i, "Performance", "performance"],
+  [/broken|dysfunct|mess|chaos|disaster|falling apart|not working/i, "Breakthrough", "breaking through"],
+  [/hate|loathe|despise|detest|can.t stand/i, "Truth", "truth"],
+  [/love|adore|passion|heart|soul/i, "Heart", "heart"],
+  [/money|rich|wealth|expensive|cheap|afford/i, "Value", "value creation"],
+  [/sex|affair|romantic|dating|relationship/i, "Truth", "truth"],
+  [/death|dying|dead|kill|end|terminal/i, "Survival", "survival and crisis"],
+  [/god|pray|faith|believe|spirit/i, "Purpose", "purpose"],
 
   // ── Change & Transformation ──
   [/chang|transform|transition|restructur|pivot|reinvent/i, "Transformation", "transformation"],
@@ -523,15 +531,20 @@ function deriveBusinessTheme(question: string): string {
 }
 
 /* ── Derive creative theme (Play 2) ── */
-function deriveCreativeTheme(question: string): string {
+function deriveCreativeTheme(question: string, businessTheme?: string): string {
   // Try creative extractions first
   for (const [pattern, replacement] of CREATIVE_EXTRACTIONS) {
     const match = question.match(pattern);
     if (match) {
       // Handle backreferences
       if (replacement.includes("$1") && match[1]) {
-        return match[1].charAt(0).toUpperCase() + match[1].slice(1);
+        const result = match[1].charAt(0).toUpperCase() + match[1].slice(1);
+        // Avoid duplicating the business theme
+        if (businessTheme && result.toLowerCase() === businessTheme.toLowerCase()) continue;
+        return result;
       }
+      // Avoid duplicating the business theme
+      if (businessTheme && replacement.toLowerCase() === businessTheme.toLowerCase()) continue;
       return replacement;
     }
   }
@@ -544,7 +557,14 @@ function deriveCreativeTheme(question: string): string {
   const interesting = words.filter(w => !boring.has(w));
 
   if (interesting.length > 0) {
-    // Take the most "active" word (prefer later words as they tend to be more specific)
+    // Avoid duplicating business theme — try different words
+    for (let i = interesting.length - 1; i >= 0; i--) {
+      const w = interesting[i];
+      const capitalized = w.charAt(0).toUpperCase() + w.slice(1);
+      if (businessTheme && capitalized.toLowerCase() === businessTheme.toLowerCase()) continue;
+      return capitalized;
+    }
+    // All words match business theme — use the last one anyway
     const w = interesting[interesting.length - 1];
     return w.charAt(0).toUpperCase() + w.slice(1);
   }
@@ -704,7 +724,7 @@ type ProductCard = {
 
 function deriveProducts(question: string, company: string): ProductCard[] {
   const bizTheme = deriveBusinessTheme(question);
-  const creativeTheme = deriveCreativeTheme(question);
+  const creativeTheme = deriveCreativeTheme(question, bizTheme);
   const co = company || "your company";
 
   // Business pitch with company name
@@ -917,6 +937,16 @@ export default function BusinessPage() {
             <div
               className={`absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-[#0a0a0a] via-[#110800] to-[#1a0a00] transition-all duration-[2500ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-[1] ${entered ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
             />
+
+            {/* Stage photo — subtle background */}
+            <img
+              src="/lux6.jpg"
+              alt=""
+              className={`absolute inset-0 w-full h-full object-cover transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-[0.35] scale-100" : "opacity-0 scale-[1.03]"}`}
+              style={{ objectPosition: "50% 30%" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/50 via-[#0a0a0a]/20 via-40% to-[#0a0a0a]/85" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/40 via-transparent to-[#0a0a0a]/40" />
 
             {/* Main spotlight — dramatic overhead cone */}
             <div

@@ -111,6 +111,11 @@ const BUSINESS_MAP: [RegExp, string, string][] = [
   [/toxic|bully|harassment|hostile|abusive|fear.*culture/i, "Toxicity", "toxic dynamics"],
   [/loyalty|devotion|commit|dedic|allegianc/i, "Loyalty", "loyalty"],
   [/ego|narciss|self.*import|arrog|humble|humil/i, "Ego", "ego"],
+  [/stupid|dumb|idiot|incompeten|mediocr|averag|lazy|useless|clueless|hopeless/i, "Performance", "performance"],
+  [/broken|dysfunct|mess|chaos|disaster|falling apart|not working/i, "Breakthrough", "breaking through"],
+  [/hate|loathe|despise|detest|can.t stand/i, "Truth", "truth"],
+  [/money|rich|wealth|expensive|cheap|afford/i, "Value", "value creation"],
+  [/death|dying|dead|kill|end|terminal/i, "Survival", "survival and crisis"],
 
   // ── Change & Transformation ──
   [/chang|transform|transition|restructur|pivot|reinvent/i, "Transformation", "transformation"],
@@ -523,15 +528,17 @@ function deriveBusinessTheme(question: string): string {
 }
 
 /* ── Derive creative theme (Play 2) ── */
-function deriveCreativeTheme(question: string): string {
+function deriveCreativeTheme(question: string, businessTheme?: string): string {
   // Try creative extractions first
   for (const [pattern, replacement] of CREATIVE_EXTRACTIONS) {
     const match = question.match(pattern);
     if (match) {
-      // Handle backreferences
       if (replacement.includes("$1") && match[1]) {
-        return match[1].charAt(0).toUpperCase() + match[1].slice(1);
+        const result = match[1].charAt(0).toUpperCase() + match[1].slice(1);
+        if (businessTheme && result.toLowerCase() === businessTheme.toLowerCase()) continue;
+        return result;
       }
+      if (businessTheme && replacement.toLowerCase() === businessTheme.toLowerCase()) continue;
       return replacement;
     }
   }
@@ -539,12 +546,16 @@ function deriveCreativeTheme(question: string): string {
   // Fallback: find the most dramatic/interesting word in the question
   const q = question.replace(/[?.,!'"]/g, "").toLowerCase();
   const words = q.split(/\s+/).filter(w => w.length > 3);
-  // Skip common words, find the juicy one
   const boring = new Set(["about","could","would","should","where","there","their","these","those","which","while","after","before","being","doing","going","having","making","taking","using","what","when","with","from","into","than","then","them","they","this","that","have","will","been","were","does","your","need","want","know","think","feel","like","just","more","most","very","really","still","also","even","each","much","many","some","such","only","back","over","down","come","made","find","here","thing","give","every","good","well","work","make","help","keep","turn","start","might","could","first","never","under","other","again","next","last","long","great","little","right","look","tell","mean","must","call","hand","high","because","between","same","different","through","another","people","company","question","play"]);
   const interesting = words.filter(w => !boring.has(w));
 
   if (interesting.length > 0) {
-    // Take the most "active" word (prefer later words as they tend to be more specific)
+    for (let i = interesting.length - 1; i >= 0; i--) {
+      const w = interesting[i];
+      const capitalized = w.charAt(0).toUpperCase() + w.slice(1);
+      if (businessTheme && capitalized.toLowerCase() === businessTheme.toLowerCase()) continue;
+      return capitalized;
+    }
     const w = interesting[interesting.length - 1];
     return w.charAt(0).toUpperCase() + w.slice(1);
   }
@@ -704,7 +715,7 @@ type ProductCard = {
 
 function deriveProducts(question: string, company: string): ProductCard[] {
   const bizTheme = deriveBusinessTheme(question);
-  const creativeTheme = deriveCreativeTheme(question);
+  const creativeTheme = deriveCreativeTheme(question, bizTheme);
   const co = company || "your company";
 
   // Business pitch with company name
