@@ -949,10 +949,10 @@ export default function BusinessPage() {
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
               </div>
               <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-              <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
+              <h1 className="text-[clamp(22px,5.5vw,72px)] font-black leading-[1] tracking-[-0.04em] text-center whitespace-nowrap" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.4)" }}>
                 Play with reality.
                 <br />
-                <span className="text-mars drop-shadow-[0_0_40px_rgba(255,85,0,0.3)]">See what&apos;s possible.</span>
+                <span className="text-mars" style={{ textShadow: "0 0 40px rgba(255,85,0,0.4), 0 0 80px rgba(255,85,0,0.2), 0 2px 30px rgba(0,0,0,0.8)" }}>See what&apos;s possible.</span>
               </h1>
             </div>
           )}
@@ -964,30 +964,24 @@ export default function BusinessPage() {
               {/* Ambient stage glow — wide soft halo */}
               <div className="absolute -inset-12 sm:-inset-20 rounded-full opacity-30 group-focus-within/input:opacity-80 transition-opacity duration-[2000ms]" style={{ background: "radial-gradient(ellipse 70% 55% at center, rgba(255,85,0,0.12) 0%, rgba(255,85,0,0.04) 40%, transparent 70%)" }} />
 
-              {/* Spotlight cone from above */}
-              <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[200px] h-[180px] opacity-0 group-focus-within/input:opacity-60 transition-opacity duration-[1500ms] pointer-events-none" style={{ background: "conic-gradient(from 0deg at 50% 0%, transparent 35%, rgba(255,85,0,0.06) 45%, rgba(255,85,0,0.10) 50%, rgba(255,85,0,0.06) 55%, transparent 65%)" }} />
-
-              <div className="relative overflow-hidden transition-all duration-700">
-                {/* The stage platform — rounded with glowing edge ring */}
+              <div className="relative transition-all duration-700">
+                {/* The stage platform — glass over the stage */}
                 <div className="relative rounded-2xl transition-all duration-700" style={{
-                  boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 0 40px rgba(255,85,0,0.03), inset 0 1px 0 rgba(255,255,255,0.05)",
+                  boxShadow: "0 0 0 1px rgba(255,85,0,0.12), 0 8px 40px rgba(0,0,0,0.4)",
                 }}>
-                  {/* Red LED edge ring — inspired by space5.png circular stage */}
+                  {/* Red LED edge ring on focus */}
                   <div className="absolute inset-0 rounded-2xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1200ms] pointer-events-none" style={{
-                    boxShadow: "0 0 0 1px rgba(255,85,0,0.25), 0 0 15px rgba(255,85,0,0.08), 0 0 40px rgba(255,85,0,0.04), inset 0 0 20px rgba(255,85,0,0.03)",
+                    boxShadow: "0 0 0 1px rgba(255,85,0,0.3), 0 0 20px rgba(255,85,0,0.1), 0 0 50px rgba(255,85,0,0.05)",
                   }} />
 
-                  {/* Stage floor surface */}
-                  <div className="relative rounded-2xl bg-[#0d0d0d] overflow-hidden">
-                    {/* Top light bar — like stage front edge */}
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent group-focus-within/input:via-mars/50 transition-all duration-700" />
-
-                    {/* Subtle stage floor gradient */}
-                    <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: "radial-gradient(ellipse 100% 80% at 50% 100%, rgba(255,85,0,0.04) 0%, transparent 60%)" }} />
+                  {/* Semi-transparent surface — stage shows through */}
+                  <div className="relative rounded-2xl bg-[#0a0a0a]/70 backdrop-blur-md overflow-hidden">
+                    {/* Top light bar — stage front edge */}
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent group-focus-within/input:via-mars/60 transition-all duration-700" />
 
                     <div className="relative px-5 sm:px-8 pt-6 sm:pt-7 pb-5 sm:pb-6">
                       {/* Stage label */}
-                      <p className="text-mars/30 text-[9px] uppercase tracking-[0.4em] mb-4 group-focus-within/input:text-mars/50 transition-colors duration-700">Your question on stage</p>
+                      <p className="text-mars/35 text-[9px] uppercase tracking-[0.4em] mb-4 group-focus-within/input:text-mars/60 transition-colors duration-700">Your question on stage</p>
 
                       <textarea
                         value={question}
