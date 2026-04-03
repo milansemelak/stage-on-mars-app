@@ -944,9 +944,10 @@ export default function BusinessPage() {
 
           {!submitted && (
             <div className="text-center mb-12 sm:mb-20">
-              {/* Logo with subtle float */}
+              {/* Logo with subtitle */}
               <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
+                <p className="text-white/30 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] mt-3">Reality Play Platform</p>
               </div>
               <h1 className="text-[clamp(28px,6.5vw,80px)] font-black leading-[0.95] tracking-[-0.04em] text-center text-white" style={{ textShadow: "0 2px 20px rgba(0,0,0,1), 0 4px 60px rgba(0,0,0,0.8), 0 0 120px rgba(0,0,0,0.6)" }}>
                 Put your company
