@@ -969,42 +969,70 @@ export default function BusinessPage() {
 
           <div className="w-full max-w-3xl">
 
-            {/* THE INPUT — stage box design */}
+            {/* THE INPUT — stage design inspired by our circular stage */}
             <div className="relative group/input">
-              <div className="absolute -inset-8 sm:-inset-16 rounded-3xl opacity-40 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
+              {/* Ambient stage glow — wide soft halo */}
+              <div className="absolute -inset-12 sm:-inset-20 rounded-full opacity-30 group-focus-within/input:opacity-80 transition-opacity duration-[2000ms]" style={{ background: "radial-gradient(ellipse 70% 55% at center, rgba(255,85,0,0.12) 0%, rgba(255,85,0,0.04) 40%, transparent 70%)" }} />
 
-              <div className="relative rounded-2xl border border-white/[0.10] group-focus-within/input:border-mars/20 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.04)] group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.08)]">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
-                <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
-                  <textarea
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What question would you put on stage?"
-                    rows={2}
-                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
-                    style={{ caretColor: "#FF5500" }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                    }}
-                  />
-                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
-                    <input
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="Company name (optional)"
-                      className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[14px]"
-                    />
-                    <button
-                      onClick={generate}
-                      disabled={!question.trim()}
-                      className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
-                        question.trim()
-                          ? "bg-mars hover:bg-mars-light text-white"
-                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
-                      }`}
-                    >
-                      Play
-                    </button>
+              {/* Spotlight cone from above */}
+              <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[200px] h-[180px] opacity-0 group-focus-within/input:opacity-60 transition-opacity duration-[1500ms] pointer-events-none" style={{ background: "conic-gradient(from 0deg at 50% 0%, transparent 35%, rgba(255,85,0,0.06) 45%, rgba(255,85,0,0.10) 50%, rgba(255,85,0,0.06) 55%, transparent 65%)" }} />
+
+              <div className="relative overflow-hidden transition-all duration-700">
+                {/* The stage platform — rounded with glowing edge ring */}
+                <div className="relative rounded-2xl transition-all duration-700" style={{
+                  boxShadow: "0 0 0 1px rgba(255,255,255,0.08), 0 0 40px rgba(255,85,0,0.03), inset 0 1px 0 rgba(255,255,255,0.05)",
+                }}>
+                  {/* Red LED edge ring — inspired by space5.png circular stage */}
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1200ms] pointer-events-none" style={{
+                    boxShadow: "0 0 0 1px rgba(255,85,0,0.25), 0 0 15px rgba(255,85,0,0.08), 0 0 40px rgba(255,85,0,0.04), inset 0 0 20px rgba(255,85,0,0.03)",
+                  }} />
+
+                  {/* Stage floor surface */}
+                  <div className="relative rounded-2xl bg-[#0d0d0d] overflow-hidden">
+                    {/* Top light bar — like stage front edge */}
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent group-focus-within/input:via-mars/50 transition-all duration-700" />
+
+                    {/* Subtle stage floor gradient */}
+                    <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ background: "radial-gradient(ellipse 100% 80% at 50% 100%, rgba(255,85,0,0.04) 0%, transparent 60%)" }} />
+
+                    <div className="relative px-5 sm:px-8 pt-6 sm:pt-7 pb-5 sm:pb-6">
+                      {/* Stage label */}
+                      <p className="text-mars/30 text-[9px] uppercase tracking-[0.4em] mb-4 group-focus-within/input:text-mars/50 transition-colors duration-700">Your question on stage</p>
+
+                      <textarea
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                        placeholder="What question would you put on stage?"
+                        rows={2}
+                        className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                        style={{ caretColor: "#FF5500" }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                        }}
+                      />
+                      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.06] group-focus-within/input:border-mars/10 transition-colors duration-700">
+                        <input
+                          value={companyName}
+                          onChange={(e) => setCompanyName(e.target.value)}
+                          placeholder="Company name (optional)"
+                          className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[14px]"
+                        />
+                        <button
+                          onClick={generate}
+                          disabled={!question.trim()}
+                          className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
+                            question.trim()
+                              ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_20px_rgba(255,85,0,0.2)]"
+                              : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                          }`}
+                        >
+                          Play
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Bottom edge glow — stage front lip */}
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent group-focus-within/input:via-mars/35 transition-all duration-700" />
                   </div>
                 </div>
               </div>
@@ -1271,7 +1299,7 @@ export default function BusinessPage() {
             </div>
           )}
 
-          {/* ── BESTSELLING PLAYS — luxury product cards ── */}
+          {/* ── BESTSELLING PLAYS — stage-inspired product cards ── */}
           {!submitted && (
             <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-8 space-y-5">
               <div className="px-1 mb-1">
@@ -1282,34 +1310,55 @@ export default function BusinessPage() {
                 { theme: "Vision", photo: "/luxury4.jpg", photoPos: "50% 50%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it." },
                 { theme: "Creativity", photo: "/luxury1.jpg", photoPos: "50% 40%", duration: "Half-day", people: "8–25", price: "from €2 200", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
               ].map((play, i) => (
-                <div key={i} className="group rounded-2xl border border-white/[0.08] hover:border-mars/15 overflow-hidden bg-white/[0.02] transition-all duration-500">
-                  {/* Photo — contained */}
+                <div key={i} className="group relative rounded-2xl overflow-hidden bg-[#0d0d0d] transition-all duration-500" style={{
+                  boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 4px 30px rgba(0,0,0,0.3)",
+                }}>
+                  {/* Hover: red LED edge ring — like the circular stage in space5 */}
+                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" style={{
+                    boxShadow: "0 0 0 1px rgba(255,85,0,0.2), 0 0 20px rgba(255,85,0,0.06), 0 0 50px rgba(255,85,0,0.03)",
+                  }} />
+
+                  {/* Photo — with stage lighting overlay */}
                   <div className="relative h-[180px] sm:h-[220px] overflow-hidden">
                     <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.02] group-hover:scale-100" style={{ objectPosition: play.photoPos }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/20" />
+                    {/* Dark gradient vignette */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d]/40 to-[#0d0d0d]/30" />
+                    {/* Spotlight on hover — dramatic cone from top center */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 70% at 50% 0%, rgba(255,85,0,0.12) 0%, transparent 60%)" }} />
+                    {/* Stage floor edge glow at bottom of photo */}
+                    <div className="absolute bottom-0 left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   </div>
-                  {/* Product details */}
-                  <div className="p-5 sm:p-6">
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
-                        <span className="text-white/90">{play.theme}</span>{" "}
-                        <span className="text-mars/60">on Mars</span>
-                      </h4>
-                      <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
+
+                  {/* Product details — the stage floor area */}
+                  <div className="relative p-5 sm:p-6">
+                    {/* Subtle stage floor radial glow */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,85,0,0.03) 0%, transparent 50%)" }} />
+
+                    <div className="relative">
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
+                          <span className="text-white/90 group-hover:text-white transition-colors duration-500">{play.theme}</span>{" "}
+                          <span className="text-mars/50 group-hover:text-mars/70 transition-colors duration-500">on Mars</span>
+                        </h4>
+                        <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
+                      </div>
+                      {/* Specs row */}
+                      <div className="flex items-center gap-3 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
+                        <span>{play.duration}</span>
+                        <span className="text-white/10">·</span>
+                        <span>{play.people} people</span>
+                        <span className="text-white/10">·</span>
+                        <span>On stage or at your venue</span>
+                      </div>
+                      <p className="text-white/45 text-[13px] leading-[1.6] mb-5">{play.pitch}</p>
+                      <a href="#contact" className="inline-block px-6 py-2.5 rounded-lg border border-mars/15 text-mars/60 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars/10 hover:text-mars hover:border-mars/30 hover:shadow-[0_0_15px_rgba(255,85,0,0.1)] transition-all duration-300">
+                        Book this play
+                      </a>
                     </div>
-                    {/* Specs row */}
-                    <div className="flex items-center gap-3 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
-                      <span>{play.duration}</span>
-                      <span className="text-white/10">·</span>
-                      <span>{play.people} people</span>
-                      <span className="text-white/10">·</span>
-                      <span>On stage or at your venue</span>
-                    </div>
-                    <p className="text-white/45 text-[13px] leading-[1.6] mb-5">{play.pitch}</p>
-                    <a href="#contact" className="inline-block px-6 py-2.5 rounded-lg border border-mars/20 text-mars/70 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars/10 hover:text-mars hover:border-mars/30 transition-all duration-300">
-                      Book this play
-                    </a>
                   </div>
+
+                  {/* Bottom edge glow — stage lip */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/10 to-transparent group-hover:via-mars/25 transition-all duration-700" />
                 </div>
               ))}
             </div>
