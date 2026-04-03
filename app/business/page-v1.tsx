@@ -897,118 +897,102 @@ export default function BusinessPage() {
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes curtain-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-        @keyframes curtain-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
-        @keyframes breathe { 0%, 100% { box-shadow: 0 0 30px rgba(255,85,0,0.3), 0 0 60px rgba(255,85,0,0.15); } 50% { box-shadow: 0 0 50px rgba(255,85,0,0.5), 0 0 100px rgba(255,85,0,0.25); } }
-        @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.8); opacity: 0; } }
       `}</style>
 
 
-      {/* ── HERO: The curtain opens ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-[100vh] flex"} flex flex-col items-center justify-center px-4 relative overflow-hidden transition-all duration-700`}>
 
-        {/* Stage curtain + lighting */}
+      {/* ── HERO: The question IS the experience ── */}
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "sm:min-h-[90vh] sm:flex"} flex flex-col items-center sm:justify-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
+
+        {/* Abstract stage light — dramatic cone from top */}
         {!submitted && (
           <>
-            {/* Curtain panels that part */}
+            {/* Main spotlight cone */}
             <div
-              className={`absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#0a0a0a] via-[#110800] to-[#1a0a00] transition-all duration-[2500ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-[1] ${entered ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
-            />
-            <div
-              className={`absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-[#0a0a0a] via-[#110800] to-[#1a0a00] transition-all duration-[2500ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-[1] ${entered ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"}`}
-            />
-
-            {/* Main spotlight — dramatic overhead cone */}
-            <div
-              className={`absolute transition-all duration-[3000ms] delay-[800ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              className={`absolute transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
               style={{
-                top: "-30%",
+                top: "-20%",
                 left: "50%",
                 transform: "translateX(-50%)",
-                width: "140%",
-                height: "90%",
-                background: "conic-gradient(from 180deg at 50% 0%, transparent 32%, rgba(255,85,0,0.05) 42%, rgba(255,85,0,0.15) 50%, rgba(255,85,0,0.05) 58%, transparent 68%)",
+                width: "120%",
+                height: "80%",
+                background: "conic-gradient(from 180deg at 50% 0%, transparent 35%, rgba(255,85,0,0.06) 45%, rgba(255,85,0,0.12) 50%, rgba(255,85,0,0.06) 55%, transparent 65%)",
               }}
             />
-            {/* Warm pool of light at center stage */}
+            {/* Warm center glow */}
             <div
-              className={`absolute w-[800px] h-[800px] rounded-full transition-all duration-[3000ms] delay-[1200ms] ${entered ? "opacity-100" : "opacity-0"}`}
-              style={{ background: "radial-gradient(ellipse, rgba(255,85,0,0.12) 0%, rgba(255,85,0,0.03) 40%, transparent 65%)", top: "35%", left: "50%", transform: "translate(-50%, -50%)" }}
+              className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[2500ms] delay-500 ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(ellipse, rgba(255,85,0,0.14) 0%, rgba(255,85,0,0.04) 40%, transparent 70%)", top: "20%", left: "50%", transform: "translate(-50%, -50%)" }}
             />
-            {/* Stage floor glow */}
+            {/* Subtle side accent left */}
             <div
-              className={`absolute bottom-0 left-0 right-0 h-[1px] transition-all duration-[2000ms] delay-[2000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-              style={{ background: "linear-gradient(90deg, transparent, rgba(255,85,0,0.15) 30%, rgba(255,85,0,0.25) 50%, rgba(255,85,0,0.15) 70%, transparent)" }}
+              className={`absolute w-[400px] h-[400px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.05) 0%, transparent 70%)", top: "50%", left: "15%", transform: "translate(-50%, -50%)" }}
             />
-            {/* Noise texture */}
+            {/* Subtle side accent right */}
+            <div
+              className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[2000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "45%", left: "80%", transform: "translate(-50%, -50%)" }}
+            />
+            {/* Noise/grain texture overlay for depth */}
             <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "256px" }} />
           </>
         )}
 
-        <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[2000ms] delay-[1500ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+        <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           {!submitted && (
-            <div className="text-center mb-12 sm:mb-16">
-              {/* Logo */}
-              <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
-                <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-12 md:h-14 w-auto invert mx-auto opacity-60" />
+            <div className="text-center mb-10 sm:mb-14">
+              {/* Logo with subtle float */}
+              <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
+                <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </div>
-              <h1 className="text-[clamp(28px,7vw,90px)] font-black leading-[0.9] tracking-[-0.05em] text-center">
-                <span className="block text-white/90">The question you won&apos;t</span>
-                <span className="block font-mercure italic text-mars">ask in a boardroom.</span>
+              <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
+              <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
+                Play with reality.
+                <br />
+                <span className="text-mars">See what&apos;s possible.</span>
               </h1>
-              <p className="text-white/35 text-[13px] sm:text-[15px] mt-6 sm:mt-8 max-w-md mx-auto leading-[1.6] tracking-wide">
-                Put it on stage. Watch it play out. See what you couldn&apos;t see before.
-              </p>
             </div>
           )}
 
           <div className="w-full max-w-3xl">
 
-            {/* THE INPUT — stepping onto a stage */}
+            {/* THE INPUT — stage box design */}
             <div className="relative group/input">
-              <div className="absolute -inset-10 sm:-inset-20 rounded-3xl opacity-30 group-focus-within/input:opacity-100 transition-opacity duration-[2000ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.1) 0%, transparent 60%)" }} />
+              <div className="absolute -inset-8 sm:-inset-16 rounded-3xl opacity-40 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
 
-              <div className="relative rounded-2xl border border-white/[0.08] group-focus-within/input:border-mars/30 bg-white/[0.02] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.02)] group-focus-within/input:shadow-[0_0_100px_rgba(255,85,0,0.1)]">
-                <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
-                <div className="px-6 sm:px-8 pt-6 sm:pt-7 pb-5 sm:pb-6">
+              <div className="relative rounded-2xl border border-white/[0.10] group-focus-within/input:border-mars/20 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.04)] group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.08)]">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
+                <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="What question would you put on stage?"
                     rows={2}
-                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[20px] sm:text-[24px] placeholder:text-white/20 focus:outline-none resize-none leading-[1.4] tracking-[-0.02em] font-bold"
+                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                     }}
                   />
-                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.06]">
+                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
                     <input
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       placeholder="Company name (optional)"
-                      className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/15 focus:outline-none text-[14px]"
+                      className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[14px]"
                     />
-                    {/* THE PLAY BUTTON — magnetic, alive */}
                     <button
                       onClick={generate}
                       disabled={!question.trim()}
-                      className="shrink-0 relative"
-                    >
-                      {question.trim() && (
-                        <>
-                          <div className="absolute inset-0 rounded-xl" style={{ animation: "breathe 2s ease-in-out infinite" }} />
-                          <div className="absolute -inset-1 rounded-xl bg-mars/20" style={{ animation: "pulse-ring 2s ease-out infinite" }} />
-                        </>
-                      )}
-                      <div className={`relative px-8 sm:px-10 py-3 sm:py-3.5 rounded-xl font-black text-[14px] sm:text-[15px] uppercase tracking-[0.2em] transition-all duration-500 ${
+                      className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
                         question.trim()
-                          ? "bg-mars text-white hover:bg-[#ff6a1a] scale-100 hover:scale-105"
-                          : "bg-white/[0.04] text-white/20 cursor-not-allowed"
-                      }`}>
-                        Play
-                      </div>
+                          ? "bg-mars hover:bg-mars-light text-white"
+                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                      }`}
+                    >
+                      Play
                     </button>
                   </div>
                 </div>
@@ -1016,9 +1000,9 @@ export default function BusinessPage() {
             </div>
           </div>{/* end max-w-3xl */}
 
-          {/* ── DIGITAL PLAYMAKER — provocative invitation, no phone SVG ── */}
+          {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
           {!submitted && !inlineDigital && (
-            <div className="w-full max-w-3xl mx-auto mt-10 sm:mt-14">
+            <div className="w-full max-w-3xl mx-auto mt-8 sm:mt-10">
               <button
                 onClick={() => {
                   const q = question.trim() || "What does my company need right now?";
@@ -1028,22 +1012,61 @@ export default function BusinessPage() {
                   openDigital(q);
                   setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
                 }}
-                className="w-full group transition-all duration-500 hover:scale-[1.01]"
+                className="w-full group transition-all duration-500 opacity-100 hover:scale-[1.01]"
               >
-                <div className="relative rounded-2xl border border-mars/[0.12] hover:border-mars/25 bg-gradient-to-r from-mars/[0.04] via-mars/[0.08] to-mars/[0.04] overflow-hidden transition-all duration-500">
-                  <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/50 to-transparent" />
-                  <div className="px-8 sm:px-12 py-10 sm:py-14 text-center">
-                    <p className="text-mars text-[11px] sm:text-[12px] uppercase tracking-[0.4em] font-bold mb-4 opacity-70">Digital Playmaker</p>
-                    <h3 className="text-[24px] sm:text-[32px] md:text-[38px] font-black tracking-[-0.04em] leading-[1] mb-4 group-hover:text-white transition-colors">
-                      Don&apos;t wait for the stage.<br />
-                      <span className="font-mercure italic text-mars/80">The stage is here.</span>
-                    </h3>
-                    <p className="text-white/40 text-[13px] sm:text-[15px] max-w-md mx-auto mb-8">
-                      AI creates your reality play in 30 seconds. Characters, dynamics, perspectives. Right now.
-                    </p>
-                    <div className="inline-flex items-center gap-3 px-8 py-3.5 rounded-xl bg-mars/10 border border-mars/20 text-mars text-[12px] font-bold uppercase tracking-[0.2em] group-hover:bg-mars/15 group-hover:border-mars/30 transition-all">
-                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
-                      Enter the Playmaker
+                <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+
+                  <div className="grid sm:grid-cols-2 items-center">
+                    {/* Left — phone mockup */}
+                    <div className="flex items-center justify-center py-10 sm:py-14">
+                      <div className="group-hover:scale-105 transition-transform duration-700">
+                        <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
+                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
+                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow2)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                          <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
+                          <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+                          <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                          <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
+                          <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                          <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
+                          <circle cx="45" cy="68" r="24" fill="url(#stageGlow2)" />
+                          <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
+                          <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
+                          <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
+                          <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
+                          <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                          <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                          <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                          <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
+                          <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
+                          <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
+                          <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
+                          <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                          <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                          <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
+                          <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
+                          <defs>
+                            <radialGradient id="stageGlow2" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
+                            <linearGradient id="phoneGlow2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Right — copy */}
+                    <div className="px-6 sm:px-8 pb-10 sm:py-14 text-left">
+                      <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                      <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
+                        Try it right here.
+                      </h3>
+                      <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-6 max-w-xs">
+                        AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
+                      </p>
+                      <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
+                        <span>Open Playmaker</span>
+                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1063,7 +1086,7 @@ export default function BusinessPage() {
                     <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
                     <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
                   </div>
-                  <button onClick={() => { setInlineDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/40 text-[10px] uppercase tracking-[0.15em] hover:text-white/60 transition-colors">
+                  <button onClick={() => { setInlineDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                     Close
                   </button>
                 </div>
@@ -1219,13 +1242,13 @@ export default function BusinessPage() {
                               <p className="text-white/30 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
                               <p className="font-mercure italic text-white/55 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
                               <button onClick={() => { const followUp = play.followUpQuestion!; reset(); setTimeout(() => { setQuestion(followUp); }, 100); }} className="text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
-                                Ask this question
+                                Ask this question →
                               </button>
                             </div>
                           </div>
                         )}
                         <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all">
-                          Back to cast
+                          ← Back to cast
                         </button>
                       </div>
                     )}
@@ -1237,42 +1260,42 @@ export default function BusinessPage() {
             </div>
           )}
 
-          {/* ── BESTSELLING PLAYS — luxury product cards, taller photos, commanding CTAs ── */}
+          {/* ── BESTSELLING PLAYS — luxury product cards ── */}
           {!submitted && (
-            <div className="w-full max-w-4xl mx-auto mt-14 sm:mt-20 space-y-6">
-              <div className="px-1 mb-2">
+            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-8 space-y-5">
+              <div className="px-1 mb-1">
                 <p className="text-mars/50 text-[10px] uppercase tracking-[0.4em]">Bestselling plays</p>
               </div>
               {[
-                { theme: "Strategy", photo: "/luxury2.jpg", photoPos: "50% 30%", duration: "Half-day", people: "8-30", price: "from \u20ac2 900", pitch: "Where is your company really heading \u2014 and what\u2019s pulling it off course? Your team maps the forces on stage." },
-                { theme: "Vision", photo: "/luxury4.jpg", photoPos: "50% 50%", duration: "Half-day", people: "8-30", price: "from \u20ac2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage \u2014 then watches what tries to destroy it." },
-                { theme: "Creativity", photo: "/luxury1.jpg", photoPos: "50% 40%", duration: "Half-day", people: "8-25", price: "from \u20ac2 200", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
-              ].map((playItem, i) => (
-                <div key={i} className="group rounded-2xl border border-white/[0.06] hover:border-mars/20 overflow-hidden bg-white/[0.02] transition-all duration-700 hover:shadow-[0_0_60px_-20px_rgba(255,85,0,0.15)]">
-                  {/* Photo — taller, cinematic */}
-                  <div className="relative h-[260px] sm:h-[340px] overflow-hidden">
-                    <img src={playItem.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.03] group-hover:scale-100" style={{ objectPosition: playItem.photoPos }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent" />
-                    {/* Theme name overlaid on photo */}
-                    <div className="absolute bottom-6 left-6 sm:left-8">
-                      <h4 className="text-[28px] sm:text-[36px] font-black tracking-[-0.04em] leading-[1]">
-                        <span className="text-white">{playItem.theme}</span>{" "}
-                        <span className="text-mars/70">on Mars</span>
-                      </h4>
-                    </div>
+                { theme: "Strategy", photo: "/luxury2.jpg", photoPos: "50% 30%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "Where is your company really heading — and what's pulling it off course? Your team maps the forces on stage." },
+                { theme: "Vision", photo: "/luxury4.jpg", photoPos: "50% 50%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it." },
+                { theme: "Creativity", photo: "/luxury1.jpg", photoPos: "50% 40%", duration: "Half-day", people: "8–25", price: "from €2 200", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
+              ].map((play, i) => (
+                <div key={i} className="group rounded-2xl border border-white/[0.08] hover:border-mars/15 overflow-hidden bg-white/[0.02] transition-all duration-500">
+                  {/* Photo — contained */}
+                  <div className="relative h-[180px] sm:h-[220px] overflow-hidden">
+                    <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.02] group-hover:scale-100" style={{ objectPosition: play.photoPos }} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/20" />
                   </div>
                   {/* Product details */}
-                  <div className="p-6 sm:p-8">
-                    <div className="flex items-center gap-4 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
-                      <span>{playItem.duration}</span>
-                      <span className="text-white/10">|</span>
-                      <span>{playItem.people} people</span>
-                      <span className="text-white/10">|</span>
-                      <span>On stage or at your venue</span>
-                      <span className="ml-auto text-white/50 text-[14px] font-bold tracking-tight normal-case">{playItem.price}</span>
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
+                        <span className="text-white/90">{play.theme}</span>{" "}
+                        <span className="text-mars/60">on Mars</span>
+                      </h4>
+                      <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
                     </div>
-                    <p className="text-white/50 text-[14px] leading-[1.6] mb-6 max-w-lg">{playItem.pitch}</p>
-                    <a href="#contact" className="inline-block px-8 py-3 rounded-xl bg-mars/10 border border-mars/20 text-mars text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars hover:text-white hover:border-mars transition-all duration-300">
+                    {/* Specs row */}
+                    <div className="flex items-center gap-3 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
+                      <span>{play.duration}</span>
+                      <span className="text-white/10">·</span>
+                      <span>{play.people} people</span>
+                      <span className="text-white/10">·</span>
+                      <span>On stage or at your venue</span>
+                    </div>
+                    <p className="text-white/45 text-[13px] leading-[1.6] mb-5">{play.pitch}</p>
+                    <a href="#contact" className="inline-block px-6 py-2.5 rounded-lg border border-mars/20 text-mars/70 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars/10 hover:text-mars hover:border-mars/30 transition-all duration-300">
                       Book this play
                     </a>
                   </div>
@@ -1291,18 +1314,18 @@ export default function BusinessPage() {
           <div className="max-w-3xl mx-auto">
 
             {/* The question echo */}
-            <div className="text-center mb-10 sm:mb-12 pt-4 sm:pt-6">
-              <p className="text-white/20 text-[10px] uppercase tracking-[0.4em] mb-4">Your question</p>
-              <p className="font-mercure italic text-white/60 text-[18px] sm:text-[24px] leading-[1.3] max-w-xl mx-auto">&ldquo;{askedQuestion}&rdquo;</p>
-              <button onClick={reset} className="text-white/20 text-[10px] uppercase tracking-[0.15em] mt-5 hover:text-mars/60 transition-colors">
+            <div className="text-center mb-8 sm:mb-10 pt-4 sm:pt-6">
+              <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
+              <p className="font-mercure italic text-white/70 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{askedQuestion}&rdquo;</p>
+              <button onClick={reset} className="text-white/25 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/60 transition-colors">
                 Ask something else
               </button>
             </div>
 
-            {/* 3 PRODUCT OPTIONS */}
+            {/* ═══ 3 PRODUCT OPTIONS — commercial menu ═══ */}
             {products.length > 0 && selectedIdx === null && (
               <div>
-                <p className="text-mars/50 text-[12px] sm:text-[13px] uppercase tracking-[0.4em] text-center mb-10 sm:mb-12 font-bold">Choose your play</p>
+                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] text-center mb-8 sm:mb-10">Choose your play</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
                   {products.map((p, i) => {
@@ -1314,42 +1337,50 @@ export default function BusinessPage() {
                         className={`relative w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 group hover:scale-[1.02] flex flex-col ${
                           isLeader
                             ? "border-mars/20 bg-gradient-to-b from-mars/[0.06] to-mars/[0.01] hover:border-mars/35 hover:shadow-[0_0_40px_-10px_rgba(255,85,0,0.2)]"
-                            : "border-white/[0.10] bg-gradient-to-b from-white/[0.03] to-transparent hover:border-white/[0.15] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
+                            : "border-white/[0.15] bg-gradient-to-b from-white/[0.03] to-transparent hover:border-white/[0.15] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
                         }`}
                       >
+                        {/* Top accent line */}
                         <div className={`h-[2px] ${isLeader ? "bg-gradient-to-r from-mars/40 via-mars to-mars/40" : "bg-gradient-to-r from-transparent via-white/10 to-transparent"}`} />
 
                         <div className="p-5 sm:p-6 flex flex-col flex-1">
-                          <p className={`text-[12px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/50"}`}>{p.tag}</p>
+                          {/* Tag */}
+                          <p className={`text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/65"}`}>{p.tag}</p>
 
-                          <h3 className="text-[28px] sm:text-[34px] font-black tracking-[-0.04em] leading-[0.95] mb-4">
+                          {/* Theme — full play name */}
+                          <h3 className={`text-[28px] sm:text-[34px] font-black tracking-[-0.04em] leading-[0.95] mb-4 ${isLeader ? "" : ""}`}>
                             <span className={isLeader ? "text-mars" : "text-white/90"}>{p.theme}</span>
                             {" "}
-                            <span className={isLeader ? "text-mars/70" : "text-white/40"}>on Mars</span>
+                            <span className={isLeader ? "text-mars/70" : "text-white/55"}>on Mars</span>
                           </h3>
 
-                          <p className="text-white/55 text-[13px] sm:text-[14px] leading-[1.55] mb-6 flex-1">
+                          {/* Pitch */}
+                          <p className="text-white/70 text-[13px] sm:text-[14px] leading-[1.55] mb-6 flex-1">
                             {p.pitch}
                           </p>
 
-                          <div className={`border-t pt-4 mt-auto ${isLeader ? "border-mars/10" : "border-white/[0.08]"}`}>
+                          {/* Bottom stats bar */}
+                          <div className={`border-t pt-4 mt-auto ${isLeader ? "border-mars/10" : "border-white/[0.12]"}`}>
                             <div className="flex items-end justify-between">
-                              <p className="text-white/40 text-[10px]">{p.duration} · {p.people}</p>
-                              <p className={`text-[14px] sm:text-[15px] font-bold tracking-tight ${isLeader ? "text-mars/70" : "text-white/50"}`}>{p.price}</p>
+                              <div className="space-y-1">
+                                <p className="text-white/60 text-[10px]">{p.duration} · {p.people}</p>
+                              </div>
+                              <p className={`text-[14px] sm:text-[15px] font-bold tracking-tight ${isLeader ? "text-mars/70" : "text-white/60"}`}>{p.price}</p>
                             </div>
                           </div>
                         </div>
 
+                        {/* Hover arrow */}
                         <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <svg viewBox="0 0 24 24" className={`w-4 h-4 fill-current ${isLeader ? "text-mars/70" : "text-white/40"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                          <svg viewBox="0 0 24 24" className={`w-4 h-4 fill-current ${isLeader ? "text-mars/70" : "text-white/60"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                         </div>
                       </button>
                     );
                   })}
                 </div>
 
-                {/* Digital Playmaker — below product cards, no phone SVG */}
-                <div className="mt-10 sm:mt-12">
+                {/* ── DIGITAL PLAYMAKER — below product cards ── */}
+                <div className="mt-8 sm:mt-10">
                   <button
                     onClick={() => {
                       setSelectedIdx(0);
@@ -1357,19 +1388,59 @@ export default function BusinessPage() {
                     }}
                     className="w-full group transition-all duration-500 hover:scale-[1.005]"
                   >
-                    <div className="relative rounded-2xl border border-mars/[0.12] hover:border-mars/25 bg-gradient-to-r from-mars/[0.03] via-mars/[0.06] to-mars/[0.03] overflow-hidden transition-all duration-500">
-                      <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
-                      <div className="px-8 sm:px-12 py-10 sm:py-14 text-center">
-                        <p className="text-mars/60 text-[11px] uppercase tracking-[0.4em] font-bold mb-3">Digital Playmaker</p>
-                        <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1.1] mb-3 group-hover:text-white transition-colors">
-                          Or step on stage right now.
-                        </h3>
-                        <p className="text-white/40 text-[13px] sm:text-[14px] max-w-sm mx-auto mb-6">
-                          AI creates your reality play in 30 seconds. Characters, dynamics, perspectives.
-                        </p>
-                        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-mars/10 border border-mars/20 text-mars text-[11px] font-bold uppercase tracking-[0.2em] group-hover:bg-mars/15 group-hover:border-mars/30 transition-all">
-                          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
-                          Enter the Playmaker
+                    <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+
+                      <div className="grid sm:grid-cols-2 items-center">
+                        {/* Left — phone mockup */}
+                        <div className="flex items-center justify-center py-8 sm:py-12">
+                          <div className="group-hover:scale-105 transition-transform duration-700">
+                            <svg width="80" height="150" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[100px] sm:h-[188px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
+                              <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
+                              <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow3)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                              <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
+                              <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+                              <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                              <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
+                              <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                              <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
+                              <circle cx="45" cy="68" r="24" fill="url(#stageGlow3)" />
+                              <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
+                              <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
+                              <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
+                              <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
+                              <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                              <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                              <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                              <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
+                              <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
+                              <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
+                              <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
+                              <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                              <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                              <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
+                              <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
+                              <defs>
+                                <radialGradient id="stageGlow3" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
+                                <linearGradient id="phoneGlow3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
+                              </defs>
+                            </svg>
+                          </div>
+                        </div>
+
+                        {/* Right — copy */}
+                        <div className="px-6 sm:px-8 pb-8 sm:py-12 text-left">
+                          <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                          <h3 className="text-[20px] sm:text-[24px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
+                            Or try it right here.
+                          </h3>
+                          <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-5 max-w-xs">
+                            AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
+                          </p>
+                          <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
+                            <span>Open Playmaker</span>
+                            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1379,38 +1450,40 @@ export default function BusinessPage() {
             )}
 
 
-            {/* SELECTED PRODUCT */}
+            {/* ═══ SELECTED PRODUCT — compact stage box ═══ */}
             {selectedIdx !== null && products[selectedIdx] && (
               <>
+                {/* Back to options */}
                 <div className="mb-4 sm:mb-6">
-                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/40 text-[12px] uppercase tracking-[0.15em] hover:text-white/60 transition-colors">
-                    Back to all plays
+                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/50 text-[13px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
+                    ← Back to all plays
                   </button>
                 </div>
 
+                {/* Play detail — stage box */}
                 <div className="mb-6 sm:mb-8">
                   <div className="rounded-2xl border border-mars/[0.15] bg-mars/[0.03] overflow-hidden">
-                    <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                     <div className="p-6 sm:p-8">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
                         <p className="text-mars/70 text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold">{products[selectedIdx].tag}</p>
                       </div>
 
-                      <h3 className="text-[26px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1] mb-3">
+                      <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1] mb-3">
                         {products[selectedIdx].theme}{" "}
                         <span className="text-mars">on Mars</span>
                       </h3>
 
-                      <p className="text-white/60 text-[14px] sm:text-[15px] leading-[1.6] mb-6 max-w-lg">{products[selectedIdx].pitch}</p>
+                      <p className="text-white/65 text-[14px] sm:text-[15px] leading-[1.6] mb-6 max-w-lg">{products[selectedIdx].pitch}</p>
 
                       <div className="flex flex-wrap gap-6 mb-6 text-[13px]">
-                        <span className="text-white/40">{products[selectedIdx].duration}</span>
-                        <span className="text-white/40">{products[selectedIdx].people}</span>
-                        <span className="text-white/40">{products[selectedIdx].price}</span>
+                        <div><span className="text-white/40">{products[selectedIdx].duration}</span></div>
+                        <div><span className="text-white/40">{products[selectedIdx].people}</span></div>
+                        <div><span className="text-white/40">{products[selectedIdx].price}</span></div>
                       </div>
 
-                      <a href="#contact" className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-mars text-white text-[12px] font-bold uppercase tracking-[0.15em] hover:bg-[#ff6a1a] transition-colors">
+                      <a href="#contact" className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.15em] text-mars hover:text-mars-light transition-colors">
                         Book this play
                         <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                       </a>
@@ -1418,27 +1491,96 @@ export default function BusinessPage() {
                   </div>
                 </div>
 
-                {/* DIGITAL SIMULATION */}
+                {/* ═══ DIGITAL SIMULATION ═══ */}
                 <div className="relative mt-0">
                   {!showDigital ? (
                     <button
                       onClick={() => openDigital()}
-                      className="w-full group transition-all duration-500"
+                      className="w-full relative rounded-3xl border border-white/[0.12] bg-white/[0.05] hover:border-mars/[0.15] hover:bg-white/[0.06] transition-all duration-500 group overflow-hidden"
                     >
-                      <div className="relative rounded-2xl border border-mars/[0.12] hover:border-mars/25 bg-gradient-to-r from-mars/[0.03] via-mars/[0.06] to-mars/[0.03] overflow-hidden transition-all duration-500">
-                        <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
-                        <div className="relative z-10 py-12 sm:py-16 px-8 sm:px-12 text-center">
-                          <p className="text-mars/60 text-[11px] uppercase tracking-[0.4em] font-bold mb-4">Digital Playmaker</p>
-                          <p className="text-white/80 text-[20px] sm:text-[26px] font-black tracking-[-0.02em] mb-3 group-hover:text-white transition-colors">
-                            Watch this play unfold. Now.
-                          </p>
-                          <p className="font-mercure text-white/40 text-[13px] sm:text-[14px] mb-8">
-                            AI-generated reality play you can walk through right here
-                          </p>
-                          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-mars/10 border border-mars/20 text-mars text-[11px] font-bold uppercase tracking-[0.2em] group-hover:bg-mars/15 group-hover:border-mars/30 transition-all">
-                            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
-                            Enter the Playmaker
-                          </div>
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
+                        <p className="text-white/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
+
+                        {/* Phone mockup — SVG with real stage UI */}
+                        <div className="inline-block mb-6 group-hover:scale-[1.03] transition-transform duration-700">
+                          <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
+                            {/* Phone body */}
+                            <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
+                            <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                            {/* Dynamic Island */}
+                            <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
+                            {/* Screen area */}
+                            <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+
+                            {/* -- Screen content -- */}
+                            {/* Play title */}
+                            <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                            <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
+
+                            {/* Stage circle */}
+                            <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                            <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
+                            {/* Stage glow */}
+                            <circle cx="45" cy="68" r="24" fill="url(#stageGlow)" />
+
+                            {/* Characters on stage */}
+                            <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)">
+                              <animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)">
+                              <animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)">
+                              <animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)">
+                              <animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" />
+                            </circle>
+
+                            {/* Connection lines between characters */}
+                            <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                            <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+
+                            {/* Narration box */}
+                            <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                            <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
+                            <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
+                            <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
+
+                            {/* Step indicators */}
+                            <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
+                            <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                            <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+
+                            {/* Progress bar */}
+                            <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
+                            <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
+
+                            {/* Gradients */}
+                            <defs>
+                              <radialGradient id="stageGlow" cx="0.5" cy="0.5" r="0.5">
+                                <stop offset="0%" stopColor="rgba(255,85,0,0.06)" />
+                                <stop offset="100%" stopColor="transparent" />
+                              </radialGradient>
+                              <linearGradient id="phoneGlow" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="rgba(255,85,0,0.4)" />
+                                <stop offset="50%" stopColor="rgba(255,85,0,0.1)" />
+                                <stop offset="100%" stopColor="transparent" />
+                              </linearGradient>
+                            </defs>
+                          </svg>
+                        </div>
+
+                        <p className="text-white/70 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
+                          Simulate this play digitally
+                        </p>
+                        <p className="font-mercure text-white/70 text-[12px] sm:text-[14px] mt-3 group-hover:text-white/65 transition-colors">
+                          AI-generated reality play you can walk through now
+                        </p>
+                        <div className="mt-6 inline-flex items-center gap-2 text-mars/60 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/70 transition-colors">
+                          <span>Open Playmaker</span>
+                          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
                         </div>
                       </div>
                     </button>
@@ -1446,19 +1588,20 @@ export default function BusinessPage() {
                     <div className="relative">
                       <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
 
+                      {/* Header */}
                       <div className="flex items-center justify-between mb-6 sm:mb-8">
                         <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
                           <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
                         </div>
-                        <button onClick={() => setShowDigital(false)} className="text-white/40 text-[10px] uppercase tracking-[0.15em] hover:text-white/60 transition-colors">
+                        <button onClick={() => setShowDigital(false)} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                           Close
                         </button>
                       </div>
 
+                      {/* Loading state */}
                       {playLoading && (
-                        <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                          <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                        <div className="rounded-3xl border border-white/[0.12] bg-white/[0.05] overflow-hidden">
                           <div className="text-center py-20 sm:py-28">
                             <div className="inline-flex gap-2 mb-5">
                               {[0, 1, 2].map((i) => (
@@ -1470,9 +1613,11 @@ export default function BusinessPage() {
                         </div>
                       )}
 
+                      {/* ── GAMING INTERFACE ── */}
                       {play && !playLoading && (
                         <div className="space-y-4">
 
+                          {/* Phase nav tabs */}
                           <div className="flex items-center gap-1 rounded-xl bg-white/[0.05] border border-white/[0.12] p-1">
                             {[
                               { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
@@ -1500,20 +1645,31 @@ export default function BusinessPage() {
                             ))}
                           </div>
 
+                          {/* ── CAST PHASE ── */}
                           {simPhase === "cast" && (
                             <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+
+                              {/* Play header */}
                               <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
                                 <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
                                 <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
                               </div>
+
+                              {/* Character cards */}
                               <div className="px-6 sm:px-8 pb-6 sm:pb-8">
                                 <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                   {play.characters.map((char, i) => (
-                                    <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
+                                    <div
+                                      key={i}
+                                      className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all"
+                                      style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}
+                                    >
                                       <div className="flex items-center gap-2.5 mb-2.5">
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">{char.name.charAt(0)}</div>
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">
+                                          {char.name.charAt(0)}
+                                        </div>
                                         <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
                                       </div>
                                       <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
@@ -1521,18 +1677,28 @@ export default function BusinessPage() {
                                   ))}
                                 </div>
                               </div>
+
+                              {/* Play suggestion / narrative setup */}
                               {play.image && (
                                 <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
                                   <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
                                   <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
                                 </div>
                               )}
+
+                              {/* Start button */}
                               <div className="px-6 sm:px-8 pb-6 sm:pb-8">
                                 <button
-                                  onClick={() => { if (simReady) setSimPhase("stage"); }}
+                                  onClick={() => {
+                                    if (simReady) {
+                                      setSimPhase("stage");
+                                    }
+                                  }}
                                   disabled={!simReady}
                                   className={`w-full py-4 rounded-xl text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] transition-all ${
-                                    simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
+                                    simReady
+                                      ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer"
+                                      : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
                                   }`}
                                 >
                                   {simReady ? (
@@ -1555,6 +1721,7 @@ export default function BusinessPage() {
                             </div>
                           )}
 
+                          {/* ── STAGE PHASE ── */}
                           {simPhase === "stage" && simReady && play.simulationSteps && (
                             <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
@@ -1572,8 +1739,10 @@ export default function BusinessPage() {
                             </div>
                           )}
 
+                          {/* ── PERSPECTIVES PHASE ── */}
                           {simPhase === "perspectives" && simEnded && (
                             <div className="space-y-4">
+                              {/* Perspectives cards */}
                               {play.perspectives && play.perspectives.length > 0 && (
                                 <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                                   <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
@@ -1583,10 +1752,16 @@ export default function BusinessPage() {
                                       {play.perspectives.map((p, i) => {
                                         const perspective = typeof p === "object" ? (p as Perspective) : null;
                                         return (
-                                          <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
+                                          <div
+                                            key={i}
+                                            className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all"
+                                            style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}
+                                          >
                                             {perspective ? (
                                               <div className="flex gap-3">
-                                                <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">{perspective.character.charAt(0)}</div>
+                                                <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">
+                                                  {perspective.character.charAt(0)}
+                                                </div>
                                                 <div>
                                                   <p className="text-mars/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
                                                   <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
@@ -1603,6 +1778,7 @@ export default function BusinessPage() {
                                 </div>
                               )}
 
+                              {/* Follow-up question */}
                               {play.followUpQuestion && (
                                 <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                                   <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
@@ -1617,17 +1793,18 @@ export default function BusinessPage() {
                                       }}
                                       className="text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
                                     >
-                                      Ask this question
+                                      Ask this question →
                                     </button>
                                   </div>
                                 </div>
                               )}
 
+                              {/* Replay button */}
                               <button
                                 onClick={() => { setSimEnded(false); setSimPhase("cast"); }}
                                 className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all"
                               >
-                                Back to cast
+                                ← Back to cast
                               </button>
                             </div>
                           )}
@@ -1644,170 +1821,119 @@ export default function BusinessPage() {
       )}
 
 
-      {/* ── SOCIAL PROOF — full-width cinematic applause moment ── */}
-      <FadeIn className="py-16 sm:py-24">
-        <div className="relative w-full overflow-hidden">
-          {/* Full-bleed background */}
-          <div className="absolute inset-0">
-            <img src="/luxury5.jpg" alt="" className="w-full h-full object-cover grayscale opacity-[0.12]" style={{ objectPosition: "50% 35%" }} />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#0a0a0a]/70 to-[#0a0a0a]" />
-          </div>
+      {/* ── SOCIAL PROOF — cinematic success block ── */}
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="relative rounded-2xl overflow-hidden">
+            {/* Background photo */}
+            <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.15]" style={{ objectPosition: "50% 35%" }} />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/60 to-[#0a0a0a]/90" />
+            <div className="absolute inset-0 border border-white/[0.08] rounded-2xl pointer-events-none" />
 
-          <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10">
-            {/* Voices — the star, massive */}
-            <div className="text-center mb-14 sm:mb-20">
-              <div className="h-[160px] sm:h-[200px] flex flex-col items-center justify-center">
+            <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-12">
+              {/* Stats row */}
+              <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
+                <div className="text-center">
+                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
+                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Reality plays</p>
+                </div>
+                <div className="w-px h-10 bg-white/[0.08]" />
+                <div className="text-center">
+                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
+                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Countries</p>
+                </div>
+                <div className="w-px h-10 bg-white/[0.08]" />
+                <div className="text-center">
+                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
+                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Founded</p>
+                </div>
+              </div>
+
+              {/* Voices quote */}
+              <div className="mb-8 sm:mb-10">
                 <Voices />
               </div>
+
+              {/* Divider */}
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-6 sm:mb-8" />
+
+              {/* Trusted by — refined text list */}
+              <p className="text-white/25 text-[9px] uppercase tracking-[0.3em] text-center mb-4">Trusted by</p>
+              <p className="text-white/40 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
+                Forbes{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Škoda{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                YPO{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                PwC{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                O₂{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                UniCredit{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Oktagon MMA{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                House of Lobkowicz{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                London Business School{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Česká spořitelna{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Lasvit{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                Ipsen{" "}<span className="text-white/10 mx-1">·</span>{" "}
+                MSD
+              </p>
+              <p className="text-white/15 text-[10px] text-center mt-4 font-mercure italic">
+                London · Zurich · Bucharest · Prague
+              </p>
             </div>
-
-            {/* Stats — monumental */}
-            <div className="flex items-center justify-center gap-12 sm:gap-20 mb-14 sm:mb-16">
-              {[
-                { val: "800+", label: "Reality plays delivered" },
-                { val: "4", label: "Countries" },
-                { val: "2020", label: "Founded" },
-              ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <p className="text-[36px] sm:text-[56px] font-black tracking-[-0.04em] text-white/90 leading-none">{stat.val}</p>
-                  <p className="text-white/25 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] mt-2">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Divider */}
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-10 sm:mb-12 max-w-2xl mx-auto" />
-
-            {/* Trusted by */}
-            <p className="text-white/20 text-[9px] uppercase tracking-[0.4em] text-center mb-5">Trusted by</p>
-            <p className="text-white/35 text-[13px] sm:text-[14px] leading-[2.4] tracking-wide text-center max-w-2xl mx-auto">
-              Forbes{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              Škoda{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              YPO{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              PwC{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              O₂{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              UniCredit{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              Oktagon MMA{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              House of Lobkowicz{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              London Business School{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              Česká spořitelna{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              Lasvit{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              Ipsen{" "}<span className="text-white/8 mx-1.5">|</span>{" "}
-              MSD
-            </p>
-            <p className="text-white/12 text-[10px] text-center mt-5 font-mercure italic tracking-wider">
-              London · Zurich · Bucharest · Prague
-            </p>
           </div>
         </div>
       </FadeIn>
 
-      {/* ── THE STAGE — full-bleed McQueen runway shot ── */}
-      <FadeIn>
-        <div className="relative w-full">
-          {/* Full-bleed photo */}
-          <div className="relative h-[50vh] sm:h-[70vh] overflow-hidden">
-            <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/40" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/30 via-transparent to-[#0a0a0a]/30" />
-
-            {/* Text overlaid at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 px-6 sm:px-10 pb-8 sm:pb-12">
-              <div className="max-w-6xl mx-auto flex items-end justify-between gap-6">
-                <div>
-                  <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-bold mb-2 opacity-80">The Stage</p>
-                  <p className="text-white text-[24px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1]">Národní 138/10, Praha</p>
-                  <p className="text-white/50 text-[13px] sm:text-[15px] mt-2">Where reality plays happen.</p>
-                </div>
-                <a href="/space" className="shrink-0 px-6 py-2.5 rounded-xl border border-white/20 text-white/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-white/10 hover:text-white transition-all hidden sm:block">
-                  Explore the space
-                </a>
+      {/* ── THE SPACE — Stage box ── */}
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+            {/* Photo */}
+            <div className="relative h-[35vh] sm:h-[50vh]">
+              <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/20" />
+            </div>
+            {/* Info bar below photo */}
+            <div className="px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-1.5">The stage</p>
+                <p className="text-white/90 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
+                <p className="text-white/65 text-[13px] sm:text-[14px] mt-0.5">The flagship space. Where reality plays happen.</p>
               </div>
+              <a href="/space" className="shrink-0 text-mars/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
+                Explore →
+              </a>
             </div>
-          </div>
-          {/* Mobile CTA */}
-          <div className="sm:hidden px-6 py-4">
-            <a href="/space" className="block text-center py-3 rounded-xl border border-white/10 text-white/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-white/5 transition-all">
-              Explore the space
-            </a>
           </div>
         </div>
       </FadeIn>
 
-      {/* ── THE CREW — manifesto, not backstory ── */}
-      <FadeIn className="px-4 py-12 sm:py-20">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid sm:grid-cols-2 gap-0 rounded-2xl border border-white/[0.08] overflow-hidden bg-white/[0.02]">
-            {/* Team photo */}
-            <div className="relative aspect-[4/3] sm:aspect-auto sm:min-h-[400px]">
-              <img src="/team.jpg" alt="Stage on Mars team" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/40 hidden sm:block" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/70 via-transparent to-transparent sm:hidden" />
-            </div>
-            {/* Manifesto */}
-            <div className="p-8 sm:p-12 flex flex-col justify-center">
-              <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] font-bold mb-6">The Crew</p>
-              <p className="text-white/70 text-[16px] sm:text-[18px] font-bold leading-[1.5] tracking-[-0.01em] mb-4">
-                Theatre meets business. Improvisation meets strategy. We built a stage and invited corporations to play.
-              </p>
-              <p className="text-white/40 text-[13px] sm:text-[14px] leading-[1.7] mb-6">
-                Systemic constellations fused with theatrical improvisation. A method that bypasses PowerPoint and speaks directly to what teams actually feel, fear, and want. 800+ plays. Boardrooms from London to Bucharest.
-              </p>
-              <div className="pt-4 border-t border-white/[0.06]">
-                <p className="text-white/50 text-[12px] font-bold tracking-wide">
-                  Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
+      {/* ── TEAM — Stage box ── */}
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+            <div className="grid sm:grid-cols-2">
+              {/* Team photo inside stage */}
+              <div className="relative aspect-[4/3] sm:aspect-auto">
+                <img src="/team.jpg" alt="Stage on Mars team" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0a0a0a]/30 hidden sm:block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 via-transparent to-transparent sm:hidden" />
+              </div>
+              {/* Team info */}
+              <div className="p-6 sm:p-8 flex flex-col justify-center space-y-4">
+                <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">The crew</p>
+                <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
+                  Born during COVID. Systemic constellations meets theatre meets improvisation.
                 </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </FadeIn>
-
-
-      {/* ── CONTACT — the final act ── */}
-      <FadeIn className="px-4 pt-6 sm:pt-10 pb-20 sm:pb-32">
-        <div className="max-w-2xl mx-auto">
-          <div id="contact" className="relative">
-            {/* Dramatic top glow */}
-            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.08)_0%,_transparent_70%)] pointer-events-none" />
-
-            <div className="relative rounded-2xl border border-mars/[0.12] bg-mars/[0.02] overflow-hidden">
-              <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
-
-              <div className="p-8 sm:p-12">
-                <div className="max-w-md mx-auto space-y-8">
-                  <div className="text-center">
-                    <h2 className="text-[28px] sm:text-[38px] font-black tracking-[-0.04em] leading-[1] mb-3">
-                      {submitted ? "Let\u2019s make it happen." : "Your move."}
-                    </h2>
-                    <p className="font-mercure italic text-white/40 text-[14px] sm:text-[16px]">
-                      {submitted ? "The stage is waiting." : "Step on stage."}
-                    </p>
-                  </div>
-
-                  {sent ? (
-                    <div className="text-center py-10">
-                      <p className="text-white/60 text-[16px] font-bold mb-2">The curtain rises soon.</p>
-                      <p className="font-mercure text-white/40 text-[13px]">We&apos;ll be in touch.</p>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleContactSubmit} className="space-y-3">
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        <input name="name" value={formData.name} onChange={handleContactChange} placeholder="Name" required className="w-full rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-mars/30 px-5 py-3.5 text-[14px] text-[#EDEDED] placeholder:text-white/20 focus:outline-none transition-colors" />
-                        <input name="company" value={formData.company} onChange={handleContactChange} placeholder="Company" className="w-full rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-mars/30 px-5 py-3.5 text-[14px] text-[#EDEDED] placeholder:text-white/20 focus:outline-none transition-colors" />
-                      </div>
-                      <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder="Email" required className="w-full rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-mars/30 px-5 py-3.5 text-[14px] text-[#EDEDED] placeholder:text-white/20 focus:outline-none transition-colors" />
-                      <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder="Your question for the stage" rows={3} className="w-full rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-mars/30 px-5 py-3.5 text-[14px] text-[#EDEDED] placeholder:text-white/20 focus:outline-none transition-colors resize-none" />
-                      <button type="submit" className="w-full py-4 rounded-xl bg-mars hover:bg-[#ff6a1a] text-white text-[12px] font-black uppercase tracking-[0.2em] transition-all shadow-[0_4px_30px_-4px_rgba(255,85,0,0.4)] hover:shadow-[0_4px_40px_-4px_rgba(255,85,0,0.5)]">
-                        Step On Stage
-                      </button>
-                    </form>
-                  )}
-
-                  <p className="text-center text-white/20 text-[11px] tracking-wide">
-                    <a href="mailto:play@stageonmars.com" className="hover:text-mars/60 transition-colors">play@stageonmars.com</a>
-                    {" · "}
-                    <a href="tel:+420602336338" className="hover:text-mars/60 transition-colors">+420 602 336 338</a>
+                <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
+                  In 2023, David Vais joined. Platform built. Stage opened. Brand born.
+                </p>
+                <div className="pt-2">
+                  <p className="text-white/70 text-[13px] sm:text-[14px] font-bold">
+                    800+ reality plays. London, Zurich, Bucharest.
+                  </p>
+                  <p className="text-white/70 text-[10px] mt-2">
+                    Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
                   </p>
                 </div>
               </div>
@@ -1817,14 +1943,60 @@ export default function BusinessPage() {
       </FadeIn>
 
 
+      {/* ── CONTACT — Stage box ── */}
+      <FadeIn className="px-4 pt-3 sm:pt-4 pb-16 sm:pb-24">
+        <div className="max-w-3xl mx-auto">
+          <div id="contact" className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+
+            <div className="p-6 sm:p-10">
+              <div className="max-w-md mx-auto space-y-8">
+                <div className="text-center">
+                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-4">Get on stage</p>
+                  <h2 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">
+                    {submitted ? "Let\u2019s make it happen." : "What\u2019s your question?"}
+                  </h2>
+                  <p className="font-mercure text-white/60 text-[13px] sm:text-[14px] mt-2">We reply within 24 hours.</p>
+                </div>
+
+                {sent ? (
+                  <div className="text-center py-8">
+                    <p className="font-mercure text-white/60 text-[14px]">Thank you. We&apos;ll be in touch.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleContactSubmit} className="space-y-2.5">
+                    <div className="grid sm:grid-cols-2 gap-2.5">
+                      <input name="name" value={formData.name} onChange={handleContactChange} placeholder="Name" required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                      <input name="company" value={formData.company} onChange={handleContactChange} placeholder="Company" className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                    </div>
+                    <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder="Email" required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                    <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder="Your question" rows={3} className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors resize-none" />
+                    <button type="submit" className="w-full py-3.5 rounded-xl bg-mars hover:bg-mars-light text-white text-[11px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]">
+                      Let&apos;s Talk
+                    </button>
+                  </form>
+                )}
+
+                <p className="text-center font-mercure text-white/25 text-[11px]">
+                  <a href="mailto:play@stageonmars.com" className="hover:text-mars transition-colors">play@stageonmars.com</a>
+                  {" · "}
+                  <a href="tel:+420602336338" className="hover:text-mars transition-colors">+420 602 336 338</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
+
+
       {/* FOOTER */}
-      <footer className="py-8 px-6 border-t border-white/[0.04]">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-white/20 text-[10px] tracking-wider">
-          <span className="font-mercure italic">&copy; {new Date().getFullYear()} Stage on Mars</span>
-          <div className="flex gap-6">
-            <a href="https://www.instagram.com/stage_on_mars" target="_blank" rel="noopener noreferrer" className="hover:text-mars/50 transition-colors uppercase tracking-[0.15em]">Instagram</a>
-            <a href="https://www.linkedin.com/company/stageonmars" target="_blank" rel="noopener noreferrer" className="hover:text-mars/50 transition-colors uppercase tracking-[0.15em]">LinkedIn</a>
-            <a href="https://playbook.stageonmars.com" className="hover:text-mars/50 transition-colors uppercase tracking-[0.15em]">Playbook</a>
+      <footer className="py-6 px-6 border-t border-white/[0.03]">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-white/25 text-[10px]">
+          <span>&copy; {new Date().getFullYear()} Stage on Mars</span>
+          <div className="flex gap-4">
+            <a href="https://www.instagram.com/stage_on_mars" target="_blank" rel="noopener noreferrer" className="hover:text-white/65 transition-colors">Instagram</a>
+            <a href="https://www.linkedin.com/company/stageonmars" target="_blank" rel="noopener noreferrer" className="hover:text-white/65 transition-colors">LinkedIn</a>
+            <a href="https://playbook.stageonmars.com" className="hover:text-white/65 transition-colors">Playbook</a>
           </div>
         </div>
       </footer>
