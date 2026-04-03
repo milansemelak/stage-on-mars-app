@@ -932,8 +932,8 @@ export default function BusinessPage() {
               <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "200px" }} />
               {/* Soft vignette — gentle edge darkening */}
               <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 90% 80% at 50% 55%, transparent 30%, rgba(10,10,10,0.25) 55%, rgba(10,10,10,0.75) 90%)" }} />
-              {/* Bottom fade — dissolve into page bg */}
-              <div className="absolute bottom-0 left-0 right-0 h-[40%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 8%, rgba(10,10,10,0.6) 40%, transparent 100%)" }} />
+              {/* Bottom fade — dissolve into page bg, starts late so input stays on stage */}
+              <div className="absolute bottom-0 left-0 right-0 h-[25%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 15%, transparent 100%)" }} />
               {/* Top fade — hides the ceiling */}
               <div className="absolute top-0 left-0 right-0 h-[30%]" style={{ background: "linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 25%, transparent 100%)" }} />
             </div>
@@ -943,9 +943,9 @@ export default function BusinessPage() {
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           {!submitted && (
-            <div className="text-center mb-12 sm:mb-20">
+            <div className="text-center mb-6 sm:mb-10">
               {/* Logo with subtitle */}
-              <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
+              <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
                 <p className="text-white/30 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] mt-3">Reality Play Platform</p>
               </div>
@@ -957,99 +957,72 @@ export default function BusinessPage() {
             </div>
           )}
 
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-2xl">
 
-            {/* THE INPUT — stage design inspired by our circular stage */}
+            {/* THE INPUT — no box, just the stage floor */}
             <div className="relative group/input">
-              {/* Ambient stage glow — wide soft halo */}
-              <div className="absolute -inset-12 sm:-inset-20 rounded-full opacity-30 group-focus-within/input:opacity-80 transition-opacity duration-[2000ms]" style={{ background: "radial-gradient(ellipse 70% 55% at center, rgba(255,85,0,0.12) 0%, rgba(255,85,0,0.04) 40%, transparent 70%)" }} />
 
-              <div className="relative transition-all duration-700">
-                {/* The stage platform — glass over the stage */}
-                <div className="relative rounded-2xl transition-all duration-700" style={{
-                  boxShadow: "0 0 0 1px rgba(255,85,0,0.12), 0 8px 40px rgba(0,0,0,0.4)",
-                }}>
-                  {/* Red LED edge ring on focus */}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1200ms] pointer-events-none" style={{
-                    boxShadow: "0 0 0 1px rgba(255,85,0,0.3), 0 0 20px rgba(255,85,0,0.1), 0 0 50px rgba(255,85,0,0.05)",
-                  }} />
+              {/* The question — written on the stage */}
+              <textarea
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="What question would you put on stage?"
+                rows={2}
+                className="w-full bg-transparent border-0 px-0 py-0 text-white text-[20px] sm:text-[26px] md:text-[30px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.4] tracking-[-0.01em] text-center"
+                style={{ caretColor: "#FF5500" }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                }}
+              />
 
-                  {/* Semi-transparent surface — stage shows through */}
-                  <div className="relative rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-lg overflow-hidden">
-                    {/* Top light bar — stage front edge */}
-                    <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/50 to-transparent group-focus-within/input:via-mars/70 transition-all duration-700" />
+              {/* Stage floor line — like the LED ring edge */}
+              <div className="mt-3 sm:mt-5 h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent group-focus-within/input:via-mars/60 transition-all duration-700" />
 
-                    <div className="relative px-5 sm:px-8 pt-6 sm:pt-7 pb-5 sm:pb-6">
-                      {/* Stage label */}
-                      <p className="text-mars/50 text-[9px] uppercase tracking-[0.4em] mb-4 group-focus-within/input:text-mars/70 transition-colors duration-700">Your question on stage</p>
-
-                      <textarea
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        placeholder="What question would you put on stage?"
-                        rows={2}
-                        className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/35 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
-                        style={{ caretColor: "#FF5500" }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                        }}
-                      />
-                      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.08] group-focus-within/input:border-mars/15 transition-colors duration-700">
-                        <input
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
-                          placeholder="Company name (optional)"
-                          className="flex-1 bg-transparent border-0 px-0 text-white/60 placeholder:text-white/30 focus:outline-none text-[14px]"
-                        />
-                        <button
-                          onClick={generate}
-                          disabled={!question.trim()}
-                          className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
-                            question.trim()
-                              ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_20px_rgba(255,85,0,0.3)]"
-                              : "bg-white/[0.08] text-white/35 border border-white/[0.08] cursor-not-allowed"
-                          }`}
-                        >
-                          Play
-                        </button>
-                      </div>
-
-                      {/* Digital playmaker — visible CTA */}
-                      {!inlineDigital && (
-                        <div className="mt-5 pt-4 border-t border-white/[0.06]">
-                          <button
-                            onClick={() => {
-                              const q = question.trim() || "What does my company need right now?";
-                              setAskedQuestion(q);
-                              if (!question.trim()) setQuestion(q);
-                              setInlineDigital(true);
-                              openDigital(q);
-                              setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
-                            }}
-                            className="w-full flex items-center justify-between gap-4 px-5 py-3.5 rounded-xl bg-white/[0.04] hover:bg-mars/10 border border-white/[0.06] hover:border-mars/20 transition-all duration-300 group/pm"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-lg bg-mars/15 flex items-center justify-center shrink-0">
-                                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-mars/70"><path d="M8 5v14l11-7z" /></svg>
-                              </div>
-                              <div className="text-left">
-                                <p className="text-white/70 text-[13px] font-semibold group-hover/pm:text-white transition-colors">Try Digital Playmaker</p>
-                                <p className="text-white/30 text-[11px]">AI creates a play from your question in 30 seconds</p>
-                              </div>
-                            </div>
-                            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white/20 group-hover/pm:fill-mars/60 shrink-0 transition-colors"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Bottom edge glow — stage front lip */}
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent group-focus-within/input:via-mars/35 transition-all duration-700" />
-                  </div>
-                </div>
+              {/* Company + Play — on the stage */}
+              <div className="flex items-center justify-center gap-4 sm:gap-5 mt-4 sm:mt-5">
+                <input
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="Company name (optional)"
+                  className="bg-transparent border-0 px-0 text-white/50 placeholder:text-white/25 focus:outline-none text-[13px] sm:text-[14px] text-center w-[200px]"
+                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
+                />
+                <button
+                  onClick={generate}
+                  disabled={!question.trim()}
+                  className={`shrink-0 px-8 sm:px-10 py-3 sm:py-3.5 rounded-full font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.2em] transition-all duration-300 ${
+                    question.trim()
+                      ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_30px_rgba(255,85,0,0.3)] hover:shadow-[0_0_50px_rgba(255,85,0,0.4)]"
+                      : "border border-white/[0.15] text-white/35 cursor-not-allowed backdrop-blur-sm"
+                  }`}
+                >
+                  Play
+                </button>
               </div>
+
+              {/* Digital playmaker — subtle link, on the stage */}
+              {!inlineDigital && (
+                <div className="mt-4 sm:mt-6 text-center">
+                  <button
+                    onClick={() => {
+                      const q = question.trim() || "What does my company need right now?";
+                      setAskedQuestion(q);
+                      if (!question.trim()) setQuestion(q);
+                      setInlineDigital(true);
+                      openDigital(q);
+                      setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                    }}
+                    className="text-white/30 text-[11px] sm:text-[12px] hover:text-mars/60 transition-colors duration-300 inline-flex items-center gap-1.5"
+                    style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
+                  >
+                    <span>or try the digital playmaker</span>
+                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                  </button>
+                </div>
+              )}
+
             </div>
-          </div>{/* end max-w-3xl */}
+          </div>{/* end max-w-2xl */}
 
           {/* Playmaker card removed — integrated into the input box above */}
 
