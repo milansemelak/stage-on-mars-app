@@ -950,9 +950,9 @@ export default function BusinessPage() {
                 <p className="text-white/30 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] mt-3">Reality Play Platform</p>
               </div>
               <h1 className="text-[clamp(28px,6.5vw,80px)] font-black leading-[0.95] tracking-[-0.04em] text-center text-white" style={{ textShadow: "0 2px 20px rgba(0,0,0,1), 0 4px 60px rgba(0,0,0,0.8), 0 0 120px rgba(0,0,0,0.6)" }}>
-                Put your company
+                Play with reality.
                 <br />
-                <span className="text-mars" style={{ textShadow: "0 0 30px rgba(255,85,0,0.6), 0 0 80px rgba(255,85,0,0.3), 0 2px 20px rgba(0,0,0,1)" }}>on stage.</span>
+                <span className="text-mars" style={{ textShadow: "0 0 30px rgba(255,85,0,0.6), 0 0 80px rgba(255,85,0,0.3), 0 2px 20px rgba(0,0,0,1)" }}>See what&apos;s possible.</span>
               </h1>
             </div>
           )}
