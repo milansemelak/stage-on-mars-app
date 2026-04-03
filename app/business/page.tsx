@@ -1009,25 +1009,7 @@ export default function BusinessPage() {
                     </button>
                   </div>
 
-                  {/* Digital playmaker */}
-                  {!inlineDigital && (
-                    <div className="mt-5 sm:mt-6 text-center">
-                      <button
-                        onClick={() => {
-                          const q = question.trim() || "What does my company need right now?";
-                          setAskedQuestion(q);
-                          if (!question.trim()) setQuestion(q);
-                          setInlineDigital(true);
-                          openDigital(q);
-                          setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
-                        }}
-                        className="text-white/25 text-[11px] sm:text-[12px] hover:text-mars/50 transition-colors duration-300 inline-flex items-center gap-1.5"
-                      >
-                        <span>or try the digital playmaker</span>
-                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                      </button>
-                    </div>
-                  )}
+                  {/* Playmaker link removed — now a separate section below */}
                 </div>
               </div>
 
@@ -1283,6 +1265,115 @@ export default function BusinessPage() {
                   <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/10 to-transparent group-hover:via-mars/25 transition-all duration-700" />
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* ── DIGITAL PLAYMAKER — Apple-style product section ── */}
+          {!submitted && !inlineDigital && (
+            <div className="w-full max-w-3xl mx-auto mt-10 sm:mt-14">
+              <div className="px-1 mb-4">
+                <p className="text-mars/50 text-[10px] uppercase tracking-[0.4em]">Digital experience</p>
+              </div>
+
+              <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.005]" style={{
+                background: "linear-gradient(145deg, #141414 0%, #0d0d0d 50%, #111 100%)",
+                boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.4)",
+              }}
+                onClick={() => {
+                  const q = question.trim() || "What does my company need right now?";
+                  setAskedQuestion(q);
+                  if (!question.trim()) setQuestion(q);
+                  setInlineDigital(true);
+                  openDigital(q);
+                  setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                }}
+              >
+                {/* Hover glow */}
+                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{
+                  boxShadow: "0 0 0 1px rgba(255,85,0,0.15), 0 0 30px rgba(255,85,0,0.05)",
+                }} />
+
+                <div className="grid sm:grid-cols-2 items-center">
+                  {/* Left — Product visual */}
+                  <div className="flex items-center justify-center py-12 sm:py-16 px-8">
+                    <div className="relative group-hover:scale-105 transition-transform duration-700">
+                      {/* Phone frame — clean, Apple-like */}
+                      <div className="relative w-[140px] h-[280px] sm:w-[160px] sm:h-[320px] rounded-[28px] sm:rounded-[32px] overflow-hidden" style={{
+                        background: "#000",
+                        boxShadow: "0 0 0 1.5px rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.04)",
+                      }}>
+                        {/* Screen content */}
+                        <div className="absolute inset-[3px] rounded-[25px] sm:rounded-[29px] overflow-hidden bg-[#0a0a0a]">
+                          {/* Notch */}
+                          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60px] h-[22px] bg-black rounded-b-2xl z-10" />
+
+                          {/* App UI mockup */}
+                          <div className="pt-8 px-4">
+                            <div className="w-16 h-1.5 rounded-full bg-white/20 mb-1" />
+                            <div className="w-10 h-1 rounded-full bg-mars/30 mb-5" />
+
+                            {/* Stage circle */}
+                            <div className="relative mx-auto w-[80px] h-[80px] sm:w-[90px] sm:h-[90px] rounded-full flex items-center justify-center" style={{
+                              background: "radial-gradient(circle, rgba(255,85,0,0.06) 0%, transparent 70%)",
+                              boxShadow: "0 0 0 1px rgba(255,85,0,0.15), 0 0 20px rgba(255,85,0,0.05)",
+                            }}>
+                              {/* Players */}
+                              <div className="w-2 h-2 rounded-full bg-mars/70 absolute" style={{ top: "15%", left: "50%", transform: "translateX(-50%)" }}><div className="w-2 h-2 rounded-full bg-mars/70 animate-pulse" /></div>
+                              <div className="w-1.5 h-1.5 rounded-full bg-white/30 absolute" style={{ top: "55%", left: "20%" }} />
+                              <div className="w-1.5 h-1.5 rounded-full bg-white/30 absolute" style={{ top: "50%", left: "75%" }} />
+                              <div className="w-1.5 h-1.5 rounded-full bg-white/20 absolute" style={{ top: "75%", left: "45%" }} />
+                            </div>
+
+                            {/* Text card */}
+                            <div className="mt-4 p-2.5 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.04)" }}>
+                              <div className="w-full h-1 rounded-full bg-white/8 mb-1.5" />
+                              <div className="w-3/4 h-1 rounded-full bg-white/5 mb-1.5" />
+                              <div className="w-1/2 h-1 rounded-full bg-white/3" />
+                            </div>
+
+                            {/* Action buttons */}
+                            <div className="flex gap-2 mt-3 justify-center">
+                              <div className="w-5 h-5 rounded-full bg-mars/40 flex items-center justify-center">
+                                <div className="w-0 h-0 border-l-[4px] border-l-white/60 border-y-[3px] border-y-transparent ml-0.5" />
+                              </div>
+                              <div className="w-5 h-5 rounded-full bg-white/6" />
+                              <div className="w-5 h-5 rounded-full bg-white/6" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Glow behind phone */}
+                      <div className="absolute -inset-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" style={{ background: "radial-gradient(circle, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
+                    </div>
+                  </div>
+
+                  {/* Right — Copy */}
+                  <div className="px-8 sm:px-10 pb-12 sm:py-16 text-left">
+                    <h3 className="text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1] mb-4">
+                      <span className="text-white/90 group-hover:text-white transition-colors">Digital</span>
+                      <br />
+                      <span className="text-mars/70 group-hover:text-mars transition-colors">Playmaker</span>
+                    </h3>
+                    <p className="text-white/50 text-[14px] sm:text-[15px] leading-[1.65] mb-6 max-w-sm">
+                      AI turns your question into a reality play — with characters, tension, and new perspectives. Right here, right now.
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <span className="text-white/30 text-[10px] uppercase tracking-[0.15em]">Free</span>
+                      <span className="text-white/10">·</span>
+                      <span className="text-white/30 text-[10px] uppercase tracking-[0.15em]">30 seconds</span>
+                      <span className="text-white/10">·</span>
+                      <span className="text-white/30 text-[10px] uppercase tracking-[0.15em]">Interactive</span>
+                    </div>
+                    <div className="mt-6">
+                      <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/[0.06] text-white/70 text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-mars/15 group-hover:text-mars transition-all duration-300">
+                        Try it now
+                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
