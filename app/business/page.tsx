@@ -959,67 +959,77 @@ export default function BusinessPage() {
 
           <div className="w-full max-w-2xl">
 
-            {/* THE INPUT — no box, just the stage floor */}
+            {/* THE INPUT — stage platform surface */}
             <div className="relative group/input">
 
-              {/* The question — written on the stage */}
-              <textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What question would you put on stage?"
-                rows={2}
-                className="w-full bg-transparent border-0 px-0 py-0 text-white text-[20px] sm:text-[26px] md:text-[30px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.4] tracking-[-0.01em] text-center"
-                style={{ caretColor: "#FF5500" }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                }}
-              />
+              {/* The stage platform — like the circular stage floor from space5 */}
+              <div className="relative rounded-[28px] sm:rounded-[36px] overflow-hidden transition-all duration-700" style={{
+                background: "radial-gradient(ellipse 120% 100% at 50% 100%, rgba(255,85,0,0.04) 0%, rgba(10,10,10,0.85) 40%, rgba(10,10,10,0.92) 100%)",
+                boxShadow: "0 0 0 1px rgba(255,85,0,0.15), 0 0 30px rgba(255,85,0,0.05), 0 20px 60px rgba(0,0,0,0.5)",
+              }}>
+                {/* Red LED ring glow on focus */}
+                <div className="absolute inset-0 rounded-[28px] sm:rounded-[36px] opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1000ms] pointer-events-none" style={{
+                  boxShadow: "0 0 0 1.5px rgba(255,85,0,0.3), 0 0 25px rgba(255,85,0,0.08), 0 0 60px rgba(255,85,0,0.04)",
+                }} />
 
-              {/* Stage floor line — like the LED ring edge */}
-              <div className="mt-3 sm:mt-5 h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent group-focus-within/input:via-mars/60 transition-all duration-700" />
+                <div className="px-6 sm:px-10 pt-7 sm:pt-9 pb-6 sm:pb-8">
 
-              {/* Company + Play — on the stage */}
-              <div className="flex items-center justify-center gap-4 sm:gap-5 mt-4 sm:mt-5">
-                <input
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Company name (optional)"
-                  className="bg-transparent border-0 px-0 text-white/50 placeholder:text-white/25 focus:outline-none text-[13px] sm:text-[14px] text-center w-[200px]"
-                  style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
-                />
-                <button
-                  onClick={generate}
-                  disabled={!question.trim()}
-                  className={`shrink-0 px-8 sm:px-10 py-3 sm:py-3.5 rounded-full font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.2em] transition-all duration-300 ${
-                    question.trim()
-                      ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_30px_rgba(255,85,0,0.3)] hover:shadow-[0_0_50px_rgba(255,85,0,0.4)]"
-                      : "border border-white/[0.15] text-white/35 cursor-not-allowed backdrop-blur-sm"
-                  }`}
-                >
-                  Play
-                </button>
-              </div>
-
-              {/* Digital playmaker — subtle link, on the stage */}
-              {!inlineDigital && (
-                <div className="mt-4 sm:mt-6 text-center">
-                  <button
-                    onClick={() => {
-                      const q = question.trim() || "What does my company need right now?";
-                      setAskedQuestion(q);
-                      if (!question.trim()) setQuestion(q);
-                      setInlineDigital(true);
-                      openDigital(q);
-                      setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                  <textarea
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="What question would you put on stage?"
+                    rows={2}
+                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[24px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.4] tracking-[-0.01em] text-center"
+                    style={{ caretColor: "#FF5500" }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                     }}
-                    className="text-white/30 text-[11px] sm:text-[12px] hover:text-mars/60 transition-colors duration-300 inline-flex items-center gap-1.5"
-                    style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
-                  >
-                    <span>or try the digital playmaker</span>
-                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                  </button>
+                  />
+
+                  {/* Divider — stage floor line */}
+                  <div className="mt-4 sm:mt-5 h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent group-focus-within/input:via-mars/50 transition-all duration-700" />
+
+                  <div className="flex items-center justify-center gap-4 sm:gap-5 mt-4 sm:mt-5">
+                    <input
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="Company name (optional)"
+                      className="bg-transparent border-0 px-0 text-white/50 placeholder:text-white/25 focus:outline-none text-[13px] sm:text-[14px] text-center w-[200px]"
+                    />
+                    <button
+                      onClick={generate}
+                      disabled={!question.trim()}
+                      className={`shrink-0 px-8 sm:px-10 py-3 sm:py-3.5 rounded-full font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.2em] transition-all duration-300 ${
+                        question.trim()
+                          ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_30px_rgba(255,85,0,0.3)]"
+                          : "border border-white/[0.12] text-white/30 cursor-not-allowed"
+                      }`}
+                    >
+                      Play
+                    </button>
+                  </div>
+
+                  {/* Digital playmaker */}
+                  {!inlineDigital && (
+                    <div className="mt-5 sm:mt-6 text-center">
+                      <button
+                        onClick={() => {
+                          const q = question.trim() || "What does my company need right now?";
+                          setAskedQuestion(q);
+                          if (!question.trim()) setQuestion(q);
+                          setInlineDigital(true);
+                          openDigital(q);
+                          setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                        }}
+                        className="text-white/25 text-[11px] sm:text-[12px] hover:text-mars/50 transition-colors duration-300 inline-flex items-center gap-1.5"
+                      >
+                        <span>or try the digital playmaker</span>
+                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
 
             </div>
           </div>{/* end max-w-2xl */}
