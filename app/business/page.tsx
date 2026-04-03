@@ -957,7 +957,7 @@ export default function BusinessPage() {
             </div>
           )}
 
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-3xl">
 
             {/* THE INPUT — stage platform surface */}
             <div className="relative group/input">
