@@ -912,57 +912,47 @@ export default function BusinessPage() {
 
 
 
-      {/* ── HERO: The question IS the experience ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "sm:min-h-[90vh] sm:flex"} flex flex-col items-center sm:justify-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
+      {/* ── HERO: You are stepping on stage ── */}
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-screen flex"} flex-col items-center justify-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
 
-        {/* Abstract stage light — dramatic cone from top */}
+        {/* Stage photo background — space5.png, the circular stage with red LED ring */}
         {!submitted && (
           <>
-            {/* Main spotlight cone */}
-            <div
-              className={`absolute transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-              style={{
-                top: "-20%",
-                left: "50%",
-                transform: "translateX(-50%)",
-                width: "120%",
-                height: "80%",
-                background: "conic-gradient(from 180deg at 50% 0%, transparent 35%, rgba(255,85,0,0.06) 45%, rgba(255,85,0,0.12) 50%, rgba(255,85,0,0.06) 55%, transparent 65%)",
-              }}
-            />
-            {/* Warm center glow */}
-            <div
-              className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[2500ms] delay-500 ${entered ? "opacity-100" : "opacity-0"}`}
-              style={{ background: "radial-gradient(ellipse, rgba(255,85,0,0.14) 0%, rgba(255,85,0,0.04) 40%, transparent 70%)", top: "20%", left: "50%", transform: "translate(-50%, -50%)" }}
-            />
-            {/* Subtle side accent left */}
-            <div
-              className={`absolute w-[400px] h-[400px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
-              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.05) 0%, transparent 70%)", top: "50%", left: "15%", transform: "translate(-50%, -50%)" }}
-            />
-            {/* Subtle side accent right */}
-            <div
-              className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[2000ms] ${entered ? "opacity-100" : "opacity-0"}`}
-              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "45%", left: "80%", transform: "translate(-50%, -50%)" }}
-            />
-            {/* Noise/grain texture overlay for depth */}
-            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "256px" }} />
+            {/* Photo container — locked to viewport height, doesn't bleed into playmaker/cards */}
+            <div className={`absolute top-0 left-0 right-0 h-screen transition-opacity duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}>
+              <img
+                src="/space5.png"
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: "50% 50%", filter: "grayscale(0.75) contrast(1.2) brightness(0.75)" }}
+              />
+              {/* Warm mars tint — brings back the red stage lighting */}
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,85,0,0.03) 0%, rgba(255,85,0,0.06) 50%, rgba(255,85,0,0.04) 100%)", mixBlendMode: "color" }} />
+              {/* Heavy grain texture — Helmut Newton film look */}
+              <div className="absolute inset-0 opacity-[0.18]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "200px" }} />
+              {/* Soft vignette — just darken edges, let the stage be seen */}
+              <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 85% 75% at 50% 50%, transparent 25%, rgba(10,10,10,0.3) 55%, rgba(10,10,10,0.8) 90%)" }} />
+              {/* Bottom fade — clean cut to page bg */}
+              <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 5%, transparent 100%)" }} />
+              {/* Top subtle darkening for logo readability */}
+              <div className="absolute top-0 left-0 right-0 h-[15%]" style={{ background: "linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, transparent 100%)" }} />
+            </div>
           </>
         )}
 
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           {!submitted && (
-            <div className="text-center mb-10 sm:mb-14">
+            <div className="text-center mb-16 sm:mb-24">
               {/* Logo with subtle float */}
               <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
-                <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
+                <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
               </div>
               <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-              <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
+              <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
                 Play with reality.
                 <br />
-                <span className="text-mars">See what&apos;s possible.</span>
+                <span className="text-mars drop-shadow-[0_0_40px_rgba(255,85,0,0.3)]">See what&apos;s possible.</span>
               </h1>
             </div>
           )}
