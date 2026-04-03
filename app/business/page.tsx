@@ -925,54 +925,60 @@ export default function BusinessPage() {
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           {!submitted && (
-            <div className="text-center mb-10 sm:mb-14">
-              <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert mx-auto mb-10 sm:mb-14 opacity-70" />
-              <h1 className="text-[clamp(28px,5.5vw,64px)] font-bold leading-[1.1] tracking-[-0.03em] text-white/90">
+            <div className="text-center mb-6 sm:mb-8">
+              <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-9 w-auto invert mx-auto mb-8 sm:mb-10 opacity-60" />
+              <p className="text-[clamp(18px,3vw,32px)] font-bold leading-[1.2] tracking-[-0.02em] text-white/50">
                 Play with reality.
-                <br />
-                <span className="text-mars">See what&apos;s possible.</span>
-              </h1>
+                {" "}
+                <span className="text-mars/60">See what&apos;s possible.</span>
+              </p>
             </div>
           )}
 
-          <div className="w-full max-w-xl">
+          <div className="w-full max-w-2xl">
 
-            {/* THE INPUT — clean, minimal */}
+            {/* THE INPUT — the main event */}
             <div className="relative group/input">
-              <textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What question would you put on stage?"
-                rows={2}
-                className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em] text-center"
-                style={{ caretColor: "#FF5500" }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                }}
-              />
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mt-4 group-focus-within/input:via-mars/30 transition-all duration-700" />
-              <div className="flex items-center justify-center gap-4 mt-5">
-                <input
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Company name (optional)"
-                  className="bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px] text-center w-[180px]"
-                />
-                <button
-                  onClick={generate}
-                  disabled={!question.trim()}
-                  className={`shrink-0 px-7 py-2.5 rounded-full font-bold text-[13px] uppercase tracking-[0.15em] transition-all duration-300 ${
-                    question.trim()
-                      ? "bg-mars hover:bg-mars-light text-white"
-                      : "border border-white/[0.10] text-white/25 cursor-not-allowed"
-                  }`}
-                >
-                  Play
-                </button>
+              {/* Glow ring behind input on focus */}
+              <div className="absolute -inset-6 sm:-inset-10 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms] pointer-events-none" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
+
+              <div className="relative rounded-2xl border border-white/[0.08] group-focus-within/input:border-mars/20 bg-white/[0.02] transition-all duration-500 overflow-hidden">
+                <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-5 sm:pb-6">
+                  <textarea
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="What question would you put on stage?"
+                    rows={2}
+                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[20px] sm:text-[26px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.4] tracking-[-0.01em]"
+                    style={{ caretColor: "#FF5500" }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                    }}
+                  />
+                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.06]">
+                    <input
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="Company name (optional)"
+                      className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[14px]"
+                    />
+                    <button
+                      onClick={generate}
+                      disabled={!question.trim()}
+                      className={`shrink-0 px-7 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all duration-300 ${
+                        question.trim()
+                          ? "bg-mars hover:bg-mars-light text-white"
+                          : "bg-white/[0.04] text-white/20 cursor-not-allowed"
+                      }`}
+                    >
+                      Play
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-          </div>{/* end max-w-xl */}
+          </div>{/* end max-w-2xl */}
 
           {/* Playmaker card removed — integrated into the input box above */}
 
