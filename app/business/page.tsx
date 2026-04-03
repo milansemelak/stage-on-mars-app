@@ -913,7 +913,7 @@ export default function BusinessPage() {
 
 
       {/* ── HERO: You are stepping on stage ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-screen flex"} flex-col items-center justify-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-[100svh] flex"} flex-col items-center justify-center px-4 pt-12 sm:pt-0 pb-8 sm:pb-0 relative overflow-hidden transition-all duration-700`}>
 
         {/* Stage photo background — space5.png, the circular stage with red LED ring */}
         {!submitted && (
@@ -932,8 +932,8 @@ export default function BusinessPage() {
               <div className="absolute inset-0 opacity-[0.18]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "200px" }} />
               {/* Soft vignette — just darken edges, let the stage be seen */}
               <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 85% 75% at 50% 60%, transparent 25%, rgba(10,10,10,0.3) 55%, rgba(10,10,10,0.8) 90%)" }} />
-              {/* Bottom fade — clean cut to page bg */}
-              <div className="absolute bottom-0 left-0 right-0 h-[30%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 5%, transparent 100%)" }} />
+              {/* Bottom fade — long smooth dissolve into page bg */}
+              <div className="absolute bottom-0 left-0 right-0 h-[45%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 10%, rgba(10,10,10,0.8) 40%, transparent 100%)" }} />
               {/* Top blackout — hides the ceiling completely */}
               <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: "linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 30%, transparent 100%)" }} />
             </div>
@@ -943,16 +943,15 @@ export default function BusinessPage() {
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           {!submitted && (
-            <div className="text-center mb-16 sm:mb-24">
+            <div className="text-center mb-12 sm:mb-20">
               {/* Logo with subtle float */}
-              <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
+              <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
               </div>
-              <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
-              <h1 className="text-[clamp(22px,5.5vw,72px)] font-black leading-[1] tracking-[-0.04em] text-center whitespace-nowrap" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8), 0 4px 60px rgba(0,0,0,0.5), 0 0 120px rgba(0,0,0,0.4)" }}>
-                Play with reality.
+              <h1 className="text-[clamp(26px,6vw,76px)] font-black leading-[0.95] tracking-[-0.04em] text-center" style={{ textShadow: "0 2px 40px rgba(0,0,0,0.9), 0 4px 80px rgba(0,0,0,0.6), 0 0 150px rgba(0,0,0,0.5)" }}>
+                Put your company
                 <br />
-                <span className="text-mars" style={{ textShadow: "0 0 40px rgba(255,85,0,0.4), 0 0 80px rgba(255,85,0,0.2), 0 2px 30px rgba(0,0,0,0.8)" }}>See what&apos;s possible.</span>
+                <span className="text-mars" style={{ textShadow: "0 0 50px rgba(255,85,0,0.5), 0 0 100px rgba(255,85,0,0.25), 0 2px 40px rgba(0,0,0,0.9)" }}>on stage.</span>
               </h1>
             </div>
           )}
@@ -1013,6 +1012,26 @@ export default function BusinessPage() {
                           Play
                         </button>
                       </div>
+
+                      {/* Digital playmaker — inline link */}
+                      {!inlineDigital && (
+                        <div className="mt-4 pt-3 border-t border-white/[0.04]">
+                          <button
+                            onClick={() => {
+                              const q = question.trim() || "What does my company need right now?";
+                              setAskedQuestion(q);
+                              if (!question.trim()) setQuestion(q);
+                              setInlineDigital(true);
+                              openDigital(q);
+                              setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                            }}
+                            className="text-white/30 text-[11px] sm:text-[12px] hover:text-mars/70 transition-colors duration-300 flex items-center gap-1.5"
+                          >
+                            <span>Or try our digital playmaker — AI turns your question into a play in 30 seconds</span>
+                            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current shrink-0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                          </button>
+                        </div>
+                      )}
                     </div>
 
                     {/* Bottom edge glow — stage front lip */}
@@ -1023,79 +1042,7 @@ export default function BusinessPage() {
             </div>
           </div>{/* end max-w-3xl */}
 
-          {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
-          {!submitted && !inlineDigital && (
-            <div className="w-full max-w-3xl mx-auto mt-8 sm:mt-10">
-              <button
-                onClick={() => {
-                  const q = question.trim() || "What does my company need right now?";
-                  setAskedQuestion(q);
-                  if (!question.trim()) setQuestion(q);
-                  setInlineDigital(true);
-                  openDigital(q);
-                  setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
-                }}
-                className="w-full group transition-all duration-500 opacity-100 hover:scale-[1.01]"
-              >
-                <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-
-                  <div className="grid sm:grid-cols-2 items-center">
-                    {/* Left — phone mockup */}
-                    <div className="flex items-center justify-center py-10 sm:py-14">
-                      <div className="group-hover:scale-105 transition-transform duration-700">
-                        <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
-                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
-                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow2)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                          <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
-                          <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
-                          <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
-                          <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
-                          <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
-                          <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
-                          <circle cx="45" cy="68" r="24" fill="url(#stageGlow2)" />
-                          <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
-                          <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
-                          <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
-                          <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
-                          <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-                          <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-                          <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-                          <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
-                          <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
-                          <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
-                          <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
-                          <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-                          <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-                          <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
-                          <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
-                          <defs>
-                            <radialGradient id="stageGlow2" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
-                            <linearGradient id="phoneGlow2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
-                          </defs>
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Right — copy */}
-                    <div className="px-6 sm:px-8 pb-10 sm:py-14 text-left">
-                      <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
-                      <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
-                        Try it right here.
-                      </h3>
-                      <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-6 max-w-xs">
-                        AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
-                      </p>
-                      <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
-                        <span>Open Playmaker</span>
-                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            </div>
-          )}
+          {/* Playmaker card removed — integrated into the input box above */}
 
           {/* ── INLINE DIGITAL PLAYMAKER ── */}
           {inlineDigital && !submitted && (
@@ -1321,8 +1268,7 @@ export default function BusinessPage() {
                     <div className="relative">
                       <div className="flex items-start justify-between gap-4 mb-3">
                         <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
-                          <span className="text-white/90 group-hover:text-white transition-colors duration-500">{play.theme}</span>{" "}
-                          <span className="text-mars/50 group-hover:text-mars/70 transition-colors duration-500">on Mars</span>
+                          <span className="text-white/90 group-hover:text-white transition-colors duration-500">{play.theme}</span>
                         </h4>
                         <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
                       </div>
