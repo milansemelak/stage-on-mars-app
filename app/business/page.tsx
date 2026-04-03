@@ -111,11 +111,6 @@ const BUSINESS_MAP: [RegExp, string, string][] = [
   [/toxic|bully|harassment|hostile|abusive|fear.*culture/i, "Toxicity", "toxic dynamics"],
   [/loyalty|devotion|commit|dedic|allegianc/i, "Loyalty", "loyalty"],
   [/ego|narciss|self.*import|arrog|humble|humil/i, "Ego", "ego"],
-  [/stupid|dumb|idiot|incompeten|mediocr|averag|lazy|useless|clueless|hopeless/i, "Performance", "performance"],
-  [/broken|dysfunct|mess|chaos|disaster|falling apart|not working/i, "Breakthrough", "breaking through"],
-  [/hate|loathe|despise|detest|can.t stand/i, "Truth", "truth"],
-  [/money|rich|wealth|expensive|cheap|afford/i, "Value", "value creation"],
-  [/death|dying|dead|kill|end|terminal/i, "Survival", "survival and crisis"],
 
   // ── Change & Transformation ──
   [/chang|transform|transition|restructur|pivot|reinvent/i, "Transformation", "transformation"],
@@ -528,17 +523,15 @@ function deriveBusinessTheme(question: string): string {
 }
 
 /* ── Derive creative theme (Play 2) ── */
-function deriveCreativeTheme(question: string, businessTheme?: string): string {
+function deriveCreativeTheme(question: string): string {
   // Try creative extractions first
   for (const [pattern, replacement] of CREATIVE_EXTRACTIONS) {
     const match = question.match(pattern);
     if (match) {
+      // Handle backreferences
       if (replacement.includes("$1") && match[1]) {
-        const result = match[1].charAt(0).toUpperCase() + match[1].slice(1);
-        if (businessTheme && result.toLowerCase() === businessTheme.toLowerCase()) continue;
-        return result;
+        return match[1].charAt(0).toUpperCase() + match[1].slice(1);
       }
-      if (businessTheme && replacement.toLowerCase() === businessTheme.toLowerCase()) continue;
       return replacement;
     }
   }
@@ -546,16 +539,12 @@ function deriveCreativeTheme(question: string, businessTheme?: string): string {
   // Fallback: find the most dramatic/interesting word in the question
   const q = question.replace(/[?.,!'"]/g, "").toLowerCase();
   const words = q.split(/\s+/).filter(w => w.length > 3);
+  // Skip common words, find the juicy one
   const boring = new Set(["about","could","would","should","where","there","their","these","those","which","while","after","before","being","doing","going","having","making","taking","using","what","when","with","from","into","than","then","them","they","this","that","have","will","been","were","does","your","need","want","know","think","feel","like","just","more","most","very","really","still","also","even","each","much","many","some","such","only","back","over","down","come","made","find","here","thing","give","every","good","well","work","make","help","keep","turn","start","might","could","first","never","under","other","again","next","last","long","great","little","right","look","tell","mean","must","call","hand","high","because","between","same","different","through","another","people","company","question","play"]);
   const interesting = words.filter(w => !boring.has(w));
 
   if (interesting.length > 0) {
-    for (let i = interesting.length - 1; i >= 0; i--) {
-      const w = interesting[i];
-      const capitalized = w.charAt(0).toUpperCase() + w.slice(1);
-      if (businessTheme && capitalized.toLowerCase() === businessTheme.toLowerCase()) continue;
-      return capitalized;
-    }
+    // Take the most "active" word (prefer later words as they tend to be more specific)
     const w = interesting[interesting.length - 1];
     return w.charAt(0).toUpperCase() + w.slice(1);
   }
@@ -715,7 +704,7 @@ type ProductCard = {
 
 function deriveProducts(question: string, company: string): ProductCard[] {
   const bizTheme = deriveBusinessTheme(question);
-  const creativeTheme = deriveCreativeTheme(question, bizTheme);
+  const creativeTheme = deriveCreativeTheme(question);
   const co = company || "your company";
 
   // Business pitch with company name
@@ -912,50 +901,82 @@ export default function BusinessPage() {
 
 
 
-      {/* ── HERO: You are stepping on stage ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "min-h-[80vh] flex"} flex-col items-center justify-center px-4 pt-12 sm:pt-0 pb-8 sm:pb-0 relative overflow-hidden transition-all duration-700`}>
+      {/* ── HERO: The question IS the experience ── */}
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "sm:min-h-[90vh] sm:flex"} flex flex-col items-center sm:justify-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
 
-        {/* Clean dark background — subtle warm glow only */}
+        {/* Abstract stage light — dramatic cone from top */}
         {!submitted && (
-          <div className={`absolute inset-0 transition-opacity duration-[2000ms] ${entered ? "opacity-100" : "opacity-0"}`}>
-            <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(255,85,0,0.04) 0%, transparent 70%)" }} />
-          </div>
+          <>
+            {/* Main spotlight cone */}
+            <div
+              className={`absolute transition-all duration-[3000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{
+                top: "-20%",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "120%",
+                height: "80%",
+                background: "conic-gradient(from 180deg at 50% 0%, transparent 35%, rgba(255,85,0,0.06) 45%, rgba(255,85,0,0.12) 50%, rgba(255,85,0,0.06) 55%, transparent 65%)",
+              }}
+            />
+            {/* Warm center glow */}
+            <div
+              className={`absolute w-[600px] h-[600px] rounded-full transition-all duration-[2500ms] delay-500 ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(ellipse, rgba(255,85,0,0.14) 0%, rgba(255,85,0,0.04) 40%, transparent 70%)", top: "20%", left: "50%", transform: "translate(-50%, -50%)" }}
+            />
+            {/* Subtle side accent left */}
+            <div
+              className={`absolute w-[400px] h-[400px] rounded-full transition-all duration-[4000ms] delay-[1500ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.05) 0%, transparent 70%)", top: "50%", left: "15%", transform: "translate(-50%, -50%)" }}
+            />
+            {/* Subtle side accent right */}
+            <div
+              className={`absolute w-[300px] h-[300px] rounded-full transition-all duration-[4000ms] delay-[2000ms] ${entered ? "opacity-100" : "opacity-0"}`}
+              style={{ background: "radial-gradient(circle, rgba(255,85,0,0.04) 0%, transparent 70%)", top: "45%", left: "80%", transform: "translate(-50%, -50%)" }}
+            />
+            {/* Noise/grain texture overlay for depth */}
+            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "256px" }} />
+          </>
         )}
 
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
           {!submitted && (
-            <div className="text-center mb-6 sm:mb-8">
-              <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-9 w-auto invert mx-auto mb-8 sm:mb-10 opacity-60" />
-              <p className="text-[clamp(18px,3vw,32px)] font-bold leading-[1.2] tracking-[-0.02em] text-white/50">
+            <div className="text-center mb-10 sm:mb-14">
+              {/* Logo with subtle float */}
+              <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
+                <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
+              </div>
+              <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
+              <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
                 Play with reality.
-                {" "}
-                <span className="text-mars/60">See what&apos;s possible.</span>
-              </p>
+                <br />
+                <span className="text-mars">See what&apos;s possible.</span>
+              </h1>
             </div>
           )}
 
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-3xl">
 
-            {/* THE INPUT — the main event */}
+            {/* THE INPUT — stage box design */}
             <div className="relative group/input">
-              {/* Glow ring behind input on focus */}
-              <div className="absolute -inset-6 sm:-inset-10 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms] pointer-events-none" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
+              <div className="absolute -inset-8 sm:-inset-16 rounded-3xl opacity-40 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
 
-              <div className="relative rounded-2xl border border-white/[0.08] group-focus-within/input:border-mars/20 bg-white/[0.02] transition-all duration-500 overflow-hidden">
-                <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-5 sm:pb-6">
+              <div className="relative rounded-2xl border border-white/[0.10] group-focus-within/input:border-mars/20 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.04)] group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.08)]">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
+                <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="What question would you put on stage?"
                     rows={2}
-                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[20px] sm:text-[26px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.4] tracking-[-0.01em]"
+                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                     }}
                   />
-                  <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.06]">
+                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
                     <input
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
@@ -965,10 +986,10 @@ export default function BusinessPage() {
                     <button
                       onClick={generate}
                       disabled={!question.trim()}
-                      className={`shrink-0 px-7 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all duration-300 ${
+                      className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
                         question.trim()
                           ? "bg-mars hover:bg-mars-light text-white"
-                          : "bg-white/[0.04] text-white/20 cursor-not-allowed"
+                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
                       }`}
                     >
                       Play
@@ -977,10 +998,81 @@ export default function BusinessPage() {
                 </div>
               </div>
             </div>
+          </div>{/* end max-w-3xl */}
 
-          </div>{/* end max-w-2xl */}
+          {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
+          {!submitted && !inlineDigital && (
+            <div className="w-full max-w-3xl mx-auto mt-8 sm:mt-10">
+              <button
+                onClick={() => {
+                  const q = question.trim() || "What does my company need right now?";
+                  setAskedQuestion(q);
+                  if (!question.trim()) setQuestion(q);
+                  setInlineDigital(true);
+                  openDigital(q);
+                  setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                }}
+                className="w-full group transition-all duration-500 opacity-100 hover:scale-[1.01]"
+              >
+                <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
-          {/* Playmaker card removed — integrated into the input box above */}
+                  <div className="grid sm:grid-cols-2 items-center">
+                    {/* Left — phone mockup */}
+                    <div className="flex items-center justify-center py-10 sm:py-14">
+                      <div className="group-hover:scale-105 transition-transform duration-700">
+                        <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
+                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
+                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow2)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                          <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
+                          <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
+                          <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                          <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
+                          <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
+                          <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
+                          <circle cx="45" cy="68" r="24" fill="url(#stageGlow2)" />
+                          <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
+                          <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
+                          <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
+                          <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
+                          <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                          <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
+                          <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                          <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
+                          <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
+                          <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
+                          <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
+                          <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                          <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
+                          <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
+                          <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
+                          <defs>
+                            <radialGradient id="stageGlow2" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
+                            <linearGradient id="phoneGlow2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Right — copy */}
+                    <div className="px-6 sm:px-8 pb-10 sm:py-14 text-left">
+                      <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
+                      <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
+                        Try it right here.
+                      </h3>
+                      <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-6 max-w-xs">
+                        AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
+                      </p>
+                      <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
+                        <span>Open Playmaker</span>
+                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
+          )}
 
           {/* ── INLINE DIGITAL PLAYMAKER ── */}
           {inlineDigital && !submitted && (
@@ -1168,7 +1260,7 @@ export default function BusinessPage() {
             </div>
           )}
 
-          {/* ── BESTSELLING PLAYS — stage-inspired product cards ── */}
+          {/* ── BESTSELLING PLAYS — luxury product cards ── */}
           {!submitted && (
             <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-8 space-y-5">
               <div className="px-1 mb-1">
@@ -1179,165 +1271,36 @@ export default function BusinessPage() {
                 { theme: "Vision", photo: "/luxury4.jpg", photoPos: "50% 50%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it." },
                 { theme: "Creativity", photo: "/luxury1.jpg", photoPos: "50% 40%", duration: "Half-day", people: "8–25", price: "from €2 200", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
               ].map((play, i) => (
-                <div key={i} className="group relative rounded-2xl overflow-hidden bg-[#0d0d0d] transition-all duration-500" style={{
-                  boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 4px 30px rgba(0,0,0,0.3)",
-                }}>
-                  {/* Hover: red LED edge ring — like the circular stage in space5 */}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" style={{
-                    boxShadow: "0 0 0 1px rgba(255,85,0,0.2), 0 0 20px rgba(255,85,0,0.06), 0 0 50px rgba(255,85,0,0.03)",
-                  }} />
-
-                  {/* Photo — with stage lighting overlay */}
+                <div key={i} className="group rounded-2xl border border-white/[0.08] hover:border-mars/15 overflow-hidden bg-white/[0.02] transition-all duration-500">
+                  {/* Photo — contained */}
                   <div className="relative h-[180px] sm:h-[220px] overflow-hidden">
                     <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.02] group-hover:scale-100" style={{ objectPosition: play.photoPos }} />
-                    {/* Dark gradient vignette */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-[#0d0d0d]/40 to-[#0d0d0d]/30" />
-                    {/* Spotlight on hover — dramatic cone from top center */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 70% at 50% 0%, rgba(255,85,0,0.12) 0%, transparent 60%)" }} />
-                    {/* Stage floor edge glow at bottom of photo */}
-                    <div className="absolute bottom-0 left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/20" />
                   </div>
-
-                  {/* Product details — the stage floor area */}
-                  <div className="relative p-5 sm:p-6">
-                    {/* Subtle stage floor radial glow */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,85,0,0.03) 0%, transparent 50%)" }} />
-
-                    <div className="relative">
-                      <div className="flex items-start justify-between gap-4 mb-3">
-                        <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
-                          <span className="text-white/90 group-hover:text-white transition-colors duration-500">{play.theme}</span>
-                        </h4>
-                        <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
-                      </div>
-                      {/* Specs row */}
-                      <div className="flex items-center gap-3 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
-                        <span>{play.duration}</span>
-                        <span className="text-white/10">·</span>
-                        <span>{play.people} people</span>
-                        <span className="text-white/10">·</span>
-                        <span>On stage or at your venue</span>
-                      </div>
-                      <p className="text-white/45 text-[13px] leading-[1.6] mb-5">{play.pitch}</p>
-                      <a href="#contact" className="inline-block px-6 py-2.5 rounded-lg border border-mars/15 text-mars/60 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars/10 hover:text-mars hover:border-mars/30 hover:shadow-[0_0_15px_rgba(255,85,0,0.1)] transition-all duration-300">
-                        Book this play
-                      </a>
+                  {/* Product details */}
+                  <div className="p-5 sm:p-6">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
+                        <span className="text-white/90">{play.theme}</span>{" "}
+                        <span className="text-mars/60">on Mars</span>
+                      </h4>
+                      <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
                     </div>
+                    {/* Specs row */}
+                    <div className="flex items-center gap-3 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
+                      <span>{play.duration}</span>
+                      <span className="text-white/10">·</span>
+                      <span>{play.people} people</span>
+                      <span className="text-white/10">·</span>
+                      <span>On stage or at your venue</span>
+                    </div>
+                    <p className="text-white/45 text-[13px] leading-[1.6] mb-5">{play.pitch}</p>
+                    <a href="#contact" className="inline-block px-6 py-2.5 rounded-lg border border-mars/20 text-mars/70 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars/10 hover:text-mars hover:border-mars/30 transition-all duration-300">
+                      Book this play
+                    </a>
                   </div>
-
-                  {/* Bottom edge glow — stage lip */}
-                  <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-mars/10 to-transparent group-hover:via-mars/25 transition-all duration-700" />
                 </div>
               ))}
-            </div>
-          )}
-
-          {/* ── DIGITAL PLAYMAKER — Apple-style product section ── */}
-          {!submitted && !inlineDigital && (
-            <div className="w-full max-w-3xl mx-auto mt-10 sm:mt-14">
-              <div className="px-1 mb-4">
-                <p className="text-mars/50 text-[10px] uppercase tracking-[0.4em]">Digital experience</p>
-              </div>
-
-              <div className="group relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.005]" style={{
-                background: "linear-gradient(145deg, #141414 0%, #0d0d0d 50%, #111 100%)",
-                boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 8px 40px rgba(0,0,0,0.4)",
-              }}
-                onClick={() => {
-                  const q = question.trim() || "What does my company need right now?";
-                  setAskedQuestion(q);
-                  if (!question.trim()) setQuestion(q);
-                  setInlineDigital(true);
-                  openDigital(q);
-                  setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
-                }}
-              >
-                {/* Hover glow */}
-                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{
-                  boxShadow: "0 0 0 1px rgba(255,85,0,0.15), 0 0 30px rgba(255,85,0,0.05)",
-                }} />
-
-                <div className="grid sm:grid-cols-2 items-center">
-                  {/* Left — Product visual */}
-                  <div className="flex items-center justify-center py-12 sm:py-16 px-8">
-                    <div className="relative group-hover:scale-105 transition-transform duration-700">
-                      {/* Phone frame — clean, Apple-like */}
-                      <div className="relative w-[140px] h-[280px] sm:w-[160px] sm:h-[320px] rounded-[28px] sm:rounded-[32px] overflow-hidden" style={{
-                        background: "#000",
-                        boxShadow: "0 0 0 1.5px rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.04)",
-                      }}>
-                        {/* Screen content */}
-                        <div className="absolute inset-[3px] rounded-[25px] sm:rounded-[29px] overflow-hidden bg-[#0a0a0a]">
-                          {/* Notch */}
-                          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60px] h-[22px] bg-black rounded-b-2xl z-10" />
-
-                          {/* App UI mockup */}
-                          <div className="pt-8 px-4">
-                            <div className="w-16 h-1.5 rounded-full bg-white/20 mb-1" />
-                            <div className="w-10 h-1 rounded-full bg-mars/30 mb-5" />
-
-                            {/* Stage circle */}
-                            <div className="relative mx-auto w-[80px] h-[80px] sm:w-[90px] sm:h-[90px] rounded-full flex items-center justify-center" style={{
-                              background: "radial-gradient(circle, rgba(255,85,0,0.06) 0%, transparent 70%)",
-                              boxShadow: "0 0 0 1px rgba(255,85,0,0.15), 0 0 20px rgba(255,85,0,0.05)",
-                            }}>
-                              {/* Players */}
-                              <div className="w-2 h-2 rounded-full bg-mars/70 absolute" style={{ top: "15%", left: "50%", transform: "translateX(-50%)" }}><div className="w-2 h-2 rounded-full bg-mars/70 animate-pulse" /></div>
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/30 absolute" style={{ top: "55%", left: "20%" }} />
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/30 absolute" style={{ top: "50%", left: "75%" }} />
-                              <div className="w-1.5 h-1.5 rounded-full bg-white/20 absolute" style={{ top: "75%", left: "45%" }} />
-                            </div>
-
-                            {/* Text card */}
-                            <div className="mt-4 p-2.5 rounded-lg" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.04)" }}>
-                              <div className="w-full h-1 rounded-full bg-white/8 mb-1.5" />
-                              <div className="w-3/4 h-1 rounded-full bg-white/5 mb-1.5" />
-                              <div className="w-1/2 h-1 rounded-full bg-white/3" />
-                            </div>
-
-                            {/* Action buttons */}
-                            <div className="flex gap-2 mt-3 justify-center">
-                              <div className="w-5 h-5 rounded-full bg-mars/40 flex items-center justify-center">
-                                <div className="w-0 h-0 border-l-[4px] border-l-white/60 border-y-[3px] border-y-transparent ml-0.5" />
-                              </div>
-                              <div className="w-5 h-5 rounded-full bg-white/6" />
-                              <div className="w-5 h-5 rounded-full bg-white/6" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Glow behind phone */}
-                      <div className="absolute -inset-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-10" style={{ background: "radial-gradient(circle, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
-                    </div>
-                  </div>
-
-                  {/* Right — Copy */}
-                  <div className="px-8 sm:px-10 pb-12 sm:py-16 text-left">
-                    <h3 className="text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1] mb-4">
-                      <span className="text-white/90 group-hover:text-white transition-colors">Digital</span>
-                      <br />
-                      <span className="text-mars/70 group-hover:text-mars transition-colors">Playmaker</span>
-                    </h3>
-                    <p className="text-white/50 text-[14px] sm:text-[15px] leading-[1.65] mb-6 max-w-sm">
-                      AI turns your question into a reality play — with characters, tension, and new perspectives. Right here, right now.
-                    </p>
-                    <div className="flex items-center gap-4">
-                      <span className="text-white/30 text-[10px] uppercase tracking-[0.15em]">Free</span>
-                      <span className="text-white/10">·</span>
-                      <span className="text-white/30 text-[10px] uppercase tracking-[0.15em]">30 seconds</span>
-                      <span className="text-white/10">·</span>
-                      <span className="text-white/30 text-[10px] uppercase tracking-[0.15em]">Interactive</span>
-                    </div>
-                    <div className="mt-6">
-                      <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/[0.06] text-white/70 text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-mars/15 group-hover:text-mars transition-all duration-300">
-                        Try it now
-                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 
