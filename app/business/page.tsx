@@ -924,18 +924,18 @@ export default function BusinessPage() {
                 src="/space5.png"
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover"
-                style={{ objectPosition: "50% 70%", filter: "grayscale(0.75) contrast(1.2) brightness(0.75)" }}
+                style={{ objectPosition: "50% 70%", filter: "grayscale(0.7) contrast(1.15) brightness(0.9)" }}
               />
               {/* Warm mars tint — brings back the red stage lighting */}
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,85,0,0.03) 0%, rgba(255,85,0,0.06) 50%, rgba(255,85,0,0.04) 100%)", mixBlendMode: "color" }} />
-              {/* Heavy grain texture — Helmut Newton film look */}
-              <div className="absolute inset-0 opacity-[0.18]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "200px" }} />
-              {/* Soft vignette — just darken edges, let the stage be seen */}
-              <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 85% 75% at 50% 60%, transparent 25%, rgba(10,10,10,0.3) 55%, rgba(10,10,10,0.8) 90%)" }} />
-              {/* Bottom fade — long smooth dissolve into page bg */}
-              <div className="absolute bottom-0 left-0 right-0 h-[45%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 10%, rgba(10,10,10,0.8) 40%, transparent 100%)" }} />
-              {/* Top blackout — hides the ceiling completely */}
-              <div className="absolute top-0 left-0 right-0 h-[35%]" style={{ background: "linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 30%, transparent 100%)" }} />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,85,0,0.04) 0%, rgba(255,85,0,0.08) 50%, rgba(255,85,0,0.04) 100%)", mixBlendMode: "color" }} />
+              {/* Grain texture — Helmut Newton film look */}
+              <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "200px" }} />
+              {/* Soft vignette — gentle edge darkening */}
+              <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 90% 80% at 50% 55%, transparent 30%, rgba(10,10,10,0.25) 55%, rgba(10,10,10,0.75) 90%)" }} />
+              {/* Bottom fade — dissolve into page bg */}
+              <div className="absolute bottom-0 left-0 right-0 h-[40%]" style={{ background: "linear-gradient(to top, #0a0a0a 0%, #0a0a0a 8%, rgba(10,10,10,0.6) 40%, transparent 100%)" }} />
+              {/* Top fade — hides the ceiling */}
+              <div className="absolute top-0 left-0 right-0 h-[30%]" style={{ background: "linear-gradient(to bottom, #0a0a0a 0%, #0a0a0a 25%, transparent 100%)" }} />
             </div>
           </>
         )}
@@ -948,10 +948,10 @@ export default function BusinessPage() {
               <div className="mb-8 sm:mb-10" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto drop-shadow-[0_0_30px_rgba(255,85,0,0.15)]" />
               </div>
-              <h1 className="text-[clamp(26px,6vw,76px)] font-black leading-[0.95] tracking-[-0.04em] text-center" style={{ textShadow: "0 2px 40px rgba(0,0,0,0.9), 0 4px 80px rgba(0,0,0,0.6), 0 0 150px rgba(0,0,0,0.5)" }}>
+              <h1 className="text-[clamp(28px,6.5vw,80px)] font-black leading-[0.95] tracking-[-0.04em] text-center text-white" style={{ textShadow: "0 2px 20px rgba(0,0,0,1), 0 4px 60px rgba(0,0,0,0.8), 0 0 120px rgba(0,0,0,0.6)" }}>
                 Put your company
                 <br />
-                <span className="text-mars" style={{ textShadow: "0 0 50px rgba(255,85,0,0.5), 0 0 100px rgba(255,85,0,0.25), 0 2px 40px rgba(0,0,0,0.9)" }}>on stage.</span>
+                <span className="text-mars" style={{ textShadow: "0 0 30px rgba(255,85,0,0.6), 0 0 80px rgba(255,85,0,0.3), 0 2px 20px rgba(0,0,0,1)" }}>on stage.</span>
               </h1>
             </div>
           )}
@@ -974,48 +974,48 @@ export default function BusinessPage() {
                   }} />
 
                   {/* Semi-transparent surface — stage shows through */}
-                  <div className="relative rounded-2xl bg-[#0a0a0a]/70 backdrop-blur-md overflow-hidden">
+                  <div className="relative rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-lg overflow-hidden">
                     {/* Top light bar — stage front edge */}
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent group-focus-within/input:via-mars/60 transition-all duration-700" />
+                    <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/50 to-transparent group-focus-within/input:via-mars/70 transition-all duration-700" />
 
                     <div className="relative px-5 sm:px-8 pt-6 sm:pt-7 pb-5 sm:pb-6">
                       {/* Stage label */}
-                      <p className="text-mars/35 text-[9px] uppercase tracking-[0.4em] mb-4 group-focus-within/input:text-mars/60 transition-colors duration-700">Your question on stage</p>
+                      <p className="text-mars/50 text-[9px] uppercase tracking-[0.4em] mb-4 group-focus-within/input:text-mars/70 transition-colors duration-700">Your question on stage</p>
 
                       <textarea
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
                         placeholder="What question would you put on stage?"
                         rows={2}
-                        className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                        className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/35 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                         style={{ caretColor: "#FF5500" }}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                         }}
                       />
-                      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.06] group-focus-within/input:border-mars/10 transition-colors duration-700">
+                      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-white/[0.08] group-focus-within/input:border-mars/15 transition-colors duration-700">
                         <input
                           value={companyName}
                           onChange={(e) => setCompanyName(e.target.value)}
                           placeholder="Company name (optional)"
-                          className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[14px]"
+                          className="flex-1 bg-transparent border-0 px-0 text-white/60 placeholder:text-white/30 focus:outline-none text-[14px]"
                         />
                         <button
                           onClick={generate}
                           disabled={!question.trim()}
                           className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
                             question.trim()
-                              ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_20px_rgba(255,85,0,0.2)]"
-                              : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                              ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_20px_rgba(255,85,0,0.3)]"
+                              : "bg-white/[0.08] text-white/35 border border-white/[0.08] cursor-not-allowed"
                           }`}
                         >
                           Play
                         </button>
                       </div>
 
-                      {/* Digital playmaker — inline link */}
+                      {/* Digital playmaker — visible CTA */}
                       {!inlineDigital && (
-                        <div className="mt-4 pt-3 border-t border-white/[0.04]">
+                        <div className="mt-5 pt-4 border-t border-white/[0.06]">
                           <button
                             onClick={() => {
                               const q = question.trim() || "What does my company need right now?";
@@ -1025,10 +1025,18 @@ export default function BusinessPage() {
                               openDigital(q);
                               setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
                             }}
-                            className="text-white/30 text-[11px] sm:text-[12px] hover:text-mars/70 transition-colors duration-300 flex items-center gap-1.5"
+                            className="w-full flex items-center justify-between gap-4 px-5 py-3.5 rounded-xl bg-white/[0.04] hover:bg-mars/10 border border-white/[0.06] hover:border-mars/20 transition-all duration-300 group/pm"
                           >
-                            <span>Or try our digital playmaker — AI turns your question into a play in 30 seconds</span>
-                            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current shrink-0"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-lg bg-mars/15 flex items-center justify-center shrink-0">
+                                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-mars/70"><path d="M8 5v14l11-7z" /></svg>
+                              </div>
+                              <div className="text-left">
+                                <p className="text-white/70 text-[13px] font-semibold group-hover/pm:text-white transition-colors">Try Digital Playmaker</p>
+                                <p className="text-white/30 text-[11px]">AI creates a play from your question in 30 seconds</p>
+                              </div>
+                            </div>
+                            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white/20 group-hover/pm:fill-mars/60 shrink-0 transition-colors"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
                           </button>
                         </div>
                       )}
