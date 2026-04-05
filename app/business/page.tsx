@@ -692,54 +692,36 @@ function getCreativePitch(theme: string, co: string): string {
   return `"${theme}" becomes a character on stage. Your team at ${co} steps into a play where ${theme.toLowerCase()} drives the story. Different game. Different rules. New perspective.`;
 }
 
-type ProductCard = {
-  theme: string;
+type Experience = {
   name: string;
-  tag: string;
+  theme: string;
   pitch: string;
-  duration: string;
-  people: string;
-  price: string;
 };
 
-function deriveProducts(question: string, company: string): ProductCard[] {
+const DURATION_OPTIONS = [
+  { hours: "4", label: "Half-day", price: "€2 200" },
+  { hours: "5", label: "Extended", price: "€2 900" },
+  { hours: "6", label: "Full day", price: "€3 600" },
+];
+
+const PEOPLE_OPTIONS = [
+  { label: "8–15", description: "Intimate" },
+  { label: "15–25", description: "Team" },
+  { label: "25–50", description: "Large group" },
+];
+
+function deriveExperience(question: string, company: string): Experience {
   const bizTheme = deriveBusinessTheme(question);
-  const creativeTheme = deriveCreativeTheme(question);
   const co = company || "your company";
 
-  // Business pitch with company name
   let bizPitch = BUSINESS_PITCHES[bizTheme] || DEFAULT_BUSINESS_PITCH;
   bizPitch = bizPitch.replace(/\{co\}/g, co).replace(/\{theme\}/g, bizTheme.toLowerCase());
 
-  return [
-    {
-      theme: bizTheme,
-      name: `${bizTheme} on Mars`,
-      tag: `${company || "Your team"} × Business`,
-      pitch: bizPitch,
-      duration: "3–4 h",
-      people: "up to 20",
-      price: "from €2 200",
-    },
-    {
-      theme: creativeTheme,
-      name: `${creativeTheme} on Mars`,
-      tag: `${company || "Your team"} × Creative`,
-      pitch: getCreativePitch(creativeTheme, co),
-      duration: "3–4 h",
-      people: "up to 20",
-      price: "from €2 200",
-    },
-    {
-      theme: "Leaders",
-      name: "Leaders on Mars",
-      tag: "Personal leadership",
-      pitch: `This one is for you. Not the team. You step on stage alone and confront the forces shaping ${co} from the inside. Your blind spots. Your patterns. What you already know but won't say out loud.`,
-      duration: "2–3 h",
-      people: "you + guide",
-      price: "from €1 400",
-    },
-  ];
+  return {
+    name: `${bizTheme} on Mars`,
+    theme: bizTheme,
+    pitch: bizPitch,
+  };
 }
 
 
@@ -753,8 +735,9 @@ export default function BusinessPage() {
   const [companyName, setCompanyName] = useState("");
   const [context, setContext] = useState<"personal" | "business">("business");
   const [submitted, setSubmitted] = useState(false);
-  const [products, setProducts] = useState<ProductCard[]>([]);
-  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+  const [experience, setExperience] = useState<Experience | null>(null);
+  const [selectedDuration, setSelectedDuration] = useState(1); // index into DURATION_OPTIONS, default "Extended"
+  const [selectedPeople, setSelectedPeople] = useState(1); // index into PEOPLE_OPTIONS, default "Team"
   const [play, setPlay] = useState<Play | null>(null);
   const [playLoading, setPlayLoading] = useState(false);
   const [askedQuestion, setAskedQuestion] = useState("");
@@ -777,26 +760,26 @@ export default function BusinessPage() {
     return () => clearTimeout(t);
   }, []);
 
+  const [building, setBuilding] = useState(false);
+
   function generate() {
     if (!question.trim()) return;
     setSubmitted(true);
+    setBuilding(true);
     setAskedQuestion(question);
-    setProducts(deriveProducts(question, companyName));
-    setSelectedIdx(null);
+    setExperience(null);
     setPlay(null);
     setError("");
     setShowDigital(false);
 
     // Scroll to results
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
-  }
 
-  function selectProduct(idx: number) {
-    setSelectedIdx(idx);
-    setPlay(null);
-    setShowDigital(false);
-    setSimLoading(false);
-    setSimReady(false);
+    // Simulate build time — then reveal
+    setTimeout(() => {
+      setExperience(deriveExperience(question, companyName));
+      setBuilding(false);
+    }, 2200);
   }
 
   async function fetchSimulation(currentPlay: Play, overrideQuestion?: string) {
@@ -860,10 +843,9 @@ export default function BusinessPage() {
   function reset() {
     setQuestion("");
     setSubmitted(false);
-    setProducts([]);
+    setExperience(null);
     setPlay(null);
     setPlayLoading(false);
-    setSelectedIdx(null);
     setAskedQuestion("");
     setError("");
     setShowDigital(false);
@@ -947,11 +929,11 @@ export default function BusinessPage() {
               <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </div>
-              <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
+              <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">The Human Future Simulator</p>
               <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
-                Play with reality.
+                Play reality.
                 <br />
-                <span className="text-mars">See what&apos;s possible.</span>
+                <span className="text-mars">See your way forward.</span>
               </h1>
             </div>
           )}
@@ -968,7 +950,7 @@ export default function BusinessPage() {
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What question would you put on stage?"
+                    placeholder="What's your question?"
                     rows={2}
                     className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
@@ -992,7 +974,7 @@ export default function BusinessPage() {
                           : "bg-white/[0.06] text-white/25 cursor-not-allowed"
                       }`}
                     >
-                      Play
+                      Build your play
                     </button>
                   </div>
                 </div>
@@ -1000,79 +982,6 @@ export default function BusinessPage() {
             </div>
           </div>{/* end max-w-3xl */}
 
-          {/* ── DIGITAL PLAYMAKER — full stage box below hero ── */}
-          {!submitted && !inlineDigital && (
-            <div className="w-full max-w-3xl mx-auto mt-8 sm:mt-10">
-              <button
-                onClick={() => {
-                  const q = question.trim() || "What does my company need right now?";
-                  setAskedQuestion(q);
-                  if (!question.trim()) setQuestion(q);
-                  setInlineDigital(true);
-                  openDigital(q);
-                  setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
-                }}
-                className="w-full group transition-all duration-500 opacity-100 hover:scale-[1.01]"
-              >
-                <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-
-                  <div className="grid sm:grid-cols-2 items-center">
-                    {/* Left — phone mockup */}
-                    <div className="flex items-center justify-center py-10 sm:py-14">
-                      <div className="group-hover:scale-105 transition-transform duration-700">
-                        <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
-                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
-                          <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow2)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                          <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
-                          <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
-                          <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
-                          <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
-                          <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
-                          <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
-                          <circle cx="45" cy="68" r="24" fill="url(#stageGlow2)" />
-                          <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
-                          <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
-                          <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
-                          <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
-                          <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-                          <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-                          <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-                          <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
-                          <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
-                          <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
-                          <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
-                          <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-                          <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-                          <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
-                          <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
-                          <defs>
-                            <radialGradient id="stageGlow2" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
-                            <linearGradient id="phoneGlow2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
-                          </defs>
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Right — copy */}
-                    <div className="px-6 sm:px-8 pb-10 sm:py-14 text-left">
-                      <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
-                      <h3 className="text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
-                        Try it right here.
-                      </h3>
-                      <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-6 max-w-xs">
-                        AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
-                      </p>
-                      <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
-                        <span>Open Playmaker</span>
-                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            </div>
-          )}
 
           {/* ── INLINE DIGITAL PLAYMAKER ── */}
           {inlineDigital && !submitted && (
@@ -1260,11 +1169,12 @@ export default function BusinessPage() {
             </div>
           )}
 
-          {/* ── BESTSELLING PLAYS — luxury product cards ── */}
+          {/* ── BESTSELLING PLAYS — ready-made options ── */}
           {!submitted && (
-            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-8 space-y-5">
+            <div className="w-full max-w-3xl mx-auto mt-10 sm:mt-14 space-y-5">
               <div className="px-1 mb-1">
-                <p className="text-mars/50 text-[10px] uppercase tracking-[0.4em]">Bestselling plays</p>
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-8 sm:mb-10" />
+                <p className="text-white/30 text-[10px] uppercase tracking-[0.4em]">Or choose a ready-made play</p>
               </div>
               {[
                 { theme: "Strategy", photo: "/luxury2.jpg", photoPos: "50% 30%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "Where is your company really heading — and what's pulling it off course? Your team maps the forces on stage." },
@@ -1301,6 +1211,50 @@ export default function BusinessPage() {
                   </div>
                 </div>
               ))}
+
+              {/* ── DIGITAL PLAYMAKER — taste of the method ── */}
+              {!inlineDigital && (
+                <div className="pt-4">
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-8 sm:mb-10" />
+                  <button
+                    onClick={() => {
+                      const q = question.trim() || "What does my company need right now?";
+                      setAskedQuestion(q);
+                      if (!question.trim()) setQuestion(q);
+                      setInlineDigital(true);
+                      openDigital(q);
+                      setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                    }}
+                    className="w-full group transition-all duration-500 hover:scale-[1.005]"
+                  >
+                    <div className="relative rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden hover:border-white/[0.15] transition-all">
+                      <div className="px-6 sm:px-8 py-8 sm:py-10">
+                        <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-5">Want to see how it works?</p>
+
+                        {/* Mini preview */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {["The Founder", "Safety", "The Unspoken", "Momentum"].map((name, i) => (
+                            <div key={i} className="flex items-center gap-1.5 rounded-md bg-white/[0.04] border border-white/[0.06] px-2.5 py-1">
+                              <div className={`w-1.5 h-1.5 rounded-full ${i === 0 ? "bg-mars/50" : "bg-white/20"}`} />
+                              <span className="text-white/35 text-[10px]">{name}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-white/20 text-[11px] font-mercure italic mb-6 max-w-md">
+                          <span className="text-mars/30">The Unspoken</span> moves to the center. Safety steps back. The Founder watches but doesn&apos;t intervene...
+                        </p>
+
+                        <h3 className="text-[16px] sm:text-[18px] font-bold tracking-[-0.02em] text-white/50 group-hover:text-white/70 transition-colors">
+                          Try a digital simulation of your question
+                        </h3>
+                        <p className="text-white/25 text-[12px] mt-1.5">
+                          AI builds a play from your question. Characters, stage, perspectives. 30 seconds.
+                        </p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -1313,507 +1267,139 @@ export default function BusinessPage() {
         <section ref={resultRef} className="relative px-4">
           <div className="max-w-3xl mx-auto">
 
-            {/* The question echo */}
-            <div className="text-center mb-8 sm:mb-10 pt-4 sm:pt-6">
-              <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
-              <p className="font-mercure italic text-white/70 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{askedQuestion}&rdquo;</p>
-              <button onClick={reset} className="text-white/25 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/60 transition-colors">
-                Ask something else
-              </button>
-            </div>
-
-            {/* ═══ 3 PRODUCT OPTIONS — commercial menu ═══ */}
-            {products.length > 0 && selectedIdx === null && (
-              <div>
-                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] text-center mb-8 sm:mb-10">Choose your play</p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-                  {products.map((p, i) => {
-                    const isLeader = i === 2;
-                    return (
-                      <button
-                        key={i}
-                        onClick={() => selectProduct(i)}
-                        className={`relative w-full text-left rounded-2xl border overflow-hidden transition-all duration-300 group hover:scale-[1.02] flex flex-col ${
-                          isLeader
-                            ? "border-mars/20 bg-gradient-to-b from-mars/[0.06] to-mars/[0.01] hover:border-mars/35 hover:shadow-[0_0_40px_-10px_rgba(255,85,0,0.2)]"
-                            : "border-white/[0.15] bg-gradient-to-b from-white/[0.03] to-transparent hover:border-white/[0.15] hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
-                        }`}
-                      >
-                        {/* Top accent line */}
-                        <div className={`h-[2px] ${isLeader ? "bg-gradient-to-r from-mars/40 via-mars to-mars/40" : "bg-gradient-to-r from-transparent via-white/10 to-transparent"}`} />
-
-                        <div className="p-5 sm:p-6 flex flex-col flex-1">
-                          {/* Tag */}
-                          <p className={`text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-4 ${isLeader ? "text-mars/60" : "text-white/65"}`}>{p.tag}</p>
-
-                          {/* Theme — full play name */}
-                          <h3 className={`text-[28px] sm:text-[34px] font-black tracking-[-0.04em] leading-[0.95] mb-4 ${isLeader ? "" : ""}`}>
-                            <span className={isLeader ? "text-mars" : "text-white/90"}>{p.theme}</span>
-                            {" "}
-                            <span className={isLeader ? "text-mars/70" : "text-white/55"}>on Mars</span>
-                          </h3>
-
-                          {/* Pitch */}
-                          <p className="text-white/70 text-[13px] sm:text-[14px] leading-[1.55] mb-6 flex-1">
-                            {p.pitch}
-                          </p>
-
-                          {/* Bottom stats bar */}
-                          <div className={`border-t pt-4 mt-auto ${isLeader ? "border-mars/10" : "border-white/[0.12]"}`}>
-                            <div className="flex items-end justify-between">
-                              <div className="space-y-1">
-                                <p className="text-white/60 text-[10px]">{p.duration} · {p.people}</p>
-                              </div>
-                              <p className={`text-[14px] sm:text-[15px] font-bold tracking-tight ${isLeader ? "text-mars/70" : "text-white/60"}`}>{p.price}</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Hover arrow */}
-                        <div className="absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <svg viewBox="0 0 24 24" className={`w-4 h-4 fill-current ${isLeader ? "text-mars/70" : "text-white/60"}`}><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                        </div>
-                      </button>
-                    );
-                  })}
+            {/* ═══ BUILDING STATE ═══ */}
+            {building && (
+              <div className="text-center py-20 sm:py-32">
+                <div className="inline-flex gap-2 mb-6">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="w-3 h-3 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.3}s infinite` }} />
+                  ))}
                 </div>
-
-                {/* ── DIGITAL PLAYMAKER — below product cards ── */}
-                <div className="mt-8 sm:mt-10">
-                  <button
-                    onClick={() => {
-                      setSelectedIdx(0);
-                      openDigital();
-                    }}
-                    className="w-full group transition-all duration-500 hover:scale-[1.005]"
-                  >
-                    <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                      <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-
-                      <div className="grid sm:grid-cols-2 items-center">
-                        {/* Left — phone mockup */}
-                        <div className="flex items-center justify-center py-8 sm:py-12">
-                          <div className="group-hover:scale-105 transition-transform duration-700">
-                            <svg width="80" height="150" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[100px] sm:h-[188px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
-                              <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
-                              <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow3)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                              <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
-                              <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
-                              <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
-                              <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
-                              <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
-                              <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
-                              <circle cx="45" cy="68" r="24" fill="url(#stageGlow3)" />
-                              <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)"><animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" /></circle>
-                              <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" /></circle>
-                              <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)"><animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" /></circle>
-                              <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)"><animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" /></circle>
-                              <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-                              <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-                              <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-                              <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
-                              <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
-                              <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
-                              <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
-                              <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-                              <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-                              <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
-                              <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
-                              <defs>
-                                <radialGradient id="stageGlow3" cx="0.5" cy="0.5" r="0.5"><stop offset="0%" stopColor="rgba(255,85,0,0.06)" /><stop offset="100%" stopColor="transparent" /></radialGradient>
-                                <linearGradient id="phoneGlow3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="rgba(255,85,0,0.4)" /><stop offset="50%" stopColor="rgba(255,85,0,0.1)" /><stop offset="100%" stopColor="transparent" /></linearGradient>
-                              </defs>
-                            </svg>
-                          </div>
-                        </div>
-
-                        {/* Right — copy */}
-                        <div className="px-6 sm:px-8 pb-8 sm:py-12 text-left">
-                          <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-3">Digital Playmaker</p>
-                          <h3 className="text-[20px] sm:text-[24px] font-black tracking-[-0.03em] leading-[1] mb-3 group-hover:text-white transition-colors">
-                            Or try it right here.
-                          </h3>
-                          <p className="text-white/65 text-[13px] sm:text-[14px] leading-[1.6] mb-5 max-w-xs">
-                            AI turns your question into a reality play with characters, a stage, and new perspectives. Takes 30 seconds.
-                          </p>
-                          <div className="inline-flex items-center gap-2 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars transition-colors">
-                            <span>Open Playmaker</span>
-                            <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                </div>
+                <p className="text-white/60 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Designing your experience...</p>
+                <p className="text-white/25 text-[12px] sm:text-[13px] mt-3 font-mercure italic max-w-sm mx-auto">&ldquo;{askedQuestion}&rdquo;</p>
               </div>
             )}
 
+            {/* ═══ EXPERIENCE DESIGNER ═══ */}
+            {experience && !building && (
+              <div className="pt-6 sm:pt-10" style={{ animation: "fadeIn 0.8s ease both" }}>
 
-            {/* ═══ SELECTED PRODUCT — compact stage box ═══ */}
-            {selectedIdx !== null && products[selectedIdx] && (
-              <>
-                {/* Back to options */}
-                <div className="mb-4 sm:mb-6">
-                  <button onClick={() => { setSelectedIdx(null); setPlay(null); setShowDigital(false); }} className="text-white/50 text-[13px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
-                    ← Back to all plays
-                  </button>
+                {/* Experience header */}
+                <div className="text-center mb-8 sm:mb-12">
+                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-4">Your experience</p>
+                  <h2 className="text-[36px] sm:text-[52px] font-black tracking-[-0.04em] leading-[0.95] mb-4">
+                    <span className="text-white/90">{experience.theme}</span>{" "}
+                    <span className="text-mars">on Mars</span>
+                  </h2>
+                  <p className="text-white/50 text-[14px] sm:text-[16px] leading-[1.6] max-w-lg mx-auto">
+                    {experience.pitch}
+                  </p>
                 </div>
 
-                {/* Play detail — stage box */}
-                <div className="mb-6 sm:mb-8">
-                  <div className="rounded-2xl border border-mars/[0.15] bg-mars/[0.03] overflow-hidden">
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-                    <div className="p-6 sm:p-8">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                        <p className="text-mars/70 text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold">{products[selectedIdx].tag}</p>
-                      </div>
+                {/* Question reference */}
+                <div className="rounded-xl bg-white/[0.03] border border-white/[0.08] px-5 py-4 mb-8 sm:mb-10">
+                  <div className="flex items-start gap-3">
+                    <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-mars/50 mt-2" />
+                    <div>
+                      <p className="text-white/25 text-[10px] uppercase tracking-[0.2em] mb-1">Your question</p>
+                      <p className="font-mercure italic text-white/50 text-[14px] leading-[1.5]">&ldquo;{askedQuestion}&rdquo;</p>
+                    </div>
+                    <button onClick={reset} className="shrink-0 ml-auto text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-mars/60 transition-colors">
+                      Change
+                    </button>
+                  </div>
+                </div>
 
-                      <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1] mb-3">
-                        {products[selectedIdx].theme}{" "}
-                        <span className="text-mars">on Mars</span>
-                      </h3>
+                {/* ── Configure your experience ── */}
+                <div className="space-y-6 mb-8 sm:mb-10">
 
-                      <p className="text-white/65 text-[14px] sm:text-[15px] leading-[1.6] mb-6 max-w-lg">{products[selectedIdx].pitch}</p>
+                  {/* Duration */}
+                  <div>
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Duration</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {DURATION_OPTIONS.map((opt, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSelectedDuration(i)}
+                          className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
+                            selectedDuration === i
+                              ? "border-mars/30 bg-mars/[0.06]"
+                              : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                          }`}
+                        >
+                          <p className={`text-[22px] sm:text-[26px] font-bold tracking-tight ${selectedDuration === i ? "text-white/90" : "text-white/50"}`}>{opt.hours}h</p>
+                          <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedDuration === i ? "text-mars/60" : "text-white/25"}`}>{opt.label}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                      <div className="flex flex-wrap gap-6 mb-6 text-[13px]">
-                        <div><span className="text-white/40">{products[selectedIdx].duration}</span></div>
-                        <div><span className="text-white/40">{products[selectedIdx].people}</span></div>
-                        <div><span className="text-white/40">{products[selectedIdx].price}</span></div>
-                      </div>
+                  {/* People */}
+                  <div>
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Group size</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {PEOPLE_OPTIONS.map((opt, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSelectedPeople(i)}
+                          className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
+                            selectedPeople === i
+                              ? "border-mars/30 bg-mars/[0.06]"
+                              : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                          }`}
+                        >
+                          <p className={`text-[18px] sm:text-[22px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                          <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedPeople === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                      <a href="#contact" className="inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.15em] text-mars hover:text-mars-light transition-colors">
-                        Book this play
-                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" /></svg>
-                      </a>
+                  {/* Venue */}
+                  <div>
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Venue</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { label: "Our stage", sub: "Národní 138/10, Praha" },
+                        { label: "Your venue", sub: "We come to you" },
+                      ].map((opt, i) => (
+                        <button
+                          key={i}
+                          className="rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15] py-4 px-4 text-center transition-all duration-300"
+                        >
+                          <p className="text-white/50 text-[14px] sm:text-[16px] font-bold">{opt.label}</p>
+                          <p className="text-white/25 text-[10px] mt-1">{opt.sub}</p>
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                {/* ═══ DIGITAL SIMULATION ═══ */}
-                <div className="relative mt-0">
-                  {!showDigital ? (
-                    <button
-                      onClick={() => openDigital()}
-                      className="w-full relative rounded-3xl border border-white/[0.12] bg-white/[0.05] hover:border-mars/[0.15] hover:bg-white/[0.06] transition-all duration-500 group overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.03)_0%,_transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="relative z-10 py-10 sm:py-14 px-8 sm:px-12 text-center">
-                        <p className="text-white/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] mb-5">Or try it right here</p>
-
-                        {/* Phone mockup — SVG with real stage UI */}
-                        <div className="inline-block mb-6 group-hover:scale-[1.03] transition-transform duration-700">
-                          <svg width="90" height="170" viewBox="0 0 90 170" fill="none" xmlns="http://www.w3.org/2000/svg" className="sm:w-[110px] sm:h-[208px] drop-shadow-[0_0_30px_rgba(255,85,0,0.08)] group-hover:drop-shadow-[0_0_40px_rgba(255,85,0,0.15)] transition-all duration-700">
-                            {/* Phone body */}
-                            <rect x="1" y="1" width="88" height="168" rx="18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" fill="#111" />
-                            <rect x="1" y="1" width="88" height="168" rx="18" stroke="url(#phoneGlow)" strokeWidth="1" className="opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                            {/* Dynamic Island */}
-                            <rect x="30" y="6" width="30" height="8" rx="4" fill="#0a0a0a" />
-                            {/* Screen area */}
-                            <rect x="5" y="5" width="80" height="160" rx="15" fill="#0a0a0a" />
-
-                            {/* -- Screen content -- */}
-                            {/* Play title */}
-                            <rect x="12" y="22" width="38" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
-                            <rect x="12" y="28" width="22" height="2" rx="1" fill="rgba(255,85,0,0.3)" />
-
-                            {/* Stage circle */}
-                            <circle cx="45" cy="68" r="24" stroke="rgba(255,255,255,0.08)" strokeWidth="0.75" />
-                            <circle cx="45" cy="68" r="17" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" strokeDasharray="2 2" />
-                            {/* Stage glow */}
-                            <circle cx="45" cy="68" r="24" fill="url(#stageGlow)" />
-
-                            {/* Characters on stage */}
-                            <circle cx="45" cy="52" r="3.5" fill="rgba(255,85,0,0.8)">
-                              <animate attributeName="cy" values="52;50;52" dur="3s" repeatCount="indefinite" />
-                            </circle>
-                            <circle cx="32" cy="72" r="2.5" fill="rgba(255,255,255,0.35)">
-                              <animate attributeName="cx" values="32;30;32" dur="4s" repeatCount="indefinite" />
-                            </circle>
-                            <circle cx="58" cy="70" r="2.5" fill="rgba(255,255,255,0.35)">
-                              <animate attributeName="cx" values="58;60;58" dur="3.5s" repeatCount="indefinite" />
-                            </circle>
-                            <circle cx="42" cy="82" r="2" fill="rgba(255,255,255,0.2)">
-                              <animate attributeName="cy" values="82;84;82" dur="4.5s" repeatCount="indefinite" />
-                            </circle>
-
-                            {/* Connection lines between characters */}
-                            <line x1="45" y1="55" x2="33" y2="70" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-                            <line x1="45" y1="55" x2="57" y2="68" stroke="rgba(255,85,0,0.1)" strokeWidth="0.5" />
-
-                            {/* Narration box */}
-                            <rect x="10" y="100" width="70" height="28" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-                            <rect x="15" y="107" width="52" height="2" rx="1" fill="rgba(255,255,255,0.1)" />
-                            <rect x="15" y="112" width="40" height="2" rx="1" fill="rgba(255,255,255,0.06)" />
-                            <rect x="15" y="117" width="30" height="2" rx="1" fill="rgba(255,255,255,0.04)" />
-
-                            {/* Step indicators */}
-                            <circle cx="36" cy="140" r="2.5" fill="rgba(255,85,0,0.5)" />
-                            <circle cx="45" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-                            <circle cx="54" cy="140" r="2" fill="rgba(255,255,255,0.1)" />
-
-                            {/* Progress bar */}
-                            <rect x="20" y="150" width="50" height="1.5" rx="0.75" fill="rgba(255,255,255,0.04)" />
-                            <rect x="20" y="150" width="18" height="1.5" rx="0.75" fill="rgba(255,85,0,0.3)" />
-
-                            {/* Gradients */}
-                            <defs>
-                              <radialGradient id="stageGlow" cx="0.5" cy="0.5" r="0.5">
-                                <stop offset="0%" stopColor="rgba(255,85,0,0.06)" />
-                                <stop offset="100%" stopColor="transparent" />
-                              </radialGradient>
-                              <linearGradient id="phoneGlow" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="rgba(255,85,0,0.4)" />
-                                <stop offset="50%" stopColor="rgba(255,85,0,0.1)" />
-                                <stop offset="100%" stopColor="transparent" />
-                              </linearGradient>
-                            </defs>
-                          </svg>
-                        </div>
-
-                        <p className="text-white/70 text-[18px] sm:text-[22px] md:text-[26px] font-bold tracking-[-0.02em] group-hover:text-white/70 transition-colors">
-                          Simulate this play digitally
-                        </p>
-                        <p className="font-mercure text-white/70 text-[12px] sm:text-[14px] mt-3 group-hover:text-white/65 transition-colors">
-                          AI-generated reality play you can walk through now
-                        </p>
-                        <div className="mt-6 inline-flex items-center gap-2 text-mars/60 text-[11px] font-bold uppercase tracking-[0.15em] group-hover:text-mars/70 transition-colors">
-                          <span>Open Playmaker</span>
-                          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
-                        </div>
-                      </div>
-                    </button>
-                  ) : (
-                    <div className="relative">
-                      <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
-
-                      {/* Header */}
-                      <div className="flex items-center justify-between mb-6 sm:mb-8">
-                        <div className="flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                          <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
-                        </div>
-                        <button onClick={() => setShowDigital(false)} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
-                          Close
-                        </button>
-                      </div>
-
-                      {/* Loading state */}
-                      {playLoading && (
-                        <div className="rounded-3xl border border-white/[0.12] bg-white/[0.05] overflow-hidden">
-                          <div className="text-center py-20 sm:py-28">
-                            <div className="inline-flex gap-2 mb-5">
-                              {[0, 1, 2].map((i) => (
-                                <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
-                              ))}
-                            </div>
-                            <p className="text-white/65 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* ── GAMING INTERFACE ── */}
-                      {play && !playLoading && (
-                        <div className="space-y-4">
-
-                          {/* Phase nav tabs */}
-                          <div className="flex items-center gap-1 rounded-xl bg-white/[0.05] border border-white/[0.12] p-1">
-                            {[
-                              { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
-                              { id: "stage" as const, label: "Stage", icon: "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15l3.5-4.5 2.5 3.01L14.5 9l4.5 6H5z" },
-                              { id: "perspectives" as const, label: "Perspectives", icon: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" },
-                            ].map((tab) => (
-                              <button
-                                key={tab.id}
-                                onClick={() => {
-                                  if (tab.id === "stage" && !simReady) return;
-                                  if (tab.id === "perspectives" && !simEnded) return;
-                                  setSimPhase(tab.id);
-                                }}
-                                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] sm:text-[14px] uppercase tracking-[0.15em] font-bold transition-all ${
-                                  simPhase === tab.id
-                                    ? "bg-white/[0.06] text-white/80"
-                                    : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
-                                    ? "text-white/25 cursor-not-allowed"
-                                    : "text-white/65 hover:text-white/60"
-                                }`}
-                              >
-                                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d={tab.icon} /></svg>
-                                {tab.label}
-                              </button>
-                            ))}
-                          </div>
-
-                          {/* ── CAST PHASE ── */}
-                          {simPhase === "cast" && (
-                            <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-
-                              {/* Play header */}
-                              <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
-                                <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
-                                <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
-                              </div>
-
-                              {/* Character cards */}
-                              <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                                <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                  {play.characters.map((char, i) => (
-                                    <div
-                                      key={i}
-                                      className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all"
-                                      style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}
-                                    >
-                                      <div className="flex items-center gap-2.5 mb-2.5">
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">
-                                          {char.name.charAt(0)}
-                                        </div>
-                                        <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
-                                      </div>
-                                      <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-
-                              {/* Play suggestion / narrative setup */}
-                              {play.image && (
-                                <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
-                                  <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
-                                  <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
-                                </div>
-                              )}
-
-                              {/* Start button */}
-                              <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                                <button
-                                  onClick={() => {
-                                    if (simReady) {
-                                      setSimPhase("stage");
-                                    }
-                                  }}
-                                  disabled={!simReady}
-                                  className={`w-full py-4 rounded-xl text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] transition-all ${
-                                    simReady
-                                      ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer"
-                                      : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
-                                  }`}
-                                >
-                                  {simReady ? (
-                                    <span className="flex items-center justify-center gap-2">
-                                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
-                                      Enter the Stage
-                                    </span>
-                                  ) : (
-                                    <span className="flex items-center justify-center gap-2">
-                                      <div className="inline-flex gap-1.5">
-                                        {[0, 1, 2].map((i) => (
-                                          <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
-                                        ))}
-                                      </div>
-                                      Choreographing the stage...
-                                    </span>
-                                  )}
-                                </button>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* ── STAGE PHASE ── */}
-                          {simPhase === "stage" && simReady && play.simulationSteps && (
-                            <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-                              <div className="p-4 sm:p-6">
-                                <StageSimulation
-                                  simulationSteps={play.simulationSteps}
-                                  characters={play.characters}
-                                  simulation={play.simulation}
-                                  onEnd={() => {
-                                    setSimEnded(true);
-                                    setSimPhase("perspectives");
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          )}
-
-                          {/* ── PERSPECTIVES PHASE ── */}
-                          {simPhase === "perspectives" && simEnded && (
-                            <div className="space-y-4">
-                              {/* Perspectives cards */}
-                              {play.perspectives && play.perspectives.length > 0 && (
-                                <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-                                  <div className="p-6 sm:p-8">
-                                    <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
-                                    <div className="space-y-3">
-                                      {play.perspectives.map((p, i) => {
-                                        const perspective = typeof p === "object" ? (p as Perspective) : null;
-                                        return (
-                                          <div
-                                            key={i}
-                                            className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all"
-                                            style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}
-                                          >
-                                            {perspective ? (
-                                              <div className="flex gap-3">
-                                                <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">
-                                                  {perspective.character.charAt(0)}
-                                                </div>
-                                                <div>
-                                                  <p className="text-mars/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
-                                                  <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
-                                                </div>
-                                              </div>
-                                            ) : (
-                                              <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
-                                            )}
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-
-                              {/* Follow-up question */}
-                              {play.followUpQuestion && (
-                                <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-                                  <div className="text-center py-8 sm:py-10 px-6">
-                                    <p className="text-white/30 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
-                                    <p className="font-mercure italic text-white/55 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
-                                    <button
-                                      onClick={() => {
-                                        const followUp = play.followUpQuestion!;
-                                        reset();
-                                        setTimeout(() => { setQuestion(followUp); }, 100);
-                                      }}
-                                      className="text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
-                                    >
-                                      Ask this question →
-                                    </button>
-                                  </div>
-                                </div>
-                              )}
-
-                              {/* Replay button */}
-                              <button
-                                onClick={() => { setSimEnded(false); setSimPhase("cast"); }}
-                                className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all"
-                              >
-                                ← Back to cast
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                {/* Price + CTA */}
+                <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                  <div className="px-6 sm:px-8 py-6 sm:py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                      <p className="text-white/90 text-[24px] sm:text-[28px] font-bold tracking-tight">
+                        from {DURATION_OPTIONS[selectedDuration].price}
+                      </p>
+                      <p className="text-white/30 text-[11px] mt-1">
+                        {DURATION_OPTIONS[selectedDuration].label} · {PEOPLE_OPTIONS[selectedPeople].label} people · Includes design, stage, guide
+                      </p>
                     </div>
-                  )}
+                    <a href="#contact" className="shrink-0 px-8 py-3.5 rounded-xl bg-mars hover:bg-mars-light text-white text-[13px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]">
+                      Book this experience
+                    </a>
+                  </div>
                 </div>
-              </>
+
+                {/* Start over */}
+                <div className="text-center mt-6">
+                  <button onClick={reset} className="text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-mars/60 transition-colors">
+                    Start over with a different question
+                  </button>
+                </div>
+              </div>
             )}
 
           </div>
