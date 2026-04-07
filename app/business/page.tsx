@@ -963,9 +963,10 @@ export default function BusinessPage() {
                 <img src="/logo.png" alt="Stage On Mars" className="h-14 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </button>
               {/* Tagline — same style as the screenshot */}
-              <p className="text-white text-[10px] sm:text-[14px] md:text-[16px] uppercase tracking-[0.15em] leading-[1.8]">
-                Bring a question. Play it out live on stage.<br />
-                <span className="text-mars font-bold">What you see changes what you do next.</span>
+              <p className="text-white text-[16px] sm:text-[22px] md:text-[28px] font-bold uppercase tracking-[0.12em] leading-[1.6]">
+                Bring a question.<br />
+                Play it out live on stage.<br />
+                <span className="text-mars">See what matters.</span>
               </p>
             </div>
           )}
@@ -1655,24 +1656,39 @@ export default function BusinessPage() {
                         </div>
                       </div>
                       {/* Question — big and central */}
-                      <div className="px-5 sm:px-8 py-8 sm:py-10 text-center">
+                      <div className="px-5 sm:px-8 pt-5 sm:pt-6 pb-6 sm:pb-8 text-center">
+                        <p className="text-mars/40 text-[7px] sm:text-[8px] uppercase tracking-[0.25em] font-bold mb-3">Your question</p>
                         <p className="text-white font-mercure italic text-[20px] sm:text-[26px] leading-[1.3]">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
                       </div>
 
-                      {/* Minimal interface strip */}
-                      <div className="border-t border-white/[0.06] px-4 sm:px-6 py-3 flex items-center justify-between">
+                      {/* Characters bar */}
+                      <div className="border-t border-white/[0.06] px-4 sm:px-6 py-2.5 flex items-center gap-3">
+                        <span className="text-white/20 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider shrink-0">Characters</span>
                         <div className="flex items-center gap-2">
-                          {["You","Need","Growth","Fear","Risk"].map((name, i) => (
-                            <div key={name} className={`w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rounded-full ${i === 0 ? "bg-yellow-400/70" : i === 1 ? "bg-mars/70" : "bg-white/20"}`} title={name} />
+                          {[
+                            { name: "You", color: "bg-yellow-400/70" },
+                            { name: "Need", color: "bg-mars/70" },
+                            { name: "Growth", color: "bg-white/30" },
+                            { name: "Fear", color: "bg-mars/50" },
+                            { name: "Risk", color: "bg-mars/40" },
+                          ].map((c) => (
+                            <div key={c.name} className="flex items-center gap-1">
+                              <div className={`w-[7px] h-[7px] sm:w-[8px] sm:h-[8px] rounded-full ${c.color}`} />
+                              <span className="text-white/30 text-[7px] sm:text-[8px]">{c.name}</span>
+                            </div>
                           ))}
-                          <span className="text-white/25 text-[8px] sm:text-[9px] font-bold ml-1">+2</span>
+                          <span className="text-white/15 text-[7px] sm:text-[8px]">+2</span>
                         </div>
+                      </div>
+
+                      {/* Timeline bar */}
+                      <div className="border-t border-white/[0.06] px-4 sm:px-6 py-2.5 flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
                           {[1,2,3,4,5,6,7].map((i) => (
-                            <div key={i} className={`w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-full ${i <= 3 ? "bg-mars/40" : "bg-white/[0.08]"}`} />
+                            <div key={i} className={`w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] rounded-full ${i <= 3 ? "bg-mars/40" : "bg-white/[0.06]"}`} />
                           ))}
                         </div>
-                        <span className="text-white/20 text-[8px] sm:text-[9px] font-bold uppercase tracking-wider">Step 3/7</span>
+                        <span className="text-white/20 text-[8px] sm:text-[9px] font-bold uppercase tracking-wider">Step 3 / 7</span>
                       </div>
                     </div>
                   </div>
