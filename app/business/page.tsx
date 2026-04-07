@@ -735,7 +735,7 @@ function deriveExperience(question: string, company: string): Experience {
   bizPitch = bizPitch.replace(/\{co\}/g, co).replace(/\{theme\}/g, bizTheme.toLowerCase());
 
   return {
-    name: `${bizTheme} on Mars`,
+    name: company ? `${company} on Mars` : `${bizTheme} on Mars`,
     theme: bizTheme,
     pitch: bizPitch,
   };
@@ -756,7 +756,7 @@ export default function BusinessPage() {
   const [selectedPeople, setSelectedPeople] = useState(1); // default "Team"
   const [selectedDuration, setSelectedDuration] = useState(1); // default "Extended"
   const [selectedFormat, setSelectedFormat] = useState(0); // default "Free Play"
-  const [selectedSpecial, setSelectedSpecial] = useState<number | null>(null); // optional
+  const [selectedSpecials, setSelectedSpecials] = useState<Set<number>>(new Set()); // optional, multi-select
   const [selectedVenue, setSelectedVenue] = useState(0); // default "Flagship stage"
   const [play, setPlay] = useState<Play | null>(null);
   const [playLoading, setPlayLoading] = useState(false);
@@ -774,6 +774,9 @@ export default function BusinessPage() {
   // Contact form
   const [formData, setFormData] = useState({ name: "", email: "", company: companyName, question: "" });
   const [sent, setSent] = useState(false);
+  const [cardName, setCardName] = useState("");
+  const [cardEmail, setCardEmail] = useState("");
+  const [cardSent, setCardSent] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setEntered(true), 500);
@@ -1472,8 +1475,8 @@ export default function BusinessPage() {
                 <div className="text-center mb-8 sm:mb-12">
                   <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-4">Your experience</p>
                   <h2 className="text-[36px] sm:text-[52px] font-black tracking-[-0.04em] leading-[0.95] mb-4">
-                    <span className="text-white/90">{experience.theme}</span>{" "}
-                    <span className="text-mars">on Mars</span>
+                    <span className="text-white/90">{companyName || experience.theme}</span>{" "}
+                    <span className="text-mars font-mercure italic">on Mars</span>
                   </h2>
                   <p className="text-white/50 text-[14px] sm:text-[16px] leading-[1.6] max-w-lg mx-auto">
                     {experience.pitch}
@@ -1563,22 +1566,36 @@ export default function BusinessPage() {
                   {/* Special plays */}
                   <div>
                     <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-1">Special plays</p>
-                    <p className="text-white/15 text-[10px] mb-3">Optional — add a structured play to your experience</p>
-                    <div className="grid grid-cols-1 gap-2">
-                      {SPECIAL_PLAY_OPTIONS.map((opt, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setSelectedSpecial(selectedSpecial === i ? null : i)}
-                          className={`rounded-xl border py-3.5 px-5 text-left transition-all duration-300 ${
-                            selectedSpecial === i
-                              ? "border-mars/30 bg-mars/[0.06]"
-                              : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
-                          }`}
-                        >
-                          <p className={`text-[14px] sm:text-[15px] font-bold ${selectedSpecial === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
-                          <p className={`text-[11px] mt-1 leading-[1.4] ${selectedSpecial === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
-                        </button>
-                      ))}
+                    <p className="text-white/15 text-[10px] mb-3">Optional — add to your experience</p>
+                    <div className="space-y-1.5">
+                      {SPECIAL_PLAY_OPTIONS.map((opt, i) => {
+                        const active = selectedSpecials.has(i);
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => {
+                              const next = new Set(selectedSpecials);
+                              if (next.has(i)) next.delete(i); else next.add(i);
+                              setSelectedSpecials(next);
+                            }}
+                            className={`w-full flex items-center gap-3 rounded-lg border px-4 py-2.5 text-left transition-all duration-300 ${
+                              active
+                                ? "border-mars/25 bg-mars/[0.04]"
+                                : "border-white/[0.06] bg-transparent hover:border-white/[0.12]"
+                            }`}
+                          >
+                            <div className={`shrink-0 w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-all ${
+                              active ? "border-mars/60 bg-mars/20" : "border-white/20"
+                            }`}>
+                              {active && <svg className="w-2.5 h-2.5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>}
+                            </div>
+                            <div className="min-w-0">
+                              <span className={`text-[12px] sm:text-[13px] font-bold ${active ? "text-white/80" : "text-white/40"}`}>{opt.label}</span>
+                              <span className={`text-[10px] sm:text-[11px] ml-2 ${active ? "text-white/30" : "text-white/15"}`}>{opt.description}</span>
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -1604,22 +1621,80 @@ export default function BusinessPage() {
                   </div>
                 </div>
 
-                {/* Price + CTA */}
+                {/* Play Card + Contact */}
                 <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
                   <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-                  <div className="px-6 sm:px-8 py-6 sm:py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div>
-                      <p className="text-white/90 text-[24px] sm:text-[28px] font-bold tracking-tight">
-                        from {DURATION_OPTIONS[selectedDuration].price}
-                      </p>
-                      <p className="text-white/30 text-[11px] mt-1">
-                        {PEOPLE_OPTIONS[selectedPeople].label} people · {DURATION_OPTIONS[selectedDuration].label} · {FORMAT_OPTIONS[selectedFormat].label}{selectedSpecial !== null ? ` + ${SPECIAL_PLAY_OPTIONS[selectedSpecial].label}` : ""} · {VENUE_OPTIONS[selectedVenue].label}
-                      </p>
+
+                  {!cardSent ? (
+                    <div className="px-6 sm:px-8 py-6 sm:py-8">
+                      {/* Summary */}
+                      <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-4">Your Play Card</p>
+                      <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5 mb-6">
+                        <p className="text-white/80 text-[18px] sm:text-[22px] font-black tracking-tight mb-1">
+                          {companyName || experience.theme} <span className="text-mars font-mercure italic">on Mars</span>
+                        </p>
+                        <p className="text-white/30 text-[11px] leading-[1.5] mb-3">{experience.pitch}</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-white/25">
+                          <span>{PEOPLE_OPTIONS[selectedPeople].label} people</span>
+                          <span>·</span>
+                          <span>{DURATION_OPTIONS[selectedDuration].label}</span>
+                          <span>·</span>
+                          <span>{FORMAT_OPTIONS[selectedFormat].label}</span>
+                          {selectedSpecials.size > 0 && <>
+                            <span>·</span>
+                            <span>{[...selectedSpecials].map(i => SPECIAL_PLAY_OPTIONS[i].label).join(", ")}</span>
+                          </>}
+                          <span>·</span>
+                          <span>{VENUE_OPTIONS[selectedVenue].label}</span>
+                        </div>
+                      </div>
+
+                      {/* Contact fields */}
+                      <p className="text-white/40 text-[12px] mb-4">We&#39;ll send you a beautiful Play Card and get back to you with a tailored offer.</p>
+                      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                        <input
+                          value={cardName}
+                          onChange={(e) => setCardName(e.target.value)}
+                          placeholder="Your name"
+                          className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                        />
+                        <input
+                          value={cardEmail}
+                          onChange={(e) => setCardEmail(e.target.value)}
+                          type="email"
+                          placeholder="Your email"
+                          className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                        />
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (!cardEmail.trim() || !cardName.trim()) return;
+                          const subject = encodeURIComponent(`Play Card: ${companyName || experience.theme} on Mars`);
+                          const body = encodeURIComponent(
+                            `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyName || "—"}\n\nQuestion: ${askedQuestion}\n\nExperience: ${companyName || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nDuration: ${DURATION_OPTIONS[selectedDuration].label}\nFormat: ${FORMAT_OPTIONS[selectedFormat].label}\n${selectedSpecials.size > 0 ? `Special plays: ${[...selectedSpecials].map(i => SPECIAL_PLAY_OPTIONS[i].label).join(", ")}\n` : ""}Venue: ${VENUE_OPTIONS[selectedVenue].label}`
+                          );
+                          window.location.href = `mailto:play@stageonmars.com?subject=${subject}&body=${body}`;
+                          setCardSent(true);
+                        }}
+                        disabled={!cardEmail.trim() || !cardName.trim()}
+                        className={`w-full py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all ${
+                          cardEmail.trim() && cardName.trim()
+                            ? "bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]"
+                            : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                        }`}
+                      >
+                        Send my Play Card
+                      </button>
                     </div>
-                    <a href="#contact" className="shrink-0 px-8 py-3.5 rounded-xl bg-mars hover:bg-mars-light text-white text-[13px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]">
-                      Book this experience
-                    </a>
-                  </div>
+                  ) : (
+                    <div className="px-6 sm:px-8 py-8 sm:py-10 text-center">
+                      <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
+                        <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                      </div>
+                      <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Play Card sent</p>
+                      <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Digital Playmaker teaser */}
