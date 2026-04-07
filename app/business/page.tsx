@@ -1633,12 +1633,18 @@ export default function BusinessPage() {
             }}
             className="w-full group"
           >
-            <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.04] transition-all duration-500">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-              <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-5 sm:pb-6 text-center">
+            <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#1c1c1e] border border-white/[0.10] transition-all duration-500 shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+              {/* Window chrome */}
+              <div className="flex items-center gap-[6px] px-4 pt-3 pb-2">
+                <div className="w-[8px] h-[8px] rounded-full bg-[#ff5f57]" />
+                <div className="w-[8px] h-[8px] rounded-full bg-[#febc2e]" />
+                <div className="w-[8px] h-[8px] rounded-full bg-[#28c840]" />
+              </div>
+              {/* Content */}
+              <div className="px-6 sm:px-8 pt-4 sm:pt-5 pb-6 sm:pb-7 text-center">
                 <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2">The Systemic Playmaker</p>
-                <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.4] mb-5">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
-                <p className="text-white font-mercure italic text-[20px] sm:text-[28px] leading-[1.25] mb-5">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
+                <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.4] mb-6">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
+                <p className="text-white font-mercure italic text-[20px] sm:text-[28px] leading-[1.25] mb-6">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
                 <div className="w-full py-3.5 sm:py-4 rounded-xl bg-mars text-center shadow-[0_0_30px_rgba(255,85,0,0.2)] group-hover:brightness-110 transition-all">
                   <span className="text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em]">Play this question →</span>
                 </div>
