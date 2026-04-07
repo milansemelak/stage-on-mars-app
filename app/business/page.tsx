@@ -909,7 +909,7 @@ export default function BusinessPage() {
 
 
       {/* ── HERO: The question IS the experience ── */}
-      <section className={`${submitted ? "pt-16 sm:pt-24" : "sm:min-h-[90vh] sm:flex"} flex flex-col items-center sm:justify-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
+      <section className={`${submitted ? "pt-16 sm:pt-24" : "sm:min-h-[90vh] sm:justify-center"} flex flex-col items-center px-4 pt-6 sm:pt-0 relative overflow-hidden transition-all duration-700`}>
 
         {/* Abstract stage light — dramatic cone from top */}
         {!submitted && (
@@ -960,12 +960,12 @@ export default function BusinessPage() {
             <div className="text-center mb-6 sm:mb-10">
               {/* Logo */}
               <button onClick={() => { reset(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="mb-4 sm:mb-5 cursor-pointer" style={{ animation: "float 6s ease-in-out infinite" }}>
-                <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
+                <img src="/logo.png" alt="Stage On Mars" className="h-14 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </button>
               {/* Tagline — same style as the screenshot */}
-              <p className="text-white/25 text-[11px] sm:text-[13px] md:text-[15px] uppercase tracking-[0.12em] leading-[1.6]">
+              <p className="text-white text-[10px] sm:text-[14px] md:text-[16px] uppercase tracking-[0.15em] leading-[1.8]">
                 Bring a question. Play it out live on stage.<br />
-                <span className="text-mars/40">What you see changes what you do next.</span>
+                <span className="text-mars font-bold">What you see changes what you do next.</span>
               </p>
             </div>
           )}
@@ -976,39 +976,34 @@ export default function BusinessPage() {
             <div className="relative group/input">
               <div className="absolute -inset-12 sm:-inset-20 rounded-3xl opacity-60 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.12) 0%, transparent 70%)", animation: "pulse 4s ease-in-out infinite" }} />
 
-              <div className="relative rounded-2xl border border-mars/40 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_80px_rgba(255,85,0,0.12),0_0_160px_rgba(255,85,0,0.06)] group-focus-within/input:border-mars/60 group-focus-within/input:shadow-[0_0_100px_rgba(255,85,0,0.2),0_0_200px_rgba(255,85,0,0.08)]">
-                <div className="h-[1.5px] bg-gradient-to-r from-transparent via-mars/50 to-transparent" />
-                <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
+              <div className="relative rounded-2xl border border-mars/50 bg-white/[0.06] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_80px_rgba(255,85,0,0.15),0_0_160px_rgba(255,85,0,0.08)] group-focus-within/input:border-mars/70 group-focus-within/input:shadow-[0_0_100px_rgba(255,85,0,0.25),0_0_200px_rgba(255,85,0,0.1)] min-h-[55dvh] sm:min-h-0 flex flex-col">
+                <div className="px-5 sm:px-7 pt-6 sm:pt-6 pb-0 flex-1 flex flex-col">
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="What question will decide your next move?"
                     rows={2}
-                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                    className="w-full flex-1 min-h-[100px] sm:min-h-0 bg-transparent border-0 px-0 py-0 text-white text-[22px] sm:text-[24px] placeholder:text-white/40 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                     }}
                   />
-                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.06]">
-                    <input
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="Company name (optional)"
-                      className="flex-1 bg-transparent border-0 px-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[14px]"
-                    />
-                    <button
-                      onClick={generate}
-                      disabled={!question.trim()}
-                      className={`shrink-0 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.15em] transition-all ${
-                        question.trim()
-                          ? "bg-mars hover:bg-mars-light text-white"
-                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
-                      }`}
-                    >
-                      Build your play
-                    </button>
-                  </div>
+                </div>
+                <div className="px-5 sm:px-7 pb-5 sm:pb-5 space-y-3">
+                  <input
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Company name"
+                    className="w-full bg-transparent border-0 px-0 py-2 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px] sm:text-[14px] border-t border-white/[0.06]"
+                  />
+                  <button
+                    onClick={generate}
+                    disabled={!question.trim()}
+                    className="w-full py-4 sm:py-3.5 rounded-xl font-bold text-[15px] sm:text-[15px] uppercase tracking-[0.15em] transition-all bg-mars hover:bg-mars-light text-white shadow-[0_0_40px_rgba(255,85,0,0.3)] disabled:opacity-40"
+                  >
+                    Build your play
+                  </button>
                 </div>
               </div>
             </div>
@@ -1221,9 +1216,9 @@ export default function BusinessPage() {
 
           {/* ── BESTSELLING PLAYS — compact ready-made options ── */}
           {!submitted && (
-            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-10 space-y-3">
+            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-10 pb-8 sm:pb-0 space-y-3">
               <div className="px-1 mb-3">
-                <p className="text-white/25 text-[10px] uppercase tracking-[0.4em]">Or choose a ready-made experience</p>
+                <p className="text-white/50 text-[11px] uppercase tracking-[0.3em] font-bold">Or choose a ready-made experience</p>
               </div>
               {[
                 { theme: "Direction", photo: "/luxury2.jpg", photoPos: "50% 30%", price: "from €2 900", pitch: "Where is your company really heading — and what's pulling it off course?" },
@@ -1239,12 +1234,12 @@ export default function BusinessPage() {
                   <div className="flex-1 py-3 pr-4 sm:pr-5">
                     <div className="flex items-center justify-between gap-3 mb-1">
                       <h4 className="text-[16px] sm:text-[18px] font-bold tracking-[-0.02em] leading-[1]">
-                        <span className="text-white/70 group-hover:text-white/90 transition-colors">The {play.theme}</span>{" "}
-                        <span className="text-mars/40 group-hover:text-mars/60 transition-colors">Play</span>
+                        <span className="text-white/90 group-hover:text-white transition-colors">The {play.theme}</span>{" "}
+                        <span className="text-mars/60 group-hover:text-mars transition-colors">Play</span>
                       </h4>
                       <p className="text-white/25 text-[11px] font-bold tracking-tight shrink-0">{play.price}</p>
                     </div>
-                    <p className="text-white/30 text-[12px] leading-[1.5] group-hover:text-white/40 transition-colors">{play.pitch}</p>
+                    <p className="text-white/50 text-[12px] leading-[1.5] group-hover:text-white/60 transition-colors">{play.pitch}</p>
                   </div>
                 </a>
               ))}
@@ -1550,17 +1545,17 @@ export default function BusinessPage() {
               <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
                 <div className="text-center">
                   <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
-                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Reality plays</p>
+                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Reality plays</p>
                 </div>
-                <div className="w-px h-10 bg-white/[0.08]" />
+                <div className="w-px h-10 bg-white/[0.12]" />
                 <div className="text-center">
                   <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
-                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Countries</p>
+                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Countries</p>
                 </div>
-                <div className="w-px h-10 bg-white/[0.08]" />
+                <div className="w-px h-10 bg-white/[0.12]" />
                 <div className="text-center">
                   <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
-                  <p className="text-white/30 text-[9px] uppercase tracking-[0.2em] mt-1">Founded</p>
+                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Founded</p>
                 </div>
               </div>
 
@@ -1573,23 +1568,23 @@ export default function BusinessPage() {
               <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-6 sm:mb-8" />
 
               {/* Trusted by — refined text list */}
-              <p className="text-white/25 text-[9px] uppercase tracking-[0.3em] text-center mb-4">Trusted by</p>
-              <p className="text-white/40 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
-                Forbes{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                Škoda{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                YPO{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                PwC{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                O₂{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                UniCredit{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                Oktagon MMA{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                House of Lobkowicz{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                London Business School{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                Česká spořitelna{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                Lasvit{" "}<span className="text-white/10 mx-1">·</span>{" "}
-                Ipsen{" "}<span className="text-white/10 mx-1">·</span>{" "}
+              <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] text-center mb-4 font-bold">Trusted by</p>
+              <p className="text-white/70 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
+                Forbes{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                Škoda{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                YPO{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                PwC{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                O₂{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                UniCredit{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                Oktagon MMA{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                House of Lobkowicz{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                London Business School{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                Česká spořitelna{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                Lasvit{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                Ipsen{" "}<span className="text-white/25 mx-1">·</span>{" "}
                 MSD
               </p>
-              <p className="text-white/15 text-[10px] text-center mt-4 font-mercure italic">
+              <p className="text-white/40 text-[10px] text-center mt-4 font-mercure italic">
                 London · Zurich · Bucharest · Prague
               </p>
             </div>
