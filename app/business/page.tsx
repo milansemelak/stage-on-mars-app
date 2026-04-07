@@ -923,6 +923,13 @@ export default function BusinessPage() {
 
         <div className={`relative z-10 w-full flex flex-col items-center transition-all duration-[1500ms] delay-[800ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
+          {/* Clickable logo when in results — natural "back home" */}
+          {submitted && (
+            <button onClick={reset} className="mb-6 group/logo cursor-pointer">
+              <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert opacity-40 group-hover/logo:opacity-80 transition-opacity" />
+            </button>
+          )}
+
           {!submitted && (
             <div className="text-center mb-10 sm:mb-14">
               {/* Logo with subtle float */}
@@ -935,6 +942,9 @@ export default function BusinessPage() {
                 <br />
                 <span className="text-mars">See your way forward.</span>
               </h1>
+              <p className="text-white/30 text-[14px] sm:text-[16px] mt-5 sm:mt-6 text-center leading-relaxed max-w-md mx-auto">
+                You bring a question. Your team plays it out live on stage. What you see changes how you decide.
+              </p>
             </div>
           )}
 
@@ -1169,53 +1179,40 @@ export default function BusinessPage() {
             </div>
           )}
 
-          {/* ── BESTSELLING PLAYS — ready-made options ── */}
+          {/* ── BESTSELLING PLAYS — compact ready-made options ── */}
           {!submitted && (
-            <div className="w-full max-w-3xl mx-auto mt-10 sm:mt-14 space-y-5">
-              <div className="px-1 mb-1">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-8 sm:mb-10" />
-                <p className="text-white/30 text-[10px] uppercase tracking-[0.4em]">Or choose a ready-made play</p>
+            <div className="w-full max-w-3xl mx-auto mt-10 sm:mt-14 space-y-3">
+              <div className="px-1 mb-2">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6 sm:mb-8" />
+                <p className="text-white/25 text-[10px] uppercase tracking-[0.4em]">Or choose a ready-made experience</p>
               </div>
               {[
-                { theme: "Strategy", photo: "/luxury2.jpg", photoPos: "50% 30%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "Where is your company really heading — and what's pulling it off course? Your team maps the forces on stage." },
-                { theme: "Vision", photo: "/luxury4.jpg", photoPos: "50% 50%", duration: "Half-day", people: "8–30", price: "from €2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it." },
-                { theme: "Creativity", photo: "/luxury1.jpg", photoPos: "50% 40%", duration: "Half-day", people: "8–25", price: "from €2 200", pitch: "The creative soul of your company. What feeds it, what starves it. Your team plays creativity vs. control." },
+                { theme: "Direction", photo: "/luxury2.jpg", photoPos: "50% 30%", price: "from €2 900", pitch: "Where is your company really heading — and what's pulling it off course?" },
+                { theme: "Future", photo: "/luxury4.jpg", photoPos: "50% 50%", price: "from €2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage." },
+                { theme: "Creation", photo: "/luxury1.jpg", photoPos: "50% 40%", price: "from €2 200", pitch: "The creative soul of your company. What feeds it, what starves it." },
               ].map((play, i) => (
-                <div key={i} className="group rounded-2xl border border-white/[0.08] hover:border-mars/15 overflow-hidden bg-white/[0.02] transition-all duration-500">
-                  {/* Photo — contained */}
-                  <div className="relative h-[180px] sm:h-[220px] overflow-hidden">
-                    <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.02] group-hover:scale-100" style={{ objectPosition: play.photoPos }} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-[#0a0a0a]/20" />
+                <a key={i} href="#contact" className="group flex items-center gap-4 rounded-xl border border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02] overflow-hidden transition-all duration-500">
+                  {/* Small photo */}
+                  <div className="relative w-[80px] sm:w-[100px] h-[80px] sm:h-[90px] shrink-0 overflow-hidden">
+                    <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" style={{ objectPosition: play.photoPos }} />
                   </div>
-                  {/* Product details */}
-                  <div className="p-5 sm:p-6">
-                    <div className="flex items-start justify-between gap-4 mb-3">
-                      <h4 className="text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] leading-[1]">
-                        <span className="text-white/90">{play.theme}</span>{" "}
-                        <span className="text-mars/60">on Mars</span>
+                  {/* Info */}
+                  <div className="flex-1 py-3 pr-4 sm:pr-5">
+                    <div className="flex items-center justify-between gap-3 mb-1">
+                      <h4 className="text-[16px] sm:text-[18px] font-bold tracking-[-0.02em] leading-[1]">
+                        <span className="text-white/70 group-hover:text-white/90 transition-colors">The {play.theme}</span>{" "}
+                        <span className="text-mars/40 group-hover:text-mars/60 transition-colors">Play</span>
                       </h4>
-                      <p className="text-white/40 text-[13px] sm:text-[14px] font-bold tracking-tight shrink-0 pt-1">{play.price}</p>
+                      <p className="text-white/25 text-[11px] font-bold tracking-tight shrink-0">{play.price}</p>
                     </div>
-                    {/* Specs row */}
-                    <div className="flex items-center gap-3 text-white/30 text-[10px] uppercase tracking-[0.15em] mb-4">
-                      <span>{play.duration}</span>
-                      <span className="text-white/10">·</span>
-                      <span>{play.people} people</span>
-                      <span className="text-white/10">·</span>
-                      <span>On stage or at your venue</span>
-                    </div>
-                    <p className="text-white/45 text-[13px] leading-[1.6] mb-5">{play.pitch}</p>
-                    <a href="#contact" className="inline-block px-6 py-2.5 rounded-lg border border-mars/20 text-mars/70 text-[11px] uppercase tracking-[0.2em] font-bold hover:bg-mars/10 hover:text-mars hover:border-mars/30 transition-all duration-300">
-                      Book this play
-                    </a>
+                    <p className="text-white/30 text-[12px] leading-[1.5] group-hover:text-white/40 transition-colors">{play.pitch}</p>
                   </div>
-                </div>
+                </a>
               ))}
 
               {/* ── DIGITAL PLAYMAKER — taste of the method ── */}
               {!inlineDigital && (
-                <div className="pt-4">
-                  <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-8 sm:mb-10" />
+                <div className="pt-8">
                   <button
                     onClick={() => {
                       const q = question.trim() || "What does my company need right now?";
@@ -1225,31 +1222,202 @@ export default function BusinessPage() {
                       openDigital(q);
                       setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
                     }}
-                    className="w-full group transition-all duration-500 hover:scale-[1.005]"
+                    className="w-full group"
                   >
-                    <div className="relative rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden hover:border-white/[0.15] transition-all">
-                      <div className="px-6 sm:px-8 py-8 sm:py-10">
-                        <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-5">Want to see how it works?</p>
-
-                        {/* Mini preview */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {["The Founder", "Safety", "The Unspoken", "Momentum"].map((name, i) => (
-                            <div key={i} className="flex items-center gap-1.5 rounded-md bg-white/[0.04] border border-white/[0.06] px-2.5 py-1">
-                              <div className={`w-1.5 h-1.5 rounded-full ${i === 0 ? "bg-mars/50" : "bg-white/20"}`} />
-                              <span className="text-white/35 text-[10px]">{name}</span>
-                            </div>
-                          ))}
+                    <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light">
+                      <div className="flex items-center gap-4 sm:gap-5 px-4 sm:px-6 py-4 sm:py-5">
+                        {/* ── Left: text + CTA ── */}
+                        <div className="flex-1 min-w-0 text-center">
+                          <h3 className="text-[18px] sm:text-[22px] font-black text-white tracking-[-0.03em] leading-[1.1]">
+                            Digital Playmaker
+                          </h3>
+                          <p className="text-[#1a0800]/60 text-[11px] sm:text-[12px] mt-1.5 leading-[1.5] max-w-[260px] mx-auto">
+                            AI turns your question into a live simulation. Characters, stage, perspectives. 30&nbsp;sec. Free.
+                          </p>
+                          <div className="mt-3">
+                            <span className="inline-flex items-center px-4 py-1.5 rounded-lg bg-[#0a0a0a] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
+                              Try it free
+                            </span>
+                          </div>
                         </div>
-                        <p className="text-white/20 text-[11px] font-mercure italic mb-6 max-w-md">
-                          <span className="text-mars/30">The Unspoken</span> moves to the center. Safety steps back. The Founder watches but doesn&apos;t intervene...
-                        </p>
 
-                        <h3 className="text-[16px] sm:text-[18px] font-bold tracking-[-0.02em] text-white/50 group-hover:text-white/70 transition-colors">
-                          Try a digital simulation of your question
-                        </h3>
-                        <p className="text-white/25 text-[12px] mt-1.5">
-                          AI builds a play from your question. Characters, stage, perspectives. 30 seconds.
-                        </p>
+                        {/* ── Right: landscape iPad mockup ── */}
+                        <div className="shrink-0 w-[180px] sm:w-[220px] relative">
+                          <div className="relative rounded-[8px] sm:rounded-[10px] bg-[#1a1a1c] p-[2px] shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+                            {/* Camera dot */}
+                            <div className="absolute top-1/2 -translate-y-1/2 left-[4px] w-[3px] h-[3px] rounded-full bg-[#2a2a2c] z-20" />
+                            {/* Screen */}
+                            <div className="rounded-[6px] sm:rounded-[8px] overflow-hidden bg-[#0a0a0c]">
+                              {/* App bar */}
+                              <div className="flex items-center justify-between px-2 pt-1.5 pb-0.5">
+                                <div className="flex items-center gap-1">
+                                  <div className="flex gap-[2px]">
+                                    <div className="w-[3px] h-[3px] rounded-full bg-[#ff5f57]" />
+                                    <div className="w-[3px] h-[3px] rounded-full bg-[#febc2e]" />
+                                    <div className="w-[3px] h-[3px] rounded-full bg-[#28c840]" />
+                                  </div>
+                                  <span className="text-[3.5px] text-white/30 font-bold tracking-wider ml-0.5">PLAYMAKER</span>
+                                </div>
+                                <div className="flex items-center gap-0.5">
+                                  <div className="w-[2px] h-[2px] rounded-full bg-emerald-400/80 animate-pulse" />
+                                  <span className="text-[3px] text-emerald-400/50 font-bold">LIVE</span>
+                                </div>
+                              </div>
+                              {/* Stage */}
+                              <div className="relative h-[70px] sm:h-[85px]">
+                                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid meet">
+                                  <defs>
+                                    <filter id="pm-glow" x="-100%" y="-100%" width="300%" height="300%">
+                                      <feGaussianBlur stdDeviation="1.5" result="blur" />
+                                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                                    </filter>
+                                    <filter id="pm-halo" x="-200%" y="-200%" width="500%" height="500%">
+                                      <feGaussianBlur stdDeviation="3" />
+                                    </filter>
+                                    <radialGradient id="pm-bg" cx="50%" cy="50%">
+                                      <stop offset="0%" stopColor="rgba(255,85,0,0.06)" />
+                                      <stop offset="100%" stopColor="transparent" />
+                                    </radialGradient>
+                                  </defs>
+
+                                  {/* Background glow */}
+                                  <circle cx="80" cy="50" r="45" fill="url(#pm-bg)" />
+
+                                  {/* LED ring — double */}
+                                  <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="6" />
+                                  <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="0.6" strokeDasharray="2 4">
+                                    <animate attributeName="stroke-dashoffset" values="0;60" dur="20s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.25)" strokeWidth="0.4">
+                                    <animate attributeName="stroke-opacity" values="0.25;0.1;0.25" dur="3s" repeatCount="indefinite" />
+                                  </circle>
+
+                                  {/* Connection lines */}
+                                  <line x1="65" y1="30" x2="100" y2="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.4">
+                                    <animate attributeName="x1" values="65;70;65" dur="8s" repeatCount="indefinite" />
+                                    <animate attributeName="x2" values="100;94;100" dur="9s" repeatCount="indefinite" />
+                                  </line>
+                                  <line x1="65" y1="30" x2="80" y2="50" stroke="rgba(255,85,0,0.06)" strokeWidth="0.4">
+                                    <animate attributeName="x1" values="65;70;65" dur="8s" repeatCount="indefinite" />
+                                  </line>
+                                  <line x1="100" y1="28" x2="80" y2="50" stroke="rgba(255,255,255,0.03)" strokeWidth="0.4">
+                                    <animate attributeName="x1" values="100;94;100" dur="9s" repeatCount="indefinite" />
+                                  </line>
+                                  <line x1="80" y1="50" x2="55" y2="60" stroke="rgba(255,85,0,0.05)" strokeWidth="0.3" />
+                                  <line x1="80" y1="50" x2="110" y2="55" stroke="rgba(255,85,0,0.05)" strokeWidth="0.3" />
+
+                                  {/* You — yellow, prominent */}
+                                  <circle cx="65" cy="30" r="5" fill="rgba(255,215,0,0.08)" filter="url(#pm-halo)">
+                                    <animate attributeName="cx" values="65;70;65" dur="8s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="30;28;30" dur="6s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="65" cy="30" r="3.2" fill="rgba(255,215,0,0.85)" filter="url(#pm-glow)">
+                                    <animate attributeName="cx" values="65;70;65" dur="8s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="30;28;30" dur="6s" repeatCount="indefinite" />
+                                  </circle>
+                                  <text x="65" y="24" textAnchor="middle" fill="rgba(255,215,0,0.6)" fontSize="3.5" fontStyle="italic">
+                                    <animate attributeName="x" values="65;70;65" dur="8s" repeatCount="indefinite" />
+                                    You
+                                  </text>
+
+                                  {/* Innovation — top right */}
+                                  <circle cx="100" cy="28" r="4" fill="rgba(200,200,200,0.06)" filter="url(#pm-halo)">
+                                    <animate attributeName="cx" values="100;94;100" dur="9s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="28;32;28" dur="7s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="100" cy="28" r="2.5" fill="rgba(200,200,200,0.55)" filter="url(#pm-glow)">
+                                    <animate attributeName="cx" values="100;94;100" dur="9s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="28;32;28" dur="7s" repeatCount="indefinite" />
+                                  </circle>
+                                  <text x="100" y="23" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="2.8" fontWeight="700">
+                                    <animate attributeName="x" values="100;94;100" dur="9s" repeatCount="indefinite" />
+                                    Innovation
+                                  </text>
+
+                                  {/* Budget — center, largest */}
+                                  <circle cx="80" cy="50" r="6" fill="rgba(255,85,0,0.08)" filter="url(#pm-halo)">
+                                    <animate attributeName="cx" values="80;77;80" dur="7s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="50;47;50" dur="9s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="80" cy="50" r="3.5" fill="rgba(255,85,0,0.8)" filter="url(#pm-glow)">
+                                    <animate attributeName="cx" values="80;77;80" dur="7s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="50;47;50" dur="9s" repeatCount="indefinite" />
+                                  </circle>
+                                  <text x="80" y="58" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="2.8" fontWeight="700">
+                                    <animate attributeName="x" values="80;77;80" dur="7s" repeatCount="indefinite" />
+                                    Budget
+                                  </text>
+
+                                  {/* Market Pressure — far left */}
+                                  <circle cx="45" cy="45" r="3" fill="rgba(255,85,0,0.08)" filter="url(#pm-halo)">
+                                    <animate attributeName="cx" values="45;48;45" dur="10s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="45;42;45" dur="8s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="45" cy="45" r="2" fill="rgba(255,85,0,0.65)">
+                                    <animate attributeName="cx" values="45;48;45" dur="10s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="45;42;45" dur="8s" repeatCount="indefinite" />
+                                  </circle>
+                                  <text x="45" y="41" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="2.5">
+                                    <animate attributeName="x" values="45;48;45" dur="10s" repeatCount="indefinite" />
+                                    Pressure
+                                  </text>
+
+                                  {/* Speed — bottom center */}
+                                  <circle cx="90" cy="72" r="2.5" fill="rgba(180,180,180,0.06)" filter="url(#pm-halo)">
+                                    <animate attributeName="cx" values="90;93;90" dur="11s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="72;68;72" dur="7s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="90" cy="72" r="1.8" fill="rgba(180,180,180,0.45)">
+                                    <animate attributeName="cx" values="90;93;90" dur="11s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="72;68;72" dur="7s" repeatCount="indefinite" />
+                                  </circle>
+                                  <text x="90" y="77" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="2.5">
+                                    <animate attributeName="x" values="90;93;90" dur="11s" repeatCount="indefinite" />
+                                    Speed
+                                  </text>
+
+                                  {/* Bottleneck — bottom left */}
+                                  <circle cx="55" cy="65" r="3.5" fill="rgba(255,85,0,0.06)" filter="url(#pm-halo)">
+                                    <animate attributeName="cx" values="55;59;55" dur="8s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="65;62;65" dur="10s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="55" cy="65" r="2.2" fill="rgba(255,85,0,0.6)">
+                                    <animate attributeName="cx" values="55;59;55" dur="8s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="65;62;65" dur="10s" repeatCount="indefinite" />
+                                  </circle>
+                                  <text x="55" y="70" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="2.5">
+                                    <animate attributeName="x" values="55;59;55" dur="8s" repeatCount="indefinite" />
+                                    Bottleneck
+                                  </text>
+
+                                  {/* Customer — far right */}
+                                  <circle cx="115" cy="55" r="3" fill="rgba(255,85,0,0.06)" filter="url(#pm-halo)">
+                                    <animate attributeName="cx" values="115;111;115" dur="9s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="55;52;55" dur="6s" repeatCount="indefinite" />
+                                  </circle>
+                                  <circle cx="115" cy="55" r="2" fill="rgba(255,85,0,0.65)">
+                                    <animate attributeName="cx" values="115;111;115" dur="9s" repeatCount="indefinite" />
+                                    <animate attributeName="cy" values="55;52;55" dur="6s" repeatCount="indefinite" />
+                                  </circle>
+                                  <text x="115" y="51" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="2.5">
+                                    <animate attributeName="x" values="115;111;115" dur="9s" repeatCount="indefinite" />
+                                    Customer
+                                  </text>
+
+                                  {/* Step indicator text */}
+                                  <text x="15" y="92" fill="rgba(255,85,0,0.2)" fontSize="2.5" fontWeight="700">STEP 3/7</text>
+                                  <text x="125" y="92" fill="rgba(255,255,255,0.1)" fontSize="2.2">7 characters</text>
+                                </svg>
+                              </div>
+                              {/* Progress bar */}
+                              <div className="px-2 pb-1.5 pt-0.5">
+                                <div className="h-[2px] rounded-full bg-white/[0.04] overflow-hidden">
+                                  <div className="h-full w-[43%] rounded-full bg-gradient-to-r from-mars/40 to-mars/20" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </button>
