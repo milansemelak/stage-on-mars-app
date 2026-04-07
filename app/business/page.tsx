@@ -1389,7 +1389,7 @@ export default function BusinessPage() {
                   src="/formula-bg.mp4"
                 />
                 {/* Dark overlay — video whispers, not speaks */}
-                <div className="absolute inset-0 bg-black/[0.78]" />
+                <div className="absolute inset-0 bg-black/[0.82] sm:bg-black/[0.78]" />
                 <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent relative z-10" />
                 {/* Atmospheric glow */}
                 <div className="absolute inset-0 pointer-events-none z-10" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
@@ -1399,11 +1399,11 @@ export default function BusinessPage() {
                   <p className="text-white/20 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-8 sm:mb-10">{t.formulaTag}</p>
                   {/* Formula */}
                   <p className="text-center mb-5 sm:mb-6">
-                    <span className="text-white/90 text-[28px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaQ}</span>
-                    <span className="text-white/12 text-[22px] sm:text-[32px] md:text-[40px] mx-3 sm:mx-5 font-light">×</span>
-                    <span className="text-white/90 text-[28px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaP}</span>
-                    <span className="text-white/12 text-[22px] sm:text-[32px] md:text-[40px] mx-3 sm:mx-5 font-light">=</span>
-                    <span className="text-mars text-[28px] sm:text-[40px] md:text-[50px] font-mercure italic tracking-[-0.02em]">{t.formulaR}</span>
+                    <span className="text-white/90 text-[20px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaQ}</span>
+                    <span className="text-white/12 text-[16px] sm:text-[32px] md:text-[40px] mx-2 sm:mx-5 font-light">×</span>
+                    <span className="text-white/90 text-[20px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaP}</span>
+                    <span className="text-white/12 text-[16px] sm:text-[32px] md:text-[40px] mx-2 sm:mx-5 font-light">=</span>
+                    <span className="text-mars text-[20px] sm:text-[40px] md:text-[50px] font-mercure italic tracking-[-0.02em]">{t.formulaR}</span>
                   </p>
                   {/* Body text */}
                   <p className="font-mercure italic text-white/45 text-[14px] sm:text-[16px] leading-[1.7] text-center max-w-lg">{t.formulaBody}</p>
