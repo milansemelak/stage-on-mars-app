@@ -931,31 +931,27 @@ export default function BusinessPage() {
           )}
 
           {!submitted && (
-            <div className="text-center mb-10 sm:mb-14">
-              {/* Logo with subtle float */}
-              <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
+            <div className="text-center mb-6 sm:mb-10">
+              {/* Logo */}
+              <div className="mb-4 sm:mb-5" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </div>
-              <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
-                Play reality.
-                <br />
-                <span className="text-mars">See your way forward.</span>
-              </h1>
-              <p className="text-white/30 text-[13px] sm:text-[15px] mt-2 sm:mt-3 text-center leading-[1.5]">
+              {/* Tagline — same style as the screenshot */}
+              <p className="text-white/25 text-[11px] sm:text-[13px] md:text-[15px] uppercase tracking-[0.12em] leading-[1.6]">
                 Bring a question. Play it out live on stage.<br />
-                What you see changes what you do next.
+                <span className="text-mars/40">What you see changes what you do next.</span>
               </p>
             </div>
           )}
 
           <div className="w-full max-w-3xl">
 
-            {/* THE INPUT — stage box design */}
+            {/* THE BOX — headline + input as one unit */}
             <div className="relative group/input">
               <div className="absolute -inset-8 sm:-inset-16 rounded-3xl opacity-40 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
 
-              <div className="relative rounded-2xl border border-white/[0.10] group-focus-within/input:border-mars/20 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.04)] group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.08)]">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/25 to-transparent" />
+              <div className="relative rounded-2xl border border-mars/15 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.06)] group-focus-within/input:border-mars/30 group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.1)]">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                 <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
                   <textarea
                     value={question}
@@ -991,7 +987,6 @@ export default function BusinessPage() {
               </div>
             </div>
           </div>{/* end max-w-3xl */}
-
 
           {/* ── INLINE DIGITAL PLAYMAKER ── */}
           {inlineDigital && !submitted && (
@@ -1181,9 +1176,8 @@ export default function BusinessPage() {
 
           {/* ── BESTSELLING PLAYS — compact ready-made options ── */}
           {!submitted && (
-            <div className="w-full max-w-3xl mx-auto mt-10 sm:mt-14 space-y-3">
-              <div className="px-1 mb-2">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6 sm:mb-8" />
+            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-10 space-y-3">
+              <div className="px-1 mb-3">
                 <p className="text-white/25 text-[10px] uppercase tracking-[0.4em]">Or choose a ready-made experience</p>
               </div>
               {[
