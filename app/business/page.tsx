@@ -936,14 +936,14 @@ export default function BusinessPage() {
               <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </div>
-              <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">The Human Future Simulator</p>
               <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
                 Play reality.
                 <br />
                 <span className="text-mars">See your way forward.</span>
               </h1>
-              <p className="text-white/30 text-[14px] sm:text-[16px] mt-5 sm:mt-6 text-center leading-relaxed max-w-md mx-auto">
-                You bring a question. Your team plays it out live on stage. What you see changes how you decide.
+              <p className="text-white/30 text-[13px] sm:text-[15px] mt-2 sm:mt-3 text-center leading-[1.5]">
+                Bring a question. Play it out live on stage.<br />
+                What you see changes what you do next.
               </p>
             </div>
           )}
