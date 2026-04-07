@@ -50,6 +50,7 @@ const UI = {
     colHead1: "Bring a question.",
     colHead2: "Play it out on stage.",
     colHead3: "See what matters.",
+    formulaBody: "Your question becomes a real play on stage. Real people step into roles. Your perspective shifts.",
     realityPlays: "Reality plays",
     countries: "Countries",
     founded: "Founded",
@@ -103,6 +104,7 @@ const UI = {
     colHead1: "Přineste otázku.",
     colHead2: "Zahrajte si ji na jevišti.",
     colHead3: "Uvidíte, na čem záleží.",
+    formulaBody: "Vaše otázka se promění ve skutečnou hru na jevišti. Skuteční lidé vstoupí do rolí. Vaše perspektiva se změní.",
     realityPlays: "Odehraných her",
     countries: "Země",
     founded: "Založeno",
@@ -1376,30 +1378,35 @@ export default function BusinessPage() {
             <div className="relative w-full max-w-3xl mx-auto mt-8 sm:mt-14 pb-6 sm:pb-10">
               {/* Orange glow beneath box */}
               <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[60%] h-[80px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.1) 0%, transparent 80%)" }} />
-              <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+              <div className="relative rounded-2xl border border-white/[0.12] overflow-hidden">
+                {/* Background video */}
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src="/formula-bg.mp4"
+                />
+                {/* Dark overlay — video whispers, not speaks */}
+                <div className="absolute inset-0 bg-black/[0.78]" />
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent relative z-10" />
                 {/* Atmospheric glow */}
-                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
+                <div className="absolute inset-0 pointer-events-none z-10" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
 
-                <div className="relative px-6 sm:px-10 pt-12 sm:pt-16 pb-12 sm:pb-16 flex flex-col items-center">
+                <div className="relative z-10 px-6 sm:px-10 pt-12 sm:pt-16 pb-12 sm:pb-16 flex flex-col items-center">
                   {/* Tag */}
                   <p className="text-white/20 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-8 sm:mb-10">{t.formulaTag}</p>
                   {/* Formula */}
-                  <p className="text-center mb-10 sm:mb-12">
+                  <p className="text-center mb-5 sm:mb-6">
                     <span className="text-white/90 text-[28px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaQ}</span>
                     <span className="text-white/12 text-[22px] sm:text-[32px] md:text-[40px] mx-3 sm:mx-5 font-light">×</span>
                     <span className="text-white/90 text-[28px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaP}</span>
                     <span className="text-white/12 text-[22px] sm:text-[32px] md:text-[40px] mx-3 sm:mx-5 font-light">=</span>
                     <span className="text-mars text-[28px] sm:text-[40px] md:text-[50px] font-mercure italic tracking-[-0.02em]">{t.formulaR}</span>
                   </p>
-                  {/* Three sentences */}
-                  <div className="flex items-center gap-3 sm:gap-5 text-[13px] sm:text-[15px] tracking-[0.005em]">
-                    <span className="text-white/50">{t.colHead1}</span>
-                    <span className="text-white/15">—</span>
-                    <span className="text-white/50">{t.colHead2}</span>
-                    <span className="text-white/15">—</span>
-                    <span className="text-mars/60">{t.colHead3}</span>
-                  </div>
+                  {/* Body text */}
+                  <p className="font-mercure italic text-white/45 text-[14px] sm:text-[16px] leading-[1.7] text-center max-w-lg">{t.formulaBody}</p>
                 </div>
               </div>
             </div>
