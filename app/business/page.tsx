@@ -1734,6 +1734,96 @@ export default function BusinessPage() {
         </div>
       </FadeIn>
 
+      {/* ── SYSTEMIC PLAYMAKER — standalone section ── */}
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <button
+            onClick={() => {
+              const q = "What does my company need the most right now?";
+              setAskedQuestion(q);
+              setQuestion(q);
+              setInlineDigital(true);
+              openDigital(q);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 500);
+            }}
+            className="w-full group"
+          >
+            <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light">
+              <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
+                <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4 text-center">The Systemic Playmaker</p>
+                <div className="max-w-[360px] mx-auto">
+                  <div className="relative rounded-[12px] bg-[#1a1a1c] p-[3px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+                    <div className="rounded-[10px] overflow-hidden bg-[#0a0a0c]">
+                      <div className="flex items-center justify-between px-3 pt-2 pb-1">
+                        <div className="flex items-center gap-1.5">
+                          <div className="flex gap-[3px]">
+                            <div className="w-[5px] h-[5px] rounded-full bg-[#ff5f57]" />
+                            <div className="w-[5px] h-[5px] rounded-full bg-[#febc2e]" />
+                            <div className="w-[5px] h-[5px] rounded-full bg-[#28c840]" />
+                          </div>
+                          <span className="text-[6px] text-white/30 font-bold tracking-wider ml-1">PLAYMAKER</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-[4px] h-[4px] rounded-full bg-emerald-400/80 animate-pulse" />
+                          <span className="text-[5px] text-emerald-400/50 font-bold">LIVE</span>
+                        </div>
+                      </div>
+                      <div className="relative h-[100px] sm:h-[120px]">
+                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid meet">
+                          <defs>
+                            <filter id="pm-glow3" x="-100%" y="-100%" width="300%" height="300%">
+                              <feGaussianBlur stdDeviation="1.5" result="blur" />
+                              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                            </filter>
+                          </defs>
+                          <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="6" />
+                          <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="0.6" strokeDasharray="2 4">
+                            <animate attributeName="stroke-dashoffset" values="0;60" dur="20s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="65" cy="30" r="3.2" fill="rgba(255,215,0,0.85)" filter="url(#pm-glow3)">
+                            <animate attributeName="cx" values="65;70;65" dur="8s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="100" cy="28" r="2.5" fill="rgba(200,200,200,0.55)" filter="url(#pm-glow3)">
+                            <animate attributeName="cx" values="100;94;100" dur="9s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="80" cy="50" r="3.5" fill="rgba(255,85,0,0.8)" filter="url(#pm-glow3)">
+                            <animate attributeName="cy" values="50;47;50" dur="7s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="45" cy="50" r="2" fill="rgba(255,85,0,0.6)">
+                            <animate attributeName="cx" values="45;48;45" dur="10s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="55" cy="70" r="2.2" fill="rgba(255,85,0,0.55)">
+                            <animate attributeName="cy" values="70;67;70" dur="8s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="115" cy="55" r="2" fill="rgba(255,85,0,0.6)">
+                            <animate attributeName="cx" values="115;111;115" dur="9s" repeatCount="indefinite" />
+                          </circle>
+                          <circle cx="90" cy="72" r="1.8" fill="rgba(180,180,180,0.45)">
+                            <animate attributeName="cx" values="90;93;90" dur="11s" repeatCount="indefinite" />
+                          </circle>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-5 sm:px-8 pt-5 pb-6 sm:pb-7 text-center">
+                <p className="font-mercure italic text-white/90 text-[14px] sm:text-[16px] leading-[1.4] mb-1">
+                  &ldquo;What does my company need the most right now?&rdquo;
+                </p>
+                <p className="text-[#1a0800]/50 text-[10px] sm:text-[11px] mb-4">
+                  See how this question becomes a live simulation
+                </p>
+                <span className="inline-flex items-center px-6 py-2.5 rounded-xl bg-[#0a0a0a] text-white text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
+                  Simulate this question
+                </span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </FadeIn>
+
       {/* ── TEAM — Stage box ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
