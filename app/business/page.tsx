@@ -698,16 +698,33 @@ type Experience = {
   pitch: string;
 };
 
+const PEOPLE_OPTIONS = [
+  { label: "8–15", description: "Intimate" },
+  { label: "15–25", description: "Team" },
+  { label: "25–50", description: "Large group" },
+];
+
 const DURATION_OPTIONS = [
   { hours: "4", label: "Half-day", price: "€2 200" },
   { hours: "5", label: "Extended", price: "€2 900" },
   { hours: "6", label: "Full day", price: "€3 600" },
 ];
 
-const PEOPLE_OPTIONS = [
-  { label: "8–15", description: "Intimate" },
-  { label: "15–25", description: "Team" },
-  { label: "25–50", description: "Large group" },
+const FORMAT_OPTIONS = [
+  { label: "Free Play", description: "Everyone directs, everyone plays" },
+  { label: "Prepared Play", description: "We direct, you play" },
+];
+
+const SPECIAL_PLAY_OPTIONS = [
+  { label: "Question Play", description: "Play to find the most essential questions" },
+  { label: "Perspective Play", description: "Play where everyone commits to what's next" },
+  { label: "Value Play", description: "Play where everyone tells the story of why they create your company" },
+];
+
+const VENUE_OPTIONS = [
+  { label: "Flagship stage", sub: "Stage on Mars, Národní 138/10, Praha" },
+  { label: "Your office", sub: "We come to you" },
+  { label: "Special location", sub: "A place that fits the occasion" },
 ];
 
 function deriveExperience(question: string, company: string): Experience {
@@ -736,8 +753,11 @@ export default function BusinessPage() {
   const [context, setContext] = useState<"personal" | "business">("business");
   const [submitted, setSubmitted] = useState(false);
   const [experience, setExperience] = useState<Experience | null>(null);
-  const [selectedDuration, setSelectedDuration] = useState(1); // index into DURATION_OPTIONS, default "Extended"
-  const [selectedPeople, setSelectedPeople] = useState(1); // index into PEOPLE_OPTIONS, default "Team"
+  const [selectedPeople, setSelectedPeople] = useState(1); // default "Team"
+  const [selectedDuration, setSelectedDuration] = useState(1); // default "Extended"
+  const [selectedFormat, setSelectedFormat] = useState(0); // default "Free Play"
+  const [selectedSpecial, setSelectedSpecial] = useState<number | null>(null); // optional
+  const [selectedVenue, setSelectedVenue] = useState(0); // default "Flagship stage"
   const [play, setPlay] = useState<Play | null>(null);
   const [playLoading, setPlayLoading] = useState(false);
   const [askedQuestion, setAskedQuestion] = useState("");
@@ -879,6 +899,7 @@ export default function BusinessPage() {
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
       `}</style>
 
 
@@ -925,7 +946,8 @@ export default function BusinessPage() {
 
           {/* Clickable logo when in results — natural "back home" */}
           {submitted && (
-            <button onClick={reset} className="mb-6 group/logo cursor-pointer">
+            <button onClick={reset} className="mb-6 group/logo cursor-pointer flex items-center gap-2">
+              <svg className="w-4 h-4 text-white/30 group-hover/logo:text-mars/60 transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
               <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert opacity-40 group-hover/logo:opacity-80 transition-opacity" />
             </button>
           )}
@@ -948,17 +970,17 @@ export default function BusinessPage() {
 
             {/* THE BOX — headline + input as one unit */}
             <div className="relative group/input">
-              <div className="absolute -inset-8 sm:-inset-16 rounded-3xl opacity-40 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
+              <div className="absolute -inset-12 sm:-inset-20 rounded-3xl opacity-60 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.12) 0%, transparent 70%)", animation: "pulse 4s ease-in-out infinite" }} />
 
-              <div className="relative rounded-2xl border border-mars/15 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.06)] group-focus-within/input:border-mars/30 group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.1)]">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+              <div className="relative rounded-2xl border border-mars/40 bg-white/[0.03] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_80px_rgba(255,85,0,0.12),0_0_160px_rgba(255,85,0,0.06)] group-focus-within/input:border-mars/60 group-focus-within/input:shadow-[0_0_100px_rgba(255,85,0,0.2),0_0_200px_rgba(255,85,0,0.08)]">
+                <div className="h-[1.5px] bg-gradient-to-r from-transparent via-mars/50 to-transparent" />
                 <div className="px-5 sm:px-7 pt-5 sm:pt-6 pb-4 sm:pb-5">
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="What question will decide your next move?"
                     rows={2}
-                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                    className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
@@ -1475,6 +1497,27 @@ export default function BusinessPage() {
                 {/* ── Configure your experience ── */}
                 <div className="space-y-6 mb-8 sm:mb-10">
 
+                  {/* Group size */}
+                  <div>
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Group size</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {PEOPLE_OPTIONS.map((opt, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSelectedPeople(i)}
+                          className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
+                            selectedPeople === i
+                              ? "border-mars/30 bg-mars/[0.06]"
+                              : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                          }`}
+                        >
+                          <p className={`text-[18px] sm:text-[22px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                          <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedPeople === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Duration */}
                   <div>
                     <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Duration</p>
@@ -1496,22 +1539,44 @@ export default function BusinessPage() {
                     </div>
                   </div>
 
-                  {/* People */}
+                  {/* Play format */}
                   <div>
-                    <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Group size</p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {PEOPLE_OPTIONS.map((opt, i) => (
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Play format</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {FORMAT_OPTIONS.map((opt, i) => (
                         <button
                           key={i}
-                          onClick={() => setSelectedPeople(i)}
+                          onClick={() => setSelectedFormat(i)}
                           className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
-                            selectedPeople === i
+                            selectedFormat === i
                               ? "border-mars/30 bg-mars/[0.06]"
                               : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
                           }`}
                         >
-                          <p className={`text-[18px] sm:text-[22px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
-                          <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedPeople === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
+                          <p className={`text-[14px] sm:text-[16px] font-bold ${selectedFormat === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                          <p className={`text-[10px] mt-1.5 leading-[1.4] ${selectedFormat === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Special plays */}
+                  <div>
+                    <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-1">Special plays</p>
+                    <p className="text-white/15 text-[10px] mb-3">Optional — add a structured play to your experience</p>
+                    <div className="grid grid-cols-1 gap-2">
+                      {SPECIAL_PLAY_OPTIONS.map((opt, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSelectedSpecial(selectedSpecial === i ? null : i)}
+                          className={`rounded-xl border py-3.5 px-5 text-left transition-all duration-300 ${
+                            selectedSpecial === i
+                              ? "border-mars/30 bg-mars/[0.06]"
+                              : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                          }`}
+                        >
+                          <p className={`text-[14px] sm:text-[15px] font-bold ${selectedSpecial === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                          <p className={`text-[11px] mt-1 leading-[1.4] ${selectedSpecial === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
                         </button>
                       ))}
                     </div>
@@ -1520,17 +1585,19 @@ export default function BusinessPage() {
                   {/* Venue */}
                   <div>
                     <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Venue</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {[
-                        { label: "Our stage", sub: "Národní 138/10, Praha" },
-                        { label: "Your venue", sub: "We come to you" },
-                      ].map((opt, i) => (
+                    <div className="grid grid-cols-3 gap-2">
+                      {VENUE_OPTIONS.map((opt, i) => (
                         <button
                           key={i}
-                          className="rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15] py-4 px-4 text-center transition-all duration-300"
+                          onClick={() => setSelectedVenue(i)}
+                          className={`rounded-xl border py-4 px-3 text-center transition-all duration-300 ${
+                            selectedVenue === i
+                              ? "border-mars/30 bg-mars/[0.06]"
+                              : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                          }`}
                         >
-                          <p className="text-white/50 text-[14px] sm:text-[16px] font-bold">{opt.label}</p>
-                          <p className="text-white/25 text-[10px] mt-1">{opt.sub}</p>
+                          <p className={`text-[13px] sm:text-[15px] font-bold ${selectedVenue === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                          <p className={`text-[9px] sm:text-[10px] mt-1.5 leading-[1.3] ${selectedVenue === i ? "text-mars/60" : "text-white/25"}`}>{opt.sub}</p>
                         </button>
                       ))}
                     </div>
@@ -1546,7 +1613,7 @@ export default function BusinessPage() {
                         from {DURATION_OPTIONS[selectedDuration].price}
                       </p>
                       <p className="text-white/30 text-[11px] mt-1">
-                        {DURATION_OPTIONS[selectedDuration].label} · {PEOPLE_OPTIONS[selectedPeople].label} people · Includes design, stage, guide
+                        {PEOPLE_OPTIONS[selectedPeople].label} people · {DURATION_OPTIONS[selectedDuration].label} · {FORMAT_OPTIONS[selectedFormat].label}{selectedSpecial !== null ? ` + ${SPECIAL_PLAY_OPTIONS[selectedSpecial].label}` : ""} · {VENUE_OPTIONS[selectedVenue].label}
                       </p>
                     </div>
                     <a href="#contact" className="shrink-0 px-8 py-3.5 rounded-xl bg-mars hover:bg-mars-light text-white text-[13px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]">
@@ -1554,6 +1621,24 @@ export default function BusinessPage() {
                     </a>
                   </div>
                 </div>
+
+                {/* Digital Playmaker teaser */}
+                {!showDigital && (
+                  <div className="mt-8 sm:mt-10">
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-8" />
+                    <div className="text-center">
+                      <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-3">Want a preview?</p>
+                      <button
+                        onClick={() => openDigital(askedQuestion)}
+                        className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-xl border border-mars/20 bg-mars/[0.04] hover:border-mars/40 hover:bg-mars/[0.08] transition-all duration-300 group/digi"
+                      >
+                        <div className="w-2 h-2 rounded-full bg-mars/60 group-hover/digi:bg-mars animate-pulse" />
+                        <span className="text-white/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] group-hover/digi:text-white/90 transition-colors">Digital Playmaker</span>
+                        <span className="text-white/25 text-[11px]">— see your play come alive</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Start over */}
                 <div className="text-center mt-6">
