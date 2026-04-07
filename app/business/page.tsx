@@ -776,6 +776,7 @@ export default function BusinessPage() {
   const [sent, setSent] = useState(false);
   const [cardName, setCardName] = useState("");
   const [cardEmail, setCardEmail] = useState("");
+  const [playmakerQ, setPlaymakerQ] = useState("");
   const [cardSent, setCardSent] = useState(false);
 
   useEffect(() => {
@@ -1023,7 +1024,7 @@ export default function BusinessPage() {
                 <div className="flex items-center justify-between mb-6 sm:mb-8">
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                    <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                    <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Systemic Playmaker</p>
                   </div>
                   <button onClick={() => { setInlineDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                     Close
@@ -1229,217 +1230,67 @@ export default function BusinessPage() {
                 </a>
               ))}
 
-              {/* ── DIGITAL PLAYMAKER — taste of the method ── */}
+              {/* ── SYSTEMIC PLAYMAKER — clean card ── */}
               {!inlineDigital && (
                 <div className="pt-8">
-                  <button
-                    onClick={() => {
-                      const q = question.trim() || "What does my company need right now?";
-                      setAskedQuestion(q);
-                      if (!question.trim()) setQuestion(q);
-                      setInlineDigital(true);
-                      openDigital(q);
-                      setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
-                    }}
-                    className="w-full group"
-                  >
-                    <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light">
-                      <div className="flex items-center gap-4 sm:gap-5 px-4 sm:px-6 py-4 sm:py-5">
-                        {/* ── Left: text + CTA ── */}
-                        <div className="flex-1 min-w-0 text-center">
-                          <h3 className="text-[18px] sm:text-[22px] font-black text-white tracking-[-0.03em] leading-[1.1]">
-                            Digital Playmaker
-                          </h3>
-                          <p className="text-[#1a0800]/60 text-[11px] sm:text-[12px] mt-1.5 leading-[1.5] max-w-[260px] mx-auto">
-                            AI turns your question into a live simulation. Characters, stage, perspectives. 30&nbsp;sec. Free.
-                          </p>
-                          <div className="mt-3">
-                            <span className="inline-flex items-center px-4 py-1.5 rounded-lg bg-[#0a0a0a] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
-                              Try it free
-                            </span>
-                          </div>
-                        </div>
+                  <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                    <div className="px-5 sm:px-7 py-5 sm:py-7">
+                      <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2">The Systemic Playmaker</p>
+                      <p className="text-white/35 text-[12px] sm:text-[13px] leading-[1.5] mb-5 max-w-md">
+                        A digital simulation of Systemic Play. Try a question — see what a play looks like before you experience it live.
+                      </p>
 
-                        {/* ── Right: landscape iPad mockup ── */}
-                        <div className="shrink-0 w-[180px] sm:w-[220px] relative">
-                          <div className="relative rounded-[8px] sm:rounded-[10px] bg-[#1a1a1c] p-[2px] shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
-                            {/* Camera dot */}
-                            <div className="absolute top-1/2 -translate-y-1/2 left-[4px] w-[3px] h-[3px] rounded-full bg-[#2a2a2c] z-20" />
-                            {/* Screen */}
-                            <div className="rounded-[6px] sm:rounded-[8px] overflow-hidden bg-[#0a0a0c]">
-                              {/* App bar */}
-                              <div className="flex items-center justify-between px-2 pt-1.5 pb-0.5">
-                                <div className="flex items-center gap-1">
-                                  <div className="flex gap-[2px]">
-                                    <div className="w-[3px] h-[3px] rounded-full bg-[#ff5f57]" />
-                                    <div className="w-[3px] h-[3px] rounded-full bg-[#febc2e]" />
-                                    <div className="w-[3px] h-[3px] rounded-full bg-[#28c840]" />
-                                  </div>
-                                  <span className="text-[3.5px] text-white/30 font-bold tracking-wider ml-0.5">PLAYMAKER</span>
-                                </div>
-                                <div className="flex items-center gap-0.5">
-                                  <div className="w-[2px] h-[2px] rounded-full bg-emerald-400/80 animate-pulse" />
-                                  <span className="text-[3px] text-emerald-400/50 font-bold">LIVE</span>
-                                </div>
-                              </div>
-                              {/* Stage */}
-                              <div className="relative h-[70px] sm:h-[85px]">
-                                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid meet">
-                                  <defs>
-                                    <filter id="pm-glow" x="-100%" y="-100%" width="300%" height="300%">
-                                      <feGaussianBlur stdDeviation="1.5" result="blur" />
-                                      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                                    </filter>
-                                    <filter id="pm-halo" x="-200%" y="-200%" width="500%" height="500%">
-                                      <feGaussianBlur stdDeviation="3" />
-                                    </filter>
-                                    <radialGradient id="pm-bg" cx="50%" cy="50%">
-                                      <stop offset="0%" stopColor="rgba(255,85,0,0.06)" />
-                                      <stop offset="100%" stopColor="transparent" />
-                                    </radialGradient>
-                                  </defs>
+                      {/* Input + button row */}
+                      <div className="flex gap-2 mb-3">
+                        <input
+                          value={playmakerQ}
+                          onChange={(e) => setPlaymakerQ(e.target.value)}
+                          placeholder="Enter a question to simulate"
+                          className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-2.5 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" && playmakerQ.trim()) {
+                              setAskedQuestion(playmakerQ.trim());
+                              setInlineDigital(true);
+                              openDigital(playmakerQ.trim());
+                              setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                            }
+                          }}
+                        />
+                        <button
+                          onClick={() => {
+                            if (!playmakerQ.trim()) return;
+                            setAskedQuestion(playmakerQ.trim());
+                            setInlineDigital(true);
+                            openDigital(playmakerQ.trim());
+                            setTimeout(() => inlineRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+                          }}
+                          disabled={!playmakerQ.trim()}
+                          className={`shrink-0 px-5 sm:px-6 py-2.5 rounded-xl font-bold text-[12px] uppercase tracking-[0.1em] transition-all ${
+                            playmakerQ.trim()
+                              ? "bg-mars hover:bg-mars-light text-white"
+                              : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                          }`}
+                        >
+                          Simulate
+                        </button>
+                      </div>
 
-                                  {/* Background glow */}
-                                  <circle cx="80" cy="50" r="45" fill="url(#pm-bg)" />
-
-                                  {/* LED ring — double */}
-                                  <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.06)" strokeWidth="6" />
-                                  <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="0.6" strokeDasharray="2 4">
-                                    <animate attributeName="stroke-dashoffset" values="0;60" dur="20s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="80" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.25)" strokeWidth="0.4">
-                                    <animate attributeName="stroke-opacity" values="0.25;0.1;0.25" dur="3s" repeatCount="indefinite" />
-                                  </circle>
-
-                                  {/* Connection lines */}
-                                  <line x1="65" y1="30" x2="100" y2="28" stroke="rgba(255,255,255,0.04)" strokeWidth="0.4">
-                                    <animate attributeName="x1" values="65;70;65" dur="8s" repeatCount="indefinite" />
-                                    <animate attributeName="x2" values="100;94;100" dur="9s" repeatCount="indefinite" />
-                                  </line>
-                                  <line x1="65" y1="30" x2="80" y2="50" stroke="rgba(255,85,0,0.06)" strokeWidth="0.4">
-                                    <animate attributeName="x1" values="65;70;65" dur="8s" repeatCount="indefinite" />
-                                  </line>
-                                  <line x1="100" y1="28" x2="80" y2="50" stroke="rgba(255,255,255,0.03)" strokeWidth="0.4">
-                                    <animate attributeName="x1" values="100;94;100" dur="9s" repeatCount="indefinite" />
-                                  </line>
-                                  <line x1="80" y1="50" x2="55" y2="60" stroke="rgba(255,85,0,0.05)" strokeWidth="0.3" />
-                                  <line x1="80" y1="50" x2="110" y2="55" stroke="rgba(255,85,0,0.05)" strokeWidth="0.3" />
-
-                                  {/* You — yellow, prominent */}
-                                  <circle cx="65" cy="30" r="5" fill="rgba(255,215,0,0.08)" filter="url(#pm-halo)">
-                                    <animate attributeName="cx" values="65;70;65" dur="8s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="30;28;30" dur="6s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="65" cy="30" r="3.2" fill="rgba(255,215,0,0.85)" filter="url(#pm-glow)">
-                                    <animate attributeName="cx" values="65;70;65" dur="8s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="30;28;30" dur="6s" repeatCount="indefinite" />
-                                  </circle>
-                                  <text x="65" y="24" textAnchor="middle" fill="rgba(255,215,0,0.6)" fontSize="3.5" fontStyle="italic">
-                                    <animate attributeName="x" values="65;70;65" dur="8s" repeatCount="indefinite" />
-                                    You
-                                  </text>
-
-                                  {/* Innovation — top right */}
-                                  <circle cx="100" cy="28" r="4" fill="rgba(200,200,200,0.06)" filter="url(#pm-halo)">
-                                    <animate attributeName="cx" values="100;94;100" dur="9s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="28;32;28" dur="7s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="100" cy="28" r="2.5" fill="rgba(200,200,200,0.55)" filter="url(#pm-glow)">
-                                    <animate attributeName="cx" values="100;94;100" dur="9s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="28;32;28" dur="7s" repeatCount="indefinite" />
-                                  </circle>
-                                  <text x="100" y="23" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="2.8" fontWeight="700">
-                                    <animate attributeName="x" values="100;94;100" dur="9s" repeatCount="indefinite" />
-                                    Innovation
-                                  </text>
-
-                                  {/* Budget — center, largest */}
-                                  <circle cx="80" cy="50" r="6" fill="rgba(255,85,0,0.08)" filter="url(#pm-halo)">
-                                    <animate attributeName="cx" values="80;77;80" dur="7s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="50;47;50" dur="9s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="80" cy="50" r="3.5" fill="rgba(255,85,0,0.8)" filter="url(#pm-glow)">
-                                    <animate attributeName="cx" values="80;77;80" dur="7s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="50;47;50" dur="9s" repeatCount="indefinite" />
-                                  </circle>
-                                  <text x="80" y="58" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="2.8" fontWeight="700">
-                                    <animate attributeName="x" values="80;77;80" dur="7s" repeatCount="indefinite" />
-                                    Budget
-                                  </text>
-
-                                  {/* Market Pressure — far left */}
-                                  <circle cx="45" cy="45" r="3" fill="rgba(255,85,0,0.08)" filter="url(#pm-halo)">
-                                    <animate attributeName="cx" values="45;48;45" dur="10s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="45;42;45" dur="8s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="45" cy="45" r="2" fill="rgba(255,85,0,0.65)">
-                                    <animate attributeName="cx" values="45;48;45" dur="10s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="45;42;45" dur="8s" repeatCount="indefinite" />
-                                  </circle>
-                                  <text x="45" y="41" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="2.5">
-                                    <animate attributeName="x" values="45;48;45" dur="10s" repeatCount="indefinite" />
-                                    Pressure
-                                  </text>
-
-                                  {/* Speed — bottom center */}
-                                  <circle cx="90" cy="72" r="2.5" fill="rgba(180,180,180,0.06)" filter="url(#pm-halo)">
-                                    <animate attributeName="cx" values="90;93;90" dur="11s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="72;68;72" dur="7s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="90" cy="72" r="1.8" fill="rgba(180,180,180,0.45)">
-                                    <animate attributeName="cx" values="90;93;90" dur="11s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="72;68;72" dur="7s" repeatCount="indefinite" />
-                                  </circle>
-                                  <text x="90" y="77" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="2.5">
-                                    <animate attributeName="x" values="90;93;90" dur="11s" repeatCount="indefinite" />
-                                    Speed
-                                  </text>
-
-                                  {/* Bottleneck — bottom left */}
-                                  <circle cx="55" cy="65" r="3.5" fill="rgba(255,85,0,0.06)" filter="url(#pm-halo)">
-                                    <animate attributeName="cx" values="55;59;55" dur="8s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="65;62;65" dur="10s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="55" cy="65" r="2.2" fill="rgba(255,85,0,0.6)">
-                                    <animate attributeName="cx" values="55;59;55" dur="8s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="65;62;65" dur="10s" repeatCount="indefinite" />
-                                  </circle>
-                                  <text x="55" y="70" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="2.5">
-                                    <animate attributeName="x" values="55;59;55" dur="8s" repeatCount="indefinite" />
-                                    Bottleneck
-                                  </text>
-
-                                  {/* Customer — far right */}
-                                  <circle cx="115" cy="55" r="3" fill="rgba(255,85,0,0.06)" filter="url(#pm-halo)">
-                                    <animate attributeName="cx" values="115;111;115" dur="9s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="55;52;55" dur="6s" repeatCount="indefinite" />
-                                  </circle>
-                                  <circle cx="115" cy="55" r="2" fill="rgba(255,85,0,0.65)">
-                                    <animate attributeName="cx" values="115;111;115" dur="9s" repeatCount="indefinite" />
-                                    <animate attributeName="cy" values="55;52;55" dur="6s" repeatCount="indefinite" />
-                                  </circle>
-                                  <text x="115" y="51" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="2.5">
-                                    <animate attributeName="x" values="115;111;115" dur="9s" repeatCount="indefinite" />
-                                    Customer
-                                  </text>
-
-                                  {/* Step indicator text */}
-                                  <text x="15" y="92" fill="rgba(255,85,0,0.2)" fontSize="2.5" fontWeight="700">STEP 3/7</text>
-                                  <text x="125" y="92" fill="rgba(255,255,255,0.1)" fontSize="2.2">7 characters</text>
-                                </svg>
-                              </div>
-                              {/* Progress bar */}
-                              <div className="px-2 pb-1.5 pt-0.5">
-                                <div className="h-[2px] rounded-full bg-white/[0.04] overflow-hidden">
-                                  <div className="h-full w-[43%] rounded-full bg-gradient-to-r from-mars/40 to-mars/20" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                      {/* Example questions */}
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className="text-white/15 text-[10px] mr-1 self-center">Try:</span>
+                        {["Where is the real tension?", "What should we stop doing?", "Who holds the power?"].map((q) => (
+                          <button
+                            key={q}
+                            onClick={() => setPlaymakerQ(q)}
+                            className="text-[10px] text-white/30 hover:text-white/50 border border-white/[0.06] hover:border-white/[0.12] rounded-full px-2.5 py-1 transition-colors"
+                          >
+                            {q}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -1708,8 +1559,8 @@ export default function BusinessPage() {
                         className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-xl border border-mars/20 bg-mars/[0.04] hover:border-mars/40 hover:bg-mars/[0.08] transition-all duration-300 group/digi"
                       >
                         <div className="w-2 h-2 rounded-full bg-mars/60 group-hover/digi:bg-mars animate-pulse" />
-                        <span className="text-white/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] group-hover/digi:text-white/90 transition-colors">Digital Playmaker</span>
-                        <span className="text-white/25 text-[11px]">— see your play come alive</span>
+                        <span className="text-white/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] group-hover/digi:text-white/90 transition-colors">Systemic Playmaker</span>
+                        <span className="text-white/25 text-[11px]">— simulate your play digitally</span>
                       </button>
                     </div>
                   </div>
@@ -1831,7 +1682,7 @@ export default function BusinessPage() {
               <div className="p-6 sm:p-8 flex flex-col justify-center space-y-4">
                 <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">The crew</p>
                 <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
-                  Born during COVID. Systemic constellations meets theatre meets improvisation.
+                  Created by Milan and Zuzana Semelak in 2020. Systemic constellations meets theatre meets improvisation.
                 </p>
                 <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
                   In 2023, David Vais joined. Platform built. Stage opened. Brand born.
