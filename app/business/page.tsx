@@ -1671,7 +1671,10 @@ export default function BusinessPage() {
 
                           {/* Subtle stage floor */}
                           <circle cx="100" cy="80" r="65" fill="url(#stage-bg)" />
-                          <circle cx="100" cy="80" r="65" fill="none" stroke="rgba(255,85,0,0.04)" strokeWidth="0.5" />
+                          <circle cx="100" cy="80" r="65" fill="none" stroke="rgba(255,85,0,0.08)" strokeWidth="1.5" />
+                          <circle cx="100" cy="80" r="65" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="0.6" strokeDasharray="4 5">
+                            <animate attributeName="stroke-dashoffset" values="0;60" dur="25s" repeatCount="indefinite" />
+                          </circle>
 
                           {/* Grid dots — subtle floor texture */}
                           {[...Array(7)].map((_, row) =>
