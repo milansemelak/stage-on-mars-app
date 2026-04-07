@@ -1914,7 +1914,13 @@ export default function BusinessPage() {
                   </div>
                 </div>
               </div>
-              <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
+              <div className="px-5 sm:px-8 pt-5 pb-6 sm:pb-7 text-center">
+                <p className="font-mercure italic text-white/90 text-[14px] sm:text-[16px] leading-[1.4] mb-1">
+                  &ldquo;What does my company need the most right now?&rdquo;
+                </p>
+                <p className="text-white/40 text-[10px] sm:text-[11px] mb-4">
+                  Try this question — a live simulation with characters, stage, and perspectives
+                </p>
                 <span className="inline-flex items-center px-8 py-3 rounded-xl bg-[#0a0a0a] text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
                   Play this question →
                 </span>
