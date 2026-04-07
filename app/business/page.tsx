@@ -956,7 +956,7 @@ export default function BusinessPage() {
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What's your question?"
+                    placeholder="What question will decide your next move?"
                     rows={2}
                     className="w-full bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
                     style={{ caretColor: "#FF5500" }}
