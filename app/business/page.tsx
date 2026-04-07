@@ -1633,71 +1633,57 @@ export default function BusinessPage() {
             }}
             className="w-full group"
           >
-            <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light">
-              <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
-                <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2 text-center">The Systemic Playmaker</p>
-                <p className="text-white/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
-                <div className="max-w-[420px] mx-auto">
-                  <div className="relative rounded-[12px] bg-[#1a1a1c] p-[3px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-                    <div className="rounded-[10px] overflow-hidden bg-[#0a0a0c]">
-                      {/* App chrome */}
-                      <div className="flex items-center justify-between px-3 pt-2 pb-1">
-                        <div className="flex items-center gap-1.5">
-                          <div className="flex gap-[3px]">
-                            <div className="w-[5px] h-[5px] rounded-full bg-[#ff5f57]" />
-                            <div className="w-[5px] h-[5px] rounded-full bg-[#febc2e]" />
-                            <div className="w-[5px] h-[5px] rounded-full bg-[#28c840]" />
-                          </div>
-                          <span className="text-[6px] text-white/30 font-bold tracking-wider ml-1">PLAYMAKER</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-[4px] h-[4px] rounded-full bg-emerald-400/80 animate-pulse" />
-                          <span className="text-[5px] text-emerald-400/50 font-bold">LIVE</span>
-                        </div>
-                      </div>
-                      {/* Question — big and central */}
-                      <div className="px-5 sm:px-8 pt-5 sm:pt-6 pb-6 sm:pb-8 text-center">
-                        <p className="text-mars/40 text-[7px] sm:text-[8px] uppercase tracking-[0.25em] font-bold mb-3">Your question</p>
-                        <p className="text-white font-mercure italic text-[20px] sm:text-[26px] leading-[1.3]">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
-                      </div>
+            <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-gradient-to-b from-white/[0.06] to-white/[0.02] backdrop-blur-md transition-all duration-500 shadow-[0_0_60px_rgba(255,85,0,0.08),0_20px_60px_rgba(0,0,0,0.5)]">
+              {/* Header */}
+              <div className="px-6 sm:px-8 pt-7 sm:pt-8 pb-5 sm:pb-6 text-center border-b border-white/[0.06]">
+                <p className="text-white/90 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-1.5">The Systemic Playmaker</p>
+                <p className="text-white/35 text-[11px] sm:text-[12px] leading-[1.4]">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
+              </div>
 
-                      {/* Characters bar */}
-                      <div className="border-t border-white/[0.06] px-4 sm:px-6 py-2.5 flex items-center gap-3">
-                        <span className="text-white/20 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider shrink-0">Characters</span>
-                        <div className="flex items-center gap-2">
-                          {[
-                            { name: "You", color: "bg-yellow-400/70" },
-                            { name: "Need", color: "bg-mars/70" },
-                            { name: "Growth", color: "bg-white/30" },
-                            { name: "Fear", color: "bg-mars/50" },
-                            { name: "Risk", color: "bg-mars/40" },
-                          ].map((c) => (
-                            <div key={c.name} className="flex items-center gap-1">
-                              <div className={`w-[7px] h-[7px] sm:w-[8px] sm:h-[8px] rounded-full ${c.color}`} />
-                              <span className="text-white/30 text-[7px] sm:text-[8px]">{c.name}</span>
-                            </div>
-                          ))}
-                          <span className="text-white/15 text-[7px] sm:text-[8px]">+2</span>
-                        </div>
-                      </div>
+              {/* Question prompt box */}
+              <div className="px-5 sm:px-7 py-5 sm:py-7">
+                <div className="rounded-2xl bg-[#000]/40 border border-white/[0.08] overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                  {/* Prompt header */}
+                  <div className="px-4 sm:px-5 py-2.5 flex items-center justify-between border-b border-white/[0.06]">
+                    <div className="flex items-center gap-2">
+                      <div className="w-[6px] h-[6px] rounded-full bg-mars/60" />
+                      <span className="text-white/30 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.15em]">Your question</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-[5px] h-[5px] rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-emerald-400/50 text-[7px] sm:text-[8px] font-semibold">Live</span>
+                    </div>
+                  </div>
 
-                      {/* Timeline bar */}
-                      <div className="border-t border-white/[0.06] px-4 sm:px-6 py-2.5 flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          {[1,2,3,4,5,6,7].map((i) => (
-                            <div key={i} className={`w-[6px] h-[6px] sm:w-[7px] sm:h-[7px] rounded-full ${i <= 3 ? "bg-mars/40" : "bg-white/[0.06]"}`} />
-                          ))}
-                        </div>
-                        <span className="text-white/20 text-[8px] sm:text-[9px] font-bold uppercase tracking-wider">Step 3 / 7</span>
+                  {/* The question */}
+                  <div className="px-5 sm:px-7 py-6 sm:py-8">
+                    <p className="text-white font-mercure italic text-[20px] sm:text-[28px] leading-[1.25] text-center">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
+                  </div>
+
+                  {/* Status bar */}
+                  <div className="px-4 sm:px-5 py-2.5 bg-white/[0.02] border-t border-white/[0.06] flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-1">
+                        {["bg-amber-400","bg-mars","bg-white/40","bg-mars/60","bg-mars/50","bg-rose-400/50","bg-white/25"].map((c,i) => (
+                          <div key={i} className={`w-[10px] h-[10px] sm:w-[12px] sm:h-[12px] rounded-full ${c} border-[1.5px] border-black/60`} />
+                        ))}
                       </div>
+                      <span className="text-white/25 text-[8px] sm:text-[9px] font-medium">7 characters</span>
+                    </div>
+                    <div className="flex items-center gap-[3px]">
+                      {[1,2,3,4,5,6,7].map((i) => (
+                        <div key={i} className={`h-[3px] rounded-full ${i <= 3 ? "w-[10px] sm:w-[14px] bg-mars/50" : "w-[5px] sm:w-[7px] bg-white/[0.08]"}`} />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Play button — inside the prompt */}
+                  <div className="p-3 sm:p-4">
+                    <div className="w-full py-3.5 sm:py-4 rounded-xl bg-mars text-center shadow-[0_0_30px_rgba(255,85,0,0.2)]">
+                      <span className="text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em]">Play this question →</span>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
-                <span className="inline-flex items-center px-8 py-3 rounded-xl bg-[#0a0a0a] text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
-                  Play this question →
-                </span>
               </div>
             </div>
           </button>
