@@ -1633,64 +1633,14 @@ export default function BusinessPage() {
             }}
             className="w-full group"
           >
-            <div className="relative rounded-[20px] sm:rounded-[24px] overflow-hidden bg-[#161618] transition-all duration-500 shadow-[0_2px_0_rgba(255,255,255,0.04)_inset,0_24px_80px_rgba(0,0,0,0.6)]">
-              {/* Product hero — app icon + name */}
-              <div className="px-6 sm:px-10 pt-8 sm:pt-10 pb-6 sm:pb-8 text-center">
-                {/* App icon */}
-                <div className="w-[48px] h-[48px] sm:w-[56px] sm:h-[56px] mx-auto mb-4 rounded-[12px] sm:rounded-[14px] bg-gradient-to-b from-mars to-[#cc4400] shadow-[0_4px_16px_rgba(255,85,0,0.3)] flex items-center justify-center">
-                  <span className="text-white text-[18px] sm:text-[22px] font-bold">S</span>
-                </div>
-                <h3 className="text-white text-[18px] sm:text-[22px] font-bold tracking-[-0.02em] mb-1.5">The Systemic Playmaker</h3>
-                <p className="text-white/40 text-[12px] sm:text-[13px] leading-[1.4]">Turns your question into a play<br />you can bring to life on Mars.</p>
-              </div>
-
-              {/* App preview window */}
-              <div className="mx-4 sm:mx-6 mb-5 sm:mb-7 rounded-xl sm:rounded-2xl overflow-hidden bg-[#0a0a0c] border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-                {/* Window bar */}
-                <div className="px-4 py-2.5 flex items-center justify-between">
-                  <div className="flex items-center gap-[5px]">
-                    <div className="w-[7px] h-[7px] rounded-full bg-[#ff5f57]" />
-                    <div className="w-[7px] h-[7px] rounded-full bg-[#febc2e]" />
-                    <div className="w-[7px] h-[7px] rounded-full bg-[#28c840]" />
-                  </div>
-                  <span className="text-white/20 text-[9px] sm:text-[10px] font-medium tracking-wide">Systemic Playmaker</span>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-[5px] h-[5px] rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-emerald-400/50 text-[8px] font-semibold">Live</span>
-                  </div>
-                </div>
-
-                {/* Question area */}
-                <div className="border-t border-white/[0.06] px-6 sm:px-8 py-8 sm:py-10 text-center">
-                  <p className="text-white/30 text-[8px] sm:text-[9px] uppercase tracking-[0.2em] font-bold mb-3">Your question</p>
-                  <p className="text-white font-mercure italic text-[20px] sm:text-[28px] leading-[1.25]">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
-                </div>
-
-                {/* Footer bar */}
-                <div className="border-t border-white/[0.06] px-4 sm:px-5 py-2.5 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="flex -space-x-1">
-                      {["bg-amber-400","bg-mars","bg-white/40","bg-mars/60","bg-mars/50","bg-rose-400/40","bg-white/25"].map((c,i) => (
-                        <div key={i} className={`w-[10px] h-[10px] sm:w-[12px] sm:h-[12px] rounded-full ${c} border-[1.5px] border-[#0a0a0c]`} />
-                      ))}
-                    </div>
-                    <span className="text-white/20 text-[8px] sm:text-[9px] font-medium">7 characters</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-[3px]">
-                      {[1,2,3,4,5,6,7].map((i) => (
-                        <div key={i} className={`h-[3px] rounded-full ${i <= 3 ? "w-[10px] sm:w-[14px] bg-mars/50" : "w-[5px] sm:w-[7px] bg-white/[0.06]"}`} />
-                      ))}
-                    </div>
-                    <span className="text-white/15 text-[8px] sm:text-[9px] font-medium">3/7</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* CTA — inside the card */}
-              <div className="px-4 sm:px-6 pb-5 sm:pb-7">
-                <div className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-mars text-center shadow-[0_0_40px_rgba(255,85,0,0.15)] group-hover:shadow-[0_0_50px_rgba(255,85,0,0.25)] transition-all">
-                  <span className="text-white text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.15em]">Play this question →</span>
+            <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-white/[0.04] transition-all duration-500">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+              <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-5 sm:pb-6 text-center">
+                <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2">The Systemic Playmaker</p>
+                <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.4] mb-5">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
+                <p className="text-white font-mercure italic text-[20px] sm:text-[28px] leading-[1.25] mb-5">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
+                <div className="w-full py-3.5 sm:py-4 rounded-xl bg-mars text-center shadow-[0_0_30px_rgba(255,85,0,0.2)] group-hover:brightness-110 transition-all">
+                  <span className="text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em]">Play this question →</span>
                 </div>
               </div>
             </div>
