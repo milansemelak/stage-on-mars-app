@@ -950,7 +950,7 @@ export default function BusinessPage() {
 
           {/* Clickable logo when in results — natural "back home" */}
           {submitted && (
-            <button onClick={reset} className="mb-6 group/logo cursor-pointer flex items-center gap-2">
+            <button onClick={() => { reset(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="mb-6 group/logo cursor-pointer flex items-center gap-2">
               <svg className="w-4 h-4 text-white/30 group-hover/logo:text-mars/60 transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
               <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert opacity-40 group-hover/logo:opacity-80 transition-opacity" />
             </button>
@@ -959,9 +959,9 @@ export default function BusinessPage() {
           {!submitted && (
             <div className="text-center mb-6 sm:mb-10">
               {/* Logo */}
-              <div className="mb-4 sm:mb-5" style={{ animation: "float 6s ease-in-out infinite" }}>
+              <button onClick={() => { reset(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="mb-4 sm:mb-5 cursor-pointer" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
-              </div>
+              </button>
               {/* Tagline — same style as the screenshot */}
               <p className="text-white/25 text-[11px] sm:text-[13px] md:text-[15px] uppercase tracking-[0.12em] leading-[1.6]">
                 Bring a question. Play it out live on stage.<br />
@@ -1187,6 +1187,25 @@ export default function BusinessPage() {
                             </div>
                           </div>
                         )}
+                        {/* Big CTA — take it live */}
+                        <div className="rounded-2xl overflow-hidden bg-mars mt-2">
+                          <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
+                            <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">This was a simulation</p>
+                            <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
+                              Imagine this with real people.<br />On a real stage.
+                            </h3>
+                            <p className="font-mercure italic text-white/70 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
+                              Your team, your questions, and perspectives no algorithm can generate.
+                            </p>
+                            <a
+                              href="#contact"
+                              className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
+                            >
+                              Book your play on Mars →
+                            </a>
+                          </div>
+                        </div>
+
                         <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all">
                           ← Back to cast
                         </button>
@@ -1955,6 +1974,27 @@ export default function BusinessPage() {
         </div>
       </FadeIn>
 
+
+      {/* ── INSTAGRAM FEED ── */}
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-4 sm:mb-6">
+            <p className="text-white/20 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">@stage_on_mars</p>
+          </div>
+          <div
+            className="[&_behold-widget]:block"
+            ref={(el) => {
+              if (el && !document.querySelector('script[src*="behold.so"]')) {
+                const s = document.createElement("script");
+                s.type = "module";
+                s.src = "https://w.behold.so/widget.js";
+                document.head.append(s);
+              }
+            }}
+            dangerouslySetInnerHTML={{ __html: '<behold-widget feed-id="dIhZfoeR63aCCPOqfshk"></behold-widget>' }}
+          />
+        </div>
+      </FadeIn>
 
       {/* ── CONTACT — Stage box ── */}
       <FadeIn className="px-4 pt-3 sm:pt-4 pb-16 sm:pb-24">
