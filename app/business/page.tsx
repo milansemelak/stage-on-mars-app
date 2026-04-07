@@ -1633,21 +1633,67 @@ export default function BusinessPage() {
             }}
             className="w-full group"
           >
-            <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-[#1c1c1e] border border-white/[0.10] transition-all duration-500 shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
-              {/* Window chrome */}
-              <div className="flex items-center gap-[6px] px-4 pt-3 pb-2">
-                <div className="w-[8px] h-[8px] rounded-full bg-[#ff5f57]" />
-                <div className="w-[8px] h-[8px] rounded-full bg-[#febc2e]" />
-                <div className="w-[8px] h-[8px] rounded-full bg-[#28c840]" />
-              </div>
-              {/* Content */}
-              <div className="px-6 sm:px-8 pt-4 sm:pt-5 pb-6 sm:pb-7 text-center">
-                <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2">The Systemic Playmaker</p>
-                <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.4] mb-6">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
-                <p className="text-white font-mercure italic text-[20px] sm:text-[28px] leading-[1.25] mb-6">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
-                <div className="w-full py-3.5 sm:py-4 rounded-xl bg-mars text-center shadow-[0_0_30px_rgba(255,85,0,0.2)] group-hover:brightness-110 transition-all">
-                  <span className="text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em]">Play this question →</span>
+            <div className="relative text-center">
+              {/* Title above the device */}
+              <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2">The Systemic Playmaker</p>
+              <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.4] mb-6 sm:mb-8">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
+
+              {/* iPhone mockup */}
+              <div className="relative mx-auto w-[220px] sm:w-[280px]">
+                {/* Phone frame */}
+                <div className="relative rounded-[32px] sm:rounded-[40px] bg-[#1a1a1c] p-[6px] sm:p-[8px] shadow-[0_20px_60px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.08)]">
+                  {/* Screen */}
+                  <div className="relative rounded-[26px] sm:rounded-[32px] overflow-hidden bg-[#0a0a0c]">
+                    {/* Dynamic Island */}
+                    <div className="flex justify-center pt-2.5 sm:pt-3 pb-3 sm:pb-4">
+                      <div className="w-[60px] sm:w-[76px] h-[18px] sm:h-[22px] rounded-full bg-[#000]" />
+                    </div>
+
+                    {/* App content */}
+                    <div className="px-4 sm:px-5 pb-5 sm:pb-6">
+                      {/* App header */}
+                      <div className="flex items-center justify-between mb-4 sm:mb-5">
+                        <span className="text-white/30 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider">Playmaker</span>
+                        <div className="flex items-center gap-1">
+                          <div className="w-[4px] h-[4px] rounded-full bg-emerald-400 animate-pulse" />
+                          <span className="text-emerald-400/50 text-[6px] sm:text-[7px] font-semibold">Live</span>
+                        </div>
+                      </div>
+
+                      {/* Question */}
+                      <p className="text-white/30 text-[6px] sm:text-[7px] uppercase tracking-[0.2em] font-bold mb-2 text-left">Your question</p>
+                      <p className="text-white font-mercure italic text-[13px] sm:text-[17px] leading-[1.3] text-left mb-4 sm:mb-5">&ldquo;What does my company need the most right now?&rdquo;</p>
+
+                      {/* Characters */}
+                      <div className="flex items-center gap-1.5 mb-3 sm:mb-4">
+                        <div className="flex -space-x-1">
+                          {["bg-amber-400","bg-mars","bg-white/40","bg-mars/60","bg-mars/50"].map((c,i) => (
+                            <div key={i} className={`w-[12px] h-[12px] sm:w-[14px] sm:h-[14px] rounded-full ${c} border-[1.5px] border-[#0a0a0c]`} />
+                          ))}
+                        </div>
+                        <span className="text-white/20 text-[7px] sm:text-[8px]">+2 more</span>
+                      </div>
+
+                      {/* Progress */}
+                      <div className="w-full h-[3px] rounded-full bg-white/[0.06] mb-1.5">
+                        <div className="w-[43%] h-full rounded-full bg-mars/50" />
+                      </div>
+                      <p className="text-white/15 text-[6px] sm:text-[7px] text-right">Step 3 of 7</p>
+                    </div>
+
+                    {/* Bottom safe area */}
+                    <div className="flex justify-center pb-2">
+                      <div className="w-[80px] sm:w-[100px] h-[3px] rounded-full bg-white/15" />
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              {/* CTA below device */}
+              <div className="mt-6 sm:mt-8">
+                <span className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-mars text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:brightness-110 transition-all shadow-[0_0_30px_rgba(255,85,0,0.2)]">
+                  Try it now →
+                </span>
               </div>
             </div>
           </button>
