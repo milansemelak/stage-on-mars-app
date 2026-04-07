@@ -33,6 +33,117 @@ const VOICES = [
   { text: "Brilliant and healing for the company and our people.", name: "Ondřej Novotný", co: "Oktagon MMA" },
 ];
 
+const UI = {
+  en: {
+    tagline1: "Play with reality.",
+    tagline2: "Create what\u2019s next.",
+    placeholder: "What question do you want to play?",
+    company: "Company name",
+    buildPlay: "Build your play",
+    readyMade: "Or choose a ready-made experience",
+    howTitle: "How it works",
+    headline: "Play with reality.\nCreate what\u2019s next.",
+    formulaTag: "Method of Systemic Play",
+    formulaQ: "Question",
+    formulaP: "Play",
+    formulaR: "Perspective",
+    colHead1: "Bring a question.",
+    colHead2: "Play it out on stage.",
+    colHead3: "See what matters.",
+    realityPlays: "Reality plays",
+    countries: "Countries",
+    founded: "Founded",
+    trustedBy: "Trusted by",
+    cities: "London · Zurich · Bucharest · Prague",
+    theStage: "The stage",
+    venueDesc: "The flagship space. Where reality plays happen.",
+    explore: "Explore →",
+    playmakerTitle: "The Systemic Playmaker",
+    playmakerDesc1: "A digital tool that turns your question",
+    playmakerDesc2: "into a play you can then bring to life on Mars.",
+    playmakerQ1: "What does my company need",
+    playmakerQ2: "the most right now?",
+    playQuestion: "Play this question →",
+    theCrew: "The crew",
+    crewText1: "Created by Milan and Zuzana Semelak in 2020. Systemic constellations meets theatre meets improvisation.",
+    crewText2: "In 2023, David Vais joined. Platform built. Stage opened. Brand born.",
+    crewStats: "800+ reality plays. London, Zurich, Bucharest.",
+    getOnStage: "Get on stage",
+    contactQ: "What\u2019s your question?",
+    contactReply: "We reply within 24 hours.",
+    contactName: "Name",
+    contactCompany: "Company",
+    contactEmail: "Email",
+    contactYourQ: "Your question",
+    letsTalk: "Let\u2019s Talk",
+    contactThanks: "Thank you. We\u2019ll be in touch.",
+    play1Theme: "Direction",
+    play1Pitch: "Where is your company really heading — and what\u2019s pulling it off course?",
+    play2Theme: "Future",
+    play2Pitch: "What does your company look like in 5 years? Your team builds that future on stage.",
+    play3Theme: "Creation",
+    play3Pitch: "The creative soul of your company. What feeds it, what starves it.",
+    thePlay: "Play",
+    from: "from",
+    letsMakeIt: "Let\u2019s make it happen.",
+  },
+  cs: {
+    tagline1: "Hrajte si s realitou.",
+    tagline2: "Vytvořte, co přijde.",
+    placeholder: "Jakou otázku chcete zahrát?",
+    company: "Název firmy",
+    buildPlay: "Sestavit hru",
+    readyMade: "Nebo si vyberte hotový zážitek",
+    howTitle: "Jak to funguje",
+    headline: "Hrajte si s realitou.\nVytvořte, co přijde.",
+    formulaTag: "Metoda Systémové Hry",
+    formulaQ: "Otázka",
+    formulaP: "Hra",
+    formulaR: "Perspektiva",
+    colHead1: "Přineste otázku.",
+    colHead2: "Zahrajte si ji na jevišti.",
+    colHead3: "Uvidíte, na čem záleží.",
+    realityPlays: "Odehraných her",
+    countries: "Země",
+    founded: "Založeno",
+    trustedBy: "Důvěřují nám",
+    cities: "Londýn · Curych · Bukurešť · Praha",
+    theStage: "Scéna",
+    venueDesc: "Vlajková loď. Místo, kde se hrají hry reality.",
+    explore: "Prozkoumat →",
+    playmakerTitle: "Systémový Playmaker",
+    playmakerDesc1: "Digitální nástroj, který promění vaši otázku",
+    playmakerDesc2: "ve hru, kterou pak oživíte na Marsu.",
+    playmakerQ1: "Co moje firma potřebuje",
+    playmakerQ2: "nejvíc právě teď?",
+    playQuestion: "Zahrát tuto otázku →",
+    theCrew: "Tým",
+    crewText1: "Založili Milan a Zuzana Semelákovi v roce 2020. Systemické konstelace potkávají divadlo a improvizaci.",
+    crewText2: "V roce 2023 se přidal David Vais. Platforma postavena. Scéna otevřena. Značka vznikla.",
+    crewStats: "800+ her reality. Londýn, Curych, Bukurešť.",
+    getOnStage: "Vstupte na scénu",
+    contactQ: "Jaká je vaše otázka?",
+    contactReply: "Odpovíme do 24 hodin.",
+    contactName: "Jméno",
+    contactCompany: "Firma",
+    contactEmail: "E-mail",
+    contactYourQ: "Vaše otázka",
+    letsTalk: "Pojďme se bavit",
+    contactThanks: "Děkujeme. Ozveme se vám.",
+    play1Theme: "Směr",
+    play1Pitch: "Kam vaše firma opravdu míří — a co ji stahuje z kurzu?",
+    play2Theme: "Budoucnost",
+    play2Pitch: "Jak vypadá vaše firma za 5 let? Váš tým tu budoucnost postaví na jevišti.",
+    play3Theme: "Tvorba",
+    play3Pitch: "Tvořivá duše vaší firmy. Co ji živí, co ji hubí.",
+    thePlay: "Hra",
+    from: "od",
+    letsMakeIt: "Pojďme na to.",
+  },
+} as const;
+
+type Lang = keyof typeof UI;
+
 function Voices() {
   const [idx, setIdx] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -767,6 +878,8 @@ export default function BusinessPage() {
   const [simReady, setSimReady] = useState(false);
   const [simPhase, setSimPhase] = useState<"cast" | "stage" | "perspectives">("cast");
   const [simEnded, setSimEnded] = useState(false);
+  const [lang, setLang] = useState<Lang>("en");
+  const t = UI[lang];
   const [inlineDigital, setInlineDigital] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
   const inlineRef = useRef<HTMLDivElement>(null);
@@ -957,17 +1070,27 @@ export default function BusinessPage() {
           )}
 
           {!submitted && (
+            <div className="flex justify-end w-full max-w-3xl mx-auto mb-2">
+              <button
+                onClick={() => setLang(lang === "en" ? "cs" : "en")}
+                className="text-white/30 hover:text-white/60 text-[11px] font-bold uppercase tracking-[0.15em] transition-colors"
+              >
+                {lang === "en" ? "CZ" : "EN"}
+              </button>
+            </div>
+          )}
+
+          {!submitted && (
             <div className="text-center mb-6 sm:mb-10">
               {/* Logo */}
               <button onClick={() => { reset(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="mb-4 sm:mb-5 cursor-pointer" style={{ animation: "float 6s ease-in-out infinite" }}>
                 <img src="/logo.png" alt="Stage On Mars" className="h-14 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </button>
               {/* Tagline — same style as the screenshot */}
-              <p className="text-white text-[16px] sm:text-[22px] md:text-[28px] font-bold uppercase tracking-[0.12em] leading-[1.3]">
-                Bring a question.<br />
-                Play it out live on stage.<br />
-                <span className="text-mars">See what matters.</span>
-              </p>
+              <h1 className="text-[36px] sm:text-[56px] md:text-[72px] font-black tracking-[-0.04em] leading-[1.05]">
+                <span className="text-white">{t.tagline1}</span><br />
+                <span className="text-mars font-mercure italic">{t.tagline2}</span>
+              </h1>
             </div>
           )}
 
@@ -982,7 +1105,7 @@ export default function BusinessPage() {
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What question do you want to play?"
+                    placeholder={t.placeholder}
                     rows={2}
                     className="w-full flex-1 min-h-[100px] sm:min-h-0 bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[26px] placeholder:text-white/50 focus:outline-none resize-none leading-[1.4] tracking-[-0.02em] font-medium"
                     style={{ caretColor: "#FF5500" }}
@@ -995,7 +1118,7 @@ export default function BusinessPage() {
                   <input
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="Company name"
+                    placeholder={t.company}
                     className="w-full bg-transparent border-0 px-0 py-2.5 text-white/60 placeholder:text-white/30 focus:outline-none text-[14px] sm:text-[15px] border-t border-white/[0.10]"
                   />
                   <button
@@ -1003,7 +1126,7 @@ export default function BusinessPage() {
                     disabled={!question.trim()}
                     className="w-full py-4.5 sm:py-4 rounded-xl font-bold text-[16px] sm:text-[16px] uppercase tracking-[0.18em] transition-all bg-mars hover:bg-mars-light text-white shadow-[0_0_50px_rgba(255,85,0,0.35),0_4px_20px_rgba(255,85,0,0.2)] disabled:opacity-30 disabled:shadow-none"
                   >
-                    Build your play
+                    {t.buildPlay}
                   </button>
                 </div>
               </div>
@@ -1219,12 +1342,12 @@ export default function BusinessPage() {
           {!submitted && (
             <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-10 pb-8 sm:pb-0 space-y-3">
               <div className="px-1 mb-3">
-                <p className="text-white/50 text-[11px] uppercase tracking-[0.3em] font-bold">Or choose a ready-made experience</p>
+                <p className="text-white/50 text-[11px] uppercase tracking-[0.3em] font-bold">{t.readyMade}</p>
               </div>
               {[
-                { theme: "Direction", photo: "/luxury2.jpg", photoPos: "50% 30%", price: "from €2 900", pitch: "Where is your company really heading — and what's pulling it off course?" },
-                { theme: "Future", photo: "/luxury4.jpg", photoPos: "50% 50%", price: "from €2 900", pitch: "What does your company look like in 5 years? Your team builds that future on stage." },
-                { theme: "Creation", photo: "/luxury1.jpg", photoPos: "50% 40%", price: "from €2 200", pitch: "The creative soul of your company. What feeds it, what starves it." },
+                { theme: t.play1Theme, photo: "/luxury2.jpg", photoPos: "50% 30%", price: `${t.from} €2 900`, pitch: t.play1Pitch },
+                { theme: t.play2Theme, photo: "/luxury4.jpg", photoPos: "50% 50%", price: `${t.from} €2 900`, pitch: t.play2Pitch },
+                { theme: t.play3Theme, photo: "/luxury1.jpg", photoPos: "50% 40%", price: `${t.from} €2 200`, pitch: t.play3Pitch },
               ].map((play, i) => (
                 <a key={i} href="#contact" className="group flex items-center gap-4 rounded-xl border border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02] overflow-hidden transition-all duration-500">
                   {/* Small photo */}
@@ -1236,7 +1359,7 @@ export default function BusinessPage() {
                     <div className="flex items-center justify-between gap-3 mb-1">
                       <h4 className="text-[16px] sm:text-[18px] font-bold tracking-[-0.02em] leading-[1]">
                         <span className="text-white/90 group-hover:text-white transition-colors">The {play.theme}</span>{" "}
-                        <span className="text-mars/60 group-hover:text-mars transition-colors">Play</span>
+                        <span className="text-mars/60 group-hover:text-mars transition-colors">{t.thePlay}</span>
                       </h4>
                       <p className="text-white/25 text-[11px] font-bold tracking-tight shrink-0">{play.price}</p>
                     </div>
@@ -1245,6 +1368,40 @@ export default function BusinessPage() {
                 </a>
               ))}
 
+            </div>
+          )}
+
+          {/* ── HOW IT WORKS ── */}
+          {!submitted && (
+            <div className="relative w-full max-w-3xl mx-auto mt-8 sm:mt-14 pb-6 sm:pb-10">
+              {/* Orange glow beneath box */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[60%] h-[80px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.1) 0%, transparent 80%)" }} />
+              <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+                {/* Atmospheric glow */}
+                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
+
+                <div className="relative px-6 sm:px-10 pt-12 sm:pt-16 pb-12 sm:pb-16 flex flex-col items-center">
+                  {/* Tag */}
+                  <p className="text-white/20 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-8 sm:mb-10">{t.formulaTag}</p>
+                  {/* Formula */}
+                  <p className="text-center mb-10 sm:mb-12">
+                    <span className="text-white/90 text-[28px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaQ}</span>
+                    <span className="text-white/12 text-[22px] sm:text-[32px] md:text-[40px] mx-3 sm:mx-5 font-light">×</span>
+                    <span className="text-white/90 text-[28px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaP}</span>
+                    <span className="text-white/12 text-[22px] sm:text-[32px] md:text-[40px] mx-3 sm:mx-5 font-light">=</span>
+                    <span className="text-mars text-[28px] sm:text-[40px] md:text-[50px] font-mercure italic tracking-[-0.02em]">{t.formulaR}</span>
+                  </p>
+                  {/* Three sentences */}
+                  <div className="flex items-center gap-3 sm:gap-5 text-[13px] sm:text-[15px] tracking-[0.005em]">
+                    <span className="text-white/50">{t.colHead1}</span>
+                    <span className="text-white/15">—</span>
+                    <span className="text-white/50">{t.colHead2}</span>
+                    <span className="text-white/15">—</span>
+                    <span className="text-mars/60">{t.colHead3}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -1546,17 +1703,17 @@ export default function BusinessPage() {
               <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
                 <div className="text-center">
                   <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
-                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Reality plays</p>
+                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.realityPlays}</p>
                 </div>
                 <div className="w-px h-10 bg-white/[0.12]" />
                 <div className="text-center">
                   <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
-                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Countries</p>
+                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.countries}</p>
                 </div>
                 <div className="w-px h-10 bg-white/[0.12]" />
                 <div className="text-center">
                   <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
-                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Founded</p>
+                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.founded}</p>
                 </div>
               </div>
 
@@ -1569,7 +1726,7 @@ export default function BusinessPage() {
               <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.15] to-transparent mb-6 sm:mb-8" />
 
               {/* Trusted by — refined text list */}
-              <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] text-center mb-4 font-bold">Trusted by</p>
+              <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] text-center mb-4 font-bold">{t.trustedBy}</p>
               <p className="text-white/70 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
                 Forbes{" "}<span className="text-white/25 mx-1">·</span>{" "}
                 Škoda{" "}<span className="text-white/25 mx-1">·</span>{" "}
@@ -1586,7 +1743,7 @@ export default function BusinessPage() {
                 MSD
               </p>
               <p className="text-white/40 text-[10px] text-center mt-4 font-mercure italic">
-                London · Zurich · Bucharest · Prague
+                {t.cities}
               </p>
             </div>
           </div>
@@ -1606,12 +1763,12 @@ export default function BusinessPage() {
             {/* Info bar below photo */}
             <div className="px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between gap-4">
               <div>
-                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-1.5">The stage</p>
+                <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-1.5">{t.theStage}</p>
                 <p className="text-white/90 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
-                <p className="text-white/65 text-[13px] sm:text-[14px] mt-0.5">The flagship space. Where reality plays happen.</p>
+                <p className="text-white/65 text-[13px] sm:text-[14px] mt-0.5">{t.venueDesc}</p>
               </div>
               <a href="/space" className="shrink-0 text-mars/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
-                Explore →
+                {t.explore}
               </a>
             </div>
           </div>
@@ -1635,8 +1792,8 @@ export default function BusinessPage() {
           >
             <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light">
               <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
-                <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2 text-center">The Systemic Playmaker</p>
-                <p className="text-white/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
+                <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2 text-center">{t.playmakerTitle}</p>
+                <p className="text-white/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">{t.playmakerDesc1}<br />{t.playmakerDesc2}</p>
                 <div className="max-w-[380px] mx-auto">
                   <div className="relative rounded-[12px] bg-[#1a1a1c] p-[3px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
                     <div className="rounded-[10px] overflow-hidden bg-[#0a0a0c]">
@@ -1746,7 +1903,7 @@ export default function BusinessPage() {
                       {/* Prompt box — bigger, prominent */}
                       <div className="px-3 sm:px-5 pb-3 sm:pb-5">
                         <div className="rounded-xl bg-white/[0.05] border border-white/[0.10] px-4 sm:px-5 py-3 sm:py-3.5 flex items-center gap-3">
-                          <p className="text-white/70 font-mercure italic text-[11px] sm:text-[14px] leading-[1.3] flex-1">&ldquo;What does my company need<br />the most right now?&rdquo;</p>
+                          <p className="text-white/70 font-mercure italic text-[11px] sm:text-[14px] leading-[1.3] flex-1">&ldquo;{t.playmakerQ1}<br />{t.playmakerQ2}&rdquo;</p>
                           <div className="w-[28px] h-[28px] sm:w-[34px] sm:h-[34px] rounded-lg bg-mars flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(255,85,0,0.4)] animate-pulse">
                             <span className="text-white text-[10px] sm:text-[13px]">▶</span>
                           </div>
@@ -1758,7 +1915,7 @@ export default function BusinessPage() {
               </div>
               <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
                 <span className="inline-flex items-center px-8 py-3 rounded-xl bg-[#0a0a0a] text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
-                  Play this question →
+                  {t.playQuestion}
                 </span>
               </div>
             </div>
@@ -1780,16 +1937,16 @@ export default function BusinessPage() {
               </div>
               {/* Team info */}
               <div className="p-6 sm:p-8 flex flex-col justify-center space-y-4">
-                <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">The crew</p>
+                <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">{t.theCrew}</p>
                 <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
-                  Created by Milan and Zuzana Semelak in 2020. Systemic constellations meets theatre meets improvisation.
+                  {t.crewText1}
                 </p>
                 <p className="font-mercure text-white/55 text-[13px] sm:text-[14px] leading-[1.7]">
-                  In 2023, David Vais joined. Platform built. Stage opened. Brand born.
+                  {t.crewText2}
                 </p>
                 <div className="pt-2">
                   <p className="text-white/70 text-[13px] sm:text-[14px] font-bold">
-                    800+ reality plays. London, Zurich, Bucharest.
+                    {t.crewStats}
                   </p>
                   <p className="text-white/70 text-[10px] mt-2">
                     Milan Semelak · David Vais · Tomas Pavlik · Jan Piskor · Andrea Sturalova
@@ -1832,27 +1989,27 @@ export default function BusinessPage() {
             <div className="p-6 sm:p-10">
               <div className="max-w-md mx-auto space-y-8">
                 <div className="text-center">
-                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-4">Get on stage</p>
+                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-4">{t.getOnStage}</p>
                   <h2 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">
-                    {submitted ? "Let\u2019s make it happen." : "What\u2019s your question?"}
+                    {submitted ? t.letsMakeIt : t.contactQ}
                   </h2>
-                  <p className="font-mercure text-white/60 text-[13px] sm:text-[14px] mt-2">We reply within 24 hours.</p>
+                  <p className="font-mercure text-white/60 text-[13px] sm:text-[14px] mt-2">{t.contactReply}</p>
                 </div>
 
                 {sent ? (
                   <div className="text-center py-8">
-                    <p className="font-mercure text-white/60 text-[14px]">Thank you. We&apos;ll be in touch.</p>
+                    <p className="font-mercure text-white/60 text-[14px]">{t.contactThanks}</p>
                   </div>
                 ) : (
                   <form onSubmit={handleContactSubmit} className="space-y-2.5">
                     <div className="grid sm:grid-cols-2 gap-2.5">
-                      <input name="name" value={formData.name} onChange={handleContactChange} placeholder="Name" required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
-                      <input name="company" value={formData.company} onChange={handleContactChange} placeholder="Company" className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                      <input name="name" value={formData.name} onChange={handleContactChange} placeholder={t.contactName} required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                      <input name="company" value={formData.company} onChange={handleContactChange} placeholder={t.contactCompany} className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
                     </div>
-                    <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder="Email" required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
-                    <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder="Your question" rows={3} className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors resize-none" />
+                    <input name="email" type="email" value={formData.email} onChange={handleContactChange} placeholder={t.contactEmail} required className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors" />
+                    <textarea name="question" value={formData.question || askedQuestion} onChange={handleContactChange} placeholder={t.contactYourQ} rows={3} className="font-mercure w-full rounded-xl bg-white/[0.06] border border-white/[0.12] focus:border-mars/25 px-4 py-3 text-[13px] text-[#EDEDED] placeholder:text-white/70 focus:outline-none transition-colors resize-none" />
                     <button type="submit" className="w-full py-3.5 rounded-xl bg-mars hover:bg-mars-light text-white text-[11px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]">
-                      Let&apos;s Talk
+                      {t.letsTalk}
                     </button>
                   </form>
                 )}
