@@ -1690,49 +1690,55 @@ export default function BusinessPage() {
                           {/* Outer glow of ring */}
                           <circle cx="100" cy="80" r="62" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="6" filter="url(#pm-glow-big)" />
 
-                          {/* ── Characters ── */}
+                          {/* ── Characters — all inside circle (cx=100,cy=80,r=62) ── */}
 
-                          {/* You — gold, near top */}
+                          {/* You — gold, upper-right */}
                           <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 3,-2; -2,3; 0,0" dur="12s" repeatCount="indefinite" />
-                            <circle cx="108" cy="44" r="5" fill="rgba(255,215,0,0.9)" filter="url(#pm-glow)" />
-                            <text x="108" y="38" textAnchor="middle" fill="rgba(255,215,0,0.5)" fontSize="4.5" fontStyle="italic">You</text>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,-1.5; -1.5,2; 0,0" dur="12s" repeatCount="indefinite" />
+                            <circle cx="118" cy="52" r="5" fill="rgba(255,215,0,0.9)" filter="url(#pm-glow)" />
+                            <text x="118" y="61" textAnchor="middle" fill="rgba(255,215,0,0.5)" fontSize="4" fontStyle="italic">You</text>
                           </g>
 
-                          {/* Need — orange, upper area */}
+                          {/* Need — orange, upper-left */}
                           <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; -3,4; 4,-2; 0,0" dur="14s" repeatCount="indefinite" />
-                            <circle cx="85" cy="56" r="7" fill="rgba(255,85,0,0.9)" filter="url(#pm-glow)" />
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,3; 3,-2; 0,0" dur="14s" repeatCount="indefinite" />
+                            <circle cx="78" cy="56" r="7" fill="rgba(255,85,0,0.9)" filter="url(#pm-glow)" />
+                            <text x="78" y="67" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="4" fontWeight="700">Need</text>
                           </g>
 
-                          {/* Growth — orange, center */}
+                          {/* Growth — orange, center-left */}
                           <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,-3; -4,2; 0,0" dur="10s" repeatCount="indefinite" />
-                            <circle cx="90" cy="82" r="7" fill="rgba(255,85,0,0.85)" filter="url(#pm-glow)" />
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,-2; -3,2; 0,0" dur="10s" repeatCount="indefinite" />
+                            <circle cx="72" cy="82" r="6.5" fill="rgba(255,85,0,0.85)" filter="url(#pm-glow)" />
+                            <text x="72" y="93" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="4" fontWeight="700">Growth</text>
                           </g>
 
                           {/* Fear — grey, center-right */}
                           <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,3; 3,-4; 0,0" dur="16s" repeatCount="indefinite" />
-                            <circle cx="118" cy="80" r="6.5" fill="rgba(190,190,190,0.7)" filter="url(#pm-glow)" />
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,2; 2,-3; 0,0" dur="16s" repeatCount="indefinite" />
+                            <circle cx="125" cy="72" r="6" fill="rgba(190,190,190,0.7)" filter="url(#pm-glow)" />
+                            <text x="125" y="83" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="4" fontWeight="700">Fear</text>
                           </g>
 
-                          {/* Risk — grey, lower-left */}
+                          {/* Risk — grey, lower-right */}
                           <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 4,2; -3,-3; 0,0" dur="13s" repeatCount="indefinite" />
-                            <circle cx="100" cy="102" r="5.5" fill="rgba(180,180,180,0.6)" />
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,1.5; -2,-2; 0,0" dur="13s" repeatCount="indefinite" />
+                            <circle cx="118" cy="98" r="5.5" fill="rgba(180,180,180,0.6)" />
+                            <text x="118" y="109" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="4" fontWeight="700">Risk</text>
                           </g>
 
-                          {/* Time — grey, lower */}
+                          {/* Time — grey, lower-left */}
                           <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; -3,-2; 2,4; 0,0" dur="15s" repeatCount="indefinite" />
-                            <circle cx="88" cy="118" r="5" fill="rgba(170,170,170,0.55)" />
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,-1.5; 1.5,2; 0,0" dur="15s" repeatCount="indefinite" />
+                            <circle cx="78" cy="100" r="5" fill="rgba(170,170,170,0.55)" />
+                            <text x="78" y="111" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4" fontWeight="700">Time</text>
                           </g>
 
-                          {/* Truth — grey, bottom */}
+                          {/* Truth — grey, bottom-center */}
                           <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,3; -4,-1; 0,0" dur="18s" repeatCount="indefinite" />
-                            <circle cx="102" cy="135" r="5" fill="rgba(160,160,160,0.5)" />
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 1.5,1.5; -2,-1; 0,0" dur="18s" repeatCount="indefinite" />
+                            <circle cx="100" cy="115" r="5" fill="rgba(160,160,160,0.5)" />
+                            <text x="100" y="126" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="4" fontWeight="700">Truth</text>
                           </g>
                         </svg>
                       </div>
