@@ -982,7 +982,7 @@ export default function BusinessPage() {
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What question will decide your next move?"
+                    placeholder="What question do you want to play?"
                     rows={2}
                     className="w-full flex-1 min-h-[100px] sm:min-h-0 bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[26px] placeholder:text-white/50 focus:outline-none resize-none leading-[1.4] tracking-[-0.02em] font-medium"
                     style={{ caretColor: "#FF5500" }}
@@ -1637,7 +1637,7 @@ export default function BusinessPage() {
               <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
                 <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2 text-center">The Systemic Playmaker</p>
                 <p className="text-white/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">A digital tool that turns your question<br />into a play you can then bring to life on Mars.</p>
-                <div className="max-w-[420px] mx-auto">
+                <div className="max-w-[380px] mx-auto">
                   <div className="relative rounded-[12px] bg-[#1a1a1c] p-[3px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
                     <div className="rounded-[10px] overflow-hidden bg-[#0a0a0c]">
                       {/* App chrome */}
@@ -1655,89 +1655,126 @@ export default function BusinessPage() {
                           <span className="text-[5px] text-emerald-400/50 font-bold">LIVE</span>
                         </div>
                       </div>
-                      {/* Stage — center only, no sidebars */}
-                      <div className="relative h-[180px] sm:h-[220px]">
-                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 160 140" preserveAspectRatio="xMidYMid meet">
+                      {/* Stage — real Playmaker style */}
+                      <div className="relative h-[200px] sm:h-[260px] bg-[#080809]">
+                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 160" preserveAspectRatio="xMidYMid meet">
                           <defs>
-                            <filter id="pm-glow" x="-100%" y="-100%" width="300%" height="300%">
-                              <feGaussianBlur stdDeviation="2" result="blur" />
+                            <filter id="pm-glow" x="-200%" y="-200%" width="500%" height="500%">
+                              <feGaussianBlur stdDeviation="3" result="blur" />
                               <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                             </filter>
+                            <radialGradient id="stage-bg" cx="50%" cy="50%" r="50%">
+                              <stop offset="0%" stopColor="rgba(255,85,0,0.03)" />
+                              <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+                            </radialGradient>
                           </defs>
 
-                          {/* Stage circle */}
-                          <circle cx="80" cy="65" r="50" fill="none" stroke="rgba(255,85,0,0.05)" strokeWidth="6" />
-                          <circle cx="80" cy="65" r="50" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.6" strokeDasharray="3 4">
-                            <animate attributeName="stroke-dashoffset" values="0;50" dur="20s" repeatCount="indefinite" />
-                          </circle>
+                          {/* Subtle stage floor */}
+                          <circle cx="100" cy="80" r="65" fill="url(#stage-bg)" />
+                          <circle cx="100" cy="80" r="65" fill="none" stroke="rgba(255,85,0,0.04)" strokeWidth="0.5" />
 
-                          {/* Characters — bigger, more readable */}
-                          <circle cx="62" cy="40" r="5.5" fill="rgba(255,215,0,0.85)" filter="url(#pm-glow)">
-                            <animate attributeName="cx" values="62;68;62" dur="8s" repeatCount="indefinite" />
-                          </circle>
-                          <text x="62" y="31" textAnchor="middle" fill="rgba(255,215,0,0.6)" fontSize="5" fontStyle="italic">
-                            <animate attributeName="x" values="62;68;62" dur="8s" repeatCount="indefinite" />You
-                          </text>
+                          {/* Grid dots — subtle floor texture */}
+                          {[...Array(7)].map((_, row) =>
+                            [...Array(9)].map((_, col) => {
+                              const x = 28 + col * 18;
+                              const y = 20 + row * 20;
+                              const dist = Math.sqrt((x-100)**2 + (y-80)**2);
+                              return dist < 68 ? (
+                                <circle key={`${row}-${col}`} cx={x} cy={y} r="0.4" fill={`rgba(255,255,255,${Math.max(0.03, 0.06 - dist * 0.0005)})`} />
+                              ) : null;
+                            })
+                          )}
 
-                          <circle cx="80" cy="65" r="6" fill="rgba(255,85,0,0.8)" filter="url(#pm-glow)">
-                            <animate attributeName="cy" values="65;61;65" dur="7s" repeatCount="indefinite" />
-                          </circle>
-                          <text x="80" y="75" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="5" fontWeight="700">
-                            <animate attributeName="y" values="75;71;75" dur="7s" repeatCount="indefinite" />Need
-                          </text>
-
-                          <circle cx="105" cy="38" r="4" fill="rgba(200,200,200,0.5)" filter="url(#pm-glow)">
-                            <animate attributeName="cx" values="105;99;105" dur="9s" repeatCount="indefinite" />
-                          </circle>
-                          <text x="105" y="31" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="4.5">
-                            <animate attributeName="x" values="105;99;105" dur="9s" repeatCount="indefinite" />Growth
-                          </text>
-
-                          <circle cx="48" cy="65" r="3.5" fill="rgba(255,85,0,0.55)">
-                            <animate attributeName="cx" values="48;52;48" dur="10s" repeatCount="indefinite" />
-                          </circle>
-                          <text x="48" y="58" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4">
-                            <animate attributeName="x" values="48;52;48" dur="10s" repeatCount="indefinite" />Fear
-                          </text>
-
-                          <circle cx="60" cy="95" r="3.5" fill="rgba(255,85,0,0.5)">
-                            <animate attributeName="cy" values="95;91;95" dur="8s" repeatCount="indefinite" />
-                          </circle>
-                          <text x="60" y="103" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4">
-                            <animate attributeName="y" values="103;99;103" dur="8s" repeatCount="indefinite" />Risk
-                          </text>
-
-                          <circle cx="112" cy="80" r="3" fill="rgba(255,85,0,0.5)">
-                            <animate attributeName="cx" values="112;107;112" dur="9s" repeatCount="indefinite" />
-                          </circle>
-                          <text x="112" y="74" textAnchor="middle" fill="rgba(255,255,255,0.28)" fontSize="4">
-                            <animate attributeName="x" values="112;107;112" dur="9s" repeatCount="indefinite" />Time
-                          </text>
-
-                          <circle cx="98" cy="100" r="2.8" fill="rgba(180,180,180,0.4)">
-                            <animate attributeName="cx" values="98;102;98" dur="11s" repeatCount="indefinite" />
-                          </circle>
-                          <text x="98" y="108" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontSize="3.5">
-                            <animate attributeName="x" values="98;102;98" dur="11s" repeatCount="indefinite" />Truth
-                          </text>
-
-                          {/* Connection lines */}
-                          <line x1="62" y1="40" x2="80" y2="65" stroke="rgba(255,85,0,0.1)" strokeWidth="0.6">
-                            <animate attributeName="x1" values="62;68;62" dur="8s" repeatCount="indefinite" />
+                          {/* Connection lines — dynamic, follow characters */}
+                          <line x1="65" y1="42" x2="100" y2="72" stroke="rgba(255,85,0,0.08)" strokeWidth="0.5" strokeDasharray="2 2">
+                            <animate attributeName="x1" values="65;72;58;65" dur="12s" repeatCount="indefinite" />
+                            <animate attributeName="y1" values="42;38;48;42" dur="12s" repeatCount="indefinite" />
+                            <animate attributeName="x2" values="100;96;104;100" dur="10s" repeatCount="indefinite" />
+                            <animate attributeName="y2" values="72;66;74;72" dur="10s" repeatCount="indefinite" />
                           </line>
-                          <line x1="105" y1="38" x2="80" y2="65" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5">
-                            <animate attributeName="x1" values="105;99;105" dur="9s" repeatCount="indefinite" />
+                          <line x1="130" y1="45" x2="100" y2="72" stroke="rgba(255,255,255,0.04)" strokeWidth="0.4" strokeDasharray="2 3">
+                            <animate attributeName="x1" values="130;124;132;130" dur="14s" repeatCount="indefinite" />
+                            <animate attributeName="y1" values="45;50;40;45" dur="14s" repeatCount="indefinite" />
+                            <animate attributeName="x2" values="100;96;104;100" dur="10s" repeatCount="indefinite" />
+                            <animate attributeName="y2" values="72;66;74;72" dur="10s" repeatCount="indefinite" />
                           </line>
-                          <line x1="48" y1="65" x2="80" y2="65" stroke="rgba(255,85,0,0.06)" strokeWidth="0.4">
-                            <animate attributeName="x1" values="48;52;48" dur="10s" repeatCount="indefinite" />
+                          <line x1="55" y1="80" x2="100" y2="72" stroke="rgba(255,85,0,0.05)" strokeWidth="0.4">
+                            <animate attributeName="x1" values="55;60;50;55" dur="15s" repeatCount="indefinite" />
+                            <animate attributeName="y1" values="80;75;85;80" dur="15s" repeatCount="indefinite" />
+                            <animate attributeName="x2" values="100;96;104;100" dur="10s" repeatCount="indefinite" />
+                            <animate attributeName="y2" values="72;66;74;72" dur="10s" repeatCount="indefinite" />
                           </line>
+                          <line x1="65" y1="42" x2="130" y2="45" stroke="rgba(255,255,255,0.03)" strokeWidth="0.3">
+                            <animate attributeName="x1" values="65;72;58;65" dur="12s" repeatCount="indefinite" />
+                            <animate attributeName="y1" values="42;38;48;42" dur="12s" repeatCount="indefinite" />
+                            <animate attributeName="x1" values="130;124;132;130" dur="14s" repeatCount="indefinite" />
+                            <animate attributeName="y1" values="45;50;40;45" dur="14s" repeatCount="indefinite" />
+                          </line>
+
+                          {/* ── Characters ── */}
+
+                          {/* You — gold, protagonist */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 7,-4; -7,6; 0,0" dur="12s" repeatCount="indefinite" />
+                            <circle cx="65" cy="42" r="7" fill="rgba(255,215,0,0.15)" />
+                            <circle cx="65" cy="42" r="4.5" fill="rgba(255,215,0,0.9)" filter="url(#pm-glow)" />
+                            <text x="65" y="54" textAnchor="middle" fill="rgba(255,215,0,0.7)" fontSize="5.5" fontWeight="600">You</text>
+                          </g>
+
+                          {/* Need — orange, central */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -4,-6; 4,2; 0,0" dur="10s" repeatCount="indefinite" />
+                            <circle cx="100" cy="72" r="8" fill="rgba(255,85,0,0.12)" />
+                            <circle cx="100" cy="72" r="5.5" fill="rgba(255,85,0,0.9)" filter="url(#pm-glow)" />
+                            <text x="100" y="84" textAnchor="middle" fill="rgba(255,255,255,0.55)" fontSize="5.5" fontWeight="700">Need</text>
+                          </g>
+
+                          {/* Growth — light, top right */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -6,5; 2,-3; 0,0" dur="14s" repeatCount="indefinite" />
+                            <circle cx="130" cy="45" r="5.5" fill="rgba(200,200,200,0.08)" />
+                            <circle cx="130" cy="45" r="3.5" fill="rgba(200,200,200,0.6)" filter="url(#pm-glow)" />
+                            <text x="130" y="56" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="5">Growth</text>
+                          </g>
+
+                          {/* Fear — orange, left edge */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 5,-5; -3,3; 0,0" dur="15s" repeatCount="indefinite" />
+                            <circle cx="55" cy="80" r="5" fill="rgba(255,85,0,0.08)" />
+                            <circle cx="55" cy="80" r="3" fill="rgba(255,85,0,0.65)" />
+                            <text x="55" y="91" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="4.5">Fear</text>
+                          </g>
+
+                          {/* Risk — bottom left */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 3,4; -5,-2; 0,0" dur="13s" repeatCount="indefinite" />
+                            <circle cx="75" cy="115" r="4.5" fill="rgba(255,85,0,0.06)" />
+                            <circle cx="75" cy="115" r="2.8" fill="rgba(255,85,0,0.55)" />
+                            <text x="75" y="125" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4.5">Risk</text>
+                          </g>
+
+                          {/* Time — right side */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -4,3; 6,-4; 0,0" dur="16s" repeatCount="indefinite" />
+                            <circle cx="140" cy="90" r="4" fill="rgba(255,85,0,0.06)" />
+                            <circle cx="140" cy="90" r="2.5" fill="rgba(255,85,0,0.55)" />
+                            <text x="140" y="100" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4.5">Time</text>
+                          </g>
+
+                          {/* Truth — bottom right, small */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 4,-3; -2,5; 0,0" dur="18s" repeatCount="indefinite" />
+                            <circle cx="120" cy="120" r="3.5" fill="rgba(180,180,180,0.05)" />
+                            <circle cx="120" cy="120" r="2" fill="rgba(180,180,180,0.45)" />
+                            <text x="120" y="130" textAnchor="middle" fill="rgba(255,255,255,0.22)" fontSize="4">Truth</text>
+                          </g>
                         </svg>
                       </div>
 
                       {/* Prompt box — bigger, prominent */}
                       <div className="px-3 sm:px-5 pb-3 sm:pb-5">
                         <div className="rounded-xl bg-white/[0.05] border border-white/[0.10] px-4 sm:px-5 py-3 sm:py-3.5 flex items-center gap-3">
-                          <p className="text-white/70 font-mercure italic text-[11px] sm:text-[14px] leading-[1.3] flex-1">&ldquo;What does my company need the most right now?&rdquo;</p>
+                          <p className="text-white/70 font-mercure italic text-[11px] sm:text-[14px] leading-[1.3] flex-1">&ldquo;What does my company need<br />the most right now?&rdquo;</p>
                           <div className="w-[28px] h-[28px] sm:w-[34px] sm:h-[34px] rounded-lg bg-mars flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(255,85,0,0.4)] animate-pulse">
                             <span className="text-white text-[10px] sm:text-[13px]">▶</span>
                           </div>
