@@ -1654,79 +1654,25 @@ export default function BusinessPage() {
                           <span className="text-[5px] text-emerald-400/50 font-bold">LIVE</span>
                         </div>
                       </div>
-                      {/* Question hero area */}
-                      <div className="px-4 sm:px-6 py-4 sm:py-5 border-b border-white/[0.06]">
-                        <p className="text-white/30 text-[7px] sm:text-[8px] uppercase tracking-[0.2em] font-bold mb-2">Your question</p>
-                        <p className="text-white text-[14px] sm:text-[17px] font-mercure italic leading-[1.35]">&ldquo;What does my company need the most right now?&rdquo;</p>
-                        <div className="flex items-center gap-3 mt-3">
-                          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-mars/10 border border-mars/20">
-                            <div className="w-[5px] h-[5px] rounded-full bg-mars/60" />
-                            <span className="text-mars/70 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider">7 characters</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-white/[0.03] border border-white/[0.06]">
-                            <span className="text-white/30 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider">Step 3 / 7</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-white/[0.03] border border-white/[0.06]">
-                            <span className="text-white/30 text-[7px] sm:text-[8px] font-bold uppercase tracking-wider">2D view</span>
-                          </div>
-                        </div>
+                      {/* Question — big and central */}
+                      <div className="px-5 sm:px-8 py-8 sm:py-10 text-center">
+                        <p className="text-white font-mercure italic text-[20px] sm:text-[26px] leading-[1.3]">&ldquo;What does my company<br />need the most right now?&rdquo;</p>
                       </div>
-                      {/* Interface panels — HTML/CSS around the question */}
-                      <div className="px-4 sm:px-5 pb-4 sm:pb-5 space-y-2.5">
-                        {/* Characters row */}
-                        <div>
-                          <p className="text-mars/40 text-[6px] sm:text-[7px] uppercase tracking-[0.2em] font-bold mb-1.5">Characters in play</p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {[
-                              { name: "You", color: "bg-yellow-400/80", active: true },
-                              { name: "Need", color: "bg-mars/70" },
-                              { name: "Growth", color: "bg-white/40" },
-                              { name: "Fear", color: "bg-mars/50" },
-                              { name: "Risk", color: "bg-mars/45" },
-                              { name: "Time", color: "bg-mars/50" },
-                              { name: "Truth", color: "bg-white/30" },
-                            ].map((c) => (
-                              <div key={c.name} className={`flex items-center gap-1 px-2 py-1 rounded-md ${c.active ? "bg-mars/10 border border-mars/25" : "bg-white/[0.03] border border-white/[0.06]"}`}>
-                                <div className={`w-[6px] h-[6px] rounded-full ${c.color}`} />
-                                <span className={`text-[8px] sm:text-[9px] font-medium ${c.active ? "text-mars/70" : "text-white/35"}`}>{c.name}</span>
-                                {c.active && <span className="text-[5px] sm:text-[6px] text-mars/50 font-bold uppercase ml-0.5">active</span>}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
 
-                        {/* Insights panel */}
-                        <div className="rounded-lg bg-white/[0.02] border border-white/[0.05] p-3">
-                          <p className="text-mars/40 text-[6px] sm:text-[7px] uppercase tracking-[0.2em] font-bold mb-2">Insights</p>
-                          <div className="space-y-1.5">
-                            <div className="flex items-start gap-2">
-                              <div className="w-[4px] h-[4px] rounded-full bg-mars/40 mt-1 shrink-0" />
-                              <p className="text-white/30 text-[8px] sm:text-[9px] leading-[1.4]">&ldquo;You&rdquo; is drawn toward &ldquo;Need&rdquo; — the pull is immediate</p>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <div className="w-[4px] h-[4px] rounded-full bg-white/20 mt-1 shrink-0" />
-                              <p className="text-white/25 text-[8px] sm:text-[9px] leading-[1.4]">&ldquo;Fear&rdquo; stays at the periphery, watching</p>
-                            </div>
-                            <div className="flex items-start gap-2">
-                              <div className="w-[4px] h-[4px] rounded-full bg-white/15 mt-1 shrink-0" />
-                              <p className="text-white/20 text-[8px] sm:text-[9px] leading-[1.4]">&ldquo;Growth&rdquo; seeks distance from &ldquo;Risk&rdquo;</p>
-                            </div>
-                          </div>
+                      {/* Minimal interface strip */}
+                      <div className="border-t border-white/[0.06] px-4 sm:px-6 py-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          {["You","Need","Growth","Fear","Risk"].map((name, i) => (
+                            <div key={name} className={`w-[8px] h-[8px] sm:w-[10px] sm:h-[10px] rounded-full ${i === 0 ? "bg-yellow-400/70" : i === 1 ? "bg-mars/70" : "bg-white/20"}`} title={name} />
+                          ))}
+                          <span className="text-white/25 text-[8px] sm:text-[9px] font-bold ml-1">+2</span>
                         </div>
-
-                        {/* Timeline bar */}
-                        <div className="flex items-center gap-2 px-1">
-                          <p className="text-mars/30 text-[6px] sm:text-[7px] uppercase tracking-[0.2em] font-bold shrink-0">Timeline</p>
-                          <div className="flex items-center gap-1.5 flex-1">
-                            {[1,2,3,4,5,6,7].map((i) => (
-                              <div key={i} className="flex flex-col items-center gap-0.5">
-                                <span className={`text-[6px] sm:text-[7px] ${i === 3 ? "text-mars/50 font-bold" : i < 3 ? "text-white/20" : "text-white/10"}`}>{i}</span>
-                                <div className={`w-[6px] sm:w-[8px] h-[6px] sm:h-[8px] rounded-full ${i < 3 ? "bg-mars/35" : i === 3 ? "bg-mars/50 ring-1 ring-mars/30" : "bg-white/[0.06]"}`} />
-                              </div>
-                            ))}
-                          </div>
-                          <div className="h-[1px] flex-1 bg-gradient-to-r from-mars/20 to-transparent" />
+                        <div className="flex items-center gap-1.5">
+                          {[1,2,3,4,5,6,7].map((i) => (
+                            <div key={i} className={`w-[5px] h-[5px] sm:w-[6px] sm:h-[6px] rounded-full ${i <= 3 ? "bg-mars/40" : "bg-white/[0.08]"}`} />
+                          ))}
                         </div>
+                        <span className="text-white/20 text-[8px] sm:text-[9px] font-bold uppercase tracking-wider">Step 3/7</span>
                       </div>
                     </div>
                   </div>
