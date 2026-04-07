@@ -45,10 +45,10 @@ function Voices() {
   }, []);
   return (
     <div className="h-[120px] sm:h-[140px] flex flex-col items-center justify-center text-center">
-      <p className={`font-mercure italic text-white/70 text-[14px] sm:text-[18px] md:text-[22px] leading-[1.4] max-w-xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+      <p className={`font-mercure italic text-white/90 text-[14px] sm:text-[18px] md:text-[22px] leading-[1.4] max-w-xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
         &ldquo;{VOICES[idx].text}&rdquo;
       </p>
-      <p className={`text-mars/25 text-[10px] mt-3 transition-all duration-700 delay-100 ${visible ? "opacity-100" : "opacity-0"}`}>
+      <p className={`text-mars text-[11px] mt-3 font-bold transition-all duration-700 delay-100 ${visible ? "opacity-100" : "opacity-0"}`}>
         {VOICES[idx].name} · {VOICES[idx].co}
       </p>
     </div>
@@ -976,31 +976,31 @@ export default function BusinessPage() {
             <div className="relative group/input">
               <div className="absolute -inset-12 sm:-inset-20 rounded-3xl opacity-60 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.12) 0%, transparent 70%)", animation: "pulse 4s ease-in-out infinite" }} />
 
-              <div className="relative rounded-2xl border border-mars/50 bg-white/[0.06] backdrop-blur-sm transition-all duration-700 overflow-hidden shadow-[0_0_80px_rgba(255,85,0,0.15),0_0_160px_rgba(255,85,0,0.08)] group-focus-within/input:border-mars/70 group-focus-within/input:shadow-[0_0_100px_rgba(255,85,0,0.25),0_0_200px_rgba(255,85,0,0.1)] min-h-[55dvh] sm:min-h-0 flex flex-col">
-                <div className="px-5 sm:px-7 pt-6 sm:pt-6 pb-0 flex-1 flex flex-col">
+              <div className="relative rounded-2xl border-2 border-mars/60 bg-gradient-to-b from-white/[0.08] to-white/[0.03] backdrop-blur-md transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.2),0_4px_30px_rgba(0,0,0,0.4)] group-focus-within/input:border-mars group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.3),0_4px_40px_rgba(0,0,0,0.5)] min-h-[55dvh] sm:min-h-0 flex flex-col">
+                <div className="px-6 sm:px-8 pt-8 sm:pt-7 pb-0 flex-1 flex flex-col">
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder="What question will decide your next move?"
                     rows={2}
-                    className="w-full flex-1 min-h-[100px] sm:min-h-0 bg-transparent border-0 px-0 py-0 text-white text-[22px] sm:text-[24px] placeholder:text-white/40 focus:outline-none resize-none leading-[1.5] tracking-[-0.01em]"
+                    className="w-full flex-1 min-h-[100px] sm:min-h-0 bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[26px] placeholder:text-white/50 focus:outline-none resize-none leading-[1.4] tracking-[-0.02em] font-medium"
                     style={{ caretColor: "#FF5500" }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                     }}
                   />
                 </div>
-                <div className="px-5 sm:px-7 pb-5 sm:pb-5 space-y-3">
+                <div className="px-6 sm:px-8 pb-6 sm:pb-6 space-y-4">
                   <input
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="Company name"
-                    className="w-full bg-transparent border-0 px-0 py-2 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px] sm:text-[14px] border-t border-white/[0.06]"
+                    className="w-full bg-transparent border-0 px-0 py-2.5 text-white/60 placeholder:text-white/30 focus:outline-none text-[14px] sm:text-[15px] border-t border-white/[0.10]"
                   />
                   <button
                     onClick={generate}
                     disabled={!question.trim()}
-                    className="w-full py-4 sm:py-3.5 rounded-xl font-bold text-[15px] sm:text-[15px] uppercase tracking-[0.15em] transition-all bg-mars hover:bg-mars-light text-white shadow-[0_0_40px_rgba(255,85,0,0.3)] disabled:opacity-40"
+                    className="w-full py-4.5 sm:py-4 rounded-xl font-bold text-[16px] sm:text-[16px] uppercase tracking-[0.18em] transition-all bg-mars hover:bg-mars-light text-white shadow-[0_0_50px_rgba(255,85,0,0.35),0_4px_20px_rgba(255,85,0,0.2)] disabled:opacity-30 disabled:shadow-none"
                   >
                     Build your play
                   </button>
@@ -1536,9 +1536,9 @@ export default function BusinessPage() {
         <div className="max-w-3xl mx-auto">
           <div className="relative rounded-2xl overflow-hidden">
             {/* Background photo */}
-            <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.15]" style={{ objectPosition: "50% 35%" }} />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/80 via-[#0a0a0a]/60 to-[#0a0a0a]/90" />
-            <div className="absolute inset-0 border border-white/[0.08] rounded-2xl pointer-events-none" />
+            <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.25]" style={{ objectPosition: "50% 35%" }} />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/40 to-[#0a0a0a]/70" />
+            <div className="absolute inset-0 border border-white/[0.15] rounded-2xl pointer-events-none" />
 
             <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-12">
               {/* Stats row */}
@@ -1565,7 +1565,7 @@ export default function BusinessPage() {
               </div>
 
               {/* Divider */}
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-6 sm:mb-8" />
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.15] to-transparent mb-6 sm:mb-8" />
 
               {/* Trusted by — refined text list */}
               <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] text-center mb-4 font-bold">Trusted by</p>
