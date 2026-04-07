@@ -1910,17 +1910,21 @@ export default function BusinessPage() {
                           <line x1="42" y1="172" x2="74" y2="172" stroke="rgba(255,85,0,0.2)" strokeWidth="0.6" />
                         </svg>
                       </div>
+                      {/* Prompt box inside device */}
+                      <div className="px-3 sm:px-4 py-3 sm:py-4 border-t border-white/[0.06]">
+                        <div className="rounded-lg bg-white/[0.04] border border-white/[0.08] px-3 sm:px-4 py-2.5 sm:py-3 flex items-center gap-2">
+                          <div className="w-[5px] h-[5px] rounded-full bg-mars/50 shrink-0" />
+                          <p className="text-white/60 font-mercure italic text-[10px] sm:text-[13px] leading-[1.3] flex-1">&ldquo;What does my company need the most right now?&rdquo;</p>
+                          <div className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] rounded-md bg-mars/80 flex items-center justify-center shrink-0">
+                            <span className="text-white text-[8px] sm:text-[10px]">▶</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="px-5 sm:px-8 pt-5 pb-6 sm:pb-7 text-center">
-                <p className="font-mercure italic text-white/90 text-[14px] sm:text-[16px] leading-[1.4] mb-1">
-                  &ldquo;What does my company need the most right now?&rdquo;
-                </p>
-                <p className="text-white/40 text-[10px] sm:text-[11px] mb-4">
-                  Try this question — a live simulation with characters, stage, and perspectives
-                </p>
+              <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
                 <span className="inline-flex items-center px-8 py-3 rounded-xl bg-[#0a0a0a] text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
                   Play this question →
                 </span>
