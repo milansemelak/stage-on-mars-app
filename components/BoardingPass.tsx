@@ -303,11 +303,11 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
         <div className="px-6 sm:px-10 py-8">
           <p className="text-mars/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-5">Rules of Mars</p>
-          <div className="space-y-2">
+          <div className="space-y-1">
             {rules.map((rule, i) => (
-              <div key={i} className="relative pl-4 border-l border-mars/15">
+              <div key={i} className="relative pl-4 border-l border-mars/15 py-0.5">
                 <p className="text-mars/50 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] mb-0.5">{rule.title}</p>
-                <p className="text-white/40 text-[12px] sm:text-[13px] leading-[1.7] whitespace-pre-line">{rule.body}</p>
+                <p className="text-white/40 text-[12px] sm:text-[13px] leading-[1.5]">{rule.body}</p>
               </div>
             ))}
           </div>
