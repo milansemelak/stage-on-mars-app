@@ -53,58 +53,60 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
     <div>
 
       {/* ── THE TICKET ── */}
-      <div className="bg-black text-white rounded-2xl overflow-hidden mb-10">
-        <div className="px-7 sm:px-10 pt-8 sm:pt-10 pb-7">
+      <div className="bg-black text-white rounded-3xl overflow-hidden mb-4 shadow-[0_2px_40px_-12px_rgba(0,0,0,0.25)]">
+        <div className="px-7 sm:px-10 pt-10 sm:pt-12 pb-8">
           {/* Company */}
-          <h1 className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] leading-[1.1] mb-8">
-            {mission.company} <span className="font-mercure italic text-mars">on Mars</span>
+          <h1 className="text-[32px] sm:text-[42px] font-bold tracking-[-0.04em] leading-[1.05] mb-10">
+            {mission.company}
+            <br />
+            <span className="font-mercure italic text-mars">on Mars</span>
           </h1>
 
           {/* Info grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-5 gap-x-6 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-6 gap-x-6 mb-6">
             <div>
               <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1">Date</p>
-              <p className="text-white text-[14px] font-semibold">{dateFormatted}</p>
+              <p className="text-white text-[15px] font-semibold">{dateFormatted}</p>
             </div>
             {mission.time && (
               <div>
                 <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1">Time</p>
-                <p className="text-white text-[14px] font-semibold">{mission.time}</p>
+                <p className="text-white text-[15px] font-semibold">{mission.time}</p>
               </div>
             )}
             <div>
               <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1">Crew</p>
-              <p className="text-white text-[14px] font-semibold">{mission.group_size}</p>
+              <p className="text-white text-[15px] font-semibold">{mission.group_size}</p>
             </div>
             <div>
               <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1">Dresscode</p>
-              <p className="text-white text-[14px] font-semibold">{mission.dresscode || "Dress to Play"}</p>
+              <p className="text-white text-[15px] font-semibold">{mission.dresscode || "Dress to Play"}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-5 gap-x-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-6 gap-x-6">
             {(mission.location || mission.venue) && (
               <div className="col-span-2">
                 <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1">Location</p>
                 {mission.maps_url ? (
-                  <a href={mission.maps_url} target="_blank" rel="noopener noreferrer" className="text-white text-[14px] font-semibold underline underline-offset-2 decoration-white/20 hover:decoration-white/60 transition-colors">
+                  <a href={mission.maps_url} target="_blank" rel="noopener noreferrer" className="text-white text-[15px] font-semibold underline underline-offset-2 decoration-white/20 hover:decoration-white/60 transition-colors">
                     {mission.location || mission.venue}
                   </a>
                 ) : (
-                  <p className="text-white text-[14px] font-semibold">{mission.location || mission.venue}</p>
+                  <p className="text-white text-[15px] font-semibold">{mission.location || mission.venue}</p>
                 )}
               </div>
             )}
             {mission.captain && (
               <div>
                 <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1">Captain</p>
-                <p className="text-white text-[14px] font-semibold">{mission.captain}</p>
+                <p className="text-white text-[15px] font-semibold">{mission.captain}</p>
               </div>
             )}
             {mission.facilitator && (
               <div>
                 <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] mb-1">Pilot</p>
-                <p className="text-white text-[14px] font-semibold">{mission.facilitator}</p>
+                <p className="text-white text-[15px] font-semibold">{mission.facilitator}</p>
               </div>
             )}
           </div>
@@ -112,14 +114,14 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* Tear line */}
         <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-5 h-5 rounded-full bg-white" />
-          <div className="border-t border-dashed border-white/15 mx-5" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white" />
+          <div className="border-t border-dashed border-white/10 mx-6" />
         </div>
 
         {/* Question */}
-        <div className="px-7 sm:px-10 py-7 sm:py-8">
-          <p className="font-mercure italic text-mars text-[20px] sm:text-[26px] leading-[1.3]">
+        <div className="px-7 sm:px-10 py-8 sm:py-10">
+          <p className="font-mercure italic text-mars text-[22px] sm:text-[28px] leading-[1.3]">
             &ldquo;{mission.question}&rdquo;
           </p>
         </div>
@@ -127,7 +129,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
       {/* ── WELCOME MESSAGE ── */}
       {mission.welcome_message && (
-        <div className="mb-12 px-1">
+        <div className="mb-4 rounded-2xl border border-neutral-200 p-6 sm:p-8">
           <p className="text-neutral-500 text-[14px] sm:text-[15px] leading-[1.8] whitespace-pre-line">
             {mission.welcome_message}
           </p>
@@ -135,8 +137,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
       )}
 
       {/* ── CREW MANIFEST ── */}
-      <div className="mb-10">
-        <h2 className="text-black text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] mb-5">
+      <div className="mb-4 rounded-2xl border border-neutral-200 p-6 sm:p-8">
+        <h2 className="text-black text-[20px] sm:text-[24px] font-bold tracking-[-0.03em] mb-5">
           Who is flying to Mars?
         </h2>
 
@@ -160,17 +162,17 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
       {/* ── QUESTIONS TO PLAY ── */}
       {crew.some((m) => m.question) && (
-        <div className="mb-10">
-          <h2 className="text-black text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] mb-5">
+        <div className="mb-4 rounded-2xl bg-mars p-6 sm:p-8">
+          <h2 className="text-white text-[20px] sm:text-[24px] font-bold tracking-[-0.03em] mb-5">
             Your Questions
           </h2>
           <div className="space-y-4">
             {crew.filter((m) => m.question).map((member, i) => (
-              <div key={i} className="pl-4 border-l-3 border-mars">
-                <p className="text-black text-[15px] sm:text-[16px] leading-[1.5] font-medium mb-0.5">
+              <div key={i} className="pl-4 border-l-2 border-white/30">
+                <p className="text-white text-[15px] sm:text-[16px] leading-[1.5] font-medium mb-0.5">
                   {member.question}
                 </p>
-                <p className="text-neutral-400 text-[12px]">{member.name}</p>
+                <p className="text-white/50 text-[12px]">{member.name}</p>
               </div>
             ))}
           </div>
@@ -178,7 +180,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
       )}
 
       {/* ── REGISTRATION ── */}
-      <div className="mb-12 rounded-2xl bg-neutral-50 p-6 sm:p-8">
+      <div className="mb-4 rounded-2xl border border-neutral-200 p-6 sm:p-8">
         {!registered ? (
           <>
             <h2 className="text-black text-[20px] sm:text-[24px] font-bold tracking-[-0.03em] mb-1">
@@ -225,8 +227,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
       </div>
 
       {/* ── RULES OF MARS ── */}
-      <div className="mb-12">
-        <h2 className="text-black text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] mb-5">
+      <div className="mb-4 rounded-2xl border border-neutral-200 p-6 sm:p-8">
+        <h2 className="text-black text-[20px] sm:text-[24px] font-bold tracking-[-0.03em] mb-5">
           Rules of Mars
         </h2>
         <div className="space-y-4">
@@ -240,8 +242,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
       </div>
 
       {/* ── SPOTIFY ── */}
-      <div className="mb-8">
-        <h2 className="text-black text-[22px] sm:text-[26px] font-bold tracking-[-0.03em] mb-2">
+      <div className="mb-8 rounded-2xl border border-neutral-200 p-6 sm:p-8">
+        <h2 className="text-black text-[20px] sm:text-[24px] font-bold tracking-[-0.03em] mb-2">
           Add music to the play.
         </h2>
         <p className="text-neutral-400 text-[14px] leading-[1.6] mb-5">
