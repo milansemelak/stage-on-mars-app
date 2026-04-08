@@ -28,7 +28,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
   const [crew, setCrew] = useState<CrewMember[]>(initialCrew);
 
   const dateFormatted = new Date(mission.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-  const inputClass = "w-full rounded-xl bg-white/[0.05] border border-white/[0.08] px-4 py-3 text-[14px] text-white placeholder:text-white/20 focus:outline-none focus:border-mars/30 transition-colors";
+  const inputClass = "w-full rounded-xl bg-white/[0.08] border-2 border-white/[0.12] px-4 py-3.5 text-[14px] text-white placeholder:text-white/30 focus:outline-none focus:border-mars/40 transition-colors";
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -66,16 +66,18 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             ONE TICKET — EVERYTHING INSIDE
             ═══════════════════════════════════════════ */}
         <div className="relative mb-6">
-          <div className="absolute -inset-2 rounded-[28px] bg-mars/8 blur-2xl" />
+          {/* 3D shadow layers */}
+          <div className="absolute -inset-3 rounded-[30px] bg-mars/6 blur-3xl" />
+          <div className="absolute inset-0 rounded-[22px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8),0_0_40px_-10px_rgba(255,85,0,0.1)]" />
 
-          <div className="relative rounded-[20px] overflow-hidden border border-mars/15" style={{ background: "linear-gradient(170deg, #1a1510 0%, #110f0c 100%)" }}>
+          <div className="relative rounded-[20px] overflow-hidden border-2 border-mars/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]" style={{ background: "linear-gradient(170deg, #201a14 0%, #151210 50%, #100e0b 100%)" }}>
 
             {/* Orange top bar */}
             <div className="h-1.5 bg-gradient-to-r from-mars/80 via-mars to-mars/80" />
 
             {/* HEADER */}
             <div className="px-6 sm:px-8 pt-5 pb-1 flex items-start justify-between">
-              <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold">Boarding Pass</p>
+              <p className="text-mars/60 text-[8px] uppercase tracking-[0.5em] font-bold">Boarding Pass</p>
               <img src="/logo.png" alt="Stage on Mars" className="h-4 invert opacity-15" />
             </div>
 
@@ -91,7 +93,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             <div className="px-6 sm:px-8 pb-5">
               <div className="flex items-center gap-3">
                 <div>
-                  <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">From</p>
+                  <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">From</p>
                   <p className="text-white/80 text-[18px] sm:text-[22px] font-black tracking-[-0.02em]">Earth</p>
                 </div>
                 <div className="flex-1 flex items-center px-2">
@@ -102,34 +104,34 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                   <div className="w-2 h-2 rounded-full bg-mars/40" />
                 </div>
                 <div className="text-right">
-                  <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">To</p>
+                  <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">To</p>
                   <p className="text-mars text-[18px] sm:text-[22px] font-black tracking-[-0.02em]">Mars</p>
                 </div>
               </div>
             </div>
 
             {/* DIVIDER */}
-            <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />
+            <div className="mx-6 sm:mx-8 border-t border-white/[0.1]" />
 
             {/* FLIGHT DATA */}
             <div className="px-6 sm:px-8 py-4">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3">
                 <div>
-                  <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Date</p>
+                  <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">Date</p>
                   <p className="text-white/80 text-[13px] font-bold">{dateFormatted}</p>
                 </div>
                 {mission.time && (
                   <div>
-                    <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Launch</p>
+                    <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">Launch</p>
                     <p className="text-white/80 text-[13px] font-bold">{mission.time}</p>
                   </div>
                 )}
                 <div>
-                  <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Crew</p>
+                  <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">Crew</p>
                   <p className="text-white/80 text-[13px] font-bold">{mission.group_size}</p>
                 </div>
                 <div>
-                  <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Dresscode</p>
+                  <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">Dresscode</p>
                   <p className="text-white/80 text-[13px] font-bold">{mission.dresscode || "Dress to Play"}</p>
                 </div>
               </div>
@@ -138,7 +140,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3 mt-3">
                   {(mission.location || mission.venue) && (
                     <div>
-                      <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Base</p>
+                      <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">Base</p>
                       {mission.maps_url ? (
                         <a href={mission.maps_url} target="_blank" rel="noopener noreferrer" className="text-white/80 text-[13px] font-bold underline underline-offset-2 decoration-mars/20 hover:decoration-mars/60 transition-colors">
                           {mission.location || mission.venue}
@@ -150,13 +152,13 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                   )}
                   {mission.captain && (
                     <div>
-                      <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Captain</p>
+                      <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">Captain</p>
                       <p className="text-white/80 text-[13px] font-bold">{mission.captain}</p>
                     </div>
                   )}
                   {mission.facilitator && (
                     <div>
-                      <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Pilot</p>
+                      <p className="text-mars/50 text-[8px] uppercase tracking-[0.4em] mb-0.5">Pilot</p>
                       <p className="text-white/80 text-[13px] font-bold">{mission.facilitator}</p>
                     </div>
                   )}
@@ -168,7 +170,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             <div className="relative">
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-black" />
               <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-black" />
-              <div className="border-t border-dashed border-mars/10 mx-6" />
+              <div className="border-t-2 border-dashed border-mars/20 mx-6" />
             </div>
 
             {/* THE QUESTION */}
@@ -179,7 +181,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             </div>
 
             {/* DIVIDER */}
-            <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />
+            <div className="mx-6 sm:mx-8 border-t border-white/[0.1]" />
 
             {/* WELCOME MESSAGE — inside the ticket, readable */}
             {mission.welcome_message && (
@@ -190,11 +192,11 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
               </div>
             )}
 
-            {mission.welcome_message && <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />}
+            {mission.welcome_message && <div className="mx-6 sm:mx-8 border-t border-white/[0.1]" />}
 
             {/* CREW MANIFEST — inside the ticket */}
             <div className="px-6 sm:px-8 py-5">
-              <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-3">Crew Manifest</p>
+              <p className="text-mars/60 text-[8px] uppercase tracking-[0.5em] font-bold mb-3">Crew Manifest</p>
               {crew.length > 0 ? (
                 <div>
                   {crew.map((member, i) => (
@@ -205,19 +207,19 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                   ))}
                 </div>
               ) : (
-                <p className="text-white/15 text-[13px]">No crew members yet. Be the first to board.</p>
+                <p className="text-white/30 text-[13px]">No crew members yet. Be the first to board.</p>
               )}
             </div>
 
             {/* DIVIDER */}
-            <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />
+            <div className="mx-6 sm:mx-8 border-t border-white/[0.1]" />
 
             {/* BOARD — inside the ticket */}
             <div className="px-6 sm:px-8 py-5">
               {!registered ? (
                 <>
-                  <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-1">Board This Mission</p>
-                  <p className="text-white/25 text-[12px] mb-4">Register your seat and bring a question worth playing.</p>
+                  <p className="text-mars/60 text-[8px] uppercase tracking-[0.5em] font-bold mb-1">Board This Mission</p>
+                  <p className="text-white/40 text-[12px] mb-4">Register your seat and bring a question worth playing.</p>
 
                   {error && (
                     <p className="text-red-400 text-[12px] mb-3 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">{error}</p>
@@ -234,7 +236,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                       disabled={submitting || !name.trim() || !email.trim() || !question.trim()}
                       className={`w-full py-3.5 rounded-xl font-black text-[12px] uppercase tracking-[0.2em] transition-all ${
                         submitting || !name.trim() || !email.trim() || !question.trim()
-                          ? "bg-white/[0.03] text-white/10 cursor-not-allowed"
+                          ? "bg-white/[0.06] text-white/20 cursor-not-allowed border border-white/[0.08]"
                           : "bg-gradient-to-r from-mars to-[#ff6b2b] text-white hover:brightness-110 active:scale-[0.99] shadow-[0_0_30px_-5px_rgba(255,85,0,0.5)]"
                       }`}
                     >
@@ -269,27 +271,27 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
             {/* BARCODE + CODE */}
             <div className="px-6 sm:px-8 py-4 flex items-center justify-between">
-              <div className="flex items-end gap-[1px] h-6 opacity-20">
+              <div className="flex items-end gap-[1px] h-6 opacity-40">
                 {mission.code.split("").flatMap((c, ci) => [
                   <div key={`${ci}a`} className="bg-mars" style={{ width: `${(c.charCodeAt(0) % 3) + 1}px`, height: `${14 + (ci % 5) * 3}px` }} />,
                   <div key={`${ci}b`} className="bg-mars" style={{ width: "1px", height: `${10 + (ci % 3) * 4}px` }} />,
                 ])}
               </div>
-              <p className="text-white/10 text-[9px] font-mono uppercase tracking-[0.3em]">{mission.code}</p>
+              <p className="text-white/20 text-[9px] font-mono uppercase tracking-[0.3em]">{mission.code}</p>
             </div>
 
             {/* Bottom accent */}
-            <div className="h-px bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+            <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
           </div>
         </div>
 
         {/* ═══ PRE-FLIGHT BRIEFING — outside ticket ═══ */}
         <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5 mb-3" style={{ background: "linear-gradient(170deg, #1a1510 0%, #110f0c 100%)" }}>
-          <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-4">Pre-Flight Briefing</p>
+          <p className="text-mars/60 text-[8px] uppercase tracking-[0.5em] font-bold mb-4">Pre-Flight Briefing</p>
           <div className="space-y-2.5">
             {RULES_OF_MARS.map((rule, i) => (
               <div key={i}>
-                <p className="text-mars/40 text-[10px] font-black uppercase tracking-[0.15em] mb-0.5">{rule.title}</p>
+                <p className="text-mars/60 text-[10px] font-black uppercase tracking-[0.15em] mb-0.5">{rule.title}</p>
                 <p className="text-white/25 text-[11px] leading-[1.5]">{rule.body}</p>
               </div>
             ))}
@@ -298,7 +300,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ SOUNDTRACK — outside ticket ═══ */}
         <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5 mb-3" style={{ background: "linear-gradient(170deg, #1a1510 0%, #110f0c 100%)" }}>
-          <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-1">Soundtrack</p>
+          <p className="text-mars/60 text-[8px] uppercase tracking-[0.5em] font-bold mb-1">Soundtrack</p>
           <p className="text-white/25 text-[11px] mb-3">
             Add your song to the{" "}
             <a href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2" target="_blank" rel="noopener noreferrer" className="text-mars/60 font-bold hover:text-mars transition-colors">
