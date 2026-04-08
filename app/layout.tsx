@@ -23,12 +23,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Stage on Mars — The Playmaker",
+  title: "Stage on Mars — The Play Simulator",
   description:
     "Transform questions into Systemic Plays. An experiential method that expands perspective through collective creativity.",
   metadataBase: new URL("https://playbook.stageonmars.com"),
   openGraph: {
-    title: "Stage on Mars — The Playmaker",
+    title: "Stage on Mars — The Play Simulator",
     description:
       "Turn your question into a systemic play to see what you can't see alone.",
     siteName: "Stage on Mars",
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Stage on Mars — The Playmaker",
+        alt: "Stage on Mars — The Play Simulator",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Stage on Mars — The Playmaker",
+    title: "Stage on Mars — The Play Simulator",
     description:
       "Turn your question into a systemic play to see what you can't see alone.",
   },

@@ -88,7 +88,7 @@ export default function SpacePage() {
       </section>
 
       {/* Disposition */}
-      <section className="py-24 sm:py-36 px-6 border-t border-white/[0.06]">
+      <section className="py-12 sm:py-16 px-6 border-t border-white/[0.06]">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left — layout image */}
@@ -141,7 +141,7 @@ export default function SpacePage() {
       </section>
 
       {/* Rental Options */}
-      <section className="py-24 sm:py-36 px-6 border-t border-white/[0.06]">
+      <section className="py-12 sm:py-16 px-6 border-t border-white/[0.06]">
         <div className="max-w-5xl mx-auto">
           <p className="text-mars text-xs font-bold uppercase tracking-[0.3em] mb-4">
             Rental
@@ -149,12 +149,12 @@ export default function SpacePage() {
           <h2 className="text-[40px] sm:text-[56px] font-bold leading-[0.92] tracking-[-0.03em] mb-8">
             Your Stage, Your Format.
           </h2>
-          <p className="text-[#EDEDED]/50 text-lg sm:text-xl max-w-2xl mb-16 leading-relaxed">
+          <p className="text-[#EDEDED]/50 text-lg sm:text-xl max-w-2xl mb-10 leading-relaxed">
             The space can be rented with full production and direction by Stage on Mars, or as a standalone venue.
           </p>
 
           {/* Formats grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-20">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
             {FORMATS.map((f) => (
               <div key={f} className="flex items-start gap-3 px-5 py-4 rounded-xl bg-white/[0.04] border border-white/[0.06]">
                 <span className="text-mars mt-0.5 text-lg">&#x2192;</span>
@@ -223,7 +223,7 @@ export default function SpacePage() {
       </section>
 
       {/* Contact details */}
-      <section className="py-16 sm:py-24 px-6 border-t border-white/[0.06]">
+      <section className="py-12 sm:py-16 px-6 border-t border-white/[0.06]">
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-[#EDEDED]/40 text-sm">
             <a
@@ -243,13 +243,13 @@ export default function SpacePage() {
             </a>
           </div>
 
-          {/* Back to business page */}
+          {/* Back to home */}
           <div className="mt-16 pt-8 border-t border-white/[0.06]">
             <Link
               href="/business"
-              className="text-[#EDEDED]/30 hover:text-[#EDEDED]/70 text-sm transition-colors"
+              className="text-white/30 hover:text-white/70 text-sm transition-colors"
             >
-              &larr; Back to Stage on Mars for Business
+              &larr; Home
             </Link>
           </div>
         </div>

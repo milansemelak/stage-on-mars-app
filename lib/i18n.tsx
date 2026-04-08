@@ -10,7 +10,7 @@ const translations = {
     // Header
     humanFutureSimulator: "Go to Mars",
     // Play page
-    headline: "The Playmaker",
+    headline: "The Play Simulator",
     subheadline: "Turn the question into a play to see what you can't see alone",
     facilitatorMode: "3 Plays",
     facilitatorSub: "",
@@ -212,7 +212,7 @@ const translations = {
     // Header
     humanFutureSimulator: "Poď na Mars",
     // Play page
-    headline: "The Playmaker",
+    headline: "The Play Simulator",
     subheadline: "Premeň otázku na Systemickú hru a uvidíš, čo sám nevidíš",
     facilitatorMode: "3 Hry",
     facilitatorSub: "",
@@ -414,7 +414,7 @@ const translations = {
     // Header
     humanFutureSimulator: "Pojď na Mars",
     // Play page
-    headline: "The Playmaker",
+    headline: "The Play Simulator",
     subheadline: "Přeměň otázku na Systemickou hru a uvidíš, co sám nevidíš",
     facilitatorMode: "3 Hry",
     facilitatorSub: "",

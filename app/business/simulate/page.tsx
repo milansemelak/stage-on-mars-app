@@ -89,8 +89,8 @@ function SimulatePageInner() {
       <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] flex items-center justify-center">
         <div className="text-center">
           <p className="text-white/40 text-[14px] mb-4">No question provided.</p>
-          <a href="/business" className="text-[#FF5500] text-[13px] font-bold uppercase tracking-[0.15em] hover:opacity-80 transition-opacity">
-            &larr; Back to Stage on Mars
+          <a href="/business" className="text-mars text-[13px] font-bold uppercase tracking-[0.15em] hover:text-mars-light transition-colors">
+            &larr; Home
           </a>
         </div>
       </div>
@@ -110,7 +110,7 @@ function SimulatePageInner() {
       <div className="pt-8 sm:pt-12 pb-4 px-4">
         <div className="max-w-3xl mx-auto">
           <a href="/business" className="group/logo inline-flex items-center gap-2 mb-6">
-            <svg className="w-4 h-4 text-white/30 group-hover/logo:text-[#FF5500]/60 transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+            <svg className="w-4 h-4 text-white/30 group-hover/logo:text-mars/60 transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
             <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert opacity-40 group-hover/logo:opacity-80 transition-opacity" />
           </a>
         </div>
@@ -123,12 +123,12 @@ function SimulatePageInner() {
           {/* Title + question */}
           <div className="text-center mb-8 sm:mb-12" style={{ animation: "fadeIn 0.6s ease both" }}>
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#FF5500]" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-              <p className="text-[#FF5500]/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Play Simulator</p>
+              <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+              <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold">Play Simulator</p>
             </div>
             <div className="rounded-xl bg-white/[0.03] border border-white/[0.08] px-5 py-4 max-w-lg mx-auto">
               <div className="flex items-start gap-3">
-                <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-[#FF5500]/50 mt-2" />
+                <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-mars/50 mt-2" />
                 <div>
                   <p className="text-white/25 text-[10px] uppercase tracking-[0.2em] mb-1">Your question</p>
                   <p className="font-mercure italic text-white/50 text-[14px] leading-[1.5]">&ldquo;{questionParam}&rdquo;</p>
@@ -140,11 +140,11 @@ function SimulatePageInner() {
           {/* Loading state */}
           {playLoading && (
             <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-[#FF5500]/30 to-transparent" />
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
               <div className="text-center py-20 sm:py-28">
                 <div className="inline-flex gap-2 mb-5">
                   {[0, 1, 2].map((i) => (
-                    <div key={i} className="w-2.5 h-2.5 rounded-full bg-[#FF5500]" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                    <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
                   ))}
                 </div>
                 <p className="text-white/65 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
@@ -191,18 +191,18 @@ function SimulatePageInner() {
                   {/* Cast phase */}
                   {simPhase === "cast" && (
                     <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                      <div className="h-[1px] bg-gradient-to-r from-transparent via-[#FF5500]/30 to-transparent" />
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                       <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
                         <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
                         <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} &middot; {play.characters.length} characters</p>
                       </div>
                       <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                        <p className="text-[#FF5500]/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                        <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                           {play.characters.map((char, i) => (
                             <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
                               <div className="flex items-center gap-2.5 mb-2.5">
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FF5500]/20 to-[#FF5500]/5 flex items-center justify-center text-[11px] font-bold text-[#FF5500]/60">{char.name.charAt(0)}</div>
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">{char.name.charAt(0)}</div>
                                 <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
                               </div>
                               <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
@@ -211,8 +211,8 @@ function SimulatePageInner() {
                         </div>
                       </div>
                       {play.image && (
-                        <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-[#FF5500]/[0.03] border border-[#FF5500]/[0.06] p-4">
-                          <p className="text-[#FF5500]/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                        <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
+                          <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
                           <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
                         </div>
                       )}
@@ -221,7 +221,7 @@ function SimulatePageInner() {
                           onClick={() => { if (simReady) setSimPhase("stage"); }}
                           disabled={!simReady}
                           className={`w-full py-4 rounded-xl text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] transition-all ${
-                            simReady ? "bg-[#FF5500]/10 border border-[#FF5500]/20 text-[#FF5500]/80 hover:bg-[#FF5500]/15 hover:border-[#FF5500]/30 cursor-pointer" : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
+                            simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
                           }`}
                         >
                           {simReady ? (
@@ -247,7 +247,7 @@ function SimulatePageInner() {
                   {/* Stage phase */}
                   {simPhase === "stage" && simReady && play.simulationSteps && (
                     <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                      <div className="h-[1px] bg-gradient-to-r from-transparent via-[#FF5500]/30 to-transparent" />
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                       <div className="p-4 sm:p-6">
                         <StageSimulation simulationSteps={play.simulationSteps} characters={play.characters} simulation={play.simulation} onEnd={() => { setSimEnded(true); setSimPhase("perspectives"); }} />
                       </div>
@@ -259,9 +259,9 @@ function SimulatePageInner() {
                     <div className="space-y-4">
                       {play.perspectives && play.perspectives.length > 0 && (
                         <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                          <div className="h-[1px] bg-gradient-to-r from-transparent via-[#FF5500]/30 to-transparent" />
+                          <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                           <div className="p-6 sm:p-8">
-                            <p className="text-[#FF5500]/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                            <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
                             <div className="space-y-3">
                               {play.perspectives.map((p, i) => {
                                 const perspective = typeof p === "object" ? (p as Perspective) : null;
@@ -269,9 +269,9 @@ function SimulatePageInner() {
                                   <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
                                     {perspective ? (
                                       <div className="flex gap-3">
-                                        <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[#FF5500]/20 to-[#FF5500]/5 flex items-center justify-center text-[11px] font-bold text-[#FF5500]/60 mt-0.5">{perspective.character.charAt(0)}</div>
+                                        <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">{perspective.character.charAt(0)}</div>
                                         <div>
-                                          <p className="text-[#FF5500]/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                          <p className="text-mars/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
                                           <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
                                         </div>
                                       </div>
@@ -288,13 +288,13 @@ function SimulatePageInner() {
 
                       {play.followUpQuestion && (
                         <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-                          <div className="h-[1px] bg-gradient-to-r from-transparent via-[#FF5500]/30 to-transparent" />
+                          <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
                           <div className="text-center py-8 sm:py-10 px-6">
                             <p className="text-white/30 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
                             <p className="font-mercure italic text-white/55 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
                             <a
                               href={`/business/simulate?q=${encodeURIComponent(play.followUpQuestion)}${companyParam ? `&company=${encodeURIComponent(companyParam)}` : ""}`}
-                              className="text-[#FF5500]/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-[#FF5500] transition-colors"
+                              className="text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
                             >
                               Ask this question &rarr;
                             </a>
@@ -303,7 +303,7 @@ function SimulatePageInner() {
                       )}
 
                       {/* Big CTA — take it live */}
-                      <div className="rounded-2xl overflow-hidden bg-[#FF5500] mt-2">
+                      <div className="rounded-2xl overflow-hidden bg-mars mt-2">
                         <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
                           <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">This was a simulation</p>
                           <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
@@ -340,7 +340,7 @@ function SimulatePageInner() {
               <p className="text-red-400/60 text-[13px] mb-4">{error}</p>
               <button
                 onClick={() => { setStarted(false); setError(""); }}
-                className="text-[#FF5500] text-[12px] font-bold uppercase tracking-[0.15em] hover:opacity-80 transition-opacity"
+                className="text-mars text-[12px] font-bold uppercase tracking-[0.15em] hover:opacity-80 transition-opacity"
               >
                 Try again
               </button>
@@ -349,7 +349,7 @@ function SimulatePageInner() {
 
           {/* Start over */}
           <div className="text-center mt-8 mb-16">
-            <a href="/business" className="text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-[#FF5500]/60 transition-colors">
+            <a href="/business" className="text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-mars/60 transition-colors">
               Start over with a different question
             </a>
           </div>
@@ -371,7 +371,7 @@ export default function SimulatePage() {
       <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] flex items-center justify-center">
         <div className="inline-flex gap-2">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="w-3 h-3 rounded-full bg-[#FF5500]" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.3}s infinite` }} />
+            <div key={i} className="w-3 h-3 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.3}s infinite` }} />
           ))}
         </div>
       </div>

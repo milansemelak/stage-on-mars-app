@@ -428,7 +428,7 @@ function PlayPageInner() {
         <div className="text-center">
           <p className="text-white/40 text-[14px] mb-4">No question provided.</p>
           <a href="/business" className="text-mars text-[13px] font-bold uppercase tracking-[0.15em] hover:text-mars-light transition-colors">
-            &larr; Back to Stage on Mars
+            &larr; Home
           </a>
         </div>
       </div>

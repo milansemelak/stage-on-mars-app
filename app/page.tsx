@@ -25,11 +25,11 @@ function Voices() {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className="h-[100px] sm:h-[120px] flex flex-col items-center justify-center text-center">
-      <p className={`font-mercure italic text-white/50 text-[14px] sm:text-[18px] md:text-[22px] leading-[1.4] max-w-xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
+    <div className="h-[120px] sm:h-[140px] flex flex-col items-center justify-center text-center">
+      <p className={`font-mercure italic text-white/90 text-[14px] sm:text-[18px] md:text-[22px] leading-[1.4] max-w-xl transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
         &ldquo;{VOICES[idx].text}&rdquo;
       </p>
-      <p className={`text-mars/25 text-[10px] mt-3 transition-all duration-700 delay-100 ${visible ? "opacity-100" : "opacity-0"}`}>
+      <p className={`text-mars text-[11px] mt-3 font-bold transition-all duration-700 delay-100 ${visible ? "opacity-100" : "opacity-0"}`}>
         {VOICES[idx].name} · {VOICES[idx].co}
       </p>
     </div>
@@ -167,7 +167,7 @@ export default function Home() {
             <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
-            <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Digital Playmaker</p>
+            <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Play Simulator</p>
             <h1 className="text-[clamp(28px,7vw,72px)] font-bold leading-[0.95] tracking-[-0.04em] text-center">
               Ask a question.
               <br />
@@ -249,7 +249,7 @@ export default function Home() {
               <div className="mb-6 sm:mb-8 text-center">
                 <div className="inline-flex items-center gap-2 mb-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Digital Playmaker</p>
+                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Play Simulator</p>
                 </div>
                 <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em]">{play.name}</h3>
                 <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
@@ -330,24 +330,65 @@ export default function Home() {
       {/* ── SOCIAL PROOF ── */}
       {!play && !loading && (
         <div className={`px-4 pb-16 sm:pb-24 transition-all duration-[1500ms] delay-[1200ms] ${entered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <div className="max-w-2xl mx-auto">
-            <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
-              <div className="px-6 sm:px-10 pt-8 sm:pt-10 pb-6 sm:pb-8">
-                <Voices />
-              </div>
-              <div className="mx-6 sm:mx-10 h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-              <div className="px-6 sm:px-10 py-6 sm:py-8">
-                <p className="text-white/15 text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-center mb-5">Trusted by</p>
-                <img src="/clients.png" alt="Clients" className="w-full max-w-md mx-auto invert opacity-[0.25] hover:opacity-[0.4] transition-opacity duration-700 mix-blend-screen" />
+          <div className="max-w-3xl mx-auto">
+            <div className="relative rounded-2xl overflow-hidden">
+              <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.25]" style={{ objectPosition: "50% 35%" }} />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/40 to-[#0a0a0a]/70" />
+              <div className="absolute inset-0 border border-white/[0.15] rounded-2xl pointer-events-none" />
+
+              <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-12">
+                <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
+                  <div className="text-center">
+                    <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
+                    <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Reality plays</p>
+                  </div>
+                  <div className="w-px h-10 bg-white/[0.12]" />
+                  <div className="text-center">
+                    <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
+                    <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Countries</p>
+                  </div>
+                  <div className="w-px h-10 bg-white/[0.12]" />
+                  <div className="text-center">
+                    <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
+                    <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Founded</p>
+                  </div>
+                </div>
+
+                <div className="mb-8 sm:mb-10">
+                  <Voices />
+                </div>
+
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.15] to-transparent mb-6 sm:mb-8" />
+
+                <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] text-center mb-4 font-bold">Trusted by</p>
+                <p className="text-white/70 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
+                  Forbes{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  Škoda{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  YPO{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  PwC{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  O₂{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  UniCredit{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  Oktagon MMA{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  House of Lobkowicz{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  London Business School{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  Česká spořitelna{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  Lasvit{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  Ipsen{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  MSD{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  Direct Group{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                  Raiffeisenbank
+                </p>
+                <p className="text-white/40 text-[10px] text-center mt-4 font-mercure italic">
+                  Prague · London · Zurich
+                </p>
               </div>
             </div>
 
             {/* Business CTA */}
             <div className="text-center mt-10 sm:mt-14">
-              <p className="text-white/15 text-[11px] mb-3">Looking for your team?</p>
+              <p className="text-white/15 text-[11px] mb-3">Looking for something real?</p>
               <a href="/business" className="text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars/70 transition-colors">
-                Explore business plays →
+                Explore live plays →
               </a>
             </div>
           </div>
@@ -356,10 +397,13 @@ export default function Home() {
 
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-white/[0.04] py-8 px-4">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <img src="/logo.png" alt="Stage On Mars" className="h-5 invert opacity-20" />
-          <p className="text-white/10 text-[10px]">© {new Date().getFullYear()} Stage on Mars</p>
+      <footer className="py-6 px-6 border-t border-white/[0.03]">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-white/25 text-[10px]">
+          <span>&copy; {new Date().getFullYear()} Stage on Mars</span>
+          <div className="flex gap-4">
+            <a href="https://www.instagram.com/stage_on_mars" target="_blank" rel="noopener noreferrer" className="hover:text-white/65 transition-colors">Instagram</a>
+            <a href="https://www.linkedin.com/company/stageonmars" target="_blank" rel="noopener noreferrer" className="hover:text-white/65 transition-colors">LinkedIn</a>
+          </div>
         </div>
       </footer>
     </div>

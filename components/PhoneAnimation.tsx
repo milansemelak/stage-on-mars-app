@@ -39,7 +39,7 @@ export default function PhoneAnimation() {
         <svg viewBox="0 0 16 12" className="w-3.5 h-2.5 fill-white/50"><path d="M1 4h2v8H1zM5 2h2v10H5zM9 0h2v12H9zM13 3h2v9h-2z"/></svg>
       </div>
       <div className="px-5 pt-4 pb-2">
-        <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-white/25 text-center">The Playmaker</p>
+        <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-white/25 text-center">Play Simulator</p>
       </div>
 
       {/* Step indicators */}
