@@ -200,7 +200,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                       {member.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
                     </span>
                   </div>
-                  <p className="text-white/60 text-[12px] font-medium truncate">{member.name}</p>
+                  <p className="text-white/60 text-[12px] font-medium">{member.name}</p>
                 </div>
               ))}
             </div>
