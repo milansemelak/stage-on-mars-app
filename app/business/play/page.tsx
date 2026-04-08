@@ -712,7 +712,7 @@ function PlayPageInner() {
                       className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-xl border border-mars/20 bg-mars/[0.04] hover:border-mars/40 hover:bg-mars/[0.08] transition-all duration-300 group/digi"
                     >
                       <div className="w-2 h-2 rounded-full bg-mars/60 group-hover/digi:bg-mars animate-pulse" />
-                      <span className="text-white/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] group-hover/digi:text-white/90 transition-colors">Systemic Playmaker</span>
+                      <span className="text-white/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] group-hover/digi:text-white/90 transition-colors">Play Simulator</span>
                       <span className="text-white/25 text-[11px]">— simulate your play digitally</span>
                     </button>
                   </div>
@@ -729,7 +729,7 @@ function PlayPageInner() {
                     <div className="flex items-center justify-between mb-6 sm:mb-8">
                       <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                        <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Systemic Playmaker</p>
+                        <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Play Simulator</p>
                       </div>
                       <button onClick={() => { setShowDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
                         Close

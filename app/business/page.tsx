@@ -57,12 +57,12 @@ const UI = {
     theStage: "The stage",
     venueDesc: "The flagship space. Where reality plays happen.",
     explore: "Explore →",
-    playmakerTitle: "The Systemic Playmaker",
-    playmakerDesc1: "A digital tool that turns your question",
-    playmakerDesc2: "into a play you can then bring to life on Mars.",
+    playmakerTitle: "The Play Simulator",
+    playmakerDesc1: "Type a question. Watch it become a play.",
+    playmakerDesc2: "Characters, stage, perspectives — all simulated live.",
     playmakerQ1: "What does my company need",
     playmakerQ2: "the most right now?",
-    playQuestion: "Play this question →",
+    playQuestion: "Simulate →",
     theCrew: "The crew",
     crewText1: "Created by Milan and Zuzana Semelak in 2020. Systemic constellations meets theatre meets improvisation.",
     crewText2: "In 2023, David Vais joined. Platform built. Stage opened. Brand born.",
@@ -111,12 +111,12 @@ const UI = {
     theStage: "Scéna",
     venueDesc: "Vlajková loď. Místo, kde se hrají hry reality.",
     explore: "Prozkoumat →",
-    playmakerTitle: "Systémový Playmaker",
-    playmakerDesc1: "Digitální nástroj, který promění vaši otázku",
-    playmakerDesc2: "ve hru, kterou pak oživíte na Marsu.",
+    playmakerTitle: "Simulátor Hry",
+    playmakerDesc1: "Napište otázku. Sledujte, jak se změní ve hru.",
+    playmakerDesc2: "Postavy, scéna, perspektivy — vše simulováno živě.",
     playmakerQ1: "Co moje firma potřebuje",
     playmakerQ2: "nejvíc právě teď?",
-    playQuestion: "Zahrát tuto otázku →",
+    playQuestion: "Simulovat →",
     theCrew: "Tým",
     crewText1: "Založili Milan a Zuzana Semelákovi v roce 2020. Systemické konstelace potkávají divadlo a improvizaci.",
     crewText2: "V roce 2023 se přidal David Vais. Platforma postavena. Scéna otevřena. Značka vznikla.",
@@ -377,34 +377,38 @@ export default function BusinessPage() {
                 <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.05) 0%, transparent 40%)" }} />
 
                 <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">
-                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">{t.contactYourQ}</p>
-                  <textarea
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder={t.placeholder}
-                    rows={3}
-                    className="w-full flex-1 min-h-[120px] sm:min-h-[100px] bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[28px] placeholder:text-white/40 focus:outline-none resize-none leading-[1.35] tracking-[-0.02em] font-medium"
-                    style={{ caretColor: "#FF5500" }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                    }}
-                  />
+                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">{t.buildPlay}</p>
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-4 focus-within:border-mars/25 transition-colors">
+                    <textarea
+                      value={question}
+                      onChange={(e) => setQuestion(e.target.value)}
+                      placeholder={t.placeholder}
+                      rows={3}
+                      className="w-full min-h-[100px] sm:min-h-[90px] bg-transparent border-0 px-0 py-0 text-white text-[22px] sm:text-[26px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.02em] font-medium"
+                      style={{ caretColor: "#FF5500" }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-6 space-y-4">
-                  <div className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-3.5 focus-within:border-mars/25 transition-colors">
                     <input
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       placeholder={t.company}
-                      className="flex-1 bg-transparent border-0 px-0 py-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px]"
+                      className="w-full bg-transparent border-0 px-0 py-0 text-white/70 placeholder:text-white/25 focus:outline-none text-[14px]"
                     />
                   </div>
                   <button
                     onClick={generate}
                     disabled={!question.trim()}
-                    className="w-full py-3.5 rounded-xl font-bold text-[12px] uppercase tracking-[0.15em] transition-all bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)] disabled:opacity-30 disabled:shadow-none"
+                    className="relative w-full py-5 sm:py-6 rounded-2xl font-black text-[16px] sm:text-[18px] uppercase tracking-[0.1em] transition-all text-white disabled:opacity-20 disabled:shadow-none overflow-hidden group/btn"
+                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
                   >
-                    {t.buildPlay}
+                    <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
+                    <span className="relative z-10">{t.buildPlay}</span>
                   </button>
                 </div>
 
@@ -415,7 +419,7 @@ export default function BusinessPage() {
                     <p className="text-white/20 text-[9px] uppercase tracking-[0.3em] font-bold shrink-0">{t.readyMade}</p>
                     <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.08]" />
                   </div>
-                  <div className="flex flex-wrap gap-2 justify-center">
+                  <div className="grid grid-cols-3 gap-2 w-full">
                     {[
                       { theme: t.play1Theme, q: t.play1Pitch },
                       { theme: t.play2Theme, q: t.play2Pitch },
@@ -425,7 +429,7 @@ export default function BusinessPage() {
                         const params = new URLSearchParams({ q: play.q });
                         if (companyName.trim()) params.set("company", companyName);
                         window.location.href = `/business/play?${params.toString()}`;
-                      }} className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
+                      }} className="group flex items-center justify-center gap-1.5 py-2.5 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
                         <span className="text-white/50 group-hover:text-white/80 text-[12px] font-bold tracking-[-0.01em] transition-colors duration-500">{play.theme}</span>
                         <span className="text-mars/40 group-hover:text-mars/70 text-[12px] font-bold transition-colors duration-500">{t.thePlay}</span>
                       </button>
@@ -468,7 +472,7 @@ export default function BusinessPage() {
         </div>
       </FadeIn>
 
-      {/* ── SYSTEMIC PLAYMAKER — standalone section ── */}
+      {/* ── PLAY SIMULATOR — standalone section ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
           <button
@@ -476,7 +480,7 @@ export default function BusinessPage() {
               const q = "What does my company need the most right now?";
               const params = new URLSearchParams({ q });
               if (companyName.trim()) params.set("company", companyName);
-              window.location.href = `/business/play?${params.toString()}`;
+              window.location.href = `/business/simulate?${params.toString()}`;
             }}
             className="w-full group"
           >
@@ -495,7 +499,7 @@ export default function BusinessPage() {
                             <div className="w-[5px] h-[5px] rounded-full bg-[#febc2e]" />
                             <div className="w-[5px] h-[5px] rounded-full bg-[#28c840]" />
                           </div>
-                          <span className="text-[6px] text-white/30 font-bold tracking-wider ml-1">PLAYMAKER</span>
+                          <span className="text-[6px] text-white/30 font-bold tracking-wider ml-1">SIMULATOR</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <div className="w-[4px] h-[4px] rounded-full bg-emerald-400/80 animate-pulse" />
