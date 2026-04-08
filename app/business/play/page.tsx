@@ -457,133 +457,127 @@ function PlayPageInner() {
 
               {/* Question as hero */}
               <div className="text-center mb-10 sm:mb-14">
-                <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-5">Your question</p>
-                <h1 className="font-mercure italic text-white/70 text-[24px] sm:text-[34px] leading-[1.3] max-w-xl mx-auto mb-6">
-                  &ldquo;{questionParam}&rdquo;
-                </h1>
-                <div className="h-[1px] w-16 bg-gradient-to-r from-transparent via-mars/30 to-transparent mx-auto mb-6" />
-                <p className="text-white/25 text-[11px] sm:text-[12px] uppercase tracking-[0.2em]">Here&#39;s what we designed for you</p>
-              </div>
-
-              {/* Experience header */}
-              <div className="text-center mb-8 sm:mb-10">
-                <h2 className="text-[36px] sm:text-[52px] font-black tracking-[-0.04em] leading-[0.95] mb-3">
-                  <span className="text-white/90">{companyParam || experience.theme}</span>{" "}
-                  <span className="text-mars font-mercure italic">on Mars</span>
-                </h2>
-                <p className="text-white/30 text-[12px] sm:text-[13px] mb-4">A live experience for your team</p>
-                <p className="text-white/50 text-[14px] sm:text-[16px] leading-[1.6] max-w-lg mx-auto">
-                  {experience.pitch}
-                </p>
-              </div>
-
-              {/* How it works */}
-              <div className="rounded-xl bg-white/[0.02] border border-white/[0.06] px-5 sm:px-6 py-5 mb-8 sm:mb-10">
-                <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-4">How it works</p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                  <div className="flex sm:flex-col items-start gap-3">
-                    <span className="shrink-0 w-6 h-6 rounded-full bg-mars/15 border border-mars/20 flex items-center justify-center text-mars text-[11px] font-bold">1</span>
-                    <p className="text-white/50 text-[12px] sm:text-[13px] leading-[1.5]">You bring a real question your team is facing</p>
-                  </div>
-                  <div className="flex sm:flex-col items-start gap-3">
-                    <span className="shrink-0 w-6 h-6 rounded-full bg-mars/15 border border-mars/20 flex items-center justify-center text-mars text-[11px] font-bold">2</span>
-                    <p className="text-white/50 text-[12px] sm:text-[13px] leading-[1.5]">Your team plays it out live on stage, no scripts</p>
-                  </div>
-                  <div className="flex sm:flex-col items-start gap-3">
-                    <span className="shrink-0 w-6 h-6 rounded-full bg-mars/15 border border-mars/20 flex items-center justify-center text-mars text-[11px] font-bold">3</span>
-                    <p className="text-white/50 text-[12px] sm:text-[13px] leading-[1.5]">You leave with new perspectives, not slides</p>
-                  </div>
+                <div className="relative inline-block mb-6">
+                  <div className="absolute -inset-6 sm:-inset-10 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.06)_0%,_transparent_70%)] pointer-events-none" />
+                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-5">Your question</p>
+                  <h1 className="font-mercure italic text-white/80 text-[26px] sm:text-[38px] leading-[1.25] max-w-xl mx-auto">
+                    &ldquo;{questionParam}&rdquo;
+                  </h1>
                 </div>
+                <div className="flex items-center gap-3 justify-center mt-2">
+                  <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-mars/30" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-mars/40" />
+                  <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-mars/30" />
+                </div>
+                <p className="text-white/25 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-5">Here&#39;s what we designed for you</p>
               </div>
 
-              {/* Configure */}
-              <div className="space-y-6 mb-8 sm:mb-10">
-
-                {/* Group size */}
-                <div>
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Group size</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {PEOPLE_OPTIONS.map((opt, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setSelectedPeople(i)}
-                        className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
-                          selectedPeople === i
-                            ? "border-mars/30 bg-mars/[0.06]"
-                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
-                        }`}
-                      >
-                        <p className={`text-[18px] sm:text-[22px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
-                        <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedPeople === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Venue */}
-                <div>
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Location</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {VENUE_OPTIONS.map((opt, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setSelectedVenue(i)}
-                        className={`rounded-xl border py-4 px-3 text-center transition-all duration-300 ${
-                          selectedVenue === i
-                            ? "border-mars/30 bg-mars/[0.06]"
-                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
-                        }`}
-                      >
-                        <p className={`text-[13px] sm:text-[15px] font-bold ${selectedVenue === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
-                        <p className={`text-[9px] sm:text-[10px] mt-1.5 leading-[1.3] ${selectedVenue === i ? "text-mars/60" : "text-white/25"}`}>{opt.sub}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Play Card + Contact */}
+              {/* Unified experience card */}
               <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
                 <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
                 {!cardSent ? (
-                  <div className="px-6 sm:px-8 py-6 sm:py-8">
-                    {/* Summary */}
-                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-4">The Stage on Mars Experience</p>
-                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5 mb-6">
-                      <p className="text-white/80 text-[18px] sm:text-[22px] font-black tracking-tight mb-1">
-                        {companyParam || experience.theme} <span className="text-mars font-mercure italic">on Mars</span>
+                  <div className="px-6 sm:px-8 py-8 sm:py-10">
+
+                    {/* Experience header */}
+                    <div className="text-center mb-8">
+                      <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-5">The Stage on Mars Experience</p>
+                      <h2 className="text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-[0.95] mb-3">
+                        <span className="text-white/90">{companyParam || experience.theme}</span>{" "}
+                        <span className="text-mars font-mercure italic">on Mars</span>
+                      </h2>
+                      <p className="text-white/30 text-[11px] sm:text-[12px] mb-4">A live experience for your team</p>
+                      <p className="text-white/45 text-[13px] sm:text-[15px] leading-[1.6] max-w-md mx-auto">
+                        {experience.pitch}
                       </p>
-                      <p className="text-white/30 text-[11px] leading-[1.5] mb-3">{experience.pitch}</p>
-                      <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-white/25">
-                        <span>{PEOPLE_OPTIONS[selectedPeople].label} people</span>
-                        <span>&middot;</span>
-                        <span>{VENUE_OPTIONS[selectedVenue].label}</span>
+                    </div>
+
+                    {/* How it works */}
+                    <div className="mb-8">
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
+                      <div className="grid grid-cols-3 gap-4 sm:gap-6">
+                        <div className="text-center">
+                          <span className="inline-flex w-6 h-6 rounded-full bg-mars/15 border border-mars/20 items-center justify-center text-mars text-[11px] font-bold mb-2">1</span>
+                          <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.5]">Bring a real question</p>
+                        </div>
+                        <div className="text-center">
+                          <span className="inline-flex w-6 h-6 rounded-full bg-mars/15 border border-mars/20 items-center justify-center text-mars text-[11px] font-bold mb-2">2</span>
+                          <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.5]">Play it out live on stage</p>
+                        </div>
+                        <div className="text-center">
+                          <span className="inline-flex w-6 h-6 rounded-full bg-mars/15 border border-mars/20 items-center justify-center text-mars text-[11px] font-bold mb-2">3</span>
+                          <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.5]">Leave with new perspectives</p>
+                        </div>
+                      </div>
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mt-6" />
+                    </div>
+
+                    {/* Configure */}
+                    <div className="space-y-5 mb-8">
+                      <div>
+                        <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2.5">Group size</p>
+                        <div className="grid grid-cols-3 gap-2">
+                          {PEOPLE_OPTIONS.map((opt, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setSelectedPeople(i)}
+                              className={`rounded-xl border py-3 px-3 text-center transition-all duration-300 ${
+                                selectedPeople === i
+                                  ? "border-mars/30 bg-mars/[0.06]"
+                                  : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
+                              }`}
+                            >
+                              <p className={`text-[16px] sm:text-[20px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/40"}`}>{opt.label}</p>
+                              <p className={`text-[9px] uppercase tracking-[0.15em] mt-0.5 ${selectedPeople === i ? "text-mars/50" : "text-white/20"}`}>{opt.description}</p>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2.5">Location</p>
+                        <div className="grid grid-cols-3 gap-2">
+                          {VENUE_OPTIONS.map((opt, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setSelectedVenue(i)}
+                              className={`rounded-xl border py-3 px-3 text-center transition-all duration-300 ${
+                                selectedVenue === i
+                                  ? "border-mars/30 bg-mars/[0.06]"
+                                  : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
+                              }`}
+                            >
+                              <p className={`text-[12px] sm:text-[14px] font-bold ${selectedVenue === i ? "text-white/90" : "text-white/40"}`}>{opt.label}</p>
+                              <p className={`text-[9px] mt-1 leading-[1.3] ${selectedVenue === i ? "text-mars/50" : "text-white/20"}`}>{opt.sub}</p>
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Contact fields */}
-                    <p className="text-white/40 text-[12px] mb-4">Leave your details and we&#39;ll get back to you with a tailored offer.</p>
+                    {/* Contact */}
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
+                    <p className="text-white/35 text-[12px] mb-4">Leave your details and we&#39;ll get back to you with a tailored offer.</p>
                     <div className="flex flex-col sm:flex-row gap-3 mb-3">
                       <input
                         value={cardName}
                         onChange={(e) => setCardName(e.target.value)}
                         placeholder="Your name"
-                        className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                        className="flex-1 rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors"
                       />
                       <input
                         value={cardEmail}
                         onChange={(e) => setCardEmail(e.target.value)}
                         type="email"
                         placeholder="Your email"
-                        className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                        className="flex-1 rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors"
                       />
                     </div>
                     <input
                       value={cardDate}
                       onChange={(e) => setCardDate(e.target.value)}
                       placeholder="Ideal date (e.g. March 2026, Q2, flexible...)"
-                      className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors mb-4"
+                      className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors mb-4"
                     />
                     <button
                       onClick={() => {
@@ -605,7 +599,6 @@ function PlayPageInner() {
                       Send to Mars
                     </button>
 
-                    {/* Social proof */}
                     <p className="text-white/15 text-[11px] text-center mt-4">Trusted by 50+ teams across Europe</p>
                   </div>
                 ) : (
