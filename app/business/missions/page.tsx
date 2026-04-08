@@ -20,6 +20,7 @@ export default function MissionsPage() {
   const [mapsUrl, setMapsUrl] = useState("");
   const [password, setPassword] = useState("");
   const [creating, setCreating] = useState(false);
+  const [error, setError] = useState("");
   const [missionCode, setMissionCode] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -43,8 +44,9 @@ export default function MissionsPage() {
   }
 
   async function handleCreate() {
-    if (!company.trim() || !question.trim() || !date || !hostName.trim() || !hostEmail.trim()) return;
+    if (!company.trim() || !question.trim() || !date) return;
     setCreating(true);
+    setError("");
     try {
       const res = await fetch("/api/missions", {
         method: "POST",
@@ -72,9 +74,11 @@ export default function MissionsPage() {
       const data = await res.json();
       if (data.success) {
         setMissionCode(data.code);
+      } else {
+        setError(data.error || "Failed to create mission");
       }
-    } catch {
-      // silently fail
+    } catch (err) {
+      setError("Connection failed. Try again.");
     }
     setCreating(false);
   }
@@ -230,11 +234,15 @@ export default function MissionsPage() {
                 <textarea value={welcomeMessage} onChange={(e) => setWelcomeMessage(e.target.value)} placeholder="Write an invitation to play..." rows={5} className={`${inputClass} resize-none`} />
               </div>
 
+              {error && (
+                <p className="text-red-600 text-[13px] px-4 py-2.5 rounded-lg bg-red-50 border border-red-200">{error}</p>
+              )}
+
               <button
                 onClick={handleCreate}
-                disabled={creating || !company.trim() || !question.trim() || !date || !hostName.trim() || !hostEmail.trim()}
+                disabled={creating || !company.trim() || !question.trim() || !date}
                 className={`w-full py-4 rounded-xl font-bold text-[14px] uppercase tracking-[0.12em] transition-all ${
-                  !creating && company.trim() && question.trim() && date && hostName.trim() && hostEmail.trim()
+                  !creating && company.trim() && question.trim() && date
                     ? "bg-mars hover:bg-mars-light text-white active:scale-[0.99]"
                     : "bg-neutral-100 text-neutral-300 cursor-not-allowed"
                 }`}
