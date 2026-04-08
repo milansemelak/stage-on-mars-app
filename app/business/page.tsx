@@ -86,6 +86,12 @@ const UI = {
     thePlay: "Play",
     from: "from",
     letsMakeIt: "Let\u2019s make it happen.",
+    codexTag: "Codex of Mars",
+    codexTitle: "What we believe.",
+    codexBody: "Stage on Mars is an experiential search platform. At the heart of it is Systemic Play — a method that combines imagination, theatre, and systemic constellations to reveal what\u2019s really going on.",
+    codexBody2: "It\u2019s not therapy. It\u2019s creativity, imagination, and self-expression. Each experience is guided by a Playmaker and supported by a Producer.",
+    codexValues: "Freedom · Responsibility · Humor · Humility · Truthfulness",
+    codexCta: "Read the full Codex →",
   },
   cs: {
     tagline1: "Hrajte si s realitou.",
@@ -141,6 +147,12 @@ const UI = {
     thePlay: "Hra",
     from: "od",
     letsMakeIt: "Pojďme na to.",
+    codexTag: "Codex of Mars",
+    codexTitle: "Čemu věříme.",
+    codexBody: "Stage on Mars je zážitková vyhledávací platforma. Jejím srdcem je Systémová Hra — metoda, která kombinuje představivost, divadlo a systemické konstelace, aby odhalila, co se skutečně děje.",
+    codexBody2: "Není to terapie. Je to kreativita, představivost a sebevyjádření. Každý zážitek vede Playmaker a podporuje Producent.",
+    codexValues: "Svoboda · Odpovědnost · Humor · Pokora · Pravdivost",
+    codexCta: "Přečtěte si celý Codex →",
   },
 } as const;
 
@@ -454,13 +466,13 @@ export default function BusinessPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/20" />
             </div>
             {/* Info bar below photo */}
-            <div className="px-6 sm:px-8 py-5 sm:py-6 flex items-center justify-between gap-4">
+            <div className="px-6 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
               <div>
                 <p className="text-mars/60 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold mb-1.5">{t.theStage}</p>
                 <p className="text-white/90 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
                 <p className="text-white/65 text-[13px] sm:text-[14px] mt-0.5">{t.venueDesc}</p>
               </div>
-              <a href="/space" className="shrink-0 inline-flex items-center px-5 py-2.5 rounded-xl border border-mars/30 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:border-mars/50 hover:text-mars transition-all">
+              <a href="/space" className="shrink-0 inline-flex items-center justify-center px-5 py-2.5 rounded-xl border border-mars/30 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:border-mars/50 hover:text-mars transition-all">
                 {t.explore}
               </a>
             </div>
@@ -667,6 +679,40 @@ export default function BusinessPage() {
             }}
             dangerouslySetInnerHTML={{ __html: '<behold-widget feed-id="dIhZfoeR63aCCPOqfshk"></behold-widget>' }}
           />
+        </div>
+      </FadeIn>
+
+      {/* ── CODEX OF MARS ── */}
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+            <div className="p-6 sm:p-10 text-center">
+              <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">
+                {t.codexTag}
+              </p>
+              <h2 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em] mb-6">
+                {t.codexTitle}
+              </h2>
+              <p className="font-mercure text-white/60 text-[13px] sm:text-[14px] leading-relaxed max-w-xl mx-auto mb-4">
+                {t.codexBody}
+              </p>
+              <p className="font-mercure text-white/60 text-[13px] sm:text-[14px] leading-relaxed max-w-xl mx-auto mb-8">
+                {t.codexBody2}
+              </p>
+              <p className="text-mars/50 text-[11px] sm:text-[12px] tracking-[0.15em] font-bold mb-8">
+                {t.codexValues}
+              </p>
+              <a
+                href="https://www.notesfrommars.com/codex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-mars hover:text-mars-light text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.1em] transition-colors"
+              >
+                {t.codexCta}
+              </a>
+            </div>
+          </div>
         </div>
       </FadeIn>
 
