@@ -1096,27 +1096,109 @@ export default function BusinessPage() {
             </div>
           )}
 
+
+          {/* ── FORMULA — first thing after headline ── */}
+          {!submitted && (
+            <div className="relative w-full max-w-3xl mx-auto mb-6 sm:mb-10">
+              {/* Orange glow beneath box */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[60%] h-[80px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.1) 0%, transparent 80%)" }} />
+              <div className="relative rounded-2xl border border-white/[0.12] overflow-hidden">
+                <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" src="/formula-bg.mp4" />
+                <div className="absolute inset-0 bg-black/[0.82] sm:bg-black/[0.78]" />
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent relative z-10" />
+                <div className="absolute inset-0 pointer-events-none z-10" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
+                <div className="relative z-10 px-6 sm:px-10 pt-10 sm:pt-14 pb-10 sm:pb-14 flex flex-col items-center">
+                  <p className="text-center mb-4 sm:mb-5">
+                    <span className="text-white/90 text-[20px] sm:text-[34px] md:text-[42px] font-black tracking-[-0.03em]">{t.formulaQ}</span>
+                    <span className="text-white/12 text-[16px] sm:text-[28px] md:text-[34px] mx-2 sm:mx-4 font-light">×</span>
+                    <span className="text-white/90 text-[20px] sm:text-[34px] md:text-[42px] font-black tracking-[-0.03em]">{t.formulaP}</span>
+                    <span className="text-white/12 text-[16px] sm:text-[28px] md:text-[34px] mx-2 sm:mx-4 font-light">=</span>
+                    <span className="text-mars text-[20px] sm:text-[34px] md:text-[42px] font-mercure italic tracking-[-0.02em]">{t.formulaR}</span>
+                  </p>
+                  <p className="font-mercure italic text-white/45 text-[13px] sm:text-[15px] leading-[1.7] text-center max-w-md">{t.formulaBody}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+
+          {/* ── SOCIAL PROOF — right after formula ── */}
+          {!submitted && (
+            <div className="w-full max-w-3xl mx-auto mb-8 sm:mb-12">
+              <div className="relative rounded-2xl overflow-hidden">
+                <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.25]" style={{ objectPosition: "50% 35%" }} />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/40 to-[#0a0a0a]/70" />
+                <div className="absolute inset-0 border border-white/[0.15] rounded-2xl pointer-events-none" />
+
+                <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-12">
+                  <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
+                    <div className="text-center">
+                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
+                      <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.realityPlays}</p>
+                    </div>
+                    <div className="w-px h-10 bg-white/[0.12]" />
+                    <div className="text-center">
+                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
+                      <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.countries}</p>
+                    </div>
+                    <div className="w-px h-10 bg-white/[0.12]" />
+                    <div className="text-center">
+                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
+                      <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.founded}</p>
+                    </div>
+                  </div>
+
+                  <div className="mb-8 sm:mb-10">
+                    <Voices />
+                  </div>
+
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.15] to-transparent mb-6 sm:mb-8" />
+
+                  <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] text-center mb-4 font-bold">{t.trustedBy}</p>
+                  <p className="text-white/70 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
+                    Forbes{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    Škoda{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    YPO{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    PwC{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    O₂{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    UniCredit{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    Oktagon MMA{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    House of Lobkowicz{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    London Business School{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    Česká spořitelna{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    Lasvit{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    Ipsen{" "}<span className="text-white/25 mx-1">·</span>{" "}
+                    MSD
+                  </p>
+                  <p className="text-white/40 text-[10px] text-center mt-4 font-mercure italic">
+                    {t.cities}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="w-full max-w-3xl">
 
-            {/* THE BOX — headline + input as one unit */}
+            {/* THE BOX — unified build or choose system */}
             <div className="relative group/input">
               <div className="absolute -inset-12 sm:-inset-20 rounded-3xl opacity-60 group-focus-within/input:opacity-100 transition-opacity duration-[1500ms]" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.12) 0%, transparent 70%)", animation: "pulse 4s ease-in-out infinite" }} />
 
-              <div className="relative rounded-2xl border-2 border-mars/60 bg-gradient-to-b from-white/[0.08] to-white/[0.03] backdrop-blur-md transition-all duration-700 overflow-hidden shadow-[0_0_60px_rgba(255,85,0,0.2),0_4px_30px_rgba(0,0,0,0.4)] group-focus-within/input:border-mars group-focus-within/input:shadow-[0_0_80px_rgba(255,85,0,0.3),0_4px_40px_rgba(0,0,0,0.5)] min-h-[55dvh] sm:min-h-0 flex flex-col">
-                <div className="px-6 sm:px-8 pt-8 sm:pt-7 pb-0 flex-1 flex flex-col">
+              <div className="relative rounded-2xl border border-mars/40 bg-gradient-to-b from-white/[0.06] to-white/[0.02] backdrop-blur-md transition-all duration-700 overflow-hidden shadow-[0_0_40px_rgba(255,85,0,0.12),0_4px_20px_rgba(0,0,0,0.3)] group-focus-within/input:border-mars/60 group-focus-within/input:shadow-[0_0_60px_rgba(255,85,0,0.2),0_4px_30px_rgba(0,0,0,0.4)] flex flex-col">
+                <div className="px-6 sm:px-8 pt-6 sm:pt-6 pb-0 flex-1 flex flex-col">
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     placeholder={t.placeholder}
                     rows={2}
-                    className="w-full flex-1 min-h-[100px] sm:min-h-0 bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[26px] placeholder:text-white/50 focus:outline-none resize-none leading-[1.4] tracking-[-0.02em] font-medium"
+                    className="w-full flex-1 min-h-[80px] sm:min-h-0 bg-transparent border-0 px-0 py-0 text-white text-[20px] sm:text-[22px] placeholder:text-white/50 focus:outline-none resize-none leading-[1.4] tracking-[-0.02em] font-medium"
                     style={{ caretColor: "#FF5500" }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                     }}
                   />
                 </div>
-                <div className="px-6 sm:px-8 pb-6 sm:pb-6 space-y-4">
+                <div className="px-6 sm:px-8 pb-5 sm:pb-5 space-y-3">
                   <input
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
@@ -1126,11 +1208,45 @@ export default function BusinessPage() {
                   <button
                     onClick={generate}
                     disabled={!question.trim()}
-                    className="w-full py-4.5 sm:py-4 rounded-xl font-bold text-[16px] sm:text-[16px] uppercase tracking-[0.18em] transition-all bg-mars hover:bg-mars-light text-white shadow-[0_0_50px_rgba(255,85,0,0.35),0_4px_20px_rgba(255,85,0,0.2)] disabled:opacity-30 disabled:shadow-none"
+                    className="w-full py-3.5 rounded-xl font-bold text-[12px] uppercase tracking-[0.15em] transition-all bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)] disabled:opacity-30 disabled:shadow-none"
                   >
                     {t.buildPlay}
                   </button>
                 </div>
+
+                {/* ── OR divider + ready-made plays inside the box ── */}
+                {!submitted && (
+                  <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                    <div className="flex items-center gap-4 my-4 sm:my-5">
+                      <div className="flex-1 h-[1px] bg-white/[0.08]" />
+                      <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] font-bold shrink-0">{t.readyMade}</p>
+                      <div className="flex-1 h-[1px] bg-white/[0.08]" />
+                    </div>
+                    <div className="space-y-2.5">
+                      {[
+                        { theme: t.play1Theme, photo: "/luxury2.jpg", photoPos: "50% 30%", price: `${t.from} €2 900`, pitch: t.play1Pitch },
+                        { theme: t.play2Theme, photo: "/luxury4.jpg", photoPos: "50% 50%", price: `${t.from} €2 900`, pitch: t.play2Pitch },
+                        { theme: t.play3Theme, photo: "/luxury1.jpg", photoPos: "50% 40%", price: `${t.from} €2 200`, pitch: t.play3Pitch },
+                      ].map((play, i) => (
+                        <a key={i} href="#contact" className="group flex items-center gap-3 rounded-xl border border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02] overflow-hidden transition-all duration-500">
+                          <div className="relative w-[60px] sm:w-[80px] h-[60px] sm:h-[70px] shrink-0 overflow-hidden">
+                            <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" style={{ objectPosition: play.photoPos }} />
+                          </div>
+                          <div className="flex-1 py-2.5 pr-4">
+                            <div className="flex items-center justify-between gap-2 mb-0.5">
+                              <h4 className="text-[14px] sm:text-[16px] font-bold tracking-[-0.02em] leading-[1]">
+                                <span className="text-white/90 group-hover:text-white transition-colors">The {play.theme}</span>{" "}
+                                <span className="text-mars/60 group-hover:text-mars transition-colors">{t.thePlay}</span>
+                              </h4>
+                              <p className="text-white/20 text-[10px] font-bold tracking-tight shrink-0">{play.price}</p>
+                            </div>
+                            <p className="text-white/40 text-[11px] leading-[1.4] group-hover:text-white/55 transition-colors">{play.pitch}</p>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>{/* end max-w-3xl */}
@@ -1340,77 +1456,7 @@ export default function BusinessPage() {
             </div>
           )}
 
-          {/* ── BESTSELLING PLAYS — compact ready-made options ── */}
-          {!submitted && (
-            <div className="w-full max-w-3xl mx-auto mt-6 sm:mt-10 pb-8 sm:pb-0 space-y-3">
-              <div className="px-1 mb-3">
-                <p className="text-white/50 text-[11px] uppercase tracking-[0.3em] font-bold">{t.readyMade}</p>
-              </div>
-              {[
-                { theme: t.play1Theme, photo: "/luxury2.jpg", photoPos: "50% 30%", price: `${t.from} €2 900`, pitch: t.play1Pitch },
-                { theme: t.play2Theme, photo: "/luxury4.jpg", photoPos: "50% 50%", price: `${t.from} €2 900`, pitch: t.play2Pitch },
-                { theme: t.play3Theme, photo: "/luxury1.jpg", photoPos: "50% 40%", price: `${t.from} €2 200`, pitch: t.play3Pitch },
-              ].map((play, i) => (
-                <a key={i} href="#contact" className="group flex items-center gap-4 rounded-xl border border-white/[0.06] hover:border-white/[0.12] bg-white/[0.02] overflow-hidden transition-all duration-500">
-                  {/* Small photo */}
-                  <div className="relative w-[80px] sm:w-[100px] h-[80px] sm:h-[90px] shrink-0 overflow-hidden">
-                    <img src={play.photo} alt="" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" style={{ objectPosition: play.photoPos }} />
-                  </div>
-                  {/* Info */}
-                  <div className="flex-1 py-3 pr-4 sm:pr-5">
-                    <div className="flex items-center justify-between gap-3 mb-1">
-                      <h4 className="text-[16px] sm:text-[18px] font-bold tracking-[-0.02em] leading-[1]">
-                        <span className="text-white/90 group-hover:text-white transition-colors">The {play.theme}</span>{" "}
-                        <span className="text-mars/60 group-hover:text-mars transition-colors">{t.thePlay}</span>
-                      </h4>
-                      <p className="text-white/25 text-[11px] font-bold tracking-tight shrink-0">{play.price}</p>
-                    </div>
-                    <p className="text-white/50 text-[12px] leading-[1.5] group-hover:text-white/60 transition-colors">{play.pitch}</p>
-                  </div>
-                </a>
-              ))}
 
-            </div>
-          )}
-
-          {/* ── HOW IT WORKS ── */}
-          {!submitted && (
-            <div className="relative w-full max-w-3xl mx-auto mt-8 sm:mt-14 pb-6 sm:pb-10">
-              {/* Orange glow beneath box */}
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[60%] h-[80px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.1) 0%, transparent 80%)" }} />
-              <div className="relative rounded-2xl border border-white/[0.12] overflow-hidden">
-                {/* Background video */}
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                  src="/formula-bg.mp4"
-                />
-                {/* Dark overlay — video whispers, not speaks */}
-                <div className="absolute inset-0 bg-black/[0.82] sm:bg-black/[0.78]" />
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent relative z-10" />
-                {/* Atmospheric glow */}
-                <div className="absolute inset-0 pointer-events-none z-10" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
-
-                <div className="relative z-10 px-6 sm:px-10 pt-12 sm:pt-16 pb-12 sm:pb-16 flex flex-col items-center">
-                  {/* Tag */}
-                  <p className="text-white/20 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-8 sm:mb-10">{t.formulaTag}</p>
-                  {/* Formula */}
-                  <p className="text-center mb-5 sm:mb-6">
-                    <span className="text-white/90 text-[20px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaQ}</span>
-                    <span className="text-white/12 text-[16px] sm:text-[32px] md:text-[40px] mx-2 sm:mx-5 font-light">×</span>
-                    <span className="text-white/90 text-[20px] sm:text-[40px] md:text-[50px] font-black tracking-[-0.03em]">{t.formulaP}</span>
-                    <span className="text-white/12 text-[16px] sm:text-[32px] md:text-[40px] mx-2 sm:mx-5 font-light">=</span>
-                    <span className="text-mars text-[20px] sm:text-[40px] md:text-[50px] font-mercure italic tracking-[-0.02em]">{t.formulaR}</span>
-                  </p>
-                  {/* Body text */}
-                  <p className="font-mercure italic text-white/45 text-[14px] sm:text-[16px] leading-[1.7] text-center max-w-lg">{t.formulaBody}</p>
-                </div>
-              </div>
-            </div>
-          )}
 
         </div>
       </section>
@@ -1696,66 +1742,6 @@ export default function BusinessPage() {
       )}
 
 
-      {/* ── SOCIAL PROOF — cinematic success block ── */}
-      <FadeIn className="px-4 py-3 sm:py-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="relative rounded-2xl overflow-hidden">
-            {/* Background photo */}
-            <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.25]" style={{ objectPosition: "50% 35%" }} />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/40 to-[#0a0a0a]/70" />
-            <div className="absolute inset-0 border border-white/[0.15] rounded-2xl pointer-events-none" />
-
-            <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-12">
-              {/* Stats row */}
-              <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
-                <div className="text-center">
-                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
-                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.realityPlays}</p>
-                </div>
-                <div className="w-px h-10 bg-white/[0.12]" />
-                <div className="text-center">
-                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
-                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.countries}</p>
-                </div>
-                <div className="w-px h-10 bg-white/[0.12]" />
-                <div className="text-center">
-                  <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
-                  <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.founded}</p>
-                </div>
-              </div>
-
-              {/* Voices quote */}
-              <div className="mb-8 sm:mb-10">
-                <Voices />
-              </div>
-
-              {/* Divider */}
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.15] to-transparent mb-6 sm:mb-8" />
-
-              {/* Trusted by — refined text list */}
-              <p className="text-white/50 text-[10px] uppercase tracking-[0.3em] text-center mb-4 font-bold">{t.trustedBy}</p>
-              <p className="text-white/70 text-[13px] sm:text-[14px] leading-[2.2] tracking-wide text-center max-w-xl mx-auto">
-                Forbes{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                Škoda{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                YPO{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                PwC{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                O₂{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                UniCredit{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                Oktagon MMA{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                House of Lobkowicz{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                London Business School{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                Česká spořitelna{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                Lasvit{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                Ipsen{" "}<span className="text-white/25 mx-1">·</span>{" "}
-                MSD
-              </p>
-              <p className="text-white/40 text-[10px] text-center mt-4 font-mercure italic">
-                {t.cities}
-              </p>
-            </div>
-          </div>
-        </div>
-      </FadeIn>
 
       {/* ── THE SPACE — Stage box ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
@@ -1774,7 +1760,7 @@ export default function BusinessPage() {
                 <p className="text-white/90 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Národní 138/10, Praha</p>
                 <p className="text-white/65 text-[13px] sm:text-[14px] mt-0.5">{t.venueDesc}</p>
               </div>
-              <a href="/space" className="shrink-0 text-mars/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors">
+              <a href="/space" className="shrink-0 inline-flex items-center px-5 py-2.5 rounded-xl border border-mars/30 text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:border-mars/50 hover:text-mars transition-all">
                 {t.explore}
               </a>
             </div>
@@ -1921,7 +1907,7 @@ export default function BusinessPage() {
                 </div>
               </div>
               <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
-                <span className="inline-flex items-center px-8 py-3 rounded-xl bg-[#0a0a0a] text-white text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#1a1a1a] transition-all shadow-lg">
+                <span className="inline-flex items-center px-8 py-3 rounded-xl border border-[#0a0a0a]/40 text-[#0a0a0a] text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#0a0a0a] group-hover:text-white transition-all">
                   {t.playQuestion}
                 </span>
               </div>
