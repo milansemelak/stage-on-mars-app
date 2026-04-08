@@ -435,9 +435,8 @@ export default function BusinessPage() {
                         const params = new URLSearchParams({ q: play.q });
                         if (companyName.trim()) params.set("company", companyName);
                         window.location.href = `/business/play?${params.toString()}`;
-                      }} className="group flex items-center justify-center gap-1.5 py-2.5 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
-                        <span className="text-white/50 group-hover:text-white/80 text-[12px] font-bold tracking-[-0.01em] transition-colors duration-500">{play.theme}</span>
-                        <span className="text-mars/40 group-hover:text-mars/70 text-[12px] font-bold transition-colors duration-500">{t.thePlay}</span>
+                      }} className="group flex items-center justify-center py-3 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
+                        <span className="transition-colors duration-500 text-[14px] sm:text-[16px] font-bold"><span className="text-white/50 group-hover:text-white/80">{play.theme}</span> <span className="text-mars/40 group-hover:text-mars/70">{t.thePlay}</span></span>
                       </button>
                     ))}
                   </div>
