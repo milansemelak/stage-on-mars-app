@@ -73,10 +73,18 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
           {/* COMPANY NAME */}
           <div className="px-8 sm:px-12 pb-8">
-            <h1 className="text-white text-[38px] sm:text-[54px] font-bold tracking-[-0.04em] leading-[1.05] mb-1">
-              {mission.company}
-            </h1>
-            <p className="font-mercure italic text-mars text-[16px] sm:text-[18px]">on Mars</p>
+            {mission.company.toLowerCase().includes("mars") ? (
+              <h1 className="text-white text-[38px] sm:text-[54px] font-bold tracking-[-0.04em] leading-[1.05]">
+                {mission.company}
+              </h1>
+            ) : (
+              <>
+                <h1 className="text-white text-[38px] sm:text-[54px] font-bold tracking-[-0.04em] leading-[1.05] mb-1">
+                  {mission.company}
+                </h1>
+                <p className="font-mercure italic text-mars text-[16px] sm:text-[18px]">on Mars</p>
+              </>
+            )}
           </div>
 
           {/* FLIGHT DATA */}
