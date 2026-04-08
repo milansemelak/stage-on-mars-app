@@ -89,7 +89,7 @@ const UI = {
     letsMakeIt: "Let\u2019s make it happen.",
     codexTag: "Codex of Mars",
     codexTitle: "What we believe.",
-    codexBody: "Stage on Mars is an experiential search platform. At the heart of it is Systemic Play — a method that combines imagination, theatre, and systemic constellations to reveal what\u2019s really going on.",
+    codexBody: "A place where people play with reality to create what\u2019s next. At the core is Systemic Play \u2014 a method that turns questions into live plays using imagination, theatre, and systemic constellations.",
     codexBody2: "It\u2019s not therapy. It\u2019s creativity, imagination, and self-expression. Each experience is guided by a Playmaker and supported by a Producer.",
     codexValues: "Freedom · Responsibility · Humor · Humility · Truthfulness",
     codexCta: "Read the full Codex →",
@@ -150,8 +150,8 @@ const UI = {
     letsMakeIt: "Pojďme na to.",
     codexTag: "Codex of Mars",
     codexTitle: "Čemu věříme.",
-    codexBody: "Stage on Mars je zážitková vyhledávací platforma. Jejím srdcem je Systémová Hra — metoda, která kombinuje představivost, divadlo a systemické konstelace, aby odhalila, co se skutečně děje.",
-    codexBody2: "Není to terapie. Je to kreativita, představivost a sebevyjádření. Každý zážitek vede Playmaker a podporuje Producent.",
+    codexBody: "Místo, kde si lidé hrají s realitou, aby mohli tvořit to, co přijde dál. V jádru je Systemická hra \u2014 metoda, která mění otázky v živé hry pomocí imaginace, divadla a systemických konstelací.",
+    codexBody2: "Není to terapie. Patří do světa kreativity, imaginace a sebevyjádření. Každou zkušeností provází Playmaker a podporuje ho Producer.",
     codexValues: "Svoboda · Odpovědnost · Humor · Pokora · Pravdivost",
     codexCta: "Přečtěte si celý Codex →",
   },
@@ -381,10 +381,7 @@ export default function BusinessPage() {
 
             {/* THE BOX */}
             <div className="relative group/input">
-              {/* Outer glow — warm stage light spill */}
-              <div className="absolute -inset-20 sm:-inset-40 rounded-3xl opacity-80 group-focus-within/input:opacity-100 transition-opacity duration-[2000ms] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.18) 0%, rgba(255,85,0,0.08) 30%, rgba(255,85,0,0.02) 50%, transparent 70%)" }} />
-
-              <div className="relative rounded-2xl border border-mars/40 bg-white/[0.03] backdrop-blur-md transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/60 flex flex-col" style={{ boxShadow: "0 0 60px -15px rgba(255,85,0,0.15), 0 0 120px -30px rgba(255,85,0,0.08), inset 0 1px 0 rgba(255,85,0,0.12)" }}>
+              <div className="relative rounded-2xl border border-mars/50 bg-[#0a0a0a] transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/70 flex flex-col" style={{ boxShadow: "0 0 15px -2px rgba(255,85,0,0.3), 0 0 40px -8px rgba(255,85,0,0.15), 0 0 80px -15px rgba(255,85,0,0.08)" }}>
                 <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
 
                 <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">

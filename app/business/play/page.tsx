@@ -288,27 +288,10 @@ const PEOPLE_OPTIONS = [
   { label: "25\u201350", description: "Large group" },
 ];
 
-const DURATION_OPTIONS = [
-  { hours: "4", label: "Half-day", price: "\u20AC2 200" },
-  { hours: "5", label: "Extended", price: "\u20AC2 900" },
-  { hours: "6", label: "Full day", price: "\u20AC3 600" },
-];
-
-const FORMAT_OPTIONS = [
-  { label: "Free Play", description: "Everyone directs, everyone plays" },
-  { label: "Prepared Play", description: "We direct, you play" },
-];
-
-const SPECIAL_PLAY_OPTIONS = [
-  { label: "Question Play", description: "Play to find the most essential questions" },
-  { label: "Perspective Play", description: "Play where everyone commits to what's next" },
-  { label: "Value Play", description: "Play where everyone tells the story of why they create your company" },
-];
-
 const VENUE_OPTIONS = [
-  { label: "Flagship stage", sub: "Stage on Mars, N\u00E1rodn\u00ED 138/10, Praha" },
+  { label: "Flagship stage", sub: "Stage on Mars, Praha" },
   { label: "Your office", sub: "We come to you" },
-  { label: "Special location", sub: "A place that fits the occasion" },
+  { label: "Special location", sub: "A place that fits" },
 ];
 
 function deriveExperience(question: string, company: string): Experience {
@@ -338,9 +321,6 @@ function PlayPageInner() {
   const [building, setBuilding] = useState(true);
   const [experience, setExperience] = useState<Experience | null>(null);
   const [selectedPeople, setSelectedPeople] = useState(1);
-  const [selectedDuration, setSelectedDuration] = useState(1);
-  const [selectedFormat, setSelectedFormat] = useState(0);
-  const [selectedSpecials, setSelectedSpecials] = useState<Set<number>>(new Set());
   const [selectedVenue, setSelectedVenue] = useState(0);
   const [play, setPlay] = useState<Play | null>(null);
   const [playLoading, setPlayLoading] = useState(false);
@@ -451,15 +431,7 @@ function PlayPageInner() {
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
       `}</style>
 
-      {/* Header */}
-      <div className="pt-8 sm:pt-12 pb-4 px-4">
-        <div className="max-w-3xl mx-auto">
-          <a href="/business" className="group/logo inline-flex items-center gap-2 mb-6">
-            <svg className="w-4 h-4 text-white/30 group-hover/logo:text-mars/60 transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
-            <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert opacity-40 group-hover/logo:opacity-80 transition-opacity" />
-          </a>
-        </div>
-      </div>
+      <div className="pt-16" />
 
       {/* Results */}
       <section ref={resultRef} className="relative px-4">
@@ -508,7 +480,7 @@ function PlayPageInner() {
                 </div>
               </div>
 
-              {/* Configure your experience */}
+              {/* Configure */}
               <div className="space-y-6 mb-8 sm:mb-10">
 
                 {/* Group size */}
@@ -532,87 +504,9 @@ function PlayPageInner() {
                   </div>
                 </div>
 
-                {/* Duration */}
-                <div>
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Duration</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {DURATION_OPTIONS.map((opt, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setSelectedDuration(i)}
-                        className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
-                          selectedDuration === i
-                            ? "border-mars/30 bg-mars/[0.06]"
-                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
-                        }`}
-                      >
-                        <p className={`text-[22px] sm:text-[26px] font-bold tracking-tight ${selectedDuration === i ? "text-white/90" : "text-white/50"}`}>{opt.hours}h</p>
-                        <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedDuration === i ? "text-mars/60" : "text-white/25"}`}>{opt.label}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Play format */}
-                <div>
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Play format</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {FORMAT_OPTIONS.map((opt, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setSelectedFormat(i)}
-                        className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
-                          selectedFormat === i
-                            ? "border-mars/30 bg-mars/[0.06]"
-                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
-                        }`}
-                      >
-                        <p className={`text-[14px] sm:text-[16px] font-bold ${selectedFormat === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
-                        <p className={`text-[10px] mt-1.5 leading-[1.4] ${selectedFormat === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Special plays */}
-                <div>
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-1">Special plays</p>
-                  <p className="text-white/15 text-[10px] mb-3">Optional — add to your experience</p>
-                  <div className="space-y-1.5">
-                    {SPECIAL_PLAY_OPTIONS.map((opt, i) => {
-                      const active = selectedSpecials.has(i);
-                      return (
-                        <button
-                          key={i}
-                          onClick={() => {
-                            const next = new Set(selectedSpecials);
-                            if (next.has(i)) next.delete(i); else next.add(i);
-                            setSelectedSpecials(next);
-                          }}
-                          className={`w-full flex items-center gap-3 rounded-lg border px-4 py-2.5 text-left transition-all duration-300 ${
-                            active
-                              ? "border-mars/25 bg-mars/[0.04]"
-                              : "border-white/[0.06] bg-transparent hover:border-white/[0.12]"
-                          }`}
-                        >
-                          <div className={`shrink-0 w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-all ${
-                            active ? "border-mars/60 bg-mars/20" : "border-white/20"
-                          }`}>
-                            {active && <svg className="w-2.5 h-2.5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>}
-                          </div>
-                          <div className="min-w-0">
-                            <span className={`text-[12px] sm:text-[13px] font-bold ${active ? "text-white/80" : "text-white/40"}`}>{opt.label}</span>
-                            <span className={`text-[10px] sm:text-[11px] ml-2 ${active ? "text-white/30" : "text-white/15"}`}>{opt.description}</span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
                 {/* Venue */}
                 <div>
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Venue</p>
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Location</p>
                   <div className="grid grid-cols-3 gap-2">
                     {VENUE_OPTIONS.map((opt, i) => (
                       <button
@@ -648,14 +542,6 @@ function PlayPageInner() {
                       <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-white/25">
                         <span>{PEOPLE_OPTIONS[selectedPeople].label} people</span>
                         <span>&middot;</span>
-                        <span>{DURATION_OPTIONS[selectedDuration].label}</span>
-                        <span>&middot;</span>
-                        <span>{FORMAT_OPTIONS[selectedFormat].label}</span>
-                        {selectedSpecials.size > 0 && <>
-                          <span>&middot;</span>
-                          <span>{[...selectedSpecials].map(i => SPECIAL_PLAY_OPTIONS[i].label).join(", ")}</span>
-                        </>}
-                        <span>&middot;</span>
                         <span>{VENUE_OPTIONS[selectedVenue].label}</span>
                       </div>
                     </div>
@@ -682,7 +568,7 @@ function PlayPageInner() {
                         if (!cardEmail.trim() || !cardName.trim()) return;
                         const subject = encodeURIComponent(`Play Card: ${companyParam || experience.theme} on Mars`);
                         const body = encodeURIComponent(
-                          `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyParam || "\u2014"}\n\nQuestion: ${questionParam}\n\nExperience: ${companyParam || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nDuration: ${DURATION_OPTIONS[selectedDuration].label}\nFormat: ${FORMAT_OPTIONS[selectedFormat].label}\n${selectedSpecials.size > 0 ? `Special plays: ${[...selectedSpecials].map(i => SPECIAL_PLAY_OPTIONS[i].label).join(", ")}\n` : ""}Venue: ${VENUE_OPTIONS[selectedVenue].label}`
+                          `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyParam || "\u2014"}\n\nQuestion: ${questionParam}\n\nExperience: ${companyParam || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nLocation: ${VENUE_OPTIONS[selectedVenue].label}`
                         );
                         window.location.href = `mailto:play@stageonmars.com?subject=${subject}&body=${body}`;
                         setCardSent(true);
