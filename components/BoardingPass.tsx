@@ -212,19 +212,18 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
       {/* ── QUESTIONS TO PLAY ── */}
       {crew.some((m) => m.question) && (
-        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
-          <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+        <div className="rounded-2xl bg-mars overflow-hidden">
           <div className="px-6 sm:px-10 py-8">
-            <p className="text-mars/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-5">Questions to Play</p>
+            <p className="text-black/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-5">Questions to Play</p>
             <div className="space-y-4">
               {crew
                 .filter((m) => m.question)
                 .map((member, i) => (
-                  <div key={i} className="relative pl-4 border-l-2 border-mars/40">
-                    <p className="font-mercure italic text-mars/70 text-[14px] sm:text-[15px] leading-[1.5] mb-1.5">
+                  <div key={i} className="relative pl-4 border-l-2 border-black/20">
+                    <p className="font-mercure italic text-black/80 text-[14px] sm:text-[15px] leading-[1.5] mb-1.5">
                       &ldquo;{member.question}&rdquo;
                     </p>
-                    <p className="text-white/20 text-[11px]">{member.name}</p>
+                    <p className="text-black/40 text-[11px]">{member.name}</p>
                   </div>
                 ))}
             </div>
