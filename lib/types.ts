@@ -50,3 +50,29 @@ export type GenerateResponse = {
   plays: Play[];
   questionAngle?: "it" | "us" | "me";
 };
+
+export type Mission = {
+  id: string;
+  code: string;
+  company: string;
+  question: string;
+  date: string;
+  location: string;
+  group_size: string;
+  venue: string;
+  welcome_message: string;
+  spotify_url: string;
+  rules: string;
+  host_name: string;
+  host_email: string;
+  created_at: string;
+};
+
+export type CrewRegistration = {
+  id: string;
+  mission_id: string;
+  name: string;
+  email: string;
+  question: string;
+  registered_at: string;
+};

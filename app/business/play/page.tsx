@@ -333,6 +333,14 @@ function PlayPageInner() {
   const [cardName, setCardName] = useState("");
   const [cardEmail, setCardEmail] = useState("");
   const [cardSent, setCardSent] = useState(false);
+  const [showMissionForm, setShowMissionForm] = useState(false);
+  const [missionDate, setMissionDate] = useState("");
+  const [missionWelcome, setMissionWelcome] = useState("");
+  const [missionSpotify, setMissionSpotify] = useState("");
+  const [missionRules, setMissionRules] = useState("");
+  const [missionCreating, setMissionCreating] = useState(false);
+  const [missionCode, setMissionCode] = useState("");
+  const [missionCopied, setMissionCopied] = useState(false);
 
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -584,12 +592,124 @@ function PlayPageInner() {
                     </button>
                   </div>
                 ) : (
-                  <div className="px-6 sm:px-8 py-8 sm:py-10 text-center">
-                    <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                  <div className="px-6 sm:px-8 py-8 sm:py-10">
+                    <div className="text-center">
+                      <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
+                        <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                      </div>
+                      <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Play Card sent</p>
+                      <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
                     </div>
-                    <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Play Card sent</p>
-                    <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
+
+                    {/* Mission invitation generator */}
+                    {!missionCode ? (
+                      <>
+                        {!showMissionForm ? (
+                          <div className="mt-8 text-center">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
+                            <button
+                              onClick={() => setShowMissionForm(true)}
+                              className="inline-flex items-center gap-3 px-6 py-3 rounded-xl border border-mars/20 bg-mars/[0.04] hover:border-mars/40 hover:bg-mars/[0.08] transition-all duration-300 group/mission"
+                            >
+                              <span className="text-white/60 text-[13px] font-bold uppercase tracking-[0.15em] group-hover/mission:text-white/90 transition-colors">Generate crew invitation</span>
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="mt-8">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
+                            <p className="text-mars/50 text-[10px] uppercase tracking-[0.3em] font-bold mb-4">Mission Details</p>
+                            <div className="space-y-3">
+                              <input
+                                type="date"
+                                value={missionDate}
+                                onChange={(e) => setMissionDate(e.target.value)}
+                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white focus:outline-none transition-colors"
+                              />
+                              <textarea
+                                value={missionWelcome}
+                                onChange={(e) => setMissionWelcome(e.target.value)}
+                                placeholder="Welcome message for the crew (optional)"
+                                rows={3}
+                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors resize-none"
+                              />
+                              <input
+                                value={missionSpotify}
+                                onChange={(e) => setMissionSpotify(e.target.value)}
+                                placeholder="Spotify playlist URL (optional)"
+                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                              />
+                              <textarea
+                                value={missionRules}
+                                onChange={(e) => setMissionRules(e.target.value)}
+                                placeholder="Custom rules of play (one per line, optional)"
+                                rows={3}
+                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors resize-none"
+                              />
+                              <button
+                                onClick={async () => {
+                                  if (!missionDate) return;
+                                  setMissionCreating(true);
+                                  try {
+                                    const res = await fetch("/api/missions", {
+                                      method: "POST",
+                                      headers: { "Content-Type": "application/json" },
+                                      body: JSON.stringify({
+                                        company: companyParam || experience?.theme || "Unknown",
+                                        question: questionParam,
+                                        date: missionDate,
+                                        location: VENUE_OPTIONS[selectedVenue].label,
+                                        group_size: PEOPLE_OPTIONS[selectedPeople].label,
+                                        venue: VENUE_OPTIONS[selectedVenue].label,
+                                        welcome_message: missionWelcome,
+                                        spotify_url: missionSpotify,
+                                        rules: missionRules,
+                                        host_name: cardName,
+                                        host_email: cardEmail,
+                                      }),
+                                    });
+                                    const data = await res.json();
+                                    if (data.success) {
+                                      setMissionCode(data.code);
+                                    }
+                                  } catch {
+                                    // silently fail
+                                  }
+                                  setMissionCreating(false);
+                                }}
+                                disabled={missionCreating || !missionDate}
+                                className={`w-full py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all ${
+                                  missionCreating || !missionDate
+                                    ? "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                                    : "bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]"
+                                }`}
+                              >
+                                {missionCreating ? "Generating..." : "Generate invitation"}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="mt-8">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
+                        <p className="text-mars/50 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Crew Invitation Ready</p>
+                        <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 flex items-center gap-3">
+                          <p className="flex-1 text-white/60 text-[12px] sm:text-[13px] font-mono truncate">
+                            {typeof window !== "undefined" ? window.location.origin : ""}/business/mission/{missionCode}
+                          </p>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(`${window.location.origin}/business/mission/${missionCode}`);
+                              setMissionCopied(true);
+                              setTimeout(() => setMissionCopied(false), 2000);
+                            }}
+                            className="shrink-0 px-4 py-2 rounded-lg bg-mars/20 hover:bg-mars/30 text-mars text-[11px] font-bold uppercase tracking-[0.1em] transition-colors"
+                          >
+                            {missionCopied ? "Copied!" : "Copy"}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

@@ -50,7 +50,7 @@ const UI = {
     colHead1: "Bring a question.",
     colHead2: "Play it out on stage.",
     colHead3: "See what matters.",
-    formulaBody: "Your question becomes a real play on stage. Real people step into roles. Your perspective shifts.",
+    formulaBody: "Your question becomes a real play on stage. People step into roles. Your perspective shifts.",
     realityPlays: "Reality plays",
     countries: "Countries",
     founded: "Founded",
