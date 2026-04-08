@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 /* ── Fade-in on scroll ── */
 function useFadeIn() {
@@ -703,14 +704,12 @@ export default function BusinessPage() {
               <p className="text-mars/50 text-[11px] sm:text-[12px] tracking-[0.15em] font-bold mb-8">
                 {t.codexValues}
               </p>
-              <a
-                href="https://www.notesfrommars.com/codex"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/business/codex"
                 className="inline-flex items-center gap-2 text-mars hover:text-mars-light text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.1em] transition-colors"
               >
                 {t.codexCta}
-              </a>
+              </Link>
             </div>
           </div>
         </div>
