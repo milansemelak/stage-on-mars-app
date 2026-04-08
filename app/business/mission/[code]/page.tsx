@@ -55,38 +55,32 @@ export default async function MissionPage({ params }: { params: Promise<{ code: 
 
   return (
     <MissionGate missionCode={code} hasPassword={!!(mission.password)}>
-      <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED]">
+      <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] relative">
+        {/* Ambient background */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-mars/[0.02] blur-[150px] rounded-full" />
+        </div>
+
         {/* Top bar */}
-        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.04]">
+        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-5 sm:px-8 py-5 bg-gradient-to-b from-[#0a0a0a] via-[#0a0a0a]/95 to-transparent">
           <Link href="/business">
-            <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto invert opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/logo.png" alt="Stage On Mars" className="h-6 sm:h-7 w-auto invert opacity-40 hover:opacity-70 transition-opacity" />
           </Link>
         </nav>
 
-        <div className="pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6">
+        <div className="relative z-10 pt-20 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6">
           <div className="max-w-lg mx-auto">
-            {/* Mission header */}
-            <div className="text-center mb-8 sm:mb-12">
-              <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.35em] font-bold mb-4">
-                Mission Briefing
-              </p>
-              <h1 className="text-[28px] sm:text-[40px] font-bold tracking-[-0.03em] leading-[1.1] mb-3">
-                <span className="text-white">{mission.company}</span>{" "}
-                <span className="font-mercure italic text-mars">on Mars</span>
-              </h1>
-              <p className="text-white/30 text-[13px]">
-                {new Date(mission.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
-                {(mission.location || mission.venue) && ` · ${mission.location || mission.venue}`}
-              </p>
-            </div>
-
             <BoardingPass mission={mission as Mission} initialCrew={crewList} />
 
             {/* Footer */}
-            <div className="mt-12 text-center space-y-4">
-              <div className="w-12 h-[1px] bg-white/[0.06] mx-auto" />
-              <p className="text-white/15 text-[11px]">
-                <a href="mailto:play@stageonmars.com" className="hover:text-white/30 transition-colors">play@stageonmars.com</a>
+            <div className="mt-16 text-center">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-6 h-[1px] bg-white/[0.04]" />
+                <div className="w-1 h-1 rounded-full bg-mars/15" />
+                <div className="w-6 h-[1px] bg-white/[0.04]" />
+              </div>
+              <p className="text-white/[0.08] text-[10px] tracking-[0.3em] uppercase">
+                <a href="mailto:play@stageonmars.com" className="hover:text-white/20 transition-colors">play@stageonmars.com</a>
               </p>
             </div>
           </div>
