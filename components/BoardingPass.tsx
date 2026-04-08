@@ -183,8 +183,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             <div className="border-t border-white/[0.08] pt-5">
               {!registered ? (
                 <>
-                  <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Board This Mission</p>
-                  <p className="text-white/30 text-[13px] mb-5">Register your seat and bring a question worth playing.</p>
+                  <p className="text-mars text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Board This Mission</p>
+                  <p className="text-white/40 text-[14px] mb-5">Register your seat and bring a question worth playing.</p>
 
                   {error && (
                     <p className="text-red-400 text-[13px] mb-3 px-4 py-2.5 rounded-lg bg-red-500/10 border border-red-500/20">{error}</p>
@@ -192,17 +192,17 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
                   <form onSubmit={handleRegister} className="space-y-3">
                     <div className="grid sm:grid-cols-2 gap-3">
-                      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className={inputClass} />
-                      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your email" required className={inputClass} />
+                      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className="w-full rounded-xl bg-white/[0.08] border-2 border-mars/15 px-4 py-3.5 text-[15px] text-white placeholder:text-white/35 focus:outline-none focus:border-mars/50 transition-colors" />
+                      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your email" required className="w-full rounded-xl bg-white/[0.08] border-2 border-mars/15 px-4 py-3.5 text-[15px] text-white placeholder:text-white/35 focus:outline-none focus:border-mars/50 transition-colors" />
                     </div>
-                    <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Your question — what do you want to explore on Mars?" required rows={2} className={`${inputClass} resize-none`} />
+                    <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Your question — what do you want to explore on Mars?" required rows={2} className="w-full rounded-xl bg-white/[0.08] border-2 border-mars/15 px-4 py-3.5 text-[15px] text-white placeholder:text-white/35 focus:outline-none focus:border-mars/50 transition-colors resize-none" />
                     <button
                       type="submit"
                       disabled={submitting || !name.trim() || !email.trim() || !question.trim()}
-                      className={`w-full py-4 rounded-xl font-bold text-[14px] uppercase tracking-[0.15em] transition-all ${
+                      className={`w-full py-4 rounded-xl font-bold text-[15px] uppercase tracking-[0.12em] transition-all ${
                         submitting || !name.trim() || !email.trim() || !question.trim()
-                          ? "bg-white/[0.06] text-white/20 cursor-not-allowed"
-                          : "bg-mars text-white hover:bg-mars-light active:scale-[0.99]"
+                          ? "bg-mars/20 text-mars/30 cursor-not-allowed border-2 border-mars/10"
+                          : "bg-mars text-white hover:bg-mars-light active:scale-[0.99] shadow-[0_0_30px_-5px_rgba(255,85,0,0.4)]"
                       }`}
                     >
                       {submitting ? "Boarding..." : "Board this mission"}
