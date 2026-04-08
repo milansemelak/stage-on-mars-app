@@ -56,10 +56,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
       <div className="bg-black text-white rounded-3xl overflow-hidden mb-4 shadow-[0_2px_40px_-12px_rgba(0,0,0,0.25)]">
         <div className="px-7 sm:px-10 pt-10 sm:pt-12 pb-8">
           {/* Company */}
-          <h1 className="text-[48px] sm:text-[64px] font-bold tracking-[-0.04em] leading-[1] mb-10">
-            {mission.company}
-            <br />
-            <span className="font-mercure italic text-mars">on Mars</span>
+          <h1 className="text-[42px] sm:text-[56px] font-bold tracking-[-0.04em] leading-[1.1] mb-10">
+            {mission.company} <span className="font-mercure italic text-mars">on Mars</span>
           </h1>
 
           {/* Info grid */}
