@@ -44,11 +44,11 @@ export async function PATCH(
       .from("missions")
       .update(body)
       .eq("code", code)
-      .select()
-      .single();
+      .select();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json({ mission: data });
+    if (!data || data.length === 0) return NextResponse.json({ error: "Mission not found or update blocked by RLS" }, { status: 404 });
+    return NextResponse.json({ mission: data[0] });
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }
