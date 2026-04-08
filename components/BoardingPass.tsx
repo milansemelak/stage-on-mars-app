@@ -18,8 +18,6 @@ const RULES_OF_MARS = [
   { title: "Punctuality", body: "It is important to arrive on time. The introduction and the pre-flight briefing are an essential part of the entire experience." },
 ];
 
-const cardStyle = { background: "linear-gradient(170deg, #1a1510 0%, #110f0c 100%)" };
-
 export default function BoardingPass({ mission, initialCrew }: { mission: Mission; initialCrew: CrewMember[] }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -30,6 +28,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
   const [crew, setCrew] = useState<CrewMember[]>(initialCrew);
 
   const dateFormatted = new Date(mission.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  const inputClass = "w-full rounded-xl bg-white/[0.05] border border-white/[0.08] px-4 py-3 text-[14px] text-white placeholder:text-white/20 focus:outline-none focus:border-mars/30 transition-colors";
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -50,8 +49,6 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
     setSubmitting(false);
   }
 
-  const inputClass = "w-full rounded-xl bg-white/[0.04] border border-white/[0.06] px-4 py-3 text-[13px] text-white placeholder:text-white/15 focus:outline-none focus:border-mars/25 transition-colors";
-
   return (
     <div className="min-h-screen bg-black">
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,_rgba(255,85,0,0.06),_transparent)] pointer-events-none" />
@@ -63,29 +60,36 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         </Link>
       </nav>
 
-      <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-6 pb-12 space-y-3">
+      <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-6 pb-12">
 
-        {/* ═══ THE TICKET ═══ */}
-        <div className="relative">
+        {/* ═══════════════════════════════════════════
+            ONE TICKET — EVERYTHING INSIDE
+            ═══════════════════════════════════════════ */}
+        <div className="relative mb-6">
           <div className="absolute -inset-2 rounded-[28px] bg-mars/8 blur-2xl" />
-          <div className="relative rounded-[20px] overflow-hidden border border-mars/15" style={cardStyle}>
+
+          <div className="relative rounded-[20px] overflow-hidden border border-mars/15" style={{ background: "linear-gradient(170deg, #1a1510 0%, #110f0c 100%)" }}>
+
+            {/* Orange top bar */}
             <div className="h-1.5 bg-gradient-to-r from-mars/80 via-mars to-mars/80" />
 
-            <div className="px-6 sm:px-8 pt-5 pb-2 flex items-start justify-between">
+            {/* HEADER */}
+            <div className="px-6 sm:px-8 pt-5 pb-1 flex items-start justify-between">
               <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold">Boarding Pass</p>
               <img src="/logo.png" alt="Stage on Mars" className="h-4 invert opacity-15" />
             </div>
 
-            <div className="px-6 sm:px-8 pb-6">
-              <div className="mb-8">
-                <h1 className="text-[36px] sm:text-[50px] font-black tracking-[-0.05em] leading-[0.9] text-white mb-1">
-                  {mission.company}
-                </h1>
-                <p className="font-mercure italic text-mars/60 text-[14px] sm:text-[16px]" style={{ textShadow: "0 0 30px rgba(255,85,0,0.2)" }}>on Mars</p>
-              </div>
+            {/* COMPANY NAME */}
+            <div className="px-6 sm:px-8 pb-5">
+              <h1 className="text-[36px] sm:text-[50px] font-black tracking-[-0.05em] leading-[0.9] text-white mb-1">
+                {mission.company}
+              </h1>
+              <p className="font-mercure italic text-mars/60 text-[14px] sm:text-[16px]">on Mars</p>
+            </div>
 
-              {/* FROM → TO */}
-              <div className="flex items-center gap-3 mb-6 pb-5 border-b border-white/[0.04]">
+            {/* FROM → TO */}
+            <div className="px-6 sm:px-8 pb-5">
+              <div className="flex items-center gap-3">
                 <div>
                   <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">From</p>
                   <p className="text-white/80 text-[18px] sm:text-[22px] font-black tracking-[-0.02em]">Earth</p>
@@ -102,7 +106,13 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                   <p className="text-mars text-[18px] sm:text-[22px] font-black tracking-[-0.02em]">Mars</p>
                 </div>
               </div>
+            </div>
 
+            {/* DIVIDER */}
+            <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />
+
+            {/* FLIGHT DATA */}
+            <div className="px-6 sm:px-8 py-4">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3">
                 <div>
                   <p className="text-mars/30 text-[8px] uppercase tracking-[0.4em] mb-0.5">Date</p>
@@ -154,137 +164,144 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
               )}
             </div>
 
-            {/* Tear line */}
+            {/* ── TEAR LINE ── */}
             <div className="relative">
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-black" />
               <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-black" />
               <div className="border-t border-dashed border-mars/10 mx-6" />
             </div>
 
-            {/* Question */}
+            {/* THE QUESTION */}
             <div className="px-6 sm:px-8 py-5">
-              <p className="text-mars/30 text-[8px] uppercase tracking-[0.5em] font-bold mb-2">The Question</p>
               <p className="font-mercure italic text-mars text-[20px] sm:text-[28px] leading-[1.25]" style={{ textShadow: "0 0 60px rgba(255,85,0,0.15)" }}>
                 &ldquo;{mission.question}&rdquo;
               </p>
             </div>
 
-            {/* Mission code bar */}
-            <div className="px-6 sm:px-8 pb-4 flex items-center justify-between">
+            {/* DIVIDER */}
+            <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />
+
+            {/* WELCOME MESSAGE — inside the ticket, readable */}
+            {mission.welcome_message && (
+              <div className="px-6 sm:px-8 py-5">
+                <p className="text-white/60 text-[13px] leading-[1.7] whitespace-pre-line">
+                  {mission.welcome_message}
+                </p>
+              </div>
+            )}
+
+            {mission.welcome_message && <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />}
+
+            {/* CREW MANIFEST — inside the ticket */}
+            <div className="px-6 sm:px-8 py-5">
+              <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-3">Crew Manifest</p>
+              {crew.length > 0 ? (
+                <div>
+                  {crew.map((member, i) => (
+                    <div key={i} className="flex items-center gap-3 py-1.5 border-b border-white/[0.03] last:border-0">
+                      <span className="text-mars/40 text-[11px] font-mono tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="text-white/60 text-[14px] font-medium">{member.name}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-white/15 text-[13px]">No crew members yet. Be the first to board.</p>
+              )}
+            </div>
+
+            {/* DIVIDER */}
+            <div className="mx-6 sm:mx-8 border-t border-white/[0.05]" />
+
+            {/* BOARD — inside the ticket */}
+            <div className="px-6 sm:px-8 py-5">
+              {!registered ? (
+                <>
+                  <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-1">Board This Mission</p>
+                  <p className="text-white/25 text-[12px] mb-4">Register your seat and bring a question worth playing.</p>
+
+                  {error && (
+                    <p className="text-red-400 text-[12px] mb-3 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">{error}</p>
+                  )}
+
+                  <form onSubmit={handleRegister} className="space-y-2">
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className={inputClass} />
+                      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your email" required className={inputClass} />
+                    </div>
+                    <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Your question — what do you want to explore on Mars?" required rows={2} className={`${inputClass} resize-none`} />
+                    <button
+                      type="submit"
+                      disabled={submitting || !name.trim() || !email.trim() || !question.trim()}
+                      className={`w-full py-3.5 rounded-xl font-black text-[12px] uppercase tracking-[0.2em] transition-all ${
+                        submitting || !name.trim() || !email.trim() || !question.trim()
+                          ? "bg-white/[0.03] text-white/10 cursor-not-allowed"
+                          : "bg-gradient-to-r from-mars to-[#ff6b2b] text-white hover:brightness-110 active:scale-[0.99] shadow-[0_0_30px_-5px_rgba(255,85,0,0.5)]"
+                      }`}
+                    >
+                      {submitting ? "Boarding..." : "Board"}
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-3">
+                  <p className="text-white text-[20px] font-black mb-1">You&apos;re on the manifest.</p>
+                  <p className="text-white/25 text-[12px]">See you on Mars, {name.split(" ")[0]}.</p>
+                </div>
+              )}
+            </div>
+
+            {/* QUESTIONS TO PLAY — orange band inside ticket */}
+            {crew.some((m) => m.question) && (
+              <div className="bg-gradient-to-br from-mars via-[#e04a00] to-[#cc3d00] px-6 sm:px-8 py-5">
+                <p className="text-white/50 text-[8px] uppercase tracking-[0.5em] font-bold mb-3">Questions to Play</p>
+                <div className="space-y-3">
+                  {crew.filter((m) => m.question).map((member, i) => (
+                    <div key={i}>
+                      <p className="text-white font-mercure italic text-[15px] sm:text-[17px] leading-[1.3] mb-0.5">
+                        &ldquo;{member.question}&rdquo;
+                      </p>
+                      <p className="text-white/40 text-[10px]">{member.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* BARCODE + CODE */}
+            <div className="px-6 sm:px-8 py-4 flex items-center justify-between">
               <div className="flex items-end gap-[1px] h-6 opacity-20">
-                {mission.code.split("").flatMap((c, ci) => {
-                  const w = (c.charCodeAt(0) % 3) + 1;
-                  return [
-                    <div key={`${ci}a`} className="bg-mars" style={{ width: `${w}px`, height: `${14 + (ci % 5) * 3}px` }} />,
-                    <div key={`${ci}b`} className="bg-mars" style={{ width: "1px", height: `${10 + (ci % 3) * 4}px` }} />,
-                  ];
-                })}
+                {mission.code.split("").flatMap((c, ci) => [
+                  <div key={`${ci}a`} className="bg-mars" style={{ width: `${(c.charCodeAt(0) % 3) + 1}px`, height: `${14 + (ci % 5) * 3}px` }} />,
+                  <div key={`${ci}b`} className="bg-mars" style={{ width: "1px", height: `${10 + (ci % 3) * 4}px` }} />,
+                ])}
               </div>
               <p className="text-white/10 text-[9px] font-mono uppercase tracking-[0.3em]">{mission.code}</p>
             </div>
+
+            {/* Bottom accent */}
+            <div className="h-px bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
           </div>
         </div>
 
-        {/* ═══ WELCOME MESSAGE ═══ */}
-        {mission.welcome_message && (
-          <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5" style={cardStyle}>
-            <p className="text-white/30 text-[12px] leading-[1.6] whitespace-pre-line">
-              {mission.welcome_message}
-            </p>
-          </div>
-        )}
-
-        {/* ═══ CREW MANIFEST ═══ */}
-        <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5" style={cardStyle}>
-          <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-3">Crew Manifest</p>
-          {crew.length > 0 ? (
-            <div>
-              {crew.map((member, i) => (
-                <div key={i} className="flex items-center gap-3 py-1.5 border-b border-white/[0.03] last:border-0">
-                  <span className="text-mars/40 text-[11px] font-mono tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="text-white/50 text-[13px] font-medium">{member.name}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-white/10 text-[12px]">No crew members yet. Be the first to board.</p>
-          )}
-        </div>
-
-        {/* ═══ QUESTIONS TO PLAY ═══ */}
-        {crew.some((m) => m.question) && (
-          <div className="rounded-[20px] overflow-hidden bg-gradient-to-br from-mars via-[#e04a00] to-[#cc3d00] px-6 sm:px-8 py-5">
-            <p className="text-white/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-3">Questions to Play</p>
-            <div className="space-y-3">
-              {crew.filter((m) => m.question).map((member, i) => (
-                <div key={i}>
-                  <p className="text-white font-mercure italic text-[15px] sm:text-[17px] leading-[1.3] mb-0.5">
-                    &ldquo;{member.question}&rdquo;
-                  </p>
-                  <p className="text-white/40 text-[10px]">{member.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ═══ BOARD THIS MISSION ═══ */}
-        <div className="rounded-[20px] border border-mars/10 px-6 sm:px-8 py-5" style={cardStyle}>
-          {!registered ? (
-            <>
-              <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-1">Board This Mission</p>
-              <p className="text-white/15 text-[11px] mb-4">Register your seat and bring a question worth playing.</p>
-
-              {error && (
-                <p className="text-red-400 text-[12px] mb-3 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">{error}</p>
-              )}
-
-              <form onSubmit={handleRegister} className="space-y-2">
-                <div className="grid sm:grid-cols-2 gap-2">
-                  <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className={inputClass} />
-                  <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your email" required className={inputClass} />
-                </div>
-                <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Your question — what do you want to explore on Mars?" required rows={2} className={`${inputClass} resize-none`} />
-                <button
-                  type="submit"
-                  disabled={submitting || !name.trim() || !email.trim() || !question.trim()}
-                  className={`w-full py-3.5 rounded-xl font-black text-[12px] uppercase tracking-[0.2em] transition-all ${
-                    submitting || !name.trim() || !email.trim() || !question.trim()
-                      ? "bg-white/[0.03] text-white/10 cursor-not-allowed"
-                      : "bg-gradient-to-r from-mars to-[#ff6b2b] text-white hover:brightness-110 active:scale-[0.99] shadow-[0_0_30px_-5px_rgba(255,85,0,0.5)]"
-                  }`}
-                >
-                  {submitting ? "Boarding..." : "Board"}
-                </button>
-              </form>
-            </>
-          ) : (
-            <div className="text-center py-3">
-              <p className="text-white text-[20px] font-black mb-1">You&apos;re on the manifest.</p>
-              <p className="text-white/20 text-[12px]">See you on Mars, {name.split(" ")[0]}.</p>
-            </div>
-          )}
-        </div>
-
-        {/* ═══ PRE-FLIGHT BRIEFING ═══ */}
-        <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5" style={cardStyle}>
+        {/* ═══ PRE-FLIGHT BRIEFING — outside ticket ═══ */}
+        <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5 mb-3" style={{ background: "linear-gradient(170deg, #1a1510 0%, #110f0c 100%)" }}>
           <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-4">Pre-Flight Briefing</p>
           <div className="space-y-2.5">
             {RULES_OF_MARS.map((rule, i) => (
               <div key={i}>
                 <p className="text-mars/40 text-[10px] font-black uppercase tracking-[0.15em] mb-0.5">{rule.title}</p>
-                <p className="text-white/20 text-[11px] leading-[1.5]">{rule.body}</p>
+                <p className="text-white/25 text-[11px] leading-[1.5]">{rule.body}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* ═══ SOUNDTRACK ═══ */}
-        <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5" style={cardStyle}>
+        {/* ═══ SOUNDTRACK — outside ticket ═══ */}
+        <div className="rounded-[20px] border border-white/[0.04] px-6 sm:px-8 py-5 mb-3" style={{ background: "linear-gradient(170deg, #1a1510 0%, #110f0c 100%)" }}>
           <p className="text-mars/40 text-[8px] uppercase tracking-[0.5em] font-bold mb-1">Soundtrack</p>
-          <p className="text-white/15 text-[11px] mb-3">
+          <p className="text-white/25 text-[11px] mb-3">
             Add your song to the{" "}
-            <a href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2" target="_blank" rel="noopener noreferrer" className="text-mars/50 font-bold hover:text-mars transition-colors">
+            <a href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2" target="_blank" rel="noopener noreferrer" className="text-mars/60 font-bold hover:text-mars transition-colors">
               Stage on Mars playlist
             </a>. It might become part of the game.
           </p>
@@ -301,9 +318,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         </div>
 
         {/* ═══ FOOTER ═══ */}
-        <div className="pt-4 pb-4 flex flex-col items-center gap-2">
+        <div className="pt-6 pb-4 flex flex-col items-center gap-2">
           <img src="/logo.png" alt="Stage on Mars" className="h-6 invert opacity-10" />
-          <a href="mailto:play@stageonmars.com" className="text-white/[0.06] text-[10px] hover:text-white/20 transition-colors">play@stageonmars.com</a>
+          <a href="mailto:play@stageonmars.com" className="text-white/[0.08] text-[10px] hover:text-white/20 transition-colors">play@stageonmars.com</a>
         </div>
       </div>
     </div>
