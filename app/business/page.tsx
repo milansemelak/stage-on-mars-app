@@ -367,14 +367,10 @@ export default function BusinessPage() {
             {/* THE BOX */}
             <div className="relative group/input">
               {/* Outer glow — warm stage light spill */}
-              <div className="absolute -inset-16 sm:-inset-32 rounded-3xl opacity-70 group-focus-within/input:opacity-100 transition-opacity duration-[2000ms] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.14) 0%, rgba(255,85,0,0.05) 30%, transparent 65%)" }} />
+              <div className="absolute -inset-20 sm:-inset-40 rounded-3xl opacity-80 group-focus-within/input:opacity-100 transition-opacity duration-[2000ms] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.18) 0%, rgba(255,85,0,0.08) 30%, rgba(255,85,0,0.02) 50%, transparent 70%)" }} />
 
-              <div className="relative rounded-2xl border border-mars/30 bg-gradient-to-b from-mars/[0.06] via-white/[0.04] to-white/[0.02] backdrop-blur-md transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/50 flex flex-col">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/50 to-transparent" />
-                {/* Inner warm atmosphere — top glow */}
-                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% -10%, rgba(255,85,0,0.10) 0%, rgba(255,85,0,0.03) 40%, transparent 60%)" }} />
-                {/* Bottom glow under CTA */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[120px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
+              <div className="relative rounded-2xl border border-mars/40 bg-white/[0.03] backdrop-blur-md transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/60 flex flex-col" style={{ boxShadow: "0 0 60px -15px rgba(255,85,0,0.15), 0 0 120px -30px rgba(255,85,0,0.08), inset 0 1px 0 rgba(255,85,0,0.12)" }}>
+                <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
 
                 <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">
                   <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">{t.buildPlay}</p>
