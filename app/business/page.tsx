@@ -364,41 +364,39 @@ export default function BusinessPage() {
 
           <div className="w-full max-w-3xl">
 
-            {/* THE BOX — unified build or choose system */}
+            {/* THE BOX */}
             <div className="relative group/input">
-              {/* Atmospheric glow — like stage lights warming up */}
-              <div className="absolute -inset-12 sm:-inset-24 rounded-3xl opacity-50 group-focus-within/input:opacity-100 transition-opacity duration-[2000ms] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 30%, rgba(255,85,0,0.10) 0%, rgba(255,85,0,0.03) 40%, transparent 70%)" }} />
+              {/* Outer glow — warm stage light spill */}
+              <div className="absolute -inset-16 sm:-inset-32 rounded-3xl opacity-70 group-focus-within/input:opacity-100 transition-opacity duration-[2000ms] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 40%, rgba(255,85,0,0.14) 0%, rgba(255,85,0,0.05) 30%, transparent 65%)" }} />
 
-              <div className="relative rounded-2xl border border-mars/25 bg-gradient-to-b from-white/[0.06] to-white/[0.02] backdrop-blur-md transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/40 flex flex-col">
-                {/* Top light bar — like a stage edge */}
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
-
-                {/* Inner warm atmosphere */}
-                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.05) 0%, transparent 40%)" }} />
+              <div className="relative rounded-2xl border border-mars/30 bg-gradient-to-b from-mars/[0.06] via-white/[0.04] to-white/[0.02] backdrop-blur-md transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/50 flex flex-col">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/50 to-transparent" />
+                {/* Inner warm atmosphere — top glow */}
+                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% -10%, rgba(255,85,0,0.10) 0%, rgba(255,85,0,0.03) 40%, transparent 60%)" }} />
+                {/* Bottom glow under CTA */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[120px] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
 
                 <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">
                   <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">{t.buildPlay}</p>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-4 focus-within:border-mars/25 transition-colors">
-                    <textarea
-                      value={question}
-                      onChange={(e) => setQuestion(e.target.value)}
-                      placeholder={t.placeholder}
-                      rows={3}
-                      className="w-full min-h-[100px] sm:min-h-[90px] bg-transparent border-0 px-0 py-0 text-white text-[22px] sm:text-[26px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.02em] font-medium"
-                      style={{ caretColor: "#FF5500" }}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                      }}
-                    />
-                  </div>
+                  <textarea
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder={t.placeholder}
+                    rows={3}
+                    className="w-full flex-1 min-h-[120px] sm:min-h-[100px] bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[28px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.02em] font-medium"
+                    style={{ caretColor: "#FF5500" }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
+                    }}
+                  />
                 </div>
                 <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-6 space-y-4">
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-3.5 focus-within:border-mars/25 transition-colors">
+                  <div className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
                     <input
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
                       placeholder={t.company}
-                      className="w-full bg-transparent border-0 px-0 py-0 text-white/70 placeholder:text-white/25 focus:outline-none text-[14px]"
+                      className="flex-1 bg-transparent border-0 px-0 py-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px]"
                     />
                   </div>
                   <button
@@ -412,7 +410,7 @@ export default function BusinessPage() {
                   </button>
                 </div>
 
-                {/* ── OR divider + ready-made plays inside the box ── */}
+                {/* ── OR divider + ready-made plays ── */}
                 <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-8">
                   <div className="flex items-center gap-4 mb-4">
                     <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.08]" />
