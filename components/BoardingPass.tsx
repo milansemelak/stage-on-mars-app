@@ -162,7 +162,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             )}
             {mission.facilitator && (
               <div>
-                <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Facilitator</p>
+                <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Pilot</p>
                 <p className="text-white/50 text-[13px]">{mission.facilitator}</p>
               </div>
             )}

@@ -8,7 +8,7 @@ export default function MissionsPage() {
   const [question, setQuestion] = useState("");
   const [date, setDate] = useState("");
   const [groupSize, setGroupSize] = useState("15-25");
-  const [location, setLocation] = useState("Flagship stage");
+  const [location, setLocation] = useState("Stage on Mars Flagship Space");
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [generatingMessage, setGeneratingMessage] = useState(false);
   const [hostName, setHostName] = useState("");
@@ -150,7 +150,7 @@ export default function MissionsPage() {
                   <div className="flex-1">
                     <label className={labelClass}>Location</label>
                     <select value={location} onChange={(e) => setLocation(e.target.value)} className={inputClass}>
-                      <option value="Flagship stage">Flagship stage</option>
+                      <option value="Stage on Mars Flagship Space">Stage on Mars Flagship Space</option>
                       <option value="Your office">Client office</option>
                       <option value="Special location">Special location</option>
                     </select>
@@ -180,8 +180,8 @@ export default function MissionsPage() {
                       <input value={captain} onChange={(e) => setCaptain(e.target.value)} placeholder="Captain name" className={inputClass} />
                     </div>
                     <div className="flex-1">
-                      <label className={labelClass}>Facilitator</label>
-                      <input value={facilitator} onChange={(e) => setFacilitator(e.target.value)} placeholder="Facilitator name" className={inputClass} />
+                      <label className={labelClass}>Pilot</label>
+                      <input value={facilitator} onChange={(e) => setFacilitator(e.target.value)} placeholder="Pilot name" className={inputClass} />
                     </div>
                   </div>
                 </div>
