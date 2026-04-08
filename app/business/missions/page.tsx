@@ -88,7 +88,7 @@ export default function MissionsPage() {
     setQuestion("");
     setDate("");
     setGroupSize("15-25");
-    setLocation("Flagship stage");
+    setLocation("Stage on Mars Flagship Space");
     setWelcomeMessage("");
     setHostName("");
     setHostEmail("");
@@ -102,32 +102,32 @@ export default function MissionsPage() {
     setCopied(false);
   }
 
-  const inputClass = "w-full rounded-lg border border-neutral-300 px-4 py-3 text-[14px] text-black placeholder:text-neutral-400 focus:outline-none focus:border-mars transition-colors bg-white";
-  const labelClass = "text-neutral-500 text-[11px] uppercase tracking-[0.15em] font-medium mb-1 block";
+  const inputClass = "w-full rounded-lg border-2 border-neutral-200 px-4 py-3.5 text-[15px] text-black font-medium placeholder:text-neutral-300 placeholder:font-normal focus:outline-none focus:border-mars focus:ring-1 focus:ring-mars/20 transition-all bg-neutral-50/50";
+  const labelClass = "text-black text-[12px] uppercase tracking-[0.12em] font-bold mb-1.5 block";
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-neutral-50 text-black">
       {/* Top bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-white/90 backdrop-blur-md border-b border-neutral-100">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-white border-b border-neutral-200">
         <Link href="/business">
-          <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto opacity-70 hover:opacity-100 transition-opacity" />
+          <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto" />
         </Link>
-        <span className="text-neutral-300 text-[10px] uppercase tracking-[0.3em] font-bold">Internal</span>
+        <span className="text-neutral-400 text-[10px] uppercase tracking-[0.3em] font-bold">Internal</span>
       </nav>
 
       <div className="pt-24 sm:pt-32 pb-16 sm:pb-24 px-5 sm:px-6">
         <div className="max-w-lg mx-auto">
-          <div className="text-center mb-8">
-            <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.35em] font-bold mb-2">Mission Control</p>
-            <h1 className="text-[24px] sm:text-[32px] font-bold tracking-[-0.03em] text-black">Generate Crew Invitation</h1>
+          <div className="text-center mb-10">
+            <p className="text-mars text-[11px] sm:text-[12px] uppercase tracking-[0.3em] font-bold mb-2">Mission Control</p>
+            <h1 className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-black">Generate Invitation</h1>
           </div>
 
           {!missionCode ? (
-            <div className="space-y-6">
+            <div className="space-y-4">
 
               {/* Client info */}
-              <div className="rounded-2xl border border-neutral-200 px-5 sm:px-7 py-5 sm:py-6 space-y-4">
-                <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-bold">Client</p>
+              <div className="rounded-2xl bg-white border border-neutral-200 shadow-sm px-5 sm:px-7 py-5 sm:py-6 space-y-4">
+                <p className="text-mars text-[11px] uppercase tracking-[0.2em] font-extrabold">Client</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className={labelClass}>Company</label>
@@ -165,8 +165,8 @@ export default function MissionsPage() {
               </div>
 
               {/* Event details */}
-              <div className="rounded-2xl border border-neutral-200 px-5 sm:px-7 py-5 sm:py-6 space-y-4">
-                <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-bold">Event Details</p>
+              <div className="rounded-2xl bg-white border border-neutral-200 shadow-sm px-5 sm:px-7 py-5 sm:py-6 space-y-4">
+                <p className="text-mars text-[11px] uppercase tracking-[0.2em] font-extrabold">Event Details</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className={labelClass}>Time</label>
@@ -179,12 +179,12 @@ export default function MissionsPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className={labelClass}>Google Maps URL</label>
+                    <label className={labelClass}>Maps URL</label>
                     <input value={mapsUrl} onChange={(e) => setMapsUrl(e.target.value)} placeholder="https://maps.google.com/..." className={inputClass} />
                   </div>
                   <div>
-                    <label className={labelClass}>Password (optional)</label>
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Leave empty for open access" className={inputClass} />
+                    <label className={labelClass}>Password</label>
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Optional" className={inputClass} />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -200,8 +200,8 @@ export default function MissionsPage() {
               </div>
 
               {/* Host */}
-              <div className="rounded-2xl border border-neutral-200 px-5 sm:px-7 py-5 sm:py-6 space-y-4">
-                <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-bold">Host</p>
+              <div className="rounded-2xl bg-white border border-neutral-200 shadow-sm px-5 sm:px-7 py-5 sm:py-6 space-y-4">
+                <p className="text-mars text-[11px] uppercase tracking-[0.2em] font-extrabold">Host</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className={labelClass}>Name</label>
@@ -215,57 +215,57 @@ export default function MissionsPage() {
               </div>
 
               {/* Welcome message */}
-              <div className="rounded-2xl border border-neutral-200 px-5 sm:px-7 py-5 sm:py-6 space-y-3">
+              <div className="rounded-2xl bg-white border border-neutral-200 shadow-sm px-5 sm:px-7 py-5 sm:py-6 space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-bold">Welcome Message</p>
+                  <p className="text-mars text-[11px] uppercase tracking-[0.2em] font-extrabold">Welcome Message</p>
                   <button
                     type="button"
                     onClick={generateWelcome}
                     disabled={generatingMessage || !question.trim() || !company.trim()}
-                    className={`text-[11px] uppercase tracking-[0.1em] font-bold transition-colors ${
+                    className={`text-[11px] font-bold transition-colors px-3 py-1.5 rounded-lg ${
                       generatingMessage || !question.trim() || !company.trim()
                         ? "text-neutral-300 cursor-not-allowed"
-                        : "text-mars hover:text-mars-light"
+                        : "text-mars bg-mars/5 hover:bg-mars/10"
                     }`}
                   >
-                    {generatingMessage ? "Generating..." : "Generate with AI ✦"}
+                    {generatingMessage ? "Generating..." : "AI Generate"}
                   </button>
                 </div>
                 <textarea value={welcomeMessage} onChange={(e) => setWelcomeMessage(e.target.value)} placeholder="Write an invitation to play..." rows={5} className={`${inputClass} resize-none`} />
               </div>
 
               {error && (
-                <p className="text-red-600 text-[13px] px-4 py-2.5 rounded-lg bg-red-50 border border-red-200">{error}</p>
+                <p className="text-red-600 text-[13px] font-medium px-4 py-3 rounded-xl bg-red-50 border-2 border-red-200">{error}</p>
               )}
 
               <button
                 onClick={handleCreate}
                 disabled={creating || !company.trim() || !question.trim() || !date}
-                className={`w-full py-4 rounded-xl font-bold text-[14px] uppercase tracking-[0.12em] transition-all ${
+                className={`w-full py-4 rounded-xl font-bold text-[15px] uppercase tracking-[0.1em] transition-all shadow-sm ${
                   !creating && company.trim() && question.trim() && date
-                    ? "bg-mars hover:bg-mars-light text-white active:scale-[0.99]"
-                    : "bg-neutral-100 text-neutral-300 cursor-not-allowed"
+                    ? "bg-black hover:bg-neutral-800 text-white active:scale-[0.99]"
+                    : "bg-neutral-200 text-neutral-400 cursor-not-allowed"
                 }`}
               >
                 {creating ? "Generating..." : "Generate Mission"}
               </button>
             </div>
           ) : (
-            <div className="rounded-2xl border border-neutral-200 overflow-hidden">
-              <div className="bg-black px-6 sm:px-8 py-8 sm:py-10 text-center">
-                <div className="w-12 h-12 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <div className="rounded-2xl bg-white border border-neutral-200 shadow-sm overflow-hidden">
+              <div className="bg-black px-6 sm:px-8 py-10 sm:py-12 text-center">
+                <div className="w-14 h-14 rounded-full bg-mars/20 border-2 border-mars/40 flex items-center justify-center mx-auto mb-5">
+                  <svg className="w-7 h-7 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                 </div>
-                <p className="text-white text-[20px] sm:text-[24px] font-bold mb-1">
+                <p className="text-white text-[22px] sm:text-[28px] font-bold mb-1">
                   {company} <span className="font-mercure italic text-mars">on Mars</span>
                 </p>
-                <p className="text-white/40 text-[13px]">Mission created successfully</p>
+                <p className="text-white/40 text-[14px]">Mission created successfully</p>
               </div>
 
-              <div className="px-6 sm:px-8 py-6">
-                <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-bold mb-3">Crew invitation link</p>
-                <div className="rounded-lg border border-neutral-200 p-3 flex items-center gap-3 mb-5">
-                  <p className="flex-1 text-black/60 text-[12px] sm:text-[13px] font-mono truncate">
+              <div className="px-6 sm:px-8 py-6 sm:py-8">
+                <p className="text-mars text-[11px] uppercase tracking-[0.2em] font-extrabold mb-3">Crew invitation link</p>
+                <div className="rounded-xl border-2 border-neutral-200 p-4 flex items-center gap-3 mb-6 bg-neutral-50">
+                  <p className="flex-1 text-black text-[13px] sm:text-[14px] font-mono truncate">
                     {typeof window !== "undefined" ? window.location.origin : ""}/business/mission/{missionCode}
                   </p>
                   <button
@@ -274,7 +274,7 @@ export default function MissionsPage() {
                       setCopied(true);
                       setTimeout(() => setCopied(false), 2000);
                     }}
-                    className="shrink-0 px-4 py-2 rounded-lg bg-mars text-white text-[11px] font-bold uppercase tracking-[0.1em] hover:bg-mars-light transition-colors"
+                    className="shrink-0 px-5 py-2.5 rounded-lg bg-mars text-white text-[12px] font-bold uppercase tracking-[0.08em] hover:bg-mars-light transition-colors"
                   >
                     {copied ? "Copied!" : "Copy"}
                   </button>
@@ -284,13 +284,13 @@ export default function MissionsPage() {
                   <a
                     href={`/business/mission/${missionCode}`}
                     target="_blank"
-                    className="flex-1 py-3 rounded-lg border border-neutral-300 text-center text-black text-[12px] font-bold uppercase tracking-[0.1em] hover:border-neutral-400 transition-all"
+                    className="flex-1 py-3.5 rounded-xl border-2 border-neutral-200 text-center text-black text-[13px] font-bold uppercase tracking-[0.08em] hover:border-neutral-400 transition-all"
                   >
                     Preview
                   </a>
                   <button
                     onClick={reset}
-                    className="flex-1 py-3 rounded-lg bg-black text-white text-center text-[12px] font-bold uppercase tracking-[0.1em] hover:bg-neutral-800 transition-all"
+                    className="flex-1 py-3.5 rounded-xl bg-black text-white text-center text-[13px] font-bold uppercase tracking-[0.08em] hover:bg-neutral-800 transition-all"
                   >
                     New Mission
                   </button>
