@@ -1,0 +1,964 @@
+"use client";
+
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import type { Play, Perspective } from "@/lib/types";
+import StageSimulation from "@/components/StageSimulation";
+
+/* ══════════════════════════════════════════════════════════════════
+   PLAY 1: BUSINESS CONTEXT — What business domain is the question about?
+   ══════════════════════════════════════════════════════════════════ */
+
+const BUSINESS_MAP: [RegExp, string, string][] = [
+  // [pattern, theme, pitch fragment]
+
+  // ── Strategy & Direction ──
+  [/strateg|direction|priorit|roadmap|plan ahead|where.*(go|head)|what.*(focus|next)/i, "Strategy", "strategic direction"],
+  [/decision|choose|dilemma|trade.?off|which way|crossroad|fork/i, "Decisions", "decision-making"],
+  [/vision|future|long.?term|5 year|ten year|horizon|where.*heading|foresight/i, "Vision", "vision and future"],
+  [/mission|north star|compass|guiding/i, "Mission", "mission"],
+  [/goal|ambition|target|aspir|aim|objective/i, "Ambition", "ambition"],
+  [/focus|distract|scatter|too many|overwhelm|simplif/i, "Focus", "focus"],
+  [/alignment|misalign|same page|disconnect|fragment/i, "Alignment", "alignment"],
+  [/execution|implement|deliver|ship|get.*done|follow.?through/i, "Execution", "execution"],
+
+  // ── Growth & Scale ──
+  [/grow|growth|scale|expand|10x|100x|double|triple|bigger|accelerat/i, "Growth", "growth dynamics"],
+  [/market|position|competit|differenti|niche|segment|share|rival/i, "Market", "market positioning"],
+  [/revenue|profit|margin|monetiz|pricing|cost|budget|financ|money|cash|roi/i, "Value", "value creation"],
+  [/product|launch|ship|release|mvp|feature|build.*product|roadmap/i, "Product", "product development"],
+  [/customer|client|user|retention|churn|loyalt|acquisition|nps/i, "Customers", "customer relationships"],
+  [/brand|reputation|perception|image|story|narrative|awareness/i, "Brand", "brand identity"],
+  [/sales|selling|pipeline|conversion|deal|close|prospect|funnel/i, "Sales", "sales performance"],
+  [/partnership|alliance|joint venture|collaborat.*extern|ecosystem/i, "Partnerships", "partnerships"],
+  [/invest|funding|raise|capital|vc|series|valuat|exit|ipo/i, "Capital", "capital and investment"],
+  [/international|global|abroad|foreign|export|enter.*market|expansion/i, "Expansion", "international expansion"],
+  [/startup|early.?stage|bootstrap|lean|garage|hustle/i, "Startup", "startup dynamics"],
+  [/enterprise|corporate|large.?scale|fortune|establishment/i, "Enterprise", "enterprise dynamics"],
+  [/subscription|saas|recurring|arr|mrr|ltv|cac/i, "Recurring", "recurring business"],
+  [/supply.?chain|logistics|operation|manufactur|production|inventory/i, "Operations", "operations"],
+  [/quality|standard|excellen|premium|craft|detail/i, "Excellence", "excellence"],
+
+  // ── People & Organization ──
+  [/team|collaborat|together|silos|align|department|cross.?function/i, "Team", "team dynamics"],
+  [/cultur|value|who are we|belong|dna|way we work|spirit|vibe/i, "Culture", "company culture"],
+  [/talent|hire|recruit|retain|people leav|turnover|employer brand/i, "Talent", "talent and people"],
+  [/lead|leader|manage|ceo|founder|boss|authority|c.?suite|executive/i, "Leadership", "leadership"],
+  [/trust|psycholog|safe|conflict|tension|friction|dysfunct/i, "Trust", "trust and safety"],
+  [/communi|speak|listen|silent|voice|heard|feedback|transparen/i, "Voice", "communication"],
+  [/power|control|dominan|hierarchy|ego|politic|influenc/i, "Power", "power dynamics"],
+  [/diversity|inclusion|equity|belonging|bias|represent/i, "Belonging", "diversity and belonging"],
+  [/onboard|new hire|first 90|probation|welcome|induction/i, "Onboarding", "onboarding"],
+  [/remote|hybrid|office|work from|distributed|async/i, "Hybrid", "hybrid work"],
+  [/succession|next gen|hand.?over|transition.*leader|passing.*torch/i, "Succession", "succession"],
+  [/board|govern|oversight|shareholder|stakeholder|advisory/i, "Governance", "governance"],
+  [/founder|co.?founder|partner.*business|ownership|equity.*split/i, "Founders", "founder dynamics"],
+  [/middle.?manage|sandwich|between|caught.*middle/i, "Middle", "middle management"],
+  [/gen.?z|millennial|generation|young|old|age.*gap|boomer/i, "Generations", "generational dynamics"],
+  [/motivation|engage|disengag|apathy|passion|fire.*belly/i, "Motivation", "motivation"],
+  [/accountability|responsib|ownership|blame|finger.*point/i, "Accountability", "accountability"],
+  [/toxic|bully|harassment|hostile|abusive|fear.*culture/i, "Toxicity", "toxic dynamics"],
+  [/loyalty|devotion|commit|dedic|allegianc/i, "Loyalty", "loyalty"],
+  [/ego|narciss|self.*import|arrog|humble|humil/i, "Ego", "ego"],
+
+  // ── Change & Transformation ──
+  [/chang|transform|transition|restructur|pivot|reinvent/i, "Transformation", "transformation"],
+  [/innovat|new idea|experiment|lab|prototype/i, "Innovation", "innovation"],
+  [/creat|design|craft|artis|aesthetic|beautiful/i, "Creativity", "creativity"],
+  [/digit|tech|ai|automat|machine|software|platform|algorithm/i, "Digital", "digital transformation"],
+  [/merger|acqui|integrat|consolidat|m&a|takeover/i, "Integration", "integration"],
+  [/agil|speed|fast|slow|bureaucra|process|efficienc/i, "Agility", "organizational agility"],
+  [/disrupt|obsole|replace|leapfrog|paradigm/i, "Disruption", "disruption"],
+  [/legacy|old.*system|technical.*debt|moderniz|updat|upgrade/i, "Legacy", "legacy systems"],
+  [/adapt|flexib|resilien|anti.?fragil|bounce.*back/i, "Resilience", "resilience"],
+  [/learn|develop|training|upskill|reskill|academy|knowledge/i, "Learning", "learning"],
+  [/data|analytics|insight|measure|dashboard|intelligence/i, "Data", "data and intelligence"],
+
+  // ── Performance & Results ──
+  [/perform|result|kpi|metric|target|goal|okr|objective/i, "Performance", "performance"],
+  [/success|win|best|peak|champion|top|excell/i, "Success", "success"],
+  [/fail|mistake|error|wrong|flop|disaster|catastroph/i, "Failure", "failure"],
+  [/stuck|block|stagnant|plateau|comfort zone|rut|inertia/i, "Breakthrough", "breaking through"],
+  [/burnout|exhaust|energy|balanc|wellbeing|mental health|stress|overwork/i, "Balance", "balance and energy"],
+  [/speed|velocity|momentum|accelerat|fast.*enough|too.*slow/i, "Momentum", "momentum"],
+  [/waste|inefficien|bloat|lean|cut|streamlin|optimi/i, "Efficiency", "efficiency"],
+  [/complex|complicat|simple|simplif|messy|tangl|chaos/i, "Complexity", "complexity"],
+
+  // ── Purpose, Meaning & Values ──
+  [/purpose|meaning|why.*exist|raison|calling|vocation/i, "Purpose", "purpose"],
+  [/sustainab|esg|responsib|planet|climate|green|carbon/i, "Impact", "impact and responsibility"],
+  [/ethic|moral|right thing|integrity|principle|corruption/i, "Integrity", "integrity"],
+  [/legacy|heritage|tradition|history|roots|origin/i, "Heritage", "heritage"],
+  [/identity|who.*are.*we|stand.*for|authentic|genuine/i, "Identity", "identity"],
+  [/freedom|autonomy|independen|liber|emancipat/i, "Freedom", "freedom"],
+  [/justice|fair|unfair|equal|inequal|gap/i, "Justice", "justice"],
+
+  // ── Emotions & Human Forces ──
+  [/fear|afraid|risk|uncertain|anxiety|worry|danger|threat/i, "Courage", "courage under uncertainty"],
+  [/crisis|emergency|survival|existential|collapse/i, "Survival", "survival and crisis"],
+  [/impossible|crazy|never|can.t|no way|dream|moonshot/i, "Impossible", "the impossible"],
+  [/anger|frustrat|rage|fury|resent|bitter/i, "Anger", "anger"],
+  [/grief|loss|mourning|death|end|goodbye|letting.*go/i, "Loss", "loss"],
+  [/hope|optimis|bright|light.*tunnel|possib/i, "Hope", "hope"],
+  [/love|passion|heart|soul|care|compassion/i, "Heart", "heart"],
+  [/jealous|envy|compari|inferior|superior/i, "Envy", "envy"],
+  [/shame|guilt|embarrass|regret|sorry/i, "Shame", "shame"],
+  [/pride|proud|dignit|honor|glory/i, "Pride", "pride"],
+  [/loneli|isolat|alone|disconnect|alienat/i, "Isolation", "isolation"],
+  [/belong|home|tribe|communit|family|together/i, "Belonging", "belonging"],
+  [/secret|hidden|unspoken|taboo|elephant|undiscuss/i, "Secrets", "secrets"],
+  [/truth|honest|lie|deceit|pretend|facade|fake/i, "Truth", "truth"],
+  [/forgiv|reconcil|repair|restore|second chance/i, "Forgiveness", "forgiveness"],
+  [/gratitude|thankful|appreciat|recogni/i, "Gratitude", "gratitude"],
+  [/respect|disrespect|dignit|treat|regard/i, "Respect", "respect"],
+  [/patient|impatient|wait|timing|rush|hurry/i, "Patience", "patience"],
+  [/obsess|addict|compuls|fixat|driven/i, "Obsession", "obsession"],
+  [/bore|boring|routine|monoton|repetit|stale/i, "Boredom", "boredom"],
+  [/curious|wonder|explor|question|ask|inquir/i, "Curiosity", "curiosity"],
+  [/confiden|self.?doubt|imposter|believ.*self|insecur/i, "Confidence", "confidence"],
+  [/control|letting.*go|surrender|accept|resist/i, "Control", "control"],
+
+  // ── Relationships & Dynamics ──
+  [/family|parent|child|son|daughter|sibling|generation.*business/i, "Family", "family"],
+  [/partner|marriage|spouse|relationship|love.*life/i, "Partnership", "partnership"],
+  [/friend|friendship|loyal|betray|back.*stab/i, "Friendship", "friendship"],
+  [/mentor|coach|guide|teach|learn.*from|apprentic/i, "Mentorship", "mentorship"],
+  [/rival|enemy|nemesis|opponent|adversar/i, "Rivals", "rivalry"],
+  [/negotiat|deal|bargain|compromise|mediat/i, "Negotiation", "negotiation"],
+
+  // ── Industry-specific ──
+  [/hospital|patient|doctor|healthcare|pharma|medic|clinic/i, "Healthcare", "healthcare"],
+  [/school|universit|education|student|teach|academ/i, "Education", "education"],
+  [/media|content|publish|journal|news|broadcast/i, "Media", "media"],
+  [/sport|athlete|coach|compet|champion|olymp/i, "Sport", "sport"],
+  [/art|music|film|theatre|perform|creativ.*industr/i, "Art", "art"],
+  [/food|restaurant|chef|hospitality|hotel|tourism/i, "Hospitality", "hospitality"],
+  [/real.?estate|property|construction|architect|develop.*land/i, "Property", "property"],
+  [/legal|law|regulat|complian|govern|polic/i, "Regulation", "regulation"],
+  [/bank|insurance|fintech|payment|lending|credit/i, "Finance", "finance"],
+  [/retail|shop|store|e.?commerce|consumer|fashion/i, "Retail", "retail"],
+  [/energy|oil|gas|renew|solar|wind|nuclear|mining/i, "Energy", "energy"],
+  [/transport|mobil|fleet|deliver|freight|shipping/i, "Mobility", "mobility"],
+  [/ngo|nonprofit|charity|social.*enterprise|foundation/i, "Social", "social enterprise"],
+  [/government|public.*sector|civil|municipal|state|ministry/i, "Public", "public sector"],
+  [/church|faith|spirit|religion|congregation|parish/i, "Faith", "faith"],
+];
+
+/* ── Business-themed pitch descriptions ── */
+const BUSINESS_PITCHES: Record<string, string> = {
+  Strategy: "Where is {co} really heading — and what's pulling it off course? Your team maps the forces on stage. The real strategy emerges.",
+  Decisions: "The choices {co} is avoiding get played out live. Characters embody the trade-offs. You see the cost of indecision.",
+  Vision: "What does {co} look like in 5 years? Your team builds that future on stage — then watches what tries to destroy it.",
+  Mission: "What is {co} really here to do? Not the poster — the fire. Your team plays the mission until it becomes real.",
+  Ambition: "How far does {co} really want to go? The ambition plays out on stage. You see who's driving and who's braking.",
+  Focus: "What deserves the attention of {co} — and what's stealing it? Your team plays focus vs. distraction live.",
+  Alignment: "Is {co} actually aligned or just pretending? The disconnects surface on stage. You see where the team fractures.",
+  Execution: "The plan is clear. The execution isn't. Your team at {co} plays the gap between intention and delivery.",
+  Growth: "What's actually blocking {co} from growing? Your team plays out the growth dynamics. The bottleneck reveals itself.",
+  Market: "Where does {co} really stand? Competitors, customers, blind spots — all on stage. The market tells you what you're missing.",
+  Value: "Follow the money at {co}. Where value is created, where it leaks, who controls it. The financial dynamics play out live.",
+  Product: "Your product vision meets reality on stage. Users, builders, and blockers step into the play. You see what ships and what stalls.",
+  Customers: "Your customers step on stage at {co}. What they really think. What they don't say. The relationship plays out in real time.",
+  Brand: "What does {co} really stand for? Not the deck — the truth. Characters play your brand from the inside and outside.",
+  Sales: "The sale that won't close. The pipeline that's stuck. Your team plays out the real dynamics between {co} and the market.",
+  Partnerships: "The partnerships {co} needs — and the ones dragging it down. Allies and parasites meet on stage.",
+  Capital: "The money conversation at {co}. Investors, founders, burn rate — the capital dynamics play out live.",
+  Expansion: "New markets, new cultures, new rules. {co} steps onto foreign ground — on stage. You see what translates and what breaks.",
+  Startup: "The startup energy of {co} — raw, fast, fragile. Your team plays the forces of creation and survival.",
+  Enterprise: "The weight of {co}. Scale, process, politics. Your team plays what the enterprise has become — and what it's lost.",
+  Recurring: "The engine that keeps {co} alive. Retention, churn, lifetime value — the recurring dynamics play out on stage.",
+  Operations: "The machine behind {co}. Supply chain, production, logistics — the invisible gears play out live.",
+  Excellence: "What does excellence look like at {co}? Not good enough. Not average. The standard plays out on stage.",
+  Team: "What's the real dynamic inside {co}? Who leads, who follows, who's silent? The team shows itself on stage.",
+  Culture: "The culture of {co} — not the values on the wall, but the ones in the hallway. Your team plays it out. You see the gap.",
+  Talent: "Why do people join {co}? Why do they leave? The talent forces play out on stage. You see what you're really offering.",
+  Leadership: "What kind of leader does {co} need right now? Not the job description — the real force. Your team plays it out.",
+  Trust: "The trust that's missing at {co}. Where it broke, who broke it, what would rebuild it. All on stage.",
+  Voice: "Who speaks at {co}? Who stays silent? The communication dynamics play out live. You hear what's been unsaid.",
+  Power: "Who really holds power at {co}? Not the org chart — the invisible lines. Your team plays the power dynamics live.",
+  Belonging: "Who belongs at {co} and who doesn't feel it? The inclusion dynamics play out on stage. You see the invisible walls.",
+  Onboarding: "The first 90 days at {co}. What new people see, feel, and learn — before anyone tells them. Played out live.",
+  Hybrid: "Remote vs. office vs. something else at {co}. The hybrid forces collide on stage. You see what's really working.",
+  Succession: "Who takes over at {co}? The old guard and the new blood meet on stage. Power, trust, and letting go.",
+  Governance: "The board, the shareholders, the oversight at {co}. Governance dynamics play out live. You see who really steers.",
+  Founders: "The founder dynamic at {co}. Vision, ego, partnership, sacrifice. The founding forces play out on stage.",
+  Middle: "Caught in the middle at {co}. The pressure from above, the resistance from below. Middle management plays out live.",
+  Generations: "Old school meets new school at {co}. The generational clash plays out on stage. You see the gap — and the bridge.",
+  Motivation: "What lights people up at {co} — and what kills their fire? Motivation and apathy meet on stage.",
+  Accountability: "Who owns what at {co}? The blame game, the finger-pointing, the real ownership. Played out live.",
+  Toxicity: "The toxic patterns at {co}. The bullying, the fear, the silence. Your team confronts it on stage.",
+  Loyalty: "What keeps people at {co}? Loyalty, fear, or golden handcuffs? The truth plays out on stage.",
+  Ego: "The egos shaping {co}. Who needs to be right, who needs to be seen. The ego dynamics play out live.",
+  Transformation: "What is {co} becoming? The old and the new collide on stage. Your team plays the forces of change.",
+  Innovation: "Where does innovation live at {co} — and what kills it? The creative forces and the blockers meet on stage.",
+  Creativity: "The creative soul of {co}. What feeds it, what starves it. Your team plays creativity vs. control.",
+  Digital: "The digital future of {co} meets the human reality. Technology, people, resistance — all played out live.",
+  Integration: "Two worlds becoming one at {co}. The cultures, the fears, the opportunities. Integration plays out on stage.",
+  Agility: "What slows {co} down? Bureaucracy, fear, habit? The forces of speed and friction meet on stage.",
+  Disruption: "The disruption heading for {co}. Ignore it or ride it? Your team plays both futures on stage.",
+  Legacy: "The old system at {co}. What to keep, what to kill, what to transform. Legacy meets progress on stage.",
+  Resilience: "How much can {co} take? The resilience of your team plays out under pressure on stage.",
+  Learning: "What does {co} know — and what it refuses to learn? The learning dynamics play out live.",
+  Data: "The data tells one story. The people tell another. At {co}, both versions meet on stage.",
+  Performance: "What drives results at {co} — and what sabotages them? Performance dynamics play out live.",
+  Success: "What does winning look like at {co}? Your team plays the forces of success — and what it costs.",
+  Failure: "The failure {co} won't talk about. Characters play the mistakes, the blame, the lessons. All on stage.",
+  Breakthrough: "What's keeping {co} stuck? The invisible walls, the comfort zones. Your team breaks through them on stage.",
+  Balance: "The energy at {co} — where it flows and where it burns out. Your team plays the balance between drive and destruction.",
+  Momentum: "The speed of {co}. What accelerates, what drags. Your team plays the momentum dynamics on stage.",
+  Efficiency: "The waste hiding inside {co}. Bloat, politics, busy work. Your team plays lean vs. fat on stage.",
+  Complexity: "The complexity choking {co}. Too many layers, too many processes. Simplicity and chaos meet on stage.",
+  Purpose: "Why does {co} exist? Not the mission statement — the real reason. Purpose meets reality on stage.",
+  Impact: "What mark is {co} leaving on the world? The impact you intend vs. the impact you create. Played out live.",
+  Integrity: "The gap between what {co} says and what it does. Characters play both sides. You see the truth.",
+  Heritage: "Where {co} comes from. The roots, the origin story, what's been forgotten. Heritage plays out on stage.",
+  Identity: "Who is {co} — really? Not the brand book. The truth. Your team plays identity live.",
+  Freedom: "The freedom inside {co}. Who has it, who doesn't. Autonomy and control meet on stage.",
+  Justice: "What's fair at {co} — and what isn't? The equity dynamics play out live.",
+  Courage: "What is {co} afraid of? The fears that shape decisions, the risks nobody takes. Courage meets reality on stage.",
+  Survival: "Is {co} in danger? The survival forces play out live — threats, allies, blind spots. You see what's really at stake.",
+  Impossible: "The thing {co} thinks it can't do. Characters embody the impossibility — then your team plays through it.",
+  Anger: "The anger inside {co}. What's building, what's about to break. The frustration plays out live on stage.",
+  Loss: "What has {co} lost — and what it refuses to let go of? Grief and renewal meet on stage.",
+  Hope: "The hope driving {co}. What keeps your team going when everything says stop. Hope plays out live.",
+  Heart: "The heart of {co}. Not the KPIs — the love, the passion, the care. Your team plays what really matters.",
+  Envy: "Who's watching whom at {co}? The jealousy, the competition, the comparison. Envy plays out on stage.",
+  Shame: "The shame hiding at {co}. The mistakes buried, the guilt carried. Your team plays the unspoken.",
+  Pride: "The pride of {co}. What you've built, what you stand for. Your team plays the dignity on stage.",
+  Isolation: "The loneliness inside {co}. Who's disconnected, who's invisible. Isolation plays out live.",
+  Secrets: "The things nobody says at {co}. The elephant in the room. Your team plays the unspoken truth.",
+  Truth: "The truth about {co}. The lies, the pretending, the facade. Your team plays what's real — on stage.",
+  Forgiveness: "What needs to be forgiven at {co}? The old wounds, the grudges. Forgiveness plays out on stage.",
+  Gratitude: "What {co} takes for granted. The people, the wins, the foundations. Gratitude meets reality on stage.",
+  Respect: "Who gets respect at {co} — and who doesn't? The dynamics of dignity play out live.",
+  Patience: "The rush vs. the wait at {co}. Timing, urgency, and wisdom. Patience plays out on stage.",
+  Obsession: "The obsession driving {co}. Is it fuel or destruction? Your team plays the fine line live.",
+  Boredom: "The boredom killing {co}. Routine, stagnation, the death of curiosity. Your team wakes up on stage.",
+  Curiosity: "What is {co} curious about — and what has it stopped asking? Curiosity plays out live.",
+  Confidence: "The confidence gap at {co}. Self-doubt, imposter syndrome, false bravado. All on stage.",
+  Control: "The need to control at {co}. Micromanagement, trust, letting go. Control plays out live.",
+  Family: "The family behind {co}. Blood, loyalty, succession, sacrifice. Family business dynamics play out on stage.",
+  Partnership: "The partnership powering {co}. Trust, tension, equity, ego. Partners meet on stage.",
+  Friendship: "The friendships inside {co}. Loyalty, betrayal, boundaries. Your team plays the personal dynamics.",
+  Mentorship: "The mentor {co} needs. Wisdom, challenge, tough love. The mentoring dynamic plays out on stage.",
+  Rivals: "The rival {co} fears. Competition, respect, obsession. Your nemesis steps onto the stage.",
+  Negotiation: "The deal that defines {co}. Power, compromise, walkaway. The negotiation plays out live.",
+  Healthcare: "The healthcare forces around {co}. Patients, systems, ethics, bureaucracy. Medicine meets humanity on stage.",
+  Education: "The education dynamics at {co}. Teaching, learning, systems, souls. Your team plays what education really is.",
+  Media: "The media forces shaping {co}. Content, truth, attention, algorithms. Media plays out on stage.",
+  Sport: "The sporting dynamics at {co}. Competition, training, mentality, peak. Your team plays the athlete's world.",
+  Art: "The artistic forces at {co}. Creation, commerce, compromise, soul. Art meets business on stage.",
+  Hospitality: "The hospitality soul of {co}. Service, warmth, exhaustion, beauty. Your team plays what hosting really means.",
+  Property: "The property dynamics around {co}. Space, value, vision, community. Real estate plays out on stage.",
+  Regulation: "The rules governing {co}. Compliance, freedom, risk, innovation under constraint. Regulation plays out live.",
+  Finance: "The financial world of {co}. Risk, trust, numbers, people. Banking meets humanity on stage.",
+  Retail: "The retail reality of {co}. Customers, shelves, digital, experience. Your team plays what shopping really is.",
+  Energy: "The energy dynamics at {co}. Resources, transition, power, sustainability. Energy plays out on stage.",
+  Mobility: "The mobility forces around {co}. Movement, logistics, speed, connection. Transport plays out live.",
+  Social: "The social mission of {co}. Impact, funding, sustainability, heart. Purpose meets reality on stage.",
+  Public: "The public sector dynamics at {co}. Citizens, bureaucracy, service, leadership. Government plays out on stage.",
+  Faith: "The faith driving {co}. Community, belief, doubt, purpose. Spiritual dynamics play out on stage.",
+};
+
+const DEFAULT_BUSINESS_PITCH = "Your team steps on stage and plays out the real {theme} dynamics at {co}. No slides. No theory. You see what you couldn't see before.";
+
+/* ── Derive business theme (Play 1) ── */
+function deriveBusinessTheme(question: string): string {
+  for (const [pattern, theme] of BUSINESS_MAP) {
+    if (pattern.test(question)) return theme;
+  }
+  const nouns = question.replace(/[?.,!'"]/g, "").split(/\s+/).filter(w => w.length > 4 && !/^(about|could|would|should|where|there|their|these|those|which|while|after|before|being|doing|going|having|making|taking|using|what|when|with|from|into|than|then|them|they|this|that|have|will|been|were|does|didn|don|isn|aren|wasn|weren|can|how|who|why|our|your)$/i.test(w));
+  if (nouns.length > 0) {
+    const w = nouns[0];
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  }
+  return "Reality";
+}
+
+type Experience = {
+  name: string;
+  theme: string;
+  pitch: string;
+};
+
+const PEOPLE_OPTIONS = [
+  { label: "8\u201315", description: "Intimate" },
+  { label: "15\u201325", description: "Team" },
+  { label: "25\u201350", description: "Large group" },
+];
+
+const DURATION_OPTIONS = [
+  { hours: "4", label: "Half-day", price: "\u20AC2 200" },
+  { hours: "5", label: "Extended", price: "\u20AC2 900" },
+  { hours: "6", label: "Full day", price: "\u20AC3 600" },
+];
+
+const FORMAT_OPTIONS = [
+  { label: "Free Play", description: "Everyone directs, everyone plays" },
+  { label: "Prepared Play", description: "We direct, you play" },
+];
+
+const SPECIAL_PLAY_OPTIONS = [
+  { label: "Question Play", description: "Play to find the most essential questions" },
+  { label: "Perspective Play", description: "Play where everyone commits to what's next" },
+  { label: "Value Play", description: "Play where everyone tells the story of why they create your company" },
+];
+
+const VENUE_OPTIONS = [
+  { label: "Flagship stage", sub: "Stage on Mars, N\u00E1rodn\u00ED 138/10, Praha" },
+  { label: "Your office", sub: "We come to you" },
+  { label: "Special location", sub: "A place that fits the occasion" },
+];
+
+function deriveExperience(question: string, company: string): Experience {
+  const bizTheme = deriveBusinessTheme(question);
+  const co = company || "your company";
+
+  let bizPitch = BUSINESS_PITCHES[bizTheme] || DEFAULT_BUSINESS_PITCH;
+  bizPitch = bizPitch.replace(/\{co\}/g, co).replace(/\{theme\}/g, bizTheme.toLowerCase());
+
+  return {
+    name: company ? `${company} on Mars` : `${bizTheme} on Mars`,
+    theme: bizTheme,
+    pitch: bizPitch,
+  };
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   PLAY PAGE INNER (uses useSearchParams)
+   ══════════════════════════════════════════════════════════════════ */
+
+function PlayPageInner() {
+  const searchParams = useSearchParams();
+  const questionParam = searchParams.get("q") || "";
+  const companyParam = searchParams.get("company") || "";
+
+  const [building, setBuilding] = useState(true);
+  const [experience, setExperience] = useState<Experience | null>(null);
+  const [selectedPeople, setSelectedPeople] = useState(1);
+  const [selectedDuration, setSelectedDuration] = useState(1);
+  const [selectedFormat, setSelectedFormat] = useState(0);
+  const [selectedSpecials, setSelectedSpecials] = useState<Set<number>>(new Set());
+  const [selectedVenue, setSelectedVenue] = useState(0);
+  const [play, setPlay] = useState<Play | null>(null);
+  const [playLoading, setPlayLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [showDigital, setShowDigital] = useState(false);
+  const [simLoading, setSimLoading] = useState(false);
+  const [simReady, setSimReady] = useState(false);
+  const [simPhase, setSimPhase] = useState<"cast" | "stage" | "perspectives">("cast");
+  const [simEnded, setSimEnded] = useState(false);
+  const [cardName, setCardName] = useState("");
+  const [cardEmail, setCardEmail] = useState("");
+  const [cardSent, setCardSent] = useState(false);
+
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  // Auto-trigger building animation on load
+  useEffect(() => {
+    if (!questionParam) return;
+    setBuilding(true);
+    const timer = setTimeout(() => {
+      setExperience(deriveExperience(questionParam, companyParam));
+      setBuilding(false);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, [questionParam, companyParam]);
+
+  async function fetchSimulation(currentPlay: Play, overrideQuestion?: string) {
+    setSimLoading(true);
+    setSimReady(false);
+    try {
+      const q = overrideQuestion || questionParam;
+      const res = await fetch("/api/generate-mars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ play: currentPlay, question: q, lang: "en" }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      const updated = {
+        ...currentPlay,
+        simulation: data.simulation,
+        simulationSteps: data.simulationSteps,
+        perspectives: data.perspectives,
+        followUpQuestion: data.followUpQuestion || undefined,
+      };
+      setPlay(updated);
+      setSimReady(true);
+    } catch {
+      setError("Simulation failed. Try again.");
+    } finally {
+      setSimLoading(false);
+    }
+  }
+
+  async function openDigital(overrideQuestion?: string) {
+    setShowDigital(true);
+    setPlayLoading(true);
+    setError("");
+    setSimPhase("cast");
+    setSimEnded(false);
+
+    const q = overrideQuestion || questionParam;
+    try {
+      const res = await fetch("/api/generate-play", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q, context: "business", lang: "en", clientName: companyParam || undefined }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      if (data.plays?.[0]) {
+        const generatedPlay = data.plays[0];
+        setPlay(generatedPlay);
+        setPlayLoading(false);
+        fetchSimulation(generatedPlay, q);
+      }
+    } catch {
+      setError("Something went wrong. Try again.");
+      setPlayLoading(false);
+    }
+  }
+
+  if (!questionParam) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-white/40 text-[14px] mb-4">No question provided.</p>
+          <a href="/business" className="text-mars text-[13px] font-bold uppercase tracking-[0.15em] hover:text-mars-light transition-colors">
+            &larr; Back to Stage on Mars
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] overflow-x-hidden">
+
+      <style jsx global>{`
+        @keyframes glow-pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.15); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+      `}</style>
+
+      {/* Header */}
+      <div className="pt-8 sm:pt-12 pb-4 px-4">
+        <div className="max-w-3xl mx-auto">
+          <a href="/business" className="group/logo inline-flex items-center gap-2 mb-6">
+            <svg className="w-4 h-4 text-white/30 group-hover/logo:text-mars/60 transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
+            <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert opacity-40 group-hover/logo:opacity-80 transition-opacity" />
+          </a>
+        </div>
+      </div>
+
+      {/* Results */}
+      <section ref={resultRef} className="relative px-4">
+        <div className="max-w-3xl mx-auto">
+
+          {/* Building state */}
+          {building && (
+            <div className="text-center py-20 sm:py-32">
+              <div className="inline-flex gap-2 mb-6">
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="w-3 h-3 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.3}s infinite` }} />
+                ))}
+              </div>
+              <p className="text-white/60 text-[16px] sm:text-[20px] font-bold tracking-[-0.02em]">Designing your experience...</p>
+              <p className="text-white/25 text-[12px] sm:text-[13px] mt-3 font-mercure italic max-w-sm mx-auto">&ldquo;{questionParam}&rdquo;</p>
+            </div>
+          )}
+
+          {/* Experience Designer */}
+          {experience && !building && (
+            <div className="pt-6 sm:pt-10" style={{ animation: "fadeIn 0.8s ease both" }}>
+
+              {/* Experience header */}
+              <div className="text-center mb-8 sm:mb-12">
+                <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-4">Your experience</p>
+                <h2 className="text-[36px] sm:text-[52px] font-black tracking-[-0.04em] leading-[0.95] mb-4">
+                  <span className="text-white/90">{companyParam || experience.theme}</span>{" "}
+                  <span className="text-mars font-mercure italic">on Mars</span>
+                </h2>
+                <p className="text-white/50 text-[14px] sm:text-[16px] leading-[1.6] max-w-lg mx-auto">
+                  {experience.pitch}
+                </p>
+              </div>
+
+              {/* Question reference */}
+              <div className="rounded-xl bg-white/[0.03] border border-white/[0.08] px-5 py-4 mb-8 sm:mb-10">
+                <div className="flex items-start gap-3">
+                  <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-mars/50 mt-2" />
+                  <div>
+                    <p className="text-white/25 text-[10px] uppercase tracking-[0.2em] mb-1">Your question</p>
+                    <p className="font-mercure italic text-white/50 text-[14px] leading-[1.5]">&ldquo;{questionParam}&rdquo;</p>
+                  </div>
+                  <a href="/business" className="shrink-0 ml-auto text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-mars/60 transition-colors">
+                    Change
+                  </a>
+                </div>
+              </div>
+
+              {/* Configure your experience */}
+              <div className="space-y-6 mb-8 sm:mb-10">
+
+                {/* Group size */}
+                <div>
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Group size</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {PEOPLE_OPTIONS.map((opt, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedPeople(i)}
+                        className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
+                          selectedPeople === i
+                            ? "border-mars/30 bg-mars/[0.06]"
+                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                        }`}
+                      >
+                        <p className={`text-[18px] sm:text-[22px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                        <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedPeople === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Duration */}
+                <div>
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Duration</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {DURATION_OPTIONS.map((opt, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedDuration(i)}
+                        className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
+                          selectedDuration === i
+                            ? "border-mars/30 bg-mars/[0.06]"
+                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                        }`}
+                      >
+                        <p className={`text-[22px] sm:text-[26px] font-bold tracking-tight ${selectedDuration === i ? "text-white/90" : "text-white/50"}`}>{opt.hours}h</p>
+                        <p className={`text-[10px] uppercase tracking-[0.15em] mt-1 ${selectedDuration === i ? "text-mars/60" : "text-white/25"}`}>{opt.label}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Play format */}
+                <div>
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Play format</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {FORMAT_OPTIONS.map((opt, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedFormat(i)}
+                        className={`rounded-xl border py-4 px-4 text-center transition-all duration-300 ${
+                          selectedFormat === i
+                            ? "border-mars/30 bg-mars/[0.06]"
+                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                        }`}
+                      >
+                        <p className={`text-[14px] sm:text-[16px] font-bold ${selectedFormat === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                        <p className={`text-[10px] mt-1.5 leading-[1.4] ${selectedFormat === i ? "text-mars/60" : "text-white/25"}`}>{opt.description}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Special plays */}
+                <div>
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-1">Special plays</p>
+                  <p className="text-white/15 text-[10px] mb-3">Optional — add to your experience</p>
+                  <div className="space-y-1.5">
+                    {SPECIAL_PLAY_OPTIONS.map((opt, i) => {
+                      const active = selectedSpecials.has(i);
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => {
+                            const next = new Set(selectedSpecials);
+                            if (next.has(i)) next.delete(i); else next.add(i);
+                            setSelectedSpecials(next);
+                          }}
+                          className={`w-full flex items-center gap-3 rounded-lg border px-4 py-2.5 text-left transition-all duration-300 ${
+                            active
+                              ? "border-mars/25 bg-mars/[0.04]"
+                              : "border-white/[0.06] bg-transparent hover:border-white/[0.12]"
+                          }`}
+                        >
+                          <div className={`shrink-0 w-4 h-4 rounded border-[1.5px] flex items-center justify-center transition-all ${
+                            active ? "border-mars/60 bg-mars/20" : "border-white/20"
+                          }`}>
+                            {active && <svg className="w-2.5 h-2.5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>}
+                          </div>
+                          <div className="min-w-0">
+                            <span className={`text-[12px] sm:text-[13px] font-bold ${active ? "text-white/80" : "text-white/40"}`}>{opt.label}</span>
+                            <span className={`text-[10px] sm:text-[11px] ml-2 ${active ? "text-white/30" : "text-white/15"}`}>{opt.description}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Venue */}
+                <div>
+                  <p className="text-white/30 text-[10px] uppercase tracking-[0.3em] mb-3">Venue</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {VENUE_OPTIONS.map((opt, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedVenue(i)}
+                        className={`rounded-xl border py-4 px-3 text-center transition-all duration-300 ${
+                          selectedVenue === i
+                            ? "border-mars/30 bg-mars/[0.06]"
+                            : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15]"
+                        }`}
+                      >
+                        <p className={`text-[13px] sm:text-[15px] font-bold ${selectedVenue === i ? "text-white/90" : "text-white/50"}`}>{opt.label}</p>
+                        <p className={`text-[9px] sm:text-[10px] mt-1.5 leading-[1.3] ${selectedVenue === i ? "text-mars/60" : "text-white/25"}`}>{opt.sub}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Play Card + Contact */}
+              <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+
+                {!cardSent ? (
+                  <div className="px-6 sm:px-8 py-6 sm:py-8">
+                    {/* Summary */}
+                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-4">Your Play Card</p>
+                    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5 mb-6">
+                      <p className="text-white/80 text-[18px] sm:text-[22px] font-black tracking-tight mb-1">
+                        {companyParam || experience.theme} <span className="text-mars font-mercure italic">on Mars</span>
+                      </p>
+                      <p className="text-white/30 text-[11px] leading-[1.5] mb-3">{experience.pitch}</p>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-white/25">
+                        <span>{PEOPLE_OPTIONS[selectedPeople].label} people</span>
+                        <span>&middot;</span>
+                        <span>{DURATION_OPTIONS[selectedDuration].label}</span>
+                        <span>&middot;</span>
+                        <span>{FORMAT_OPTIONS[selectedFormat].label}</span>
+                        {selectedSpecials.size > 0 && <>
+                          <span>&middot;</span>
+                          <span>{[...selectedSpecials].map(i => SPECIAL_PLAY_OPTIONS[i].label).join(", ")}</span>
+                        </>}
+                        <span>&middot;</span>
+                        <span>{VENUE_OPTIONS[selectedVenue].label}</span>
+                      </div>
+                    </div>
+
+                    {/* Contact fields */}
+                    <p className="text-white/40 text-[12px] mb-4">We&#39;ll send you a beautiful Play Card and get back to you with a tailored offer.</p>
+                    <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                      <input
+                        value={cardName}
+                        onChange={(e) => setCardName(e.target.value)}
+                        placeholder="Your name"
+                        className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                      />
+                      <input
+                        value={cardEmail}
+                        onChange={(e) => setCardEmail(e.target.value)}
+                        type="email"
+                        placeholder="Your email"
+                        className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
+                      />
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (!cardEmail.trim() || !cardName.trim()) return;
+                        const subject = encodeURIComponent(`Play Card: ${companyParam || experience.theme} on Mars`);
+                        const body = encodeURIComponent(
+                          `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyParam || "\u2014"}\n\nQuestion: ${questionParam}\n\nExperience: ${companyParam || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nDuration: ${DURATION_OPTIONS[selectedDuration].label}\nFormat: ${FORMAT_OPTIONS[selectedFormat].label}\n${selectedSpecials.size > 0 ? `Special plays: ${[...selectedSpecials].map(i => SPECIAL_PLAY_OPTIONS[i].label).join(", ")}\n` : ""}Venue: ${VENUE_OPTIONS[selectedVenue].label}`
+                        );
+                        window.location.href = `mailto:play@stageonmars.com?subject=${subject}&body=${body}`;
+                        setCardSent(true);
+                      }}
+                      disabled={!cardEmail.trim() || !cardName.trim()}
+                      className={`w-full py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all ${
+                        cardEmail.trim() && cardName.trim()
+                          ? "bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]"
+                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                      }`}
+                    >
+                      Send my Play Card
+                    </button>
+                  </div>
+                ) : (
+                  <div className="px-6 sm:px-8 py-8 sm:py-10 text-center">
+                    <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                    </div>
+                    <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Play Card sent</p>
+                    <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Digital Playmaker teaser */}
+              {!showDigital && (
+                <div className="mt-8 sm:mt-10">
+                  <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-8" />
+                  <div className="text-center">
+                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-3">Want a preview?</p>
+                    <button
+                      onClick={() => openDigital(questionParam)}
+                      className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-xl border border-mars/20 bg-mars/[0.04] hover:border-mars/40 hover:bg-mars/[0.08] transition-all duration-300 group/digi"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-mars/60 group-hover/digi:bg-mars animate-pulse" />
+                      <span className="text-white/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] group-hover/digi:text-white/90 transition-colors">Systemic Playmaker</span>
+                      <span className="text-white/25 text-[11px]">— simulate your play digitally</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Inline Digital Playmaker */}
+              {showDigital && (
+                <div className="mt-8 sm:mt-10">
+                  <div className="relative">
+                    <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
+
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-6 sm:mb-8">
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                        <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Systemic Playmaker</p>
+                      </div>
+                      <button onClick={() => { setShowDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
+                        Close
+                      </button>
+                    </div>
+
+                    {/* Loading state */}
+                    {playLoading && (
+                      <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                        <div className="text-center py-20 sm:py-28">
+                          <div className="inline-flex gap-2 mb-5">
+                            {[0, 1, 2].map((i) => (
+                              <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                            ))}
+                          </div>
+                          <p className="text-white/65 text-[13px] sm:text-[14px] font-mercure italic">Creating your play...</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Gaming interface */}
+                    {play && !playLoading && (
+                      <div className="space-y-4">
+
+                        {/* Phase nav tabs */}
+                        <div className="flex items-center gap-1 rounded-xl bg-white/[0.05] border border-white/[0.12] p-1">
+                          {[
+                            { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
+                            { id: "stage" as const, label: "Stage", icon: "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15l3.5-4.5 2.5 3.01L14.5 9l4.5 6H5z" },
+                            { id: "perspectives" as const, label: "Perspectives", icon: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" },
+                          ].map((tab) => (
+                            <button
+                              key={tab.id}
+                              onClick={() => {
+                                if (tab.id === "stage" && !simReady) return;
+                                if (tab.id === "perspectives" && !simEnded) return;
+                                setSimPhase(tab.id);
+                              }}
+                              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] sm:text-[14px] uppercase tracking-[0.15em] font-bold transition-all ${
+                                simPhase === tab.id
+                                  ? "bg-white/[0.06] text-white/80"
+                                  : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
+                                  ? "text-white/25 cursor-not-allowed"
+                                  : "text-white/65 hover:text-white/60"
+                              }`}
+                            >
+                              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d={tab.icon} /></svg>
+                              {tab.label}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Cast phase */}
+                        {simPhase === "cast" && (
+                          <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                            <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
+                              <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
+                              <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} &middot; {play.characters.length} characters</p>
+                            </div>
+                            <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                              <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                {play.characters.map((char, i) => (
+                                  <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
+                                    <div className="flex items-center gap-2.5 mb-2.5">
+                                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">{char.name.charAt(0)}</div>
+                                      <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
+                                    </div>
+                                    <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            {play.image && (
+                              <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
+                                <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                                <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
+                              </div>
+                            )}
+                            <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                              <button
+                                onClick={() => { if (simReady) setSimPhase("stage"); }}
+                                disabled={!simReady}
+                                className={`w-full py-4 rounded-xl text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] transition-all ${
+                                  simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
+                                }`}
+                              >
+                                {simReady ? (
+                                  <span className="flex items-center justify-center gap-2">
+                                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
+                                    Enter the Stage
+                                  </span>
+                                ) : (
+                                  <span className="flex items-center justify-center gap-2">
+                                    <div className="inline-flex gap-1.5">
+                                      {[0, 1, 2].map((i) => (
+                                        <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                                      ))}
+                                    </div>
+                                    Choreographing the stage...
+                                  </span>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Stage phase */}
+                        {simPhase === "stage" && simReady && play.simulationSteps && (
+                          <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                            <div className="p-4 sm:p-6">
+                              <StageSimulation simulationSteps={play.simulationSteps} characters={play.characters} simulation={play.simulation} onEnd={() => { setSimEnded(true); setSimPhase("perspectives"); }} />
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Perspectives phase */}
+                        {simPhase === "perspectives" && simEnded && (
+                          <div className="space-y-4">
+                            {play.perspectives && play.perspectives.length > 0 && (
+                              <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                                <div className="p-6 sm:p-8">
+                                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                                  <div className="space-y-3">
+                                    {play.perspectives.map((p, i) => {
+                                      const perspective = typeof p === "object" ? (p as Perspective) : null;
+                                      return (
+                                        <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
+                                          {perspective ? (
+                                            <div className="flex gap-3">
+                                              <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">{perspective.character.charAt(0)}</div>
+                                              <div>
+                                                <p className="text-mars/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                                <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                              </div>
+                                            </div>
+                                          ) : (
+                                            <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                          )}
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            {play.followUpQuestion && (
+                              <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                                <div className="text-center py-8 sm:py-10 px-6">
+                                  <p className="text-white/30 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                                  <p className="font-mercure italic text-white/55 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                                  <a
+                                    href={`/business/play?q=${encodeURIComponent(play.followUpQuestion)}${companyParam ? `&company=${encodeURIComponent(companyParam)}` : ""}`}
+                                    className="text-mars/70 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
+                                  >
+                                    Ask this question &rarr;
+                                  </a>
+                                </div>
+                              </div>
+                            )}
+                            {/* Big CTA — take it live */}
+                            <div className="rounded-2xl overflow-hidden bg-mars mt-2">
+                              <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
+                                <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">This was a simulation</p>
+                                <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
+                                  Imagine this with real people.<br />On a real stage.
+                                </h3>
+                                <p className="font-mercure italic text-white/70 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
+                                  Your team, your questions, and perspectives no algorithm can generate.
+                                </p>
+                                <a
+                                  href="/business#contact"
+                                  className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
+                                >
+                                  Book your play on Mars &rarr;
+                                </a>
+                              </div>
+                            </div>
+
+                            <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all">
+                              &larr; Back to cast
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {error && <p className="text-red-400/60 text-[12px] mt-4 text-center">{error}</p>}
+                  </div>
+                </div>
+              )}
+
+              {/* Start over */}
+              <div className="text-center mt-6 mb-16">
+                <a href="/business" className="text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-mars/60 transition-colors">
+                  Start over with a different question
+                </a>
+              </div>
+            </div>
+          )}
+
+        </div>
+      </section>
+    </div>
+  );
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   PAGE EXPORT (with Suspense boundary for useSearchParams)
+   ══════════════════════════════════════════════════════════════════ */
+
+export default function PlayPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] flex items-center justify-center">
+        <div className="inline-flex gap-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="w-3 h-3 rounded-full bg-[#FF5500]" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.3}s infinite` }} />
+          ))}
+        </div>
+      </div>
+    }>
+      <PlayPageInner />
+    </Suspense>
+  );
+}
