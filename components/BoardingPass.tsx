@@ -220,8 +220,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
               {crew
                 .filter((m) => m.question)
                 .map((member, i) => (
-                  <div key={i} className="relative pl-4 border-l-2 border-mars/15">
-                    <p className="font-mercure italic text-white/50 text-[14px] sm:text-[15px] leading-[1.5] mb-1.5">
+                  <div key={i} className="relative pl-4 border-l-2 border-mars/40">
+                    <p className="font-mercure italic text-mars/70 text-[14px] sm:text-[15px] leading-[1.5] mb-1.5">
                       &ldquo;{member.question}&rdquo;
                     </p>
                     <p className="text-white/20 text-[11px]">{member.name}</p>
