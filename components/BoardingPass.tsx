@@ -22,10 +22,14 @@ function Barcode({ code }: { code: string }) {
 const RULES_OF_MARS = [
   {
     title: "Freedom",
-    body: "This experience gives you absolute freedom of expression. It is essentially a hole in reality. You can ask anything, create anything, share and express yourself exactly as you feel. No one will judge you here. Enjoy it fully.\n\nFreedom and responsibility go hand in hand. At Stage on Mars you have space to express yourself, to be seen, to create. At the same time, your boundaries are yours alone and they matter. You do not have to accept any idea, role, or direction that does not resonate with you. You can say no. You can step back. You can change your mind at any time. We are in this together.",
+    body: "This experience gives you absolute freedom of expression. It is essentially a hole in reality. You can ask anything, create anything, share and express yourself exactly as you feel. No one will judge you here. Enjoy it fully.",
   },
   {
     title: "Responsibility",
+    body: "Freedom and responsibility go hand in hand. At Stage on Mars you have space to express yourself, to be seen, to create. At the same time, your boundaries are yours alone and they matter. You do not have to accept any idea, role, or direction that does not resonate with you. You can say no. You can step back. You can change your mind at any time. We are in this together.",
+  },
+  {
+    title: "Alcohol",
     body: "During the experience, alcohol and other psychoactive substances are not permitted. If you want to be high, immersion in the game will be more than enough.",
   },
   {
@@ -299,10 +303,10 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
         <div className="px-6 sm:px-10 py-8">
           <p className="text-mars/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-5">Rules of Mars</p>
-          <div className="space-y-5">
+          <div className="space-y-2">
             {rules.map((rule, i) => (
               <div key={i} className="relative pl-4 border-l border-mars/15">
-                <p className="text-mars/50 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] mb-1.5">{rule.title}</p>
+                <p className="text-mars/50 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] mb-0.5">{rule.title}</p>
                 <p className="text-white/40 text-[12px] sm:text-[13px] leading-[1.7] whitespace-pre-line">{rule.body}</p>
               </div>
             ))}
