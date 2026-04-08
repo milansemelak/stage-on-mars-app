@@ -65,6 +65,11 @@ export type Mission = {
   rules: string;
   host_name: string;
   host_email: string;
+  time: string;
+  captain: string;
+  facilitator: string;
+  dresscode: string;
+  maps_url: string;
   created_at: string;
 };
 

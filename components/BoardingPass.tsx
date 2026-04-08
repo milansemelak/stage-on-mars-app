@@ -120,31 +120,53 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
-            <div>
-              <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">From</p>
-              <p className="text-white/70 text-[14px] font-bold">Earth</p>
-            </div>
-            <div>
-              <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">To</p>
-              <p className="text-mars text-[14px] font-bold">Mars</p>
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6">
             <div>
               <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Date</p>
               <p className="text-white/70 text-[14px] font-bold">{missionDate}</p>
             </div>
+            {mission.time && (
+              <div>
+                <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Time</p>
+                <p className="text-white/70 text-[14px] font-bold">{mission.time}</p>
+              </div>
+            )}
             <div>
               <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Crew</p>
               <p className="text-white/70 text-[14px] font-bold">{mission.group_size}</p>
             </div>
+            <div>
+              <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Dresscode</p>
+              <p className="text-white/70 text-[14px] font-bold">{mission.dresscode || "Dress to Play"}</p>
+            </div>
           </div>
 
-          {(mission.location || mission.venue) && (
-            <div className="mb-6">
-              <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Location</p>
-              <p className="text-white/50 text-[13px]">{mission.location || mission.venue}</p>
-            </div>
-          )}
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6">
+            {(mission.location || mission.venue) && (
+              <div>
+                <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Location</p>
+                {mission.maps_url ? (
+                  <a href={mission.maps_url} target="_blank" rel="noopener noreferrer" className="text-white/50 text-[13px] hover:text-mars transition-colors underline underline-offset-2">
+                    {mission.location || mission.venue} ↗
+                  </a>
+                ) : (
+                  <p className="text-white/50 text-[13px]">{mission.location || mission.venue}</p>
+                )}
+              </div>
+            )}
+            {mission.captain && (
+              <div>
+                <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Captain</p>
+                <p className="text-white/50 text-[13px]">{mission.captain}</p>
+              </div>
+            )}
+            {mission.facilitator && (
+              <div>
+                <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Facilitator</p>
+                <p className="text-white/50 text-[13px]">{mission.facilitator}</p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Tear line */}

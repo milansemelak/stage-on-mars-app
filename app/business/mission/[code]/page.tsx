@@ -41,10 +41,16 @@ export default async function MissionPage({ params }: { params: Promise<{ code: 
     );
   }
 
-  const { count } = await supabase
+  const { data: crew } = await supabase
     .from("crew_registrations")
-    .select("*", { count: "exact", head: true })
-    .eq("mission_id", mission.id);
+    .select("name, question")
+    .eq("mission_id", mission.id)
+    .order("registered_at", { ascending: true });
+
+  const crewList = (crew || []).map((c: { name: string; question: string | null }) => ({
+    name: c.name,
+    question: c.question || "",
+  }));
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED]">
@@ -72,7 +78,7 @@ export default async function MissionPage({ params }: { params: Promise<{ code: 
             </p>
           </div>
 
-          <BoardingPass mission={mission as Mission} initialCrewCount={count || 0} />
+          <BoardingPass mission={mission as Mission} initialCrew={crewList} />
 
           {/* Footer */}
           <div className="mt-12 text-center space-y-4">

@@ -13,6 +13,11 @@ export default function MissionsPage() {
   const [generatingMessage, setGeneratingMessage] = useState(false);
   const [hostName, setHostName] = useState("");
   const [hostEmail, setHostEmail] = useState("");
+  const [time, setTime] = useState("");
+  const [captain, setCaptain] = useState("");
+  const [facilitator, setFacilitator] = useState("");
+  const [dresscode, setDresscode] = useState("Dress to Play");
+  const [mapsUrl, setMapsUrl] = useState("");
   const [creating, setCreating] = useState(false);
   const [missionCode, setMissionCode] = useState("");
   const [copied, setCopied] = useState(false);
@@ -55,6 +60,11 @@ export default function MissionsPage() {
           rules: "",
           host_name: hostName,
           host_email: hostEmail,
+          time,
+          captain,
+          facilitator,
+          dresscode,
+          maps_url: mapsUrl,
         }),
       });
       const data = await res.json();
@@ -76,6 +86,11 @@ export default function MissionsPage() {
     setWelcomeMessage("");
     setHostName("");
     setHostEmail("");
+    setTime("");
+    setCaptain("");
+    setFacilitator("");
+    setDresscode("Dress to Play");
+    setMapsUrl("");
     setMissionCode("");
     setCopied(false);
   }
@@ -139,6 +154,35 @@ export default function MissionsPage() {
                       <option value="Your office">Client office</option>
                       <option value="Special location">Special location</option>
                     </select>
+                  </div>
+                </div>
+
+                {/* Event details */}
+                <div className="pt-2">
+                  <p className="text-mars/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Event Details</p>
+                  <div className="flex flex-col sm:flex-row gap-3 mb-3">
+                    <div className="flex-1">
+                      <label className={labelClass}>Time</label>
+                      <input value={time} onChange={(e) => setTime(e.target.value)} placeholder="9:30 - 12:00" className={inputClass} />
+                    </div>
+                    <div className="flex-1">
+                      <label className={labelClass}>Dresscode</label>
+                      <input value={dresscode} onChange={(e) => setDresscode(e.target.value)} placeholder="Dress to Play" className={inputClass} />
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <label className={labelClass}>Google Maps URL</label>
+                    <input value={mapsUrl} onChange={(e) => setMapsUrl(e.target.value)} placeholder="https://maps.google.com/..." className={inputClass} />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="flex-1">
+                      <label className={labelClass}>Captain</label>
+                      <input value={captain} onChange={(e) => setCaptain(e.target.value)} placeholder="Captain name" className={inputClass} />
+                    </div>
+                    <div className="flex-1">
+                      <label className={labelClass}>Facilitator</label>
+                      <input value={facilitator} onChange={(e) => setFacilitator(e.target.value)} placeholder="Facilitator name" className={inputClass} />
+                    </div>
                   </div>
                 </div>
 

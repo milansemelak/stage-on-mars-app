@@ -13,15 +13,25 @@ export async function POST(req: NextRequest) {
 
     const msg = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 300,
+      max_tokens: 500,
       messages: [
         {
           role: "user",
-          content: `You are writing a short welcome message for a Stage on Mars crew invitation. Stage on Mars is an experiential method where teams play out real questions on stage.
+          content: `You are writing a welcome message for a Stage on Mars crew invitation. Stage on Mars is an experiential method where teams play out real questions on stage using systemic play.
 
 The company is "${company}" and the meta-question for the play is: "${question}".
 
-Write a warm, concise welcome message (3-4 sentences max). Start with "Invitation to play." on its own line, then a blank line, then the message. The tone should be inviting, slightly mysterious, and exciting — like boarding a flight to somewhere unknown. Don't explain what Stage on Mars is. Don't use corporate language. Speak to the crew directly. No emojis. No quotes around the text.`,
+Write a welcome message following this exact structure and tone:
+
+1. Start with "Invitation to play." on its own line, then a blank line.
+2. Address the crew warmly — acknowledge who they are and invite them into a space beyond roles, titles and ready-made answers.
+3. State the shared meta-question they will explore.
+4. Briefly explain the mechanics: "On Mars we use systemic play to experience the system itself. By stepping into different perspectives, we uncover patterns, challenge assumptions and open new ways forward that are difficult to see from within."
+5. Describe what they will explore together, tailored to their meta-question.
+6. Ask them to register and send one question they believe matters. Say: "Your question becomes part of the play."
+7. End with: "This is not a workshop. It is a chance to play the future before it becomes real."
+
+Tone: warm, inviting, slightly mysterious. No corporate language. No emojis. No quotes around the text. Speak directly to the crew. Keep it concise but complete — around 150 words.`,
         },
       ],
     });
