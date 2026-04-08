@@ -37,6 +37,7 @@ const UI = {
     tagline2: "Create what\u2019s next.",
     placeholder: "What question do you want to play?",
     company: "Company name",
+    buildLabel: "Design your trip to Mars",
     buildPlay: "Build your play",
     readyMade: "Or choose a ready-made experience",
     howTitle: "How it works",
@@ -91,6 +92,7 @@ const UI = {
     tagline2: "Vytvořte, co přijde.",
     placeholder: "Jakou otázku chcete zahrát?",
     company: "Název firmy",
+    buildLabel: "Navrhněte svůj výlet na Mars",
     buildPlay: "Sestavit hru",
     readyMade: "Nebo si vyberte hotový zážitek",
     howTitle: "Jak to funguje",
@@ -373,7 +375,7 @@ export default function BusinessPage() {
                 <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
 
                 <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">
-                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">{t.buildPlay}</p>
+                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">{t.buildLabel}</p>
                   <textarea
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
