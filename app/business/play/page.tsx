@@ -332,15 +332,8 @@ function PlayPageInner() {
   const [simEnded, setSimEnded] = useState(false);
   const [cardName, setCardName] = useState("");
   const [cardEmail, setCardEmail] = useState("");
+  const [cardDate, setCardDate] = useState("");
   const [cardSent, setCardSent] = useState(false);
-  const [showMissionForm, setShowMissionForm] = useState(false);
-  const [missionDate, setMissionDate] = useState("");
-  const [missionWelcome, setMissionWelcome] = useState("");
-  const [missionSpotify, setMissionSpotify] = useState("");
-  const [missionRules, setMissionRules] = useState("");
-  const [missionCreating, setMissionCreating] = useState(false);
-  const [missionCode, setMissionCode] = useState("");
-  const [missionCopied, setMissionCopied] = useState(false);
 
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -462,29 +455,44 @@ function PlayPageInner() {
           {experience && !building && (
             <div className="pt-6 sm:pt-10" style={{ animation: "fadeIn 0.8s ease both" }}>
 
+              {/* Question as hero */}
+              <div className="text-center mb-10 sm:mb-14">
+                <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-5">Your question</p>
+                <h1 className="font-mercure italic text-white/70 text-[24px] sm:text-[34px] leading-[1.3] max-w-xl mx-auto mb-6">
+                  &ldquo;{questionParam}&rdquo;
+                </h1>
+                <div className="h-[1px] w-16 bg-gradient-to-r from-transparent via-mars/30 to-transparent mx-auto mb-6" />
+                <p className="text-white/25 text-[11px] sm:text-[12px] uppercase tracking-[0.2em]">Here&#39;s what we designed for you</p>
+              </div>
+
               {/* Experience header */}
-              <div className="text-center mb-8 sm:mb-12">
-                <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-4">Your experience</p>
-                <h2 className="text-[36px] sm:text-[52px] font-black tracking-[-0.04em] leading-[0.95] mb-4">
+              <div className="text-center mb-8 sm:mb-10">
+                <h2 className="text-[36px] sm:text-[52px] font-black tracking-[-0.04em] leading-[0.95] mb-3">
                   <span className="text-white/90">{companyParam || experience.theme}</span>{" "}
                   <span className="text-mars font-mercure italic">on Mars</span>
                 </h2>
+                <p className="text-white/30 text-[12px] sm:text-[13px] mb-4">A live experience for your team</p>
                 <p className="text-white/50 text-[14px] sm:text-[16px] leading-[1.6] max-w-lg mx-auto">
                   {experience.pitch}
                 </p>
               </div>
 
-              {/* Question reference */}
-              <div className="rounded-xl bg-white/[0.03] border border-white/[0.08] px-5 py-4 mb-8 sm:mb-10">
-                <div className="flex items-start gap-3">
-                  <div className="shrink-0 w-1.5 h-1.5 rounded-full bg-mars/50 mt-2" />
-                  <div>
-                    <p className="text-white/25 text-[10px] uppercase tracking-[0.2em] mb-1">Your question</p>
-                    <p className="font-mercure italic text-white/50 text-[14px] leading-[1.5]">&ldquo;{questionParam}&rdquo;</p>
+              {/* How it works */}
+              <div className="rounded-xl bg-white/[0.02] border border-white/[0.06] px-5 sm:px-6 py-5 mb-8 sm:mb-10">
+                <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-4">How it works</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                  <div className="flex sm:flex-col items-start gap-3">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-mars/15 border border-mars/20 flex items-center justify-center text-mars text-[11px] font-bold">1</span>
+                    <p className="text-white/50 text-[12px] sm:text-[13px] leading-[1.5]">You bring a real question your team is facing</p>
                   </div>
-                  <a href="/business" className="shrink-0 ml-auto text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-mars/60 transition-colors">
-                    Change
-                  </a>
+                  <div className="flex sm:flex-col items-start gap-3">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-mars/15 border border-mars/20 flex items-center justify-center text-mars text-[11px] font-bold">2</span>
+                    <p className="text-white/50 text-[12px] sm:text-[13px] leading-[1.5]">Your team plays it out live on stage, no scripts</p>
+                  </div>
+                  <div className="flex sm:flex-col items-start gap-3">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-mars/15 border border-mars/20 flex items-center justify-center text-mars text-[11px] font-bold">3</span>
+                    <p className="text-white/50 text-[12px] sm:text-[13px] leading-[1.5]">You leave with new perspectives, not slides</p>
+                  </div>
                 </div>
               </div>
 
@@ -541,7 +549,7 @@ function PlayPageInner() {
                 {!cardSent ? (
                   <div className="px-6 sm:px-8 py-6 sm:py-8">
                     {/* Summary */}
-                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-4">Your Play Card</p>
+                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-4">The Stage on Mars Experience</p>
                     <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 sm:p-5 mb-6">
                       <p className="text-white/80 text-[18px] sm:text-[22px] font-black tracking-tight mb-1">
                         {companyParam || experience.theme} <span className="text-mars font-mercure italic">on Mars</span>
@@ -555,8 +563,8 @@ function PlayPageInner() {
                     </div>
 
                     {/* Contact fields */}
-                    <p className="text-white/40 text-[12px] mb-4">We&#39;ll send you a beautiful Play Card and get back to you with a tailored offer.</p>
-                    <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                    <p className="text-white/40 text-[12px] mb-4">Leave your details and we&#39;ll get back to you with a tailored offer.</p>
+                    <div className="flex flex-col sm:flex-row gap-3 mb-3">
                       <input
                         value={cardName}
                         onChange={(e) => setCardName(e.target.value)}
@@ -571,12 +579,18 @@ function PlayPageInner() {
                         className="flex-1 rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
                       />
                     </div>
+                    <input
+                      value={cardDate}
+                      onChange={(e) => setCardDate(e.target.value)}
+                      placeholder="Ideal date (e.g. March 2026, Q2, flexible...)"
+                      className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors mb-4"
+                    />
                     <button
                       onClick={() => {
                         if (!cardEmail.trim() || !cardName.trim()) return;
                         const subject = encodeURIComponent(`Play Card: ${companyParam || experience.theme} on Mars`);
                         const body = encodeURIComponent(
-                          `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyParam || "\u2014"}\n\nQuestion: ${questionParam}\n\nExperience: ${companyParam || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nLocation: ${VENUE_OPTIONS[selectedVenue].label}`
+                          `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyParam || "\u2014"}\n\nQuestion: ${questionParam}\n\nExperience: ${companyParam || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nLocation: ${VENUE_OPTIONS[selectedVenue].label}\nIdeal date: ${cardDate || "\u2014"}`
                         );
                         window.location.href = `mailto:play@stageonmars.com?subject=${subject}&body=${body}`;
                         setCardSent(true);
@@ -585,152 +599,25 @@ function PlayPageInner() {
                       className={`w-full py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all ${
                         cardEmail.trim() && cardName.trim()
                           ? "bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]"
-                          : "bg-white/[0.06] text-white/25 cursor-not-allowed"
+                          : "bg-mars/30 text-white/40 cursor-not-allowed"
                       }`}
                     >
-                      Send my Play Card
+                      Send to Mars
                     </button>
+
+                    {/* Social proof */}
+                    <p className="text-white/15 text-[11px] text-center mt-4">Trusted by 50+ teams across Europe</p>
                   </div>
                 ) : (
-                  <div className="px-6 sm:px-8 py-8 sm:py-10">
-                    <div className="text-center">
-                      <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
-                        <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                      </div>
-                      <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Play Card sent</p>
-                      <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
+                  <div className="px-6 sm:px-8 py-8 sm:py-10 text-center">
+                    <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                     </div>
-
-                    {/* Mission invitation generator */}
-                    {!missionCode ? (
-                      <>
-                        {!showMissionForm ? (
-                          <div className="mt-8 text-center">
-                            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
-                            <button
-                              onClick={() => setShowMissionForm(true)}
-                              className="inline-flex items-center gap-3 px-6 py-3 rounded-xl border border-mars/20 bg-mars/[0.04] hover:border-mars/40 hover:bg-mars/[0.08] transition-all duration-300 group/mission"
-                            >
-                              <span className="text-white/60 text-[13px] font-bold uppercase tracking-[0.15em] group-hover/mission:text-white/90 transition-colors">Generate crew invitation</span>
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="mt-8">
-                            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
-                            <p className="text-mars/50 text-[10px] uppercase tracking-[0.3em] font-bold mb-4">Mission Details</p>
-                            <div className="space-y-3">
-                              <input
-                                type="date"
-                                value={missionDate}
-                                onChange={(e) => setMissionDate(e.target.value)}
-                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white focus:outline-none transition-colors"
-                              />
-                              <textarea
-                                value={missionWelcome}
-                                onChange={(e) => setMissionWelcome(e.target.value)}
-                                placeholder="Welcome message for the crew (optional)"
-                                rows={3}
-                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors resize-none"
-                              />
-                              <input
-                                value={missionSpotify}
-                                onChange={(e) => setMissionSpotify(e.target.value)}
-                                placeholder="Spotify playlist URL (optional)"
-                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors"
-                              />
-                              <textarea
-                                value={missionRules}
-                                onChange={(e) => setMissionRules(e.target.value)}
-                                placeholder="Custom rules of play (one per line, optional)"
-                                rows={3}
-                                className="w-full rounded-xl bg-white/[0.04] border border-white/[0.1] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none transition-colors resize-none"
-                              />
-                              <button
-                                onClick={async () => {
-                                  if (!missionDate) return;
-                                  setMissionCreating(true);
-                                  try {
-                                    const res = await fetch("/api/missions", {
-                                      method: "POST",
-                                      headers: { "Content-Type": "application/json" },
-                                      body: JSON.stringify({
-                                        company: companyParam || experience?.theme || "Unknown",
-                                        question: questionParam,
-                                        date: missionDate,
-                                        location: VENUE_OPTIONS[selectedVenue].label,
-                                        group_size: PEOPLE_OPTIONS[selectedPeople].label,
-                                        venue: VENUE_OPTIONS[selectedVenue].label,
-                                        welcome_message: missionWelcome,
-                                        spotify_url: missionSpotify,
-                                        rules: missionRules,
-                                        host_name: cardName,
-                                        host_email: cardEmail,
-                                      }),
-                                    });
-                                    const data = await res.json();
-                                    if (data.success) {
-                                      setMissionCode(data.code);
-                                    }
-                                  } catch {
-                                    // silently fail
-                                  }
-                                  setMissionCreating(false);
-                                }}
-                                disabled={missionCreating || !missionDate}
-                                className={`w-full py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all ${
-                                  missionCreating || !missionDate
-                                    ? "bg-white/[0.06] text-white/25 cursor-not-allowed"
-                                    : "bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]"
-                                }`}
-                              >
-                                {missionCreating ? "Generating..." : "Generate invitation"}
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="mt-8">
-                        <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
-                        <p className="text-mars/50 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Crew Invitation Ready</p>
-                        <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 flex items-center gap-3">
-                          <p className="flex-1 text-white/60 text-[12px] sm:text-[13px] font-mono truncate">
-                            {typeof window !== "undefined" ? window.location.origin : ""}/business/mission/{missionCode}
-                          </p>
-                          <button
-                            onClick={() => {
-                              navigator.clipboard.writeText(`${window.location.origin}/business/mission/${missionCode}`);
-                              setMissionCopied(true);
-                              setTimeout(() => setMissionCopied(false), 2000);
-                            }}
-                            className="shrink-0 px-4 py-2 rounded-lg bg-mars/20 hover:bg-mars/30 text-mars text-[11px] font-bold uppercase tracking-[0.1em] transition-colors"
-                          >
-                            {missionCopied ? "Copied!" : "Copy"}
-                          </button>
-                        </div>
-                      </div>
-                    )}
+                    <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Sent to Mars</p>
+                    <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
                   </div>
                 )}
               </div>
-
-              {/* Digital Playmaker teaser */}
-              {!showDigital && (
-                <div className="mt-8 sm:mt-10">
-                  <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-8" />
-                  <div className="text-center">
-                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-3">Want a preview?</p>
-                    <button
-                      onClick={() => openDigital(questionParam)}
-                      className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-xl border border-mars/20 bg-mars/[0.04] hover:border-mars/40 hover:bg-mars/[0.08] transition-all duration-300 group/digi"
-                    >
-                      <div className="w-2 h-2 rounded-full bg-mars/60 group-hover/digi:bg-mars animate-pulse" />
-                      <span className="text-white/70 text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] group-hover/digi:text-white/90 transition-colors">Play Simulator</span>
-                      <span className="text-white/25 text-[11px]">— simulate your play digitally</span>
-                    </button>
-                  </div>
-                </div>
-              )}
 
               {/* Inline Digital Playmaker */}
               {showDigital && (
@@ -940,10 +827,28 @@ function PlayPageInner() {
                 </div>
               )}
 
-              {/* Start over */}
-              <div className="text-center mt-6 mb-16">
-                <a href="/business" className="text-white/20 text-[10px] uppercase tracking-[0.15em] hover:text-mars/60 transition-colors">
-                  Start over with a different question
+              {/* Play Simulator teaser */}
+              {!showDigital && (
+                <div className="mt-8 sm:mt-10">
+                  <div className="text-center">
+                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-3">Not sure yet? Try it first</p>
+                    <button
+                      onClick={() => openDigital(questionParam)}
+                      className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-xl border border-mars/30 bg-mars/[0.06] hover:border-mars/50 hover:bg-mars/[0.12] transition-all duration-300 group/digi"
+                    >
+                      <div className="w-2 h-2 rounded-full bg-mars animate-pulse" />
+                      <span className="text-mars text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em]">Play Simulator</span>
+                      <span className="text-white/25 text-[11px]">— preview your play digitally</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Back */}
+              <div className="text-center mt-8 mb-16">
+                <a href="/business" className="inline-flex items-center gap-2 text-white/15 text-[11px] hover:text-white/30 transition-colors">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
+                  <span>New question</span>
                 </a>
               </div>
             </div>
