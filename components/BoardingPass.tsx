@@ -114,10 +114,12 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                 {mission.company} <span className="font-mercure italic text-mars">on Mars</span>
               </p>
             </div>
-            <div className="text-right">
-              <p className="text-mars/40 text-[9px] uppercase tracking-[0.4em] mb-1">Gate</p>
-              <p className="text-white/60 text-[20px] sm:text-[26px] font-bold tracking-tight">{gate}</p>
-            </div>
+            {mission.facilitator && (
+              <div className="text-right">
+                <p className="text-mars/40 text-[9px] uppercase tracking-[0.4em] mb-1">Pilot</p>
+                <p className="text-white/60 text-[20px] sm:text-[26px] font-bold tracking-tight">{mission.facilitator}</p>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6">
@@ -158,12 +160,6 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
               <div>
                 <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Captain</p>
                 <p className="text-white/50 text-[13px]">{mission.captain}</p>
-              </div>
-            )}
-            {mission.facilitator && (
-              <div>
-                <p className="text-mars/35 text-[9px] uppercase tracking-[0.3em] mb-1">Pilot</p>
-                <p className="text-white/50 text-[13px]">{mission.facilitator}</p>
               </div>
             )}
           </div>
