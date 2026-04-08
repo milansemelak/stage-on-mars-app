@@ -36,11 +36,8 @@ export default function BoardingPass({ mission, initialCrewCount }: { mission: M
 
   const missionDate = new Date(mission.date).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
   const gate = `M-${String(mission.code.charCodeAt(0) % 20 + 1).padStart(2, "0")}`;
-  const rules = mission.rules ? mission.rules.split("\n").filter(Boolean) : DEFAULT_RULES;
-
-  const spotifyId = mission.spotify_url
-    ? mission.spotify_url.match(/playlist\/([a-zA-Z0-9]+)/)?.[1] || ""
-    : "";
+  const rules = DEFAULT_RULES;
+  const spotifyId = "33g5Ukkzcd2bUbvkKMMxr2";
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -245,24 +242,22 @@ export default function BoardingPass({ mission, initialCrewCount }: { mission: M
       </div>
 
       {/* ── SPOTIFY ── */}
-      {spotifyId && (
-        <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
-          <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-          <div className="px-6 sm:px-10 py-8">
-            <p className="text-mars/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-5">Mission Soundtrack</p>
-            <div className="rounded-xl overflow-hidden">
-              <iframe
-                src={`https://open.spotify.com/embed/playlist/${spotifyId}?utm_source=generator&theme=0`}
-                width="100%"
-                height="352"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-                className="border-0"
-              />
-            </div>
+      <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div className="px-6 sm:px-10 py-8">
+          <p className="text-mars/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-5">Mission Soundtrack</p>
+          <div className="rounded-xl overflow-hidden">
+            <iframe
+              src={`https://open.spotify.com/embed/playlist/${spotifyId}?utm_source=generator&theme=0`}
+              width="100%"
+              height="352"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              className="border-0"
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

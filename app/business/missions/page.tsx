@@ -10,13 +10,31 @@ export default function MissionsPage() {
   const [groupSize, setGroupSize] = useState("15-25");
   const [location, setLocation] = useState("Flagship stage");
   const [welcomeMessage, setWelcomeMessage] = useState("");
-  const [spotifyUrl, setSpotifyUrl] = useState("");
-  const [rules, setRules] = useState("");
+  const [generatingMessage, setGeneratingMessage] = useState(false);
   const [hostName, setHostName] = useState("");
   const [hostEmail, setHostEmail] = useState("");
   const [creating, setCreating] = useState(false);
   const [missionCode, setMissionCode] = useState("");
   const [copied, setCopied] = useState(false);
+
+  async function generateWelcome() {
+    if (!question.trim() || !company.trim()) return;
+    setGeneratingMessage(true);
+    try {
+      const res = await fetch("/api/generate-welcome", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ company, question }),
+      });
+      const data = await res.json();
+      if (data.response) {
+        setWelcomeMessage(data.response);
+      }
+    } catch {
+      // silently fail
+    }
+    setGeneratingMessage(false);
+  }
 
   async function handleCreate() {
     if (!company.trim() || !question.trim() || !date || !hostName.trim() || !hostEmail.trim()) return;
@@ -33,8 +51,8 @@ export default function MissionsPage() {
           location,
           venue: location,
           welcome_message: welcomeMessage,
-          spotify_url: spotifyUrl,
-          rules,
+          spotify_url: "https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2",
+          rules: "",
           host_name: hostName,
           host_email: hostEmail,
         }),
@@ -56,8 +74,6 @@ export default function MissionsPage() {
     setGroupSize("15-25");
     setLocation("Flagship stage");
     setWelcomeMessage("");
-    setSpotifyUrl("");
-    setRules("");
     setHostName("");
     setHostEmail("");
     setMissionCode("");
@@ -103,7 +119,7 @@ export default function MissionsPage() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>Question</label>
+                  <label className={labelClass}>Meta-question</label>
                   <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="What question will the crew play with?" rows={2} className={`${inputClass} resize-none`} />
                 </div>
 
@@ -141,23 +157,24 @@ export default function MissionsPage() {
                   </div>
                 </div>
 
-                {/* Customization */}
+                {/* Welcome message */}
                 <div className="pt-2">
-                  <p className="text-mars/40 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Customization</p>
-                  <div className="space-y-3">
-                    <div>
-                      <label className={labelClass}>Welcome message (optional)</label>
-                      <textarea value={welcomeMessage} onChange={(e) => setWelcomeMessage(e.target.value)} placeholder="A personal message for the crew..." rows={3} className={`${inputClass} resize-none`} />
-                    </div>
-                    <div>
-                      <label className={labelClass}>Spotify playlist URL (optional)</label>
-                      <input value={spotifyUrl} onChange={(e) => setSpotifyUrl(e.target.value)} placeholder="https://open.spotify.com/playlist/..." className={inputClass} />
-                    </div>
-                    <div>
-                      <label className={labelClass}>Custom rules (optional)</label>
-                      <textarea value={rules} onChange={(e) => setRules(e.target.value)} placeholder="One rule per line..." rows={3} className={`${inputClass} resize-none`} />
-                    </div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-white/30 text-[10px] uppercase tracking-[0.2em]">Welcome message</label>
+                    <button
+                      type="button"
+                      onClick={generateWelcome}
+                      disabled={generatingMessage || !question.trim() || !company.trim()}
+                      className={`text-[10px] uppercase tracking-[0.15em] font-bold transition-colors ${
+                        generatingMessage || !question.trim() || !company.trim()
+                          ? "text-white/15 cursor-not-allowed"
+                          : "text-mars/50 hover:text-mars"
+                      }`}
+                    >
+                      {generatingMessage ? "Generating..." : "Generate with AI"}
+                    </button>
                   </div>
+                  <textarea value={welcomeMessage} onChange={(e) => setWelcomeMessage(e.target.value)} placeholder="Invitation to play..." rows={5} className={`${inputClass} resize-none`} />
                 </div>
 
                 <button
