@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase-server";
 import BoardingPass from "@/components/BoardingPass";
+import MissionGate from "@/components/MissionGate";
 import type { Mission } from "@/lib/types";
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }) {
@@ -52,7 +53,9 @@ export default async function MissionPage({ params }: { params: Promise<{ code: 
     question: c.question || "",
   }));
 
-  return (
+  const hasPassword = !!(mission.password);
+
+  const content = (
     <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED]">
       {/* Top bar */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.04]">
@@ -91,4 +94,10 @@ export default async function MissionPage({ params }: { params: Promise<{ code: 
       </div>
     </div>
   );
+
+  if (hasPassword) {
+    return <MissionGate missionCode={code}>{content}</MissionGate>;
+  }
+
+  return content;
 }

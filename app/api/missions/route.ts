@@ -14,7 +14,7 @@ function generateCode(company: string): string {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { company, question, date, location, group_size, venue, welcome_message, spotify_url, rules, host_name, host_email, time, captain, facilitator, dresscode, maps_url } = body;
+    const { company, question, date, location, group_size, venue, welcome_message, spotify_url, rules, host_name, host_email, time, captain, facilitator, dresscode, maps_url, password } = body;
 
     if (!company || !question || !date) {
       return NextResponse.json({ error: "Company, question, and date are required" }, { status: 400 });
@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
         facilitator: facilitator || "",
         dresscode: dresscode || "Dress to Play",
         maps_url: maps_url || "",
+        password: password || "",
       })
       .select()
       .single();

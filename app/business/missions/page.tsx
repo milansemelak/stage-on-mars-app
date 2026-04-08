@@ -18,6 +18,7 @@ export default function MissionsPage() {
   const [facilitator, setFacilitator] = useState("");
   const [dresscode, setDresscode] = useState("Dress to Play");
   const [mapsUrl, setMapsUrl] = useState("");
+  const [password, setPassword] = useState("");
   const [creating, setCreating] = useState(false);
   const [missionCode, setMissionCode] = useState("");
   const [copied, setCopied] = useState(false);
@@ -65,6 +66,7 @@ export default function MissionsPage() {
           facilitator,
           dresscode,
           maps_url: mapsUrl,
+          password,
         }),
       });
       const data = await res.json();
@@ -91,6 +93,7 @@ export default function MissionsPage() {
     setFacilitator("");
     setDresscode("Dress to Play");
     setMapsUrl("");
+    setPassword("");
     setMissionCode("");
     setCopied(false);
   }
@@ -170,9 +173,15 @@ export default function MissionsPage() {
                       <input value={dresscode} onChange={(e) => setDresscode(e.target.value)} placeholder="Dress to Play" className={inputClass} />
                     </div>
                   </div>
-                  <div className="mb-3">
-                    <label className={labelClass}>Google Maps URL</label>
-                    <input value={mapsUrl} onChange={(e) => setMapsUrl(e.target.value)} placeholder="https://maps.google.com/..." className={inputClass} />
+                  <div className="flex flex-col sm:flex-row gap-3 mb-3">
+                    <div className="flex-1">
+                      <label className={labelClass}>Google Maps URL</label>
+                      <input value={mapsUrl} onChange={(e) => setMapsUrl(e.target.value)} placeholder="https://maps.google.com/..." className={inputClass} />
+                    </div>
+                    <div className="flex-1">
+                      <label className={labelClass}>Password (optional)</label>
+                      <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Leave empty for open access" className={inputClass} />
+                    </div>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <div className="flex-1">

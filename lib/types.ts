@@ -70,6 +70,7 @@ export type Mission = {
   facilitator: string;
   dresscode: string;
   maps_url: string;
+  password: string;
   created_at: string;
 };
 
