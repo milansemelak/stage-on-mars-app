@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import type { Play, Perspective } from "@/lib/types";
 import StageSimulation from "@/components/StageSimulation";
 
@@ -106,15 +107,13 @@ function SimulatePageInner() {
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
       `}</style>
 
-      {/* Header */}
-      <div className="pt-8 sm:pt-12 pb-4 px-4">
-        <div className="max-w-3xl mx-auto">
-          <a href="/business" className="group/logo inline-flex items-center gap-2 mb-6">
-            <svg className="w-4 h-4 text-white/30 group-hover/logo:text-mars/60 transition-colors" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
-            <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-10 w-auto invert opacity-40 group-hover/logo:opacity-80 transition-opacity" />
-          </a>
-        </div>
-      </div>
+      {/* Top bar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.04]">
+        <Link href="/business">
+          <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto invert opacity-70 hover:opacity-100 transition-opacity" />
+        </Link>
+      </nav>
+      <div className="pt-16" />
 
       {/* Page content */}
       <section className="relative px-4">

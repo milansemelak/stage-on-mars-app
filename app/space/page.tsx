@@ -26,6 +26,13 @@ const FORMATS = [
 export default function SpacePage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Top bar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-black/40 backdrop-blur-md">
+        <Link href="/business">
+          <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto invert opacity-70 hover:opacity-100 transition-opacity" />
+        </Link>
+      </nav>
+
       {/* Hero */}
       <section className="relative h-screen">
         <img
@@ -243,13 +250,12 @@ export default function SpacePage() {
             </a>
           </div>
 
-          {/* Back to home */}
           <div className="mt-16 pt-8 border-t border-white/[0.06]">
             <Link
               href="/business"
               className="text-white/30 hover:text-white/70 text-sm transition-colors"
             >
-              &larr; Home
+              Home
             </Link>
           </div>
         </div>

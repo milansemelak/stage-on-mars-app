@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import type { Play, Perspective } from "@/lib/types";
 import StageSimulation from "@/components/StageSimulation";
 
@@ -437,6 +438,12 @@ function PlayPageInner() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] overflow-x-hidden">
+      {/* Top bar */}
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.04]">
+        <Link href="/business">
+          <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto invert opacity-70 hover:opacity-100 transition-opacity" />
+        </Link>
+      </nav>
 
       <style jsx global>{`
         @keyframes glow-pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.15); } }
