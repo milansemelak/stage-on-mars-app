@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 
-const STANDALONE_ROUTES_PREFIX = ["/business", "/space", "/link"];
+const STANDALONE_ROUTES_PREFIX = ["/business", "/space", "/link", "/tv"];
 const STANDALONE_ROUTES_EXACT = ["/"];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
