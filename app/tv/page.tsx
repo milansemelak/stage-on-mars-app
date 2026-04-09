@@ -136,7 +136,7 @@ export default function TVPage() {
           </div>
           <div>
             <p className="text-neutral-400 text-[10px] uppercase tracking-[0.15em] font-bold mb-1">Účastníci</p>
-            <p className="text-[14px] font-semibold">Yemi A.D. a moderátor (Playmaker)</p>
+            <p className="text-[14px] font-semibold">Yemi A.D. a Milan Šemelák</p>
           </div>
           <div>
             <p className="text-neutral-400 text-[10px] uppercase tracking-[0.15em] font-bold mb-1">Cieľ</p>
