@@ -60,7 +60,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
       <div className="max-w-lg mx-auto px-5 sm:px-6 pb-16">
 
-        {/* ═══ THE TICKET ═══ */}
+        {/* ═══ ONE UNIFIED TICKET ═══ */}
         <div className="bg-black rounded-3xl overflow-hidden shadow-[0_4px_60px_-12px_rgba(0,0,0,0.25)] mb-6">
 
           {/* Header — logo + picto */}
@@ -147,7 +147,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             </p>
           </div>
 
-          {/* Welcome message — compact */}
+          {/* Welcome message */}
           {mission.welcome_message && (
             <div className="px-8 sm:px-12 pb-8">
               <div className="border-t border-white/[0.08] pt-6">
@@ -234,60 +234,57 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             </div>
           )}
 
-        </div>
-
-        {/* ═══ SOUNDTRACK ═══ */}
-        <div className="bg-black rounded-3xl px-8 sm:px-12 py-8 mb-4 shadow-[0_4px_60px_-12px_rgba(0,0,0,0.15)]">
-          <div className="flex items-start justify-between mb-4">
-            <div>
+          {/* Soundtrack — inside the ticket */}
+          <div className="px-8 sm:px-12 py-8">
+            <div className="border-t border-white/[0.08] pt-5">
               <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Soundtrack</p>
-              <p className="text-white/30 text-[13px]">
+              <p className="text-white/30 text-[12px] mb-4">
                 Add your song to the{" "}
                 <a href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2" target="_blank" rel="noopener noreferrer" className="text-mars font-semibold hover:underline">
                   playlist
                 </a>. It might become part of the game.
               </p>
+              <div className="rounded-xl overflow-hidden">
+                <iframe
+                  src="https://open.spotify.com/embed/playlist/33g5Ukkzcd2bUbvkKMMxr2?utm_source=generator&theme=0"
+                  width="100%"
+                  height="352"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  className="border-0"
+                />
+              </div>
             </div>
-            <img src="/picto.png" alt="" className="h-8 w-auto opacity-30 ml-4 shrink-0" />
           </div>
-          <div className="rounded-xl overflow-hidden">
-            <iframe
-              src="https://open.spotify.com/embed/playlist/33g5Ukkzcd2bUbvkKMMxr2?utm_source=generator&theme=0"
-              width="100%"
-              height="352"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              className="border-0"
-            />
+
+          {/* Codex of Mars — small pill buttons */}
+          <div className="px-8 sm:px-12 pb-10">
+            <div className="border-t border-white/[0.08] pt-5">
+              <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-4">Codex of Mars</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {CODEX.map((rule, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setOpenCodex(openCodex === i ? null : i)}
+                    className={`px-3 py-1.5 rounded-full text-[11px] font-medium transition-all ${
+                      openCodex === i
+                        ? "bg-mars/20 text-mars border border-mars/30"
+                        : "bg-white/[0.06] text-white/40 border border-white/[0.08] hover:text-white/60 hover:border-white/15"
+                    }`}
+                  >
+                    {rule.title}
+                  </button>
+                ))}
+              </div>
+              {openCodex !== null && (
+                <p className="text-white/35 text-[12px] leading-[1.6] pl-1">{CODEX[openCodex].body}</p>
+              )}
+            </div>
           </div>
+
         </div>
 
-        {/* ═══ CODEX OF MARS — clickable accordion ═══ */}
-        <div className="bg-black rounded-3xl px-8 sm:px-12 py-8 mb-6 shadow-[0_4px_60px_-12px_rgba(0,0,0,0.15)]">
-          <div className="flex items-start justify-between mb-5">
-            <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold">Codex of Mars</p>
-            <img src="/picto.png" alt="" className="h-8 w-auto opacity-30 ml-4 shrink-0" />
-          </div>
-          <div className="space-y-0">
-            {CODEX.map((rule, i) => (
-              <button
-                key={i}
-                onClick={() => setOpenCodex(openCodex === i ? null : i)}
-                className="w-full text-left border-b border-white/[0.06] last:border-0"
-              >
-                <div className="flex items-center justify-between py-3">
-                  <p className="text-white/50 text-[12px] sm:text-[13px] font-medium">{rule.title}</p>
-                  <span className={`text-white/20 text-[14px] transition-transform duration-200 ${openCodex === i ? "rotate-45" : ""}`}>+</span>
-                </div>
-                {openCodex === i && (
-                  <p className="text-white/30 text-[12px] leading-[1.6] pb-3 pr-6">{rule.body}</p>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ═══ FOOTER ═══ */}
+        {/* Footer */}
         <div className="pt-4 pb-4 flex flex-col items-center gap-3">
           <img src="/logo.png" alt="Stage on Mars" className="h-7 opacity-20" />
           <a href="mailto:play@stageonmars.com" className="text-neutral-300 text-[11px] hover:text-neutral-500 transition-colors">play@stageonmars.com</a>
