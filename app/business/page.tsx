@@ -425,7 +425,7 @@ export default function BusinessPage() {
                   {t.contactQ}
                 </h2>
                 <p className="font-mercure italic text-white/35 text-[12px] sm:text-[14px] mb-10 max-w-sm mx-auto">
-                  {t.formulaBody}
+                  Enter your question and we will build the right play for you.
                 </p>
                 <Link
                   href="/business/play"
