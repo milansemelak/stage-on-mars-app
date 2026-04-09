@@ -373,10 +373,10 @@ export default function BusinessPage() {
               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
               <div className="relative z-10 px-4 sm:px-8 pt-8 sm:pt-12 pb-5 sm:pb-8">
-                <p className="font-mercure italic text-[16px] sm:text-[28px] leading-[1.2] text-center mx-auto mb-8 sm:mb-10">
+                <p className="font-mercure italic text-[16px] sm:text-[28px] leading-[1.3] text-center mx-auto mb-8 sm:mb-10">
                   <span className="text-white/90">The strategy is there.</span>
-                  <br className="sm:hidden" />
-                  <span className="text-white/20 sm:ml-2">But nothing turns into action.</span>
+                  <br />
+                  <span className="text-white/20">But nothing turns into action.</span>
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
@@ -387,7 +387,7 @@ export default function BusinessPage() {
                     <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
                     <p className="text-white/50 text-[13px] leading-[1.5]">left with a clear direction</p>
                   </div>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
                     <div className="shrink-0">
                       <p className="font-black tracking-[-0.03em] leading-none">
                         <span className="text-white/90 text-[22px] sm:text-[30px]">Weeks</span>
@@ -397,7 +397,7 @@ export default function BusinessPage() {
                       <p className="text-white/30 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">time to clarity</p>
                     </div>
                     <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[13px] leading-[1.5]">what took weeks of talking was played out in hours</p>
+                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">weeks of talking played out in hours</p>
                   </div>
                   <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
                     <div className="shrink-0">
