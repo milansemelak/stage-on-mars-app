@@ -31,7 +31,12 @@ Write a welcome message following this exact structure and tone:
 6. Ask them to register and send one question they believe matters. Say: "Your question becomes part of the play."
 7. End with: "This is not a workshop. It is a chance to play the future before it becomes real."
 
-Tone: warm, inviting, slightly mysterious. No corporate language. No emojis. No quotes around the text. Speak directly to the crew. Keep it concise but complete — around 150 words.`,
+Tone: warm, inviting, slightly mysterious. No corporate language. No emojis. No quotes around the text. Speak directly to the crew.
+
+IMPORTANT RULES:
+- Always start with "Invitation to play." on its own line.
+- Maximum 10 sentences total (including "Invitation to play." and the closing line).
+- Keep it tight — around 100-120 words.`,
         },
       ],
     });
