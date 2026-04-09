@@ -2,6 +2,27 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Human on Mars \u2014 Talks from Outer Space",
+  description: "Produkčný brief. Yemi A.D. on Mars. Stage on Mars Presents.",
+  openGraph: {
+    title: "Human on Mars",
+    description: "Talks from Outer Space. Produkčný brief.",
+    siteName: "Stage on Mars",
+    type: "website",
+    images: [
+      {
+        url: "/stage.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Stage on Mars \u2014 the circular stage",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Human on Mars",
+    description: "Talks from Outer Space. Produkčný brief.",
+    images: ["/stage.jpg"],
+  },
 };
 
 const STRUCTURE = [
