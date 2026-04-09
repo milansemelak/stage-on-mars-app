@@ -378,31 +378,36 @@ export default function BusinessPage() {
                   <br className="sm:hidden" />
                   <span className="text-white/20 sm:ml-2">But nothing turns into action.</span>
                 </p>
-                <div className="grid grid-cols-3 gap-2 sm:gap-4">
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center">
-                    <p className="text-mars text-[28px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">80%</p>
-                    <p className="text-white/30 text-[8px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">of teams</p>
-                    <div className="h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">left with a clear direction</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
+                    <div className="shrink-0">
+                      <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">80%</p>
+                      <p className="text-white/30 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">of teams</p>
+                    </div>
+                    <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <p className="text-white/50 text-[13px] leading-[1.5]">left with a clear direction</p>
                   </div>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center">
-                    <p className="font-black tracking-[-0.03em] leading-[1.15] sm:leading-none">
-                      <span className="text-white/90 text-[16px] sm:text-[30px]">Weeks</span>
-                      <span className="text-mars/40 mx-0.5 text-[11px] sm:text-[18px]">→</span>
-                      <br className="sm:hidden" />
-                      <span className="text-mars text-[20px] sm:text-[30px] drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">Hours</span>
-                    </p>
-                    <p className="text-white/30 text-[8px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">time to clarity</p>
-                    <div className="h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">what took weeks of talking was played out in hours</p>
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
+                    <div className="shrink-0">
+                      <p className="font-black tracking-[-0.03em] leading-none">
+                        <span className="text-white/90 text-[22px] sm:text-[30px]">Weeks</span>
+                        <span className="text-mars/40 mx-1 text-[14px] sm:text-[18px]">&rarr;</span>
+                        <span className="text-mars text-[22px] sm:text-[30px] drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">Hours</span>
+                      </p>
+                      <p className="text-white/30 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">time to clarity</p>
+                    </div>
+                    <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <p className="text-white/50 text-[13px] leading-[1.5]">what took weeks of talking was played out in hours</p>
                   </div>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center">
-                    <p className="text-mars text-[28px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">
-                      9<span className="text-white/15 text-[20px] sm:text-[32px] mx-0.5">/</span>10
-                    </p>
-                    <p className="text-white/30 text-[8px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">teams</p>
-                    <div className="h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">unblocked a stuck decision</p>
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
+                    <div className="shrink-0">
+                      <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">
+                        9<span className="text-white/15 text-[24px] sm:text-[32px] mx-0.5">/</span>10
+                      </p>
+                      <p className="text-white/30 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">teams</p>
+                    </div>
+                    <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <p className="text-white/50 text-[13px] leading-[1.5]">unblocked a stuck decision</p>
                   </div>
                 </div>
               </div>
@@ -410,21 +415,22 @@ export default function BusinessPage() {
           </div>
 
           {/* ── BUILD YOUR PLAY — CTA ── */}
-          <FadeIn className="px-4 py-6 sm:py-10">
+          <FadeIn className="px-4 py-10 sm:py-16">
             <div className="max-w-3xl mx-auto text-center">
               <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">{t.letsMakeIt}</p>
-              <h2 className="text-[24px] sm:text-[36px] font-bold tracking-[-0.03em] mb-3">
+              <h2 className="text-[22px] sm:text-[32px] font-bold tracking-[-0.03em] mb-3">
                 {t.contactQ}
               </h2>
-              <p className="font-mercure italic text-white/45 text-[13px] sm:text-[15px] mb-8 max-w-md mx-auto">
+              <p className="font-mercure italic text-white/35 text-[12px] sm:text-[14px] mb-8 max-w-sm mx-auto">
                 {t.formulaBody}
               </p>
               <Link
                 href="/business/play"
-                className="inline-flex items-center px-10 sm:px-14 py-5 sm:py-6 rounded-2xl font-black text-[16px] sm:text-[18px] uppercase tracking-[0.1em] text-white transition-all hover:scale-[1.02]"
-                style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
+                className="inline-flex items-center gap-2 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-[13px] sm:text-[15px] uppercase tracking-[0.12em] text-white transition-all hover:scale-[1.03] hover:shadow-[0_12px_50px_-10px_rgba(255,85,0,0.6)]"
+                style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 100%)", boxShadow: "0 4px 24px -4px rgba(255,85,0,0.4)" }}
               >
-                {t.buildPlay} →
+                {t.buildPlay}
+                <span className="text-white/60">&rarr;</span>
               </Link>
             </div>
           </FadeIn>
