@@ -122,9 +122,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TEAR: black → orange ═══ */}
         <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="border-t border-dashed border-white/[0.06] mx-6" />
         </div>
 
         {/* ═══ TICKET: CAPTAIN'S QUESTION — orange band ═══ */}
@@ -140,13 +140,13 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           <>
             {/* ═══ TEAR: orange → black ═══ */}
             <div className="relative">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-              <div className="border-t border-dashed border-white/15 mx-6" />
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+              <div className="border-t border-dashed border-white/[0.06] mx-6" />
             </div>
             <div className="bg-black px-8 sm:px-10 py-6">
-              <p className="text-white/50 text-[13px] leading-[1.6] whitespace-pre-line">
-                {mission.welcome_message}
+              <p className="text-white text-[13px] leading-[1.3] whitespace-pre-line [&]:my-0">
+                {mission.welcome_message?.replace(/\n{2,}/g, '\n')}
               </p>
             </div>
           </>
@@ -154,9 +154,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TEAR: → orange ═══ */}
         <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="border-t border-dashed border-white/[0.06] mx-6" />
         </div>
 
         {/* ═══ TICKET: CREW MANIFEST — orange band ═══ */}
@@ -177,9 +177,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TEAR: orange → black ═══ */}
         <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="border-t border-dashed border-white/[0.06] mx-6" />
         </div>
 
         {/* ═══ TICKET: REGISTRATION ═══ */}
@@ -221,9 +221,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           <>
           {/* ═══ TEAR ═══ */}
           <div className="relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-            <div className="border-t border-dashed border-white/15 mx-6" />
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+            <div className="border-t border-dashed border-white/[0.06] mx-6" />
           </div>
           <div className="bg-mars px-8 sm:px-10 py-5 text-center">
             <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">Questions to Play</p>
@@ -242,9 +242,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TEAR ═══ */}
         <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="border-t border-dashed border-white/[0.06] mx-6" />
         </div>
 
         {/* ═══ TICKET: RULES OF MARS ═══ */}
@@ -272,9 +272,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TEAR ═══ */}
         <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="border-t border-dashed border-white/[0.06] mx-6" />
         </div>
 
         {/* ═══ TICKET: SOUNDTRACK ═══ */}
@@ -303,9 +303,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TEAR ═══ */}
         <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-4 h-4 rounded-full bg-white z-10" />
+          <div className="border-t border-dashed border-white/[0.06] mx-6" />
         </div>
 
         {/* ═══ TICKET: CODEX OF MARS ═══ */}
