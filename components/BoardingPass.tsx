@@ -6,7 +6,7 @@ import type { Mission } from "@/lib/types";
 
 type CrewMember = { name: string; question: string };
 
-const CODEX = [
+const RULES = [
   { title: "Freedom", body: "Ask anything, create anything. No judgement." },
   { title: "Responsibility", body: "Your boundaries are yours. Say no anytime." },
   { title: "Alcohol", body: "No substances. The game is enough." },
@@ -26,7 +26,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
   const [registered, setRegistered] = useState(false);
   const [error, setError] = useState("");
   const [crew, setCrew] = useState<CrewMember[]>(initialCrew);
-  const [openCodex, setOpenCodex] = useState<number | null>(null);
+  const [openRule, setOpenRule] = useState<number | null>(null);
 
   const dateFormatted = new Date(mission.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
@@ -120,66 +120,53 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           </div>
         </div>
 
-        {/* ═══ TEAR: black → orange ═══ */}
+        {/* ═══ TEAR ═══ */}
         <div className="relative">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
           <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
         </div>
 
-        {/* ═══ TICKET: CAPTAIN'S QUESTION — orange band ═══ */}
-        <div className="bg-mars px-8 sm:px-10 py-6 text-center">
-          <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">The Captain&apos;s Question</p>
-          <p className="font-mercure italic text-black text-[20px] sm:text-[26px] leading-[1.3]">
+        {/* ═══ CAPTAIN'S QUESTION — hero orange band, bigger ═══ */}
+        <div className="bg-mars px-8 sm:px-10 py-10 text-center">
+          <p className="text-black/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">The Captain&apos;s Question</p>
+          <p className="font-mercure italic text-black text-[24px] sm:text-[32px] leading-[1.2]">
             &ldquo;{mission.question}&rdquo;
           </p>
         </div>
 
-        {/* Welcome message */}
-        {mission.welcome_message && (
-          <>
-            {/* ═══ TEAR: orange → black ═══ */}
-            <div className="relative">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-                </div>
-            <div className="bg-black px-8 sm:px-10 py-6">
+        {/* ═══ TEAR ═══ */}
+        <div className="relative">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
+        </div>
+
+        {/* ═══ WELCOME + CREW + REGISTRATION — consolidated black section ═══ */}
+        <div className="bg-black px-8 sm:px-10 py-6">
+
+          {/* Welcome message */}
+          {mission.welcome_message && (
+            <div className="mb-6 pb-6 border-b border-white/[0.08]">
               <p className="text-white/80 text-[13px] leading-[1.5] whitespace-pre-line">
                 {mission.welcome_message}
               </p>
             </div>
-          </>
-        )}
-
-        {/* ═══ TEAR: → orange ═══ */}
-        <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-        </div>
-
-        {/* ═══ TICKET: CREW MANIFEST — orange band ═══ */}
-        <div className="bg-mars px-8 sm:px-10 py-6 text-center">
-          <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Crew Manifest</p>
-          {crew.length > 0 ? (
-            <div>
-              {crew.map((member, i) => (
-                <div key={i} className="py-1.5 border-b border-black/[0.08] last:border-0">
-                  <span className="text-black text-[14px] font-medium">{member.name}</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-black/30 text-[13px]">No crew members yet. Be the first to board.</p>
           )}
-        </div>
 
-        {/* ═══ TEAR: orange → black ═══ */}
-        <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-        </div>
+          {/* Crew manifest — inline */}
+          <div className="mb-6 pb-6 border-b border-white/[0.08]">
+            <p className="text-mars text-[10px] uppercase tracking-[0.2em] font-bold mb-3 text-center">Crew Manifest</p>
+            {crew.length > 0 ? (
+              <div className="text-center">
+                <p className="text-white/60 text-[14px]">
+                  {crew.map((m) => m.name).join(" · ")}
+                </p>
+              </div>
+            ) : (
+              <p className="text-white/20 text-[13px] text-center">No crew members yet. Be the first to board.</p>
+            )}
+          </div>
 
-        {/* ═══ TICKET: REGISTRATION ═══ */}
-        <div className="bg-black px-8 sm:px-10 py-6">
+          {/* Registration */}
           {!registered ? (
             <>
               <p className="text-mars text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-center">Board This Mission</p>
@@ -215,11 +202,10 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         {/* ═══ QUESTIONS TO PLAY — orange band ═══ */}
         {crew.some((m) => m.question) && (
           <>
-          {/* ═══ TEAR ═══ */}
           <div className="relative">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
             <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-            </div>
+          </div>
           <div className="bg-mars px-8 sm:px-10 py-5 text-center">
             <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">Questions to Play</p>
             <div className="space-y-1">
@@ -241,27 +227,54 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
         </div>
 
-        {/* ═══ TICKET: RULES OF MARS ═══ */}
-        <div className="bg-black px-8 sm:px-10 py-6 text-center">
-          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Rules of Mars</p>
-          <div className="flex flex-wrap justify-center gap-1.5 mb-3">
-            {CODEX.map((rule, i) => (
-              <button
-                key={i}
-                onClick={() => setOpenCodex(openCodex === i ? null : i)}
-                className={`px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${
-                  openCodex === i
-                    ? "bg-mars/20 text-mars border border-mars/30"
-                    : "bg-white/[0.05] text-white/30 border border-white/[0.06] hover:text-white/50 hover:border-white/12"
-                }`}
-              >
-                {rule.title}
-              </button>
-            ))}
+        {/* ═══ RULES + SOUNDTRACK — consolidated black section ═══ */}
+        <div className="bg-black px-8 sm:px-10 py-6">
+          {/* Rules */}
+          <div className="text-center mb-6 pb-6 border-b border-white/[0.08]">
+            <p className="text-mars text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Rules of Mars</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {RULES.map((rule, i) => (
+                <button
+                  key={i}
+                  onClick={() => setOpenRule(openRule === i ? null : i)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all ${
+                    openRule === i
+                      ? "bg-mars text-white"
+                      : "bg-white/[0.08] text-white/50 hover:text-white/80 hover:bg-white/[0.12]"
+                  }`}
+                >
+                  {rule.title}
+                </button>
+              ))}
+            </div>
+            {openRule !== null && (
+              <p className="text-white/50 text-[12px] leading-[1.5] mt-3">{RULES[openRule].body}</p>
+            )}
           </div>
-          {openCodex !== null && (
-            <p className="text-white/30 text-[11px] leading-[1.5]">{CODEX[openCodex].body}</p>
-          )}
+
+          {/* Soundtrack */}
+          <div className="text-center">
+            <p className="text-mars text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Soundtrack</p>
+            <div className="rounded-xl overflow-hidden mb-4">
+              <iframe
+                src="https://open.spotify.com/embed/playlist/33g5Ukkzcd2bUbvkKMMxr2?utm_source=generator&theme=0"
+                width="100%"
+                height="152"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                className="border-0"
+              />
+            </div>
+            <a
+              href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-[12px] font-bold uppercase tracking-[0.05em] transition-colors"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+              Add Your Music
+            </a>
+          </div>
         </div>
 
         {/* ═══ TEAR ═══ */}
@@ -270,48 +283,14 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
         </div>
 
-        {/* ═══ TICKET: SOUNDTRACK ═══ */}
-        <div className="bg-mars px-8 sm:px-10 py-6 text-center">
-          <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Soundtrack</p>
-          <div className="rounded-xl overflow-hidden mb-4">
-            <iframe
-              src="https://open.spotify.com/embed/playlist/33g5Ukkzcd2bUbvkKMMxr2?utm_source=generator&theme=0"
-              width="100%"
-              height="152"
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-              className="border-0"
-            />
-          </div>
-          <a
-            href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black text-white text-[12px] font-bold uppercase tracking-[0.05em] transition-colors hover:bg-black/80"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-            Add Your Music
-          </a>
-        </div>
-
-        {/* ═══ TEAR ═══ */}
-        <div className="relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-white z-10" />
-        </div>
-
-        {/* ═══ TICKET: CODEX OF MARS ═══ */}
+        {/* ═══ CODEX — compact closing, just a link ═══ */}
         <div className="bg-black rounded-b-3xl overflow-hidden px-8 sm:px-10 py-6 text-center">
-          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Codex of Mars</p>
-          <p className="font-mercure italic text-white/50 text-[13px] sm:text-[14px] leading-relaxed max-w-sm mx-auto mb-3">
-            A place where people play with reality to create what&apos;s next. At the core is Systemic Play — imagination, theatre, and systemic constellations.
-          </p>
-          <p className="text-mars/40 text-[10px] tracking-[0.15em] font-bold mb-3">
+          <p className="text-mars/40 text-[10px] tracking-[0.15em] font-bold mb-2">
             Freedom · Responsibility · Humor · Humility · Truthfulness
           </p>
-          <a href="/business/codex" className="text-mars hover:text-mars-light text-[11px] font-bold uppercase tracking-[0.1em] transition-colors">
-            Read the full Codex →
-          </a>
+          <Link href="/business/codex" className="text-mars hover:text-mars-light text-[12px] font-bold uppercase tracking-[0.1em] transition-colors">
+            Read the Codex of Mars →
+          </Link>
         </div>
 
         {/* Footer */}
