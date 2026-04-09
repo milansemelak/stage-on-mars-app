@@ -322,52 +322,7 @@ export default function BusinessPage() {
             </div>
 
 
-          {/* ── CREDIBILITY / STATS ── */}
-          <div className="w-full max-w-3xl mx-auto mb-6 sm:mb-10">
-            <div className="relative rounded-2xl border border-white/[0.15] overflow-hidden" style={{ background: "linear-gradient(160deg, rgba(255,85,0,0.08) 0%, rgba(10,10,10,0.95) 40%, rgba(10,10,10,0.98) 100%)" }}>
-              {/* Top accent line */}
-              <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
-              {/* Cinematic warm glow */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-[50%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.12) 0%, transparent 70%)" }} />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
-              {/* Inner border glow */}
-              <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(255,85,0,0.05)" }} />
-              <div className="relative z-10 px-6 sm:px-10 py-10 sm:py-14">
-                <p className="font-mercure italic text-[18px] sm:text-[28px] leading-[1.2] text-center mx-auto mb-10 sm:mb-14">
-                  <span className="text-white/90">The strategy is there.</span>
-                  <span className="text-white/25 ml-1 sm:ml-2">But nothing turns into action.</span>
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
-                  {/* Stat 1 */}
-                  <div className="text-center sm:text-left">
-                    <p className="text-mars text-[36px] sm:text-[42px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_24px_rgba(255,85,0,0.2)]">
-                      80%<span className="text-white/30 text-[16px] sm:text-[18px] font-bold tracking-normal ml-1.5">of teams</span>
-                    </p>
-                    <p className="text-white/45 text-[12px] sm:text-[13px] mt-3 leading-[1.4]">left with a clear direction</p>
-                  </div>
-                  {/* Stat 2 */}
-                  <div className="text-center sm:text-left sm:border-l sm:border-white/[0.08] sm:pl-6">
-                    <p className="text-[28px] sm:text-[34px] font-black tracking-[-0.03em] leading-none">
-                      <span className="text-white/80">Weeks</span>
-                      <span className="text-mars/40 mx-1.5 text-[18px] sm:text-[22px]">→</span>
-                      <span className="text-mars drop-shadow-[0_0_24px_rgba(255,85,0,0.2)]">Hours</span>
-                    </p>
-                    <p className="text-white/45 text-[12px] sm:text-[13px] mt-3 leading-[1.4]">what took weeks of talking was played out in hours</p>
-                  </div>
-                  {/* Stat 3 */}
-                  <div className="text-center sm:text-left sm:border-l sm:border-white/[0.08] sm:pl-6">
-                    <p className="text-mars text-[36px] sm:text-[42px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_24px_rgba(255,85,0,0.2)]">
-                      9<span className="text-white/20 text-[28px] sm:text-[32px]"> / </span>10
-                      <span className="text-white/30 text-[16px] sm:text-[18px] font-bold tracking-normal ml-1.5">teams</span>
-                    </p>
-                    <p className="text-white/45 text-[12px] sm:text-[13px] mt-3 leading-[1.4]">unblocked a stuck decision</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ── SOCIAL PROOF — right after stats ── */}
+          {/* ── SOCIAL PROOF ── */}
           <div className="w-full max-w-3xl mx-auto mb-8 sm:mb-12">
               <div className="relative rounded-2xl overflow-hidden">
                 <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.25]" style={{ objectPosition: "50% 35%" }} />
@@ -375,20 +330,18 @@ export default function BusinessPage() {
                 <div className="absolute inset-0 border border-white/[0.15] rounded-2xl pointer-events-none" />
 
                 <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-12">
-                  <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-6 mb-8 sm:mb-10">
                     <div className="text-center">
-                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
-                      <p className="text-white/50 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-1">{t.realityPlays}</p>
+                      <p className="text-[26px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
+                      <p className="text-white/50 text-[9px] sm:text-[12px] uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-1">{t.realityPlays}</p>
                     </div>
-                    <div className="w-px h-10 bg-white/[0.12]" />
-                    <div className="text-center">
-                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">5</p>
-                      <p className="text-white/50 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-1">{t.countries}</p>
+                    <div className="text-center border-x border-white/[0.08]">
+                      <p className="text-[26px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">5</p>
+                      <p className="text-white/50 text-[9px] sm:text-[12px] uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-1">{t.countries}</p>
                     </div>
-                    <div className="w-px h-10 bg-white/[0.12]" />
                     <div className="text-center">
-                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
-                      <p className="text-white/50 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-1">{t.founded}</p>
+                      <p className="text-[26px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
+                      <p className="text-white/50 text-[9px] sm:text-[12px] uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-1">{t.founded}</p>
                     </div>
                   </div>
 
@@ -422,6 +375,48 @@ export default function BusinessPage() {
                 </div>
               </div>
             </div>
+
+          {/* ── CREDIBILITY / STATS ── */}
+          <div className="w-full max-w-3xl mx-auto mb-6 sm:mb-10">
+            <div className="relative rounded-2xl border border-white/[0.12] overflow-hidden bg-white/[0.03]">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
+              <div className="relative z-10 px-4 sm:px-8 pt-8 sm:pt-12 pb-5 sm:pb-8">
+                <p className="font-mercure italic text-[16px] sm:text-[28px] leading-[1.2] text-center mx-auto mb-8 sm:mb-10">
+                  <span className="text-white/90">The strategy is there.</span>
+                  <br className="sm:hidden" />
+                  <span className="text-white/20 sm:ml-2">But nothing turns into action.</span>
+                </p>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center">
+                    <p className="text-mars text-[28px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">80%</p>
+                    <p className="text-white/30 text-[8px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">of teams</p>
+                    <div className="h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">left with a clear direction</p>
+                  </div>
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center">
+                    <p className="font-black tracking-[-0.03em] leading-[1.15] sm:leading-none">
+                      <span className="text-white/90 text-[16px] sm:text-[30px]">Weeks</span>
+                      <span className="text-mars/40 mx-0.5 text-[11px] sm:text-[18px]">→</span>
+                      <br className="sm:hidden" />
+                      <span className="text-mars text-[20px] sm:text-[30px] drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">Hours</span>
+                    </p>
+                    <p className="text-white/30 text-[8px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">time to clarity</p>
+                    <div className="h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">what took weeks of talking was played out in hours</p>
+                  </div>
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center">
+                    <p className="text-mars text-[28px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">
+                      9<span className="text-white/15 text-[20px] sm:text-[32px] mx-0.5">/</span>10
+                    </p>
+                    <p className="text-white/30 text-[8px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">teams</p>
+                    <div className="h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">unblocked a stuck decision</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="w-full max-w-3xl">
 
