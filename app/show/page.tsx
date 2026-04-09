@@ -257,6 +257,20 @@ export default function TVPage() {
           </Row>
         </div>
 
+        {/* VÝSTUP */}
+        <div className="mb-8 sm:mb-10">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Výstup</p>
+          <Row label="YouTube">
+            <p className="text-[13px] font-semibold">Long formát pre YouTube</p>
+          </Row>
+          <Row label="Promo">
+            <p className="text-[13px] font-semibold">Short video pre Stage on Mars promotion</p>
+          </Row>
+          <Row label="Social">
+            <p className="text-[13px] font-semibold">Reels pre Instagram a LinkedIn</p>
+          </Row>
+        </div>
+
         {/* Footer */}
         <div className="border-t border-neutral-200 pt-4 flex items-center justify-between">
           <img src="/logo.png" alt="Stage on Mars" className="h-4 sm:h-5 opacity-20" />
