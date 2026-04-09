@@ -378,35 +378,35 @@ export default function BusinessPage() {
                   <br />
                   <span className="text-white/20">But nothing turns into action.</span>
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden px-5 py-5 md:py-7 text-center flex md:flex-col items-center md:items-center gap-4 md:gap-0">
                     <div className="shrink-0">
-                      <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">80%</p>
-                      <p className="text-white/30 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">of teams</p>
+                      <p className="text-mars text-[32px] md:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">80%</p>
+                      <p className="text-white/30 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">of teams</p>
                     </div>
-                    <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <div className="hidden md:block h-[1px] bg-white/[0.06] my-3 md:my-4 mx-auto w-3/4" />
                     <p className="text-white/50 text-[13px] leading-[1.5]">left with a clear direction</p>
                   </div>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 sm:px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden px-5 py-5 md:py-7 text-center flex md:flex-col items-center md:items-center gap-4 md:gap-0">
                     <div className="shrink-0">
                       <p className="font-black tracking-[-0.03em] leading-none">
-                        <span className="text-white/90 text-[22px] sm:text-[30px]">Weeks</span>
-                        <span className="text-mars/40 mx-1 text-[14px] sm:text-[18px]">&rarr;</span>
-                        <span className="text-mars text-[22px] sm:text-[30px] drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">Hours</span>
+                        <span className="text-white/90 text-[22px] md:text-[30px]">Weeks</span>
+                        <span className="text-mars/40 mx-1 text-[14px] md:text-[18px]">&rarr;</span>
+                        <span className="text-mars text-[22px] md:text-[30px] drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">Hours</span>
                       </p>
-                      <p className="text-white/30 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">time to clarity</p>
+                      <p className="text-white/30 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">time to clarity</p>
                     </div>
-                    <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[11px] sm:text-[13px] leading-[1.5]">weeks of talking played out in hours</p>
+                    <div className="hidden md:block h-[1px] bg-white/[0.06] my-3 md:my-4 mx-auto w-3/4" />
+                    <p className="text-white/50 text-[11px] md:text-[13px] leading-[1.5]">weeks of talking played out in hours</p>
                   </div>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-5 sm:py-7 text-center sm:text-center flex sm:flex-col items-center sm:items-center gap-4 sm:gap-0">
+                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden px-5 py-5 md:py-7 text-center flex md:flex-col items-center md:items-center gap-4 md:gap-0">
                     <div className="shrink-0">
-                      <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">
-                        9<span className="text-white/15 text-[24px] sm:text-[32px] mx-0.5">/</span>10
+                      <p className="text-mars text-[32px] md:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">
+                        9<span className="text-white/15 text-[24px] md:text-[32px] mx-0.5">/</span>10
                       </p>
-                      <p className="text-white/30 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">teams</p>
+                      <p className="text-white/30 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">teams</p>
                     </div>
-                    <div className="hidden sm:block h-[1px] bg-white/[0.06] my-3 sm:my-4 mx-auto w-3/4" />
+                    <div className="hidden md:block h-[1px] bg-white/[0.06] my-3 md:my-4 mx-auto w-3/4" />
                     <p className="text-white/50 text-[13px] leading-[1.5]">unblocked a stuck decision</p>
                   </div>
                 </div>
@@ -415,32 +415,30 @@ export default function BusinessPage() {
           </div>
 
           {/* ── BUILD YOUR PLAY — CTA ── */}
-          <FadeIn className="px-4 py-6 sm:py-10">
-            <div className="w-full max-w-3xl mx-auto">
-              <div className="relative rounded-2xl border border-mars/30 overflow-hidden" style={{ boxShadow: "0 0 60px -12px rgba(255,85,0,0.15), 0 0 120px -30px rgba(255,85,0,0.08)" }}>
-                <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
-                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
-                <div className="relative z-10 px-6 sm:px-10 py-10 sm:py-14 text-center">
-                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-5">{t.letsMakeIt}</p>
-                  <h2 className="text-[24px] sm:text-[36px] font-bold tracking-[-0.03em] mb-3">
-                    {t.contactQ}
-                  </h2>
-                  <p className="font-mercure italic text-white/35 text-[12px] sm:text-[14px] mb-10 max-w-sm mx-auto">
-                    {t.formulaBody}
-                  </p>
-                  <Link
-                    href="/business/play"
-                    className="relative inline-flex items-center gap-2 px-10 sm:px-12 py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.1em] text-white transition-all hover:scale-[1.02] overflow-hidden group/cta"
-                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
-                  >
-                    <div className="absolute inset-0 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
-                    <span className="relative z-10">{t.buildPlay}</span>
-                    <span className="relative z-10 text-white/60">&rarr;</span>
-                  </Link>
-                </div>
+          <div className="w-full max-w-3xl mx-auto mt-3 sm:mt-4 mb-6 sm:mb-10">
+            <div className="relative rounded-2xl border border-mars/30 overflow-hidden" style={{ boxShadow: "0 0 60px -12px rgba(255,85,0,0.15), 0 0 120px -30px rgba(255,85,0,0.08)" }}>
+              <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
+              <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
+              <div className="relative z-10 px-6 sm:px-10 py-10 sm:py-14 text-center">
+                <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-5">{t.letsMakeIt}</p>
+                <h2 className="text-[24px] sm:text-[36px] font-bold tracking-[-0.03em] mb-3">
+                  {t.contactQ}
+                </h2>
+                <p className="font-mercure italic text-white/35 text-[12px] sm:text-[14px] mb-10 max-w-sm mx-auto">
+                  {t.formulaBody}
+                </p>
+                <Link
+                  href="/business/play"
+                  className="relative inline-flex items-center gap-2 px-10 sm:px-12 py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.1em] text-white transition-all hover:scale-[1.02] overflow-hidden group/cta"
+                  style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
+                >
+                  <div className="absolute inset-0 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
+                  <span className="relative z-10">{t.buildPlay}</span>
+                  <span className="relative z-10 text-white/60">&rarr;</span>
+                </Link>
               </div>
             </div>
-          </FadeIn>
+          </div>
 
 
 
