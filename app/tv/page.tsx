@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Human on Mars — TV Show",
+  title: "Human on Mars — Talks from Outer Space",
 };
 
 const STRUCTURE = [
@@ -111,7 +111,7 @@ export default function TVPage() {
           <h1 className="text-[40px] sm:text-[56px] font-bold tracking-[-0.04em] leading-[1.05] mb-2">
             Human <span className="font-mercure italic text-mars">on Mars</span>
           </h1>
-          <p className="text-neutral-400 text-[15px] uppercase tracking-[0.15em] font-semibold mb-8">TV Show</p>
+          <p className="text-neutral-400 text-[15px] uppercase tracking-[0.15em] font-semibold mb-8">Talks from Outer Space</p>
 
           <div className="h-px bg-neutral-200 mb-8" />
 
