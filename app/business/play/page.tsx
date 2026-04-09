@@ -404,14 +404,104 @@ function PlayPageInner() {
     }
   }
 
+  /* ── Builder landing (no question yet) ── */
+  const [builderQ, setBuilderQ] = useState("");
+  const [builderCo, setBuilderCo] = useState("");
+
+  function submitBuilder(overrideQ?: string) {
+    const q = overrideQ || builderQ;
+    if (!q.trim()) return;
+    const params = new URLSearchParams({ q });
+    if (builderCo.trim()) params.set("company", builderCo);
+    window.location.href = `/business/play?${params.toString()}`;
+  }
+
   if (!questionParam) {
+    const readyMade = [
+      { theme: "Strategy", q: "Where is your company really heading \u2014 and what\u2019s pulling it off course?" },
+      { theme: "Vision", q: "What does your company look like in 5 years? Your team builds that future on stage." },
+      { theme: "Team", q: "What\u2019s really going on in your team? What holds it together, what pulls it apart." },
+    ];
+
     return (
-      <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-white/40 text-[14px] mb-4">No question provided.</p>
-          <a href="/business" className="text-mars text-[13px] font-bold uppercase tracking-[0.15em] hover:text-mars-light transition-colors">
-            &larr; Home
-          </a>
+      <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] overflow-x-hidden">
+        {/* Top bar */}
+        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.04]">
+          <Link href="/business">
+            <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto invert opacity-70 hover:opacity-100 transition-opacity" />
+          </Link>
+        </nav>
+
+        <div className="pt-24 sm:pt-32 pb-16 px-4 flex flex-col items-center">
+          {/* Hero */}
+          <div className="text-center mb-10 sm:mb-14 max-w-2xl">
+            <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">Design your trip to Mars</p>
+            <h1 className="text-[28px] sm:text-[44px] font-bold tracking-[-0.04em] leading-[1.1] mb-4">
+              What question do you want<br className="hidden sm:block" /> to <span className="font-mercure italic text-mars">play?</span>
+            </h1>
+            <p className="font-mercure italic text-white/35 text-[13px] sm:text-[15px] max-w-md mx-auto">
+              Your question becomes a real play on stage. People step into roles. Your perspective shifts.
+            </p>
+          </div>
+
+          {/* Builder box */}
+          <div className="w-full max-w-3xl">
+            <div className="relative group/input">
+              <div className="relative rounded-2xl border border-mars/50 bg-[#0a0a0a] transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/70 flex flex-col" style={{ boxShadow: "0 0 15px -2px rgba(255,85,0,0.3), 0 0 40px -8px rgba(255,85,0,0.15), 0 0 80px -15px rgba(255,85,0,0.08)" }}>
+                <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
+
+                <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">
+                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">Design your trip to Mars</p>
+                  <textarea
+                    value={builderQ}
+                    onChange={(e) => setBuilderQ(e.target.value)}
+                    placeholder="What question do you want to play?"
+                    rows={3}
+                    className="w-full flex-1 min-h-[120px] sm:min-h-[100px] bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[28px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.02em] font-medium"
+                    style={{ caretColor: "#FF5500" }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitBuilder(); }
+                    }}
+                  />
+                </div>
+                <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-6 space-y-4">
+                  <div className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
+                    <input
+                      value={builderCo}
+                      onChange={(e) => setBuilderCo(e.target.value)}
+                      placeholder="Company name"
+                      className="flex-1 bg-transparent border-0 px-0 py-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px]"
+                    />
+                  </div>
+                  <button
+                    onClick={() => submitBuilder()}
+                    disabled={!builderQ.trim()}
+                    className="relative w-full py-5 sm:py-6 rounded-2xl font-black text-[16px] sm:text-[18px] uppercase tracking-[0.1em] transition-all text-white disabled:opacity-20 disabled:shadow-none overflow-hidden group/btn"
+                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
+                  >
+                    <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
+                    <span className="relative z-10">Build your play</span>
+                  </button>
+                </div>
+
+                {/* Ready-made experiences */}
+                <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-8">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.08]" />
+                    <p className="text-white/20 text-[9px] uppercase tracking-[0.3em] font-bold shrink-0">Or choose a ready-made experience</p>
+                    <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.08]" />
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 w-full">
+                    {readyMade.map((play, i) => (
+                      <button key={i} onClick={() => submitBuilder(play.q)} className="group flex items-center justify-center py-3 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
+                        <span className="transition-colors duration-500 text-[14px] sm:text-[16px] font-bold"><span className="text-white/50 group-hover:text-white/80">{play.theme}</span> <span className="text-mars/40 group-hover:text-mars/70">Play</span></span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
