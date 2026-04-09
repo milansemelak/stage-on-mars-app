@@ -190,26 +190,17 @@ function Voices() {
 
 export default function BusinessPage() {
   const [entered, setEntered] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [companyName, setCompanyName] = useState("");
   const [lang, setLang] = useState<Lang>("en");
   const t = UI[lang];
 
   // Contact form
-  const [formData, setFormData] = useState({ name: "", email: "", company: companyName, question: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", company: "", question: "" });
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setEntered(true), 500);
     return () => clearTimeout(t);
   }, []);
-
-  function generate() {
-    if (!question.trim()) return;
-    const params = new URLSearchParams({ q: question });
-    if (companyName.trim()) params.set("company", companyName);
-    window.location.href = `/business/play?${params.toString()}`;
-  }
 
   function handleContactChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -418,73 +409,25 @@ export default function BusinessPage() {
             </div>
           </div>
 
-          <div className="w-full max-w-3xl">
-
-            {/* THE BOX */}
-            <div className="relative group/input">
-              <div className="relative rounded-2xl border border-mars/50 bg-[#0a0a0a] transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/70 flex flex-col" style={{ boxShadow: "0 0 15px -2px rgba(255,85,0,0.3), 0 0 40px -8px rgba(255,85,0,0.15), 0 0 80px -15px rgba(255,85,0,0.08)" }}>
-                <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
-
-                <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">
-                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">{t.buildLabel}</p>
-                  <textarea
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder={t.placeholder}
-                    rows={3}
-                    className="w-full flex-1 min-h-[120px] sm:min-h-[100px] bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[28px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.02em] font-medium"
-                    style={{ caretColor: "#FF5500" }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
-                    }}
-                  />
-                </div>
-                <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-6 space-y-4">
-                  <div className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
-                    <input
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder={t.company}
-                      className="flex-1 bg-transparent border-0 px-0 py-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px]"
-                    />
-                  </div>
-                  <button
-                    onClick={generate}
-                    disabled={!question.trim()}
-                    className="relative w-full py-5 sm:py-6 rounded-2xl font-black text-[16px] sm:text-[18px] uppercase tracking-[0.1em] transition-all text-white disabled:opacity-20 disabled:shadow-none overflow-hidden group/btn"
-                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
-                  >
-                    <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
-                    <span className="relative z-10">{t.buildPlay}</span>
-                  </button>
-                </div>
-
-                {/* ── OR divider + ready-made plays ── */}
-                <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-8">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.08]" />
-                    <p className="text-white/20 text-[9px] uppercase tracking-[0.3em] font-bold shrink-0">{t.readyMade}</p>
-                    <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.08]" />
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 w-full">
-                    {[
-                      { theme: t.play1Theme, q: t.play1Pitch },
-                      { theme: t.play2Theme, q: t.play2Pitch },
-                      { theme: t.play3Theme, q: t.play3Pitch },
-                    ].map((play, i) => (
-                      <button key={i} onClick={() => {
-                        const params = new URLSearchParams({ q: play.q });
-                        if (companyName.trim()) params.set("company", companyName);
-                        window.location.href = `/business/play?${params.toString()}`;
-                      }} className="group flex items-center justify-center py-3 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
-                        <span className="transition-colors duration-500 text-[14px] sm:text-[16px] font-bold"><span className="text-white/50 group-hover:text-white/80">{play.theme}</span> <span className="text-mars/40 group-hover:text-mars/70">{t.thePlay}</span></span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
+          {/* ── BUILD YOUR PLAY — CTA ── */}
+          <FadeIn className="px-4 py-6 sm:py-10">
+            <div className="max-w-3xl mx-auto text-center">
+              <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">{t.letsMakeIt}</p>
+              <h2 className="text-[24px] sm:text-[36px] font-bold tracking-[-0.03em] mb-3">
+                {t.contactQ}
+              </h2>
+              <p className="font-mercure italic text-white/45 text-[13px] sm:text-[15px] mb-8 max-w-md mx-auto">
+                {t.formulaBody}
+              </p>
+              <Link
+                href="/business/play"
+                className="inline-flex items-center px-10 sm:px-14 py-5 sm:py-6 rounded-2xl font-black text-[16px] sm:text-[18px] uppercase tracking-[0.1em] text-white transition-all hover:scale-[1.02]"
+                style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
+              >
+                {t.buildPlay} →
+              </Link>
             </div>
-          </div>{/* end max-w-3xl */}
+          </FadeIn>
 
 
 
@@ -518,148 +461,15 @@ export default function BusinessPage() {
         </div>
       </FadeIn>
 
-      {/* ── PLAY SIMULATOR — standalone section ── */}
+      {/* ── SIMULATOR TEASER ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
-        <div className="max-w-3xl mx-auto">
-          <button
-            onClick={() => {
-              const q = "What does my company need the most right now?";
-              const params = new URLSearchParams({ q });
-              if (companyName.trim()) params.set("company", companyName);
-              window.location.href = `/business/simulate?${params.toString()}`;
-            }}
-            className="w-full group"
+        <div className="max-w-3xl mx-auto text-center">
+          <Link
+            href="/play"
+            className="inline-flex items-center gap-2 text-mars/60 hover:text-mars text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] transition-colors"
           >
-            <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light">
-              <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
-                <p className="text-white text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2 text-center">{t.playmakerTitle}</p>
-                <p className="text-white/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">{t.playmakerDesc1}<br />{t.playmakerDesc2}</p>
-                <div className="max-w-[380px] mx-auto">
-                  <div className="relative rounded-[12px] bg-[#1a1a1c] p-[3px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-                    <div className="rounded-[10px] overflow-hidden bg-[#0a0a0c]">
-                      {/* App chrome */}
-                      <div className="flex items-center justify-between px-3 pt-2 pb-1">
-                        <div className="flex items-center gap-1.5">
-                          <div className="flex gap-[3px]">
-                            <div className="w-[5px] h-[5px] rounded-full bg-[#ff5f57]" />
-                            <div className="w-[5px] h-[5px] rounded-full bg-[#febc2e]" />
-                            <div className="w-[5px] h-[5px] rounded-full bg-[#28c840]" />
-                          </div>
-                          <span className="text-[6px] text-white/30 font-bold tracking-wider ml-1">SIMULATOR</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-[4px] h-[4px] rounded-full bg-emerald-400/80 animate-pulse" />
-                          <span className="text-[5px] text-emerald-400/50 font-bold">LIVE</span>
-                        </div>
-                      </div>
-                      {/* Stage — matching real Playmaker app */}
-                      <div className="relative h-[220px] sm:h-[280px] bg-[#0c0a08]">
-                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 170" preserveAspectRatio="xMidYMid meet">
-                          <defs>
-                            <filter id="pm-glow" x="-200%" y="-200%" width="500%" height="500%">
-                              <feGaussianBlur stdDeviation="3" result="blur" />
-                              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                            </filter>
-                            <filter id="pm-glow-big" x="-200%" y="-200%" width="500%" height="500%">
-                              <feGaussianBlur stdDeviation="6" result="blur" />
-                              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                            </filter>
-                            {/* Warm center glow */}
-                            <radialGradient id="stage-glow" cx="50%" cy="48%" r="35%">
-                              <stop offset="0%" stopColor="rgba(255,85,0,0.12)" />
-                              <stop offset="50%" stopColor="rgba(255,85,0,0.04)" />
-                              <stop offset="100%" stopColor="rgba(0,0,0,0)" />
-                            </radialGradient>
-                            {/* Ring glow */}
-                            <radialGradient id="ring-glow" cx="50%" cy="48%" r="42%">
-                              <stop offset="70%" stopColor="rgba(0,0,0,0)" />
-                              <stop offset="85%" stopColor="rgba(255,85,0,0.06)" />
-                              <stop offset="100%" stopColor="rgba(0,0,0,0)" />
-                            </radialGradient>
-                          </defs>
-
-                          {/* Background warm glow */}
-                          <rect x="0" y="0" width="200" height="170" fill="url(#stage-glow)" />
-                          <rect x="0" y="0" width="200" height="170" fill="url(#ring-glow)" />
-
-                          {/* Stage circle — thick solid orange ring */}
-                          <circle cx="100" cy="80" r="62" fill="none" stroke="rgba(255,85,0,0.7)" strokeWidth="1.8" />
-                          {/* Outer glow of ring */}
-                          <circle cx="100" cy="80" r="62" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="6" filter="url(#pm-glow-big)" />
-
-                          {/* ── Characters — all inside circle (cx=100,cy=80,r=62) ── */}
-
-                          {/* You — gold, upper-right */}
-                          <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,-1.5; -1.5,2; 0,0" dur="12s" repeatCount="indefinite" />
-                            <circle cx="118" cy="52" r="5" fill="rgba(255,215,0,0.9)" filter="url(#pm-glow)" />
-                            <text x="118" y="61" textAnchor="middle" fill="rgba(255,215,0,0.5)" fontSize="4" fontStyle="italic">You</text>
-                          </g>
-
-                          {/* Need — orange, upper-left */}
-                          <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,3; 3,-2; 0,0" dur="14s" repeatCount="indefinite" />
-                            <circle cx="78" cy="56" r="7" fill="rgba(255,85,0,0.9)" filter="url(#pm-glow)" />
-                            <text x="78" y="67" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="4" fontWeight="700">Need</text>
-                          </g>
-
-                          {/* Growth — orange, center-left */}
-                          <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,-2; -3,2; 0,0" dur="10s" repeatCount="indefinite" />
-                            <circle cx="72" cy="82" r="6.5" fill="rgba(255,85,0,0.85)" filter="url(#pm-glow)" />
-                            <text x="72" y="93" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="4" fontWeight="700">Growth</text>
-                          </g>
-
-                          {/* Fear — grey, center-right */}
-                          <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,2; 2,-3; 0,0" dur="16s" repeatCount="indefinite" />
-                            <circle cx="125" cy="72" r="6" fill="rgba(190,190,190,0.7)" filter="url(#pm-glow)" />
-                            <text x="125" y="83" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="4" fontWeight="700">Fear</text>
-                          </g>
-
-                          {/* Risk — grey, lower-right */}
-                          <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,1.5; -2,-2; 0,0" dur="13s" repeatCount="indefinite" />
-                            <circle cx="118" cy="98" r="5.5" fill="rgba(180,180,180,0.6)" />
-                            <text x="118" y="109" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="4" fontWeight="700">Risk</text>
-                          </g>
-
-                          {/* Time — grey, lower-left */}
-                          <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,-1.5; 1.5,2; 0,0" dur="15s" repeatCount="indefinite" />
-                            <circle cx="78" cy="100" r="5" fill="rgba(170,170,170,0.55)" />
-                            <text x="78" y="111" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4" fontWeight="700">Time</text>
-                          </g>
-
-                          {/* Truth — grey, bottom-center */}
-                          <g>
-                            <animateTransform attributeName="transform" type="translate" values="0,0; 1.5,1.5; -2,-1; 0,0" dur="18s" repeatCount="indefinite" />
-                            <circle cx="100" cy="115" r="5" fill="rgba(160,160,160,0.5)" />
-                            <text x="100" y="126" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="4" fontWeight="700">Truth</text>
-                          </g>
-                        </svg>
-                      </div>
-
-                      {/* Prompt box — bigger, prominent */}
-                      <div className="px-3 sm:px-5 pb-3 sm:pb-5">
-                        <div className="rounded-xl bg-white/[0.05] border border-white/[0.10] px-4 sm:px-5 py-3 sm:py-3.5 flex items-center gap-3">
-                          <p className="text-white/70 font-mercure italic text-[11px] sm:text-[14px] leading-[1.3] flex-1">&ldquo;{t.playmakerQ1}<br />{t.playmakerQ2}&rdquo;</p>
-                          <div className="w-[28px] h-[28px] sm:w-[34px] sm:h-[34px] rounded-lg bg-mars flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(255,85,0,0.4)] animate-pulse">
-                            <span className="text-white text-[10px] sm:text-[13px]">▶</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
-                <span className="inline-flex items-center px-8 py-3 rounded-xl border border-[#0a0a0a]/40 text-[#0a0a0a] text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#0a0a0a] group-hover:text-white transition-all">
-                  {t.playQuestion}
-                </span>
-              </div>
-            </div>
-          </button>
+            {t.playmakerTitle}: {t.playQuestion}
+          </Link>
         </div>
       </FadeIn>
 
