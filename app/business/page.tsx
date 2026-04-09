@@ -475,17 +475,34 @@ export default function BusinessPage() {
       {/* ── SIMULATOR TEASER ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
         <Link href="/play" className="block max-w-3xl mx-auto group">
-          <div className="relative rounded-2xl border border-mars/20 hover:border-mars/40 overflow-hidden transition-all duration-500" style={{ boxShadow: "0 0 40px -10px rgba(255,85,0,0.08)" }}>
-            <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/50 to-transparent" />
-            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.05) 0%, transparent 60%)" }} />
-            <div className="relative z-10 flex items-center justify-between px-6 sm:px-8 py-5 sm:py-6">
-              <div>
-                <p className="text-mars/50 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-1">{t.playmakerTitle}</p>
-                <p className="text-white/70 group-hover:text-white/90 text-[14px] sm:text-[16px] font-bold tracking-[-0.01em] transition-colors">{t.playmakerDesc1}</p>
-                <p className="text-white/30 text-[12px] sm:text-[13px] mt-0.5">{t.playmakerDesc2}</p>
+          <div className="relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.005]" style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #c73d00 100%)", boxShadow: "0 8px 50px -10px rgba(255,85,0,0.4), 0 2px 10px rgba(255,85,0,0.15)" }}>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
+            <div className="relative z-10 flex items-center justify-between px-6 sm:px-8 py-6 sm:py-7">
+              <div className="flex-1">
+                <p className="text-white/50 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{t.playmakerTitle}</p>
+                <p className="text-white text-[15px] sm:text-[18px] font-bold tracking-[-0.01em]">{t.playmakerDesc1}</p>
+                <p className="text-white/50 text-[11px] sm:text-[13px] mt-1">{t.playmakerDesc2}</p>
               </div>
-              <div className="shrink-0 ml-4 w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-mars/30 group-hover:border-mars/60 flex items-center justify-center transition-all group-hover:scale-105" style={{ background: "linear-gradient(135deg, rgba(255,85,0,0.1) 0%, rgba(255,85,0,0.02) 100%)" }}>
-                <span className="text-mars text-[16px] sm:text-[18px] group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+              {/* Mini digital interface mockup */}
+              <div className="shrink-0 ml-4 sm:ml-6 w-[100px] sm:w-[140px] h-[70px] sm:h-[90px] rounded-lg border border-white/20 bg-black/30 backdrop-blur-sm overflow-hidden flex flex-col">
+                <div className="flex items-center gap-1 px-2 py-1.5 border-b border-white/10">
+                  <div className="w-1 h-1 rounded-full bg-white/30" />
+                  <div className="w-1 h-1 rounded-full bg-white/20" />
+                  <div className="w-1 h-1 rounded-full bg-white/20" />
+                  <div className="flex-1 mx-1 h-[3px] rounded-full bg-white/10" />
+                </div>
+                <div className="flex-1 px-2 py-1.5 flex flex-col gap-1">
+                  <div className="h-[3px] w-3/4 rounded-full bg-white/15" />
+                  <div className="h-[3px] w-1/2 rounded-full bg-white/10" />
+                  <div className="flex-1" />
+                  <div className="flex gap-1 items-end">
+                    <div className="w-2 h-3 sm:h-4 rounded-sm bg-white/20" />
+                    <div className="w-2 h-5 sm:h-6 rounded-sm bg-white/30" />
+                    <div className="w-2 h-4 sm:h-5 rounded-sm bg-white/15" />
+                    <div className="w-2 h-6 sm:h-7 rounded-sm bg-white/25" />
+                    <div className="w-2 h-3 sm:h-4 rounded-sm bg-white/20" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
