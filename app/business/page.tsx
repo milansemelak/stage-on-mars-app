@@ -333,31 +333,34 @@ export default function BusinessPage() {
               {/* Inner border glow */}
               <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(255,85,0,0.05)" }} />
               <div className="relative z-10 px-6 sm:px-10 py-10 sm:py-14">
-                <p className="font-mercure italic text-[16px] sm:text-[26px] leading-[1.2] text-center mx-auto mb-10 sm:mb-12 whitespace-nowrap">
+                <p className="font-mercure italic text-[18px] sm:text-[28px] leading-[1.2] text-center mx-auto mb-10 sm:mb-14">
                   <span className="text-white/90">The strategy is there.</span>
-                  <span className="text-white/30 ml-2">But people don&rsquo;t act.</span>
+                  <span className="text-white/25 ml-1 sm:ml-2">But nothing turns into action.</span>
                 </p>
-                <div className="flex items-center justify-center gap-6 sm:gap-14">
-                  <div className="text-center">
-                    <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">80%</p>
-                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">left with a clear direction</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
+                  {/* Stat 1 */}
+                  <div className="text-center sm:text-left">
+                    <p className="text-mars text-[36px] sm:text-[42px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_24px_rgba(255,85,0,0.2)]">
+                      80%<span className="text-white/30 text-[16px] sm:text-[18px] font-bold tracking-normal ml-1.5">of teams</span>
+                    </p>
+                    <p className="text-white/45 text-[12px] sm:text-[13px] mt-3 leading-[1.4]">left with a clear direction</p>
                   </div>
-                  <div className="w-px h-14 bg-gradient-to-b from-transparent via-mars/20 to-transparent" />
-                  <div className="text-center">
-                    <p className="text-[24px] sm:text-[34px] font-black tracking-[-0.03em] leading-none">
+                  {/* Stat 2 */}
+                  <div className="text-center sm:text-left sm:border-l sm:border-white/[0.08] sm:pl-6">
+                    <p className="text-[28px] sm:text-[34px] font-black tracking-[-0.03em] leading-none">
                       <span className="text-white/80">Weeks</span>
-                      <span className="text-mars/50 mx-1 sm:mx-2 text-[16px] sm:text-[22px]">→</span>
-                      <span className="text-mars drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">Hours</span>
+                      <span className="text-mars/40 mx-1.5 text-[18px] sm:text-[22px]">→</span>
+                      <span className="text-mars drop-shadow-[0_0_24px_rgba(255,85,0,0.2)]">Hours</span>
                     </p>
-                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">what took weeks was played out in hours</p>
+                    <p className="text-white/45 text-[12px] sm:text-[13px] mt-3 leading-[1.4]">what took weeks of talking was played out in hours</p>
                   </div>
-                  <div className="w-px h-14 bg-gradient-to-b from-transparent via-mars/20 to-transparent" />
-                  <div className="text-center">
-                    <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">
-                      9<span className="text-white/20"> out of </span>10
-                      <span className="text-white/40 text-[14px] sm:text-[20px] font-bold tracking-normal ml-1">teams</span>
+                  {/* Stat 3 */}
+                  <div className="text-center sm:text-left sm:border-l sm:border-white/[0.08] sm:pl-6">
+                    <p className="text-mars text-[36px] sm:text-[42px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_24px_rgba(255,85,0,0.2)]">
+                      9<span className="text-white/20 text-[28px] sm:text-[32px]"> / </span>10
+                      <span className="text-white/30 text-[16px] sm:text-[18px] font-bold tracking-normal ml-1.5">teams</span>
                     </p>
-                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">unblocked a stuck decision</p>
+                    <p className="text-white/45 text-[12px] sm:text-[13px] mt-3 leading-[1.4]">unblocked a stuck decision</p>
                   </div>
                 </div>
               </div>
