@@ -472,41 +472,125 @@ export default function BusinessPage() {
         </div>
       </FadeIn>
 
-      {/* ── SIMULATOR TEASER ── */}
+      {/* ── PLAY SIMULATOR — standalone section ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
-        <Link href="/play" className="block max-w-3xl mx-auto group">
-          <div className="relative rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.005]" style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #c73d00 100%)", boxShadow: "0 8px 50px -10px rgba(255,85,0,0.4), 0 2px 10px rgba(255,85,0,0.15)" }}>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
-            <div className="relative z-10 flex items-center justify-between px-6 sm:px-8 py-6 sm:py-7">
-              <div className="flex-1">
-                <p className="text-white/50 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{t.playmakerTitle}</p>
-                <p className="text-white text-[15px] sm:text-[18px] font-bold tracking-[-0.01em]">{t.playmakerDesc1}</p>
-                <p className="text-white/50 text-[11px] sm:text-[13px] mt-1">{t.playmakerDesc2}</p>
-              </div>
-              {/* Mini digital interface mockup */}
-              <div className="shrink-0 ml-4 sm:ml-6 w-[100px] sm:w-[140px] h-[70px] sm:h-[90px] rounded-lg border border-white/20 bg-black/30 backdrop-blur-sm overflow-hidden flex flex-col">
-                <div className="flex items-center gap-1 px-2 py-1.5 border-b border-white/10">
-                  <div className="w-1 h-1 rounded-full bg-white/30" />
-                  <div className="w-1 h-1 rounded-full bg-white/20" />
-                  <div className="w-1 h-1 rounded-full bg-white/20" />
-                  <div className="flex-1 mx-1 h-[3px] rounded-full bg-white/10" />
-                </div>
-                <div className="flex-1 px-2 py-1.5 flex flex-col gap-1">
-                  <div className="h-[3px] w-3/4 rounded-full bg-white/15" />
-                  <div className="h-[3px] w-1/2 rounded-full bg-white/10" />
-                  <div className="flex-1" />
-                  <div className="flex gap-1 items-end">
-                    <div className="w-2 h-3 sm:h-4 rounded-sm bg-white/20" />
-                    <div className="w-2 h-5 sm:h-6 rounded-sm bg-white/30" />
-                    <div className="w-2 h-4 sm:h-5 rounded-sm bg-white/15" />
-                    <div className="w-2 h-6 sm:h-7 rounded-sm bg-white/25" />
-                    <div className="w-2 h-3 sm:h-4 rounded-sm bg-white/20" />
+        <div className="max-w-3xl mx-auto">
+          <button
+            onClick={() => {
+              const q = "What does my company need the most right now?";
+              const params = new URLSearchParams({ q });
+              window.location.href = `/play?${params.toString()}`;
+            }}
+            className="w-full group"
+          >
+            <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light">
+              <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
+                <p className="text-[#0a0a0a] text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2 text-center">{t.playmakerTitle}</p>
+                <p className="text-[#0a0a0a]/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">{t.playmakerDesc1}<br />{t.playmakerDesc2}</p>
+                <div className="max-w-[380px] mx-auto">
+                  <div className="relative rounded-[12px] bg-[#1a1a1c] p-[3px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+                    <div className="rounded-[10px] overflow-hidden bg-[#0a0a0c]">
+                      {/* App chrome */}
+                      <div className="flex items-center justify-between px-3 pt-2 pb-1">
+                        <div className="flex items-center gap-1.5">
+                          <div className="flex gap-[3px]">
+                            <div className="w-[5px] h-[5px] rounded-full bg-[#ff5f57]" />
+                            <div className="w-[5px] h-[5px] rounded-full bg-[#febc2e]" />
+                            <div className="w-[5px] h-[5px] rounded-full bg-[#28c840]" />
+                          </div>
+                          <span className="text-[6px] text-white/30 font-bold tracking-wider ml-1">SIMULATOR</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-[4px] h-[4px] rounded-full bg-emerald-400/80 animate-pulse" />
+                          <span className="text-[5px] text-emerald-400/50 font-bold">LIVE</span>
+                        </div>
+                      </div>
+                      {/* Stage */}
+                      <div className="relative h-[220px] sm:h-[280px] bg-[#0c0a08]">
+                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 170" preserveAspectRatio="xMidYMid meet">
+                          <defs>
+                            <filter id="pm-glow" x="-200%" y="-200%" width="500%" height="500%">
+                              <feGaussianBlur stdDeviation="3" result="blur" />
+                              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                            </filter>
+                            <filter id="pm-glow-big" x="-200%" y="-200%" width="500%" height="500%">
+                              <feGaussianBlur stdDeviation="6" result="blur" />
+                              <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                            </filter>
+                            <radialGradient id="stage-glow" cx="50%" cy="48%" r="35%">
+                              <stop offset="0%" stopColor="rgba(255,85,0,0.12)" />
+                              <stop offset="50%" stopColor="rgba(255,85,0,0.04)" />
+                              <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+                            </radialGradient>
+                            <radialGradient id="ring-glow" cx="50%" cy="48%" r="42%">
+                              <stop offset="70%" stopColor="rgba(0,0,0,0)" />
+                              <stop offset="85%" stopColor="rgba(255,85,0,0.06)" />
+                              <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+                            </radialGradient>
+                          </defs>
+                          <rect x="0" y="0" width="200" height="170" fill="url(#stage-glow)" />
+                          <rect x="0" y="0" width="200" height="170" fill="url(#ring-glow)" />
+                          <circle cx="100" cy="80" r="62" fill="none" stroke="rgba(255,85,0,0.7)" strokeWidth="1.8" />
+                          <circle cx="100" cy="80" r="62" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="6" filter="url(#pm-glow-big)" />
+                          {/* Characters */}
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,-1.5; -1.5,2; 0,0" dur="12s" repeatCount="indefinite" />
+                            <circle cx="118" cy="52" r="5" fill="rgba(255,215,0,0.9)" filter="url(#pm-glow)" />
+                            <text x="118" y="61" textAnchor="middle" fill="rgba(255,215,0,0.5)" fontSize="4" fontStyle="italic">You</text>
+                          </g>
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,3; 3,-2; 0,0" dur="14s" repeatCount="indefinite" />
+                            <circle cx="78" cy="56" r="7" fill="rgba(255,85,0,0.9)" filter="url(#pm-glow)" />
+                            <text x="78" y="67" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="4" fontWeight="700">Need</text>
+                          </g>
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,-2; -3,2; 0,0" dur="10s" repeatCount="indefinite" />
+                            <circle cx="72" cy="82" r="6.5" fill="rgba(255,85,0,0.85)" filter="url(#pm-glow)" />
+                            <text x="72" y="93" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="4" fontWeight="700">Growth</text>
+                          </g>
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,2; 2,-3; 0,0" dur="16s" repeatCount="indefinite" />
+                            <circle cx="125" cy="72" r="6" fill="rgba(190,190,190,0.7)" filter="url(#pm-glow)" />
+                            <text x="125" y="83" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="4" fontWeight="700">Fear</text>
+                          </g>
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 2,1.5; -2,-2; 0,0" dur="13s" repeatCount="indefinite" />
+                            <circle cx="118" cy="98" r="5.5" fill="rgba(180,180,180,0.6)" />
+                            <text x="118" y="109" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="4" fontWeight="700">Risk</text>
+                          </g>
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; -2,-1.5; 1.5,2; 0,0" dur="15s" repeatCount="indefinite" />
+                            <circle cx="78" cy="100" r="5" fill="rgba(170,170,170,0.55)" />
+                            <text x="78" y="111" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4" fontWeight="700">Time</text>
+                          </g>
+                          <g>
+                            <animateTransform attributeName="transform" type="translate" values="0,0; 1.5,1.5; -2,-1; 0,0" dur="18s" repeatCount="indefinite" />
+                            <circle cx="100" cy="115" r="5" fill="rgba(160,160,160,0.5)" />
+                            <text x="100" y="126" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="4" fontWeight="700">Truth</text>
+                          </g>
+                        </svg>
+                      </div>
+                      {/* Prompt box */}
+                      <div className="px-3 sm:px-5 pb-3 sm:pb-5">
+                        <div className="rounded-xl bg-white/[0.05] border border-white/[0.10] px-4 sm:px-5 py-3 sm:py-3.5 flex items-center gap-3">
+                          <p className="text-white/70 font-mercure italic text-[11px] sm:text-[14px] leading-[1.3] flex-1">&ldquo;{t.playmakerQ1}<br />{t.playmakerQ2}&rdquo;</p>
+                          <div className="w-[28px] h-[28px] sm:w-[34px] sm:h-[34px] rounded-lg bg-mars flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(255,85,0,0.4)] animate-pulse">
+                            <span className="text-white text-[10px] sm:text-[13px]">&#9654;</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
+                <span className="inline-flex items-center px-8 py-3 rounded-xl border border-[#0a0a0a]/40 text-[#0a0a0a] text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#0a0a0a] group-hover:text-white transition-all">
+                  {t.playQuestion}
+                </span>
+              </div>
             </div>
-          </div>
-        </Link>
+          </button>
+        </div>
       </FadeIn>
 
       {/* ── TEAM — Stage box ── */}
