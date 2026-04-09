@@ -28,7 +28,7 @@ const links = [
   {
     title: "Human on Mars",
     description: "Talks from Outer Space. Production brief.",
-    href: "/tv",
+    href: "/show",
   },
 ];
 
