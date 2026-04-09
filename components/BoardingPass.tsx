@@ -146,8 +146,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
               <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
             </div>
-            <div className="bg-black px-8 sm:px-10 py-6">
-              <p className="text-white/70 text-[13px] leading-[1.6] whitespace-pre-line">
+            <div className="bg-black px-8 sm:px-10 py-3">
+              <p className="text-white/50 text-[12px] leading-[1.4] whitespace-pre-line">
                 {mission.welcome_message}
               </p>
             </div>
@@ -187,7 +187,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           {!registered ? (
             <>
               <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-center">Board This Mission</p>
-              <p className="text-white/35 text-[12px] mb-3 text-center">Register your seat and bring a question worth playing.</p>
+              <p className="text-white/50 text-[12px] mb-3 text-center">Register your seat and bring a question worth playing.</p>
 
               {error && (
                 <p className="text-red-400 text-[12px] mb-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">{error}</p>
@@ -195,17 +195,17 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
               <form onSubmit={handleRegister} className="space-y-2">
                 <div className="grid grid-cols-2 gap-2">
-                  <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className="w-full rounded-lg bg-white/[0.06] border border-white/[0.08] px-3 py-2.5 text-[13px] text-white placeholder:text-white/25 focus:outline-none focus:border-mars/40 transition-colors" />
-                  <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your email" required className="w-full rounded-lg bg-white/[0.06] border border-white/[0.08] px-3 py-2.5 text-[13px] text-white placeholder:text-white/25 focus:outline-none focus:border-mars/40 transition-colors" />
+                  <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" required className="w-full rounded-lg bg-white/[0.06] border border-white/[0.15] px-3 py-2.5 text-[13px] text-white placeholder:text-white/40 focus:outline-none focus:border-mars/50 transition-colors" />
+                  <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Your email" required className="w-full rounded-lg bg-white/[0.06] border border-white/[0.15] px-3 py-2.5 text-[13px] text-white placeholder:text-white/40 focus:outline-none focus:border-mars/50 transition-colors" />
                 </div>
-                <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Your question — what do you want to explore?" required rows={2} className="w-full rounded-lg bg-white/[0.06] border border-white/[0.08] px-3 py-2.5 text-[13px] text-white placeholder:text-white/25 focus:outline-none focus:border-mars/40 transition-colors resize-none" />
+                <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Your question — what do you want to explore?" required rows={2} className="w-full rounded-lg bg-white/[0.06] border border-white/[0.15] px-3 py-2.5 text-[13px] text-white placeholder:text-white/40 focus:outline-none focus:border-mars/50 transition-colors resize-none" />
                 <button
                   type="submit"
                   disabled={submitting || !name.trim() || !email.trim() || !question.trim()}
                   className={`w-full py-3 rounded-lg font-bold text-[13px] uppercase tracking-[0.1em] transition-all ${
                     submitting || !name.trim() || !email.trim() || !question.trim()
-                      ? "bg-white/[0.04] text-white/20 cursor-not-allowed border border-white/[0.06]"
-                      : "bg-mars text-white hover:bg-mars-light active:scale-[0.99]"
+                      ? "bg-mars/30 text-white/30 cursor-not-allowed"
+                      : "bg-mars text-white hover:bg-mars-light active:scale-[0.99] shadow-[0_0_20px_-5px_rgba(255,85,0,0.4)]"
                   }`}
                 >
                   {submitting ? "Boarding..." : "Board"}
@@ -228,12 +228,12 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
             <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
             <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
           </div>
-          <div className="bg-mars px-8 sm:px-10 py-6 text-center">
-            <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Questions to Play</p>
-            <div className="space-y-3">
+          <div className="bg-mars px-8 sm:px-10 py-5 text-center">
+            <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">Questions to Play</p>
+            <div className="space-y-1">
               {crew.filter((m) => m.question).map((member, i) => (
                 <div key={i}>
-                  <p className="text-black font-mercure italic text-[16px] sm:text-[18px] leading-[1.3]">
+                  <p className="text-black font-mercure italic text-[15px] sm:text-[17px] leading-[1.3]">
                     &ldquo;{member.question}&rdquo;
                   </p>
                 </div>
@@ -250,15 +250,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         </div>
 
         {/* ═══ TICKET: SOUNDTRACK ═══ */}
-        <div className="bg-black px-8 sm:px-10 py-6">
-          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Soundtrack</p>
-          <p className="text-white/25 text-[11px] mb-3">
-            Add your song to the{" "}
-            <a href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2" target="_blank" rel="noopener noreferrer" className="text-mars font-semibold hover:underline">
-              playlist
-            </a>. It might become part of the game.
-          </p>
-          <div className="rounded-xl overflow-hidden">
+        <div className="bg-black px-8 sm:px-10 py-6 text-center">
+          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Soundtrack</p>
+          <div className="rounded-xl overflow-hidden mb-4">
             <iframe
               src="https://open.spotify.com/embed/playlist/33g5Ukkzcd2bUbvkKMMxr2?utm_source=generator&theme=0"
               width="100%"
@@ -268,6 +262,15 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
               className="border-0"
             />
           </div>
+          <a
+            href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black text-[12px] font-bold uppercase tracking-[0.05em] transition-colors"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            Add Your Music
+          </a>
         </div>
 
         {/* ═══ TEAR LINE 4 ═══ */}
@@ -277,10 +280,10 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           <div className="border-t border-dashed border-white/15 mx-6" />
         </div>
 
-        {/* ═══ TICKET: CODEX OF MARS ═══ */}
-        <div className="bg-black rounded-b-3xl overflow-hidden px-8 sm:px-10 py-6">
-          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Codex of Mars</p>
-          <div className="flex flex-wrap gap-1.5 mb-3">
+        {/* ═══ TICKET: RULES OF MARS ═══ */}
+        <div className="bg-black px-8 sm:px-10 py-6 text-center">
+          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Rules of Mars</p>
+          <div className="flex flex-wrap justify-center gap-1.5 mb-3">
             {CODEX.map((rule, i) => (
               <button
                 key={i}
@@ -298,6 +301,26 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           {openCodex !== null && (
             <p className="text-white/30 text-[11px] leading-[1.5] pl-0.5">{CODEX[openCodex].body}</p>
           )}
+        </div>
+
+        {/* ═══ TEAR ═══ */}
+        <div className="relative h-0">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+        </div>
+
+        {/* ═══ TICKET: CODEX OF MARS ═══ */}
+        <div className="bg-black rounded-b-3xl overflow-hidden px-8 sm:px-10 py-6 text-center">
+          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Codex of Mars</p>
+          <p className="font-mercure italic text-white/50 text-[13px] sm:text-[14px] leading-relaxed max-w-sm mx-auto mb-3">
+            A place where people play with reality to create what&apos;s next. At the core is Systemic Play — imagination, theatre, and systemic constellations.
+          </p>
+          <p className="text-mars/40 text-[10px] tracking-[0.15em] font-bold mb-3">
+            Freedom · Responsibility · Humor · Humility · Truthfulness
+          </p>
+          <a href="/business/codex" className="text-mars hover:text-mars-light text-[11px] font-bold uppercase tracking-[0.1em] transition-colors">
+            Read the full Codex →
+          </a>
         </div>
 
         {/* Footer */}
