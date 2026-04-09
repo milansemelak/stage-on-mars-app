@@ -124,59 +124,70 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           </div>
         </div>
 
-        {/* ═══ TEAR LINE 1 ═══ */}
-        <div className="relative bg-black">
+        {/* ═══ TEAR: black → orange ═══ */}
+        <div className="relative h-0">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
           <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
         </div>
 
-        {/* ═══ TICKET: CAPTAIN'S QUESTION ═══ */}
-        <div className="bg-black px-8 sm:px-10 py-6 text-center">
-          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">The Captain&apos;s Question</p>
-          <p className="font-mercure italic text-mars text-[20px] sm:text-[26px] leading-[1.3]">
+        {/* ═══ TICKET: CAPTAIN'S QUESTION — orange band ═══ */}
+        <div className="bg-mars px-8 sm:px-10 py-6 text-center">
+          <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">The Captain&apos;s Question</p>
+          <p className="font-mercure italic text-black text-[20px] sm:text-[26px] leading-[1.3]">
             &ldquo;{mission.question}&rdquo;
           </p>
         </div>
 
         {/* Welcome message */}
         {mission.welcome_message && (
-          <div className="bg-black px-8 sm:px-10 pb-6">
-            <div className="border-t border-white/[0.08] pt-4">
+          <>
+            {/* ═══ TEAR: orange → black ═══ */}
+            <div className="relative h-0">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+            </div>
+            <div className="bg-black px-8 sm:px-10 py-6">
               <p className="text-white/70 text-[13px] leading-[1.6] whitespace-pre-line">
                 {mission.welcome_message}
               </p>
             </div>
-          </div>
+          </>
         )}
 
-        {/* ═══ TEAR LINE 2 ═══ */}
-        <div className="relative bg-black">
+        {/* ═══ TEAR: → orange ═══ */}
+        <div className="relative h-0">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
           <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
         </div>
 
-        {/* ═══ TICKET: CREW + REGISTRATION ═══ */}
-        <div className="bg-black px-8 sm:px-10 py-6">
-          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3 text-center">Crew Manifest</p>
+        {/* ═══ TICKET: CREW MANIFEST — orange band ═══ */}
+        <div className="bg-mars px-8 sm:px-10 py-6 text-center">
+          <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Crew Manifest</p>
           {crew.length > 0 ? (
-            <div className="mb-4">
+            <div>
               {crew.map((member, i) => (
-                <div key={i} className="flex items-center gap-3 py-1.5 border-b border-white/[0.04] last:border-0">
-                  <span className="text-mars text-[12px] font-bold tabular-nums w-5">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="text-white/70 text-[14px] font-medium">{member.name}</span>
+                <div key={i} className="py-1.5 border-b border-black/[0.08] last:border-0">
+                  <span className="text-black text-[14px] font-medium">{member.name}</span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-white/20 text-[13px] mb-4">No crew members yet. Be the first to board.</p>
+            <p className="text-black/30 text-[13px]">No crew members yet. Be the first to board.</p>
           )}
+        </div>
 
+        {/* ═══ TEAR: orange → black ═══ */}
+        <div className="relative h-0">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+        </div>
+
+        {/* ═══ TICKET: REGISTRATION ═══ */}
+        <div className="bg-black px-8 sm:px-10 py-6">
           {!registered ? (
-            <div className="border-t border-white/[0.08] pt-4">
-              <p className="text-mars text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Board This Mission</p>
-              <p className="text-white/35 text-[12px] mb-3">Register your seat and bring a question worth playing.</p>
+            <>
+              <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-1 text-center">Board This Mission</p>
+              <p className="text-white/35 text-[12px] mb-3 text-center">Register your seat and bring a question worth playing.</p>
 
               {error && (
                 <p className="text-red-400 text-[12px] mb-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/20">{error}</p>
@@ -200,9 +211,9 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
                   {submitting ? "Boarding..." : "Board"}
                 </button>
               </form>
-            </div>
+            </>
           ) : (
-            <div className="border-t border-white/[0.08] pt-4 text-center">
+            <div className="text-center">
               <p className="text-white text-[18px] font-bold mb-1">You&apos;re on the manifest.</p>
               <p className="text-white/30 text-[13px]">See you on Mars, {name.split(" ")[0]}.</p>
             </div>
@@ -211,26 +222,31 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ QUESTIONS TO PLAY — orange band ═══ */}
         {crew.some((m) => m.question) && (
-          <div className="bg-mars px-8 sm:px-10 py-6">
-            <p className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Questions to Play</p>
+          <>
+          {/* ═══ TEAR ═══ */}
+          <div className="relative h-0">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
+          </div>
+          <div className="bg-mars px-8 sm:px-10 py-6 text-center">
+            <p className="text-black/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Questions to Play</p>
             <div className="space-y-3">
               {crew.filter((m) => m.question).map((member, i) => (
                 <div key={i}>
-                  <p className="text-white font-mercure italic text-[16px] sm:text-[18px] leading-[1.3] mb-0.5">
+                  <p className="text-black font-mercure italic text-[16px] sm:text-[18px] leading-[1.3]">
                     &ldquo;{member.question}&rdquo;
                   </p>
-                  <p className="text-white/40 text-[11px]">{member.name}</p>
                 </div>
               ))}
             </div>
           </div>
+          </>
         )}
 
-        {/* ═══ TEAR LINE 3 ═══ */}
-        <div className="relative bg-black">
+        {/* ═══ TEAR ═══ */}
+        <div className="relative h-0">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
           <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-6 h-6 rounded-full bg-white z-10" />
-          <div className="border-t border-dashed border-white/15 mx-6" />
         </div>
 
         {/* ═══ TICKET: SOUNDTRACK ═══ */}
