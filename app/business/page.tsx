@@ -291,8 +291,9 @@ export default function BusinessPage() {
                 <img src="/logo.png" alt="Stage On Mars" className="h-14 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </button>
               {/* Tagline — same style as the screenshot */}
-              <h1 className="text-[24px] sm:text-[44px] md:text-[56px] font-black tracking-[-0.04em] leading-[1.05] whitespace-nowrap">
-                <span className="text-white">{t.tagline1}</span>{" "}
+              <h1 className="text-[28px] sm:text-[44px] md:text-[56px] font-black tracking-[-0.04em] leading-[1.05]">
+                <span className="text-white">{t.tagline1}</span>
+                <br />
                 <span className="text-mars font-mercure italic">{t.tagline2}</span>
               </h1>
           </div>
@@ -323,36 +324,39 @@ export default function BusinessPage() {
 
           {/* ── CREDIBILITY / STATS ── */}
           <div className="w-full max-w-3xl mx-auto mb-6 sm:mb-10">
-            <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
-              {/* Subtle warm glow behind stats */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[60%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,85,0,0.05) 0%, transparent 70%)" }} />
-              <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-10">
-                <p className="font-mercure italic text-[18px] sm:text-[24px] leading-[1.35] text-center max-w-sm mx-auto mb-8 sm:mb-10">
-                  <span className="text-white/80">The strategy is there.</span>
-                  <br />
-                  <span className="text-white/30">But people don&rsquo;t act.</span>
+            <div className="relative rounded-2xl border border-white/[0.15] overflow-hidden" style={{ background: "linear-gradient(160deg, rgba(255,85,0,0.08) 0%, rgba(10,10,10,0.95) 40%, rgba(10,10,10,0.98) 100%)" }}>
+              {/* Top accent line */}
+              <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
+              {/* Cinematic warm glow */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-[50%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.12) 0%, transparent 70%)" }} />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
+              {/* Inner border glow */}
+              <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(255,85,0,0.05)" }} />
+              <div className="relative z-10 px-6 sm:px-10 py-10 sm:py-14">
+                <p className="font-mercure italic text-[16px] sm:text-[26px] leading-[1.2] text-center mx-auto mb-10 sm:mb-12 whitespace-nowrap">
+                  <span className="text-white/90">The strategy is there.</span>
+                  <span className="text-white/30 ml-2">But people don&rsquo;t act.</span>
                 </p>
-                <div className="flex items-center justify-center gap-8 sm:gap-14">
+                <div className="flex items-center justify-center gap-6 sm:gap-14">
                   <div className="text-center">
-                    <p className="text-mars text-[30px] sm:text-[40px] font-black tracking-[-0.04em] leading-none">80%</p>
-                    <p className="text-white/40 text-[9px] uppercase tracking-[0.2em] mt-2">clear direction</p>
+                    <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">80%</p>
+                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">clear direction</p>
                   </div>
-                  <div className="w-px h-12 bg-white/[0.08]" />
+                  <div className="w-px h-14 bg-gradient-to-b from-transparent via-mars/20 to-transparent" />
                   <div className="text-center">
-                    <p className="text-[22px] sm:text-[30px] font-black tracking-[-0.03em] leading-none">
+                    <p className="text-[24px] sm:text-[34px] font-black tracking-[-0.03em] leading-none">
                       <span className="text-white/80">Weeks</span>
-                      <span className="text-mars/40 mx-1.5 text-[16px] sm:text-[20px]">→</span>
-                      <span className="text-mars">Hours</span>
+                      <span className="text-mars/50 mx-1 sm:mx-2 text-[16px] sm:text-[22px]">→</span>
+                      <span className="text-mars drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">Hours</span>
                     </p>
-                    <p className="text-white/40 text-[9px] uppercase tracking-[0.2em] mt-2">played out in hours</p>
+                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">played out in hours</p>
                   </div>
-                  <div className="w-px h-12 bg-white/[0.08]" />
+                  <div className="w-px h-14 bg-gradient-to-b from-transparent via-mars/20 to-transparent" />
                   <div className="text-center">
-                    <p className="text-mars text-[30px] sm:text-[40px] font-black tracking-[-0.04em] leading-none">
-                      9<span className="text-white/15">/</span>10
+                    <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">
+                      9<span className="text-white/20">/</span>10
                     </p>
-                    <p className="text-white/40 text-[9px] uppercase tracking-[0.2em] mt-2">unblocked</p>
+                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">unblocked</p>
                   </div>
                 </div>
               </div>

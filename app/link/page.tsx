@@ -11,6 +11,11 @@ const links = [
     href: "/play",
   },
   {
+    title: "The Method",
+    description: "How Systemic Play works.",
+    href: "/method",
+  },
+  {
     title: "The New Website",
     description: "Everything about Stage on Mars.",
     href: "/business",
