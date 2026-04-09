@@ -63,20 +63,20 @@ const STRUCTURE = [
   },
   {
     phase: "06",
-    title: "Záver \u2014 Uchopenie",
+    title: "Záver \u2014 Ďalšia verzia Yemiho",
     time: "3\u20135 min",
-    question: "Čo si teraz povedal? Čo je pre teba teraz jasné?",
+    question: "Aká je ďalšia verzia Yemiho? Kým ide byť?",
     goal: [
-      "Nezhrnúť rozhovor.",
-      "Zachytiť moment, ktorý vznikol.",
+      "Bez zhrnutia. Bez vysvetľovania.",
+      "Bez návratu k tomu, čo už zaznelo.",
     ],
-    note: "Krátke pomenovanie toho, čo sa stalo.",
+    note: "Rozhovor sa uzavrie jednou vecou.",
   },
 ];
 
 const PRINCIPLES = [
   "Neísť do minulosti",
-  "Nenechať rozhovor skĺznuť do príbehov",
+  "Nenechať rozhovor skĺznuť do mudrovania",
   "Držať tempo, ale neponáhľať",
   "Ticho je súčasť formátu",
   "Ak odpovede znejú príliš hladko, ešte to nie je ono",
