@@ -53,7 +53,7 @@ const STRUCTURE = [
     phase: "05",
     title: "Zlom \u2014 Yemi",
     time: "10\u201312 min",
-    question: "A keď to zúžime len na teba \u2014 aká je tvoja otázka?",
+    question: "Aká je najväčšia otázka, ktorú si musí Yemi zodpovedať, aby sa posunul vpred?",
     goal: [
       "Presun z abstrakcie do osobnej roviny.",
       "Moment, kde už nemôže hovoriť za systém.",
