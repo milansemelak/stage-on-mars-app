@@ -66,7 +66,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
           {/* Header — logo + picto */}
           <div className="px-8 sm:px-12 pt-10 pb-6 flex items-center justify-between">
             <img src="/logo.png" alt="Stage on Mars" className="h-8 sm:h-10 invert opacity-80" />
-            <img src="/picto.png" alt="" className="h-10 sm:h-12 w-auto opacity-40" />
+            <img src="/picto.png" alt="" className="h-10 sm:h-12 w-auto" />
           </div>
 
           {/* Expedition name */}
@@ -142,6 +142,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
           {/* The question */}
           <div className="px-8 sm:px-12 py-8">
+            <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">The Captain&apos;s Question</p>
             <p className="font-mercure italic text-mars text-[22px] sm:text-[30px] leading-[1.3]">
               &ldquo;{mission.question}&rdquo;
             </p>
