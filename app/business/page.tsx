@@ -340,7 +340,7 @@ export default function BusinessPage() {
                 <div className="flex items-center justify-center gap-6 sm:gap-14">
                   <div className="text-center">
                     <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">80%</p>
-                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">clear direction</p>
+                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">left with a clear direction</p>
                   </div>
                   <div className="w-px h-14 bg-gradient-to-b from-transparent via-mars/20 to-transparent" />
                   <div className="text-center">
@@ -349,14 +349,15 @@ export default function BusinessPage() {
                       <span className="text-mars/50 mx-1 sm:mx-2 text-[16px] sm:text-[22px]">→</span>
                       <span className="text-mars drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">Hours</span>
                     </p>
-                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">played out in hours</p>
+                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">what took weeks was played out in hours</p>
                   </div>
                   <div className="w-px h-14 bg-gradient-to-b from-transparent via-mars/20 to-transparent" />
                   <div className="text-center">
                     <p className="text-mars text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_20px_rgba(255,85,0,0.25)]">
-                      9<span className="text-white/20">/</span>10
+                      9<span className="text-white/20"> out of </span>10
+                      <span className="text-white/40 text-[14px] sm:text-[20px] font-bold tracking-normal ml-1">teams</span>
                     </p>
-                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">unblocked</p>
+                    <p className="text-white/50 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] mt-2">unblocked a stuck decision</p>
                   </div>
                 </div>
               </div>
