@@ -64,7 +64,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         <div className="bg-black rounded-t-3xl overflow-hidden">
           <div className="px-8 sm:px-10 pt-8 pb-2 flex items-start justify-between">
             <div>
-              <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Boarding Pass</p>
+              <p className="text-mars/60 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">Boarding Pass</p>
               <h1 className="text-[32px] sm:text-[42px] font-bold tracking-[-0.04em] leading-[1.05]">
                 <span className="text-white">{mission.company} </span>
                 <span className="font-mercure italic text-mars">on Mars</span>
@@ -132,8 +132,8 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         </div>
 
         {/* ═══ TICKET: CAPTAIN'S QUESTION ═══ */}
-        <div className="bg-black px-8 sm:px-10 py-6">
-          <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">The Captain&apos;s Question</p>
+        <div className="bg-black px-8 sm:px-10 py-6 text-center">
+          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">The Captain&apos;s Question</p>
           <p className="font-mercure italic text-mars text-[20px] sm:text-[26px] leading-[1.3]">
             &ldquo;{mission.question}&rdquo;
           </p>
@@ -143,7 +143,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
         {mission.welcome_message && (
           <div className="bg-black px-8 sm:px-10 pb-6">
             <div className="border-t border-white/[0.08] pt-4">
-              <p className="text-white/40 text-[13px] leading-[1.6] whitespace-pre-line">
+              <p className="text-white/70 text-[13px] leading-[1.6] whitespace-pre-line">
                 {mission.welcome_message}
               </p>
             </div>
@@ -159,7 +159,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TICKET: CREW + REGISTRATION ═══ */}
         <div className="bg-black px-8 sm:px-10 py-6">
-          <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Crew Manifest</p>
+          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3 text-center">Crew Manifest</p>
           {crew.length > 0 ? (
             <div className="mb-4">
               {crew.map((member, i) => (
@@ -235,7 +235,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TICKET: SOUNDTRACK ═══ */}
         <div className="bg-black px-8 sm:px-10 py-6">
-          <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Soundtrack</p>
+          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Soundtrack</p>
           <p className="text-white/25 text-[11px] mb-3">
             Add your song to the{" "}
             <a href="https://open.spotify.com/playlist/33g5Ukkzcd2bUbvkKMMxr2" target="_blank" rel="noopener noreferrer" className="text-mars font-semibold hover:underline">
@@ -263,7 +263,7 @@ export default function BoardingPass({ mission, initialCrew }: { mission: Missio
 
         {/* ═══ TICKET: CODEX OF MARS ═══ */}
         <div className="bg-black rounded-b-3xl overflow-hidden px-8 sm:px-10 py-6">
-          <p className="text-white/30 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Codex of Mars</p>
+          <p className="text-mars/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-3">Codex of Mars</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
             {CODEX.map((rule, i) => (
               <button
