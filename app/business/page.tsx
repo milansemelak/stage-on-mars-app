@@ -291,8 +291,8 @@ export default function BusinessPage() {
                 <img src="/logo.png" alt="Stage On Mars" className="h-14 sm:h-14 md:h-18 w-auto invert mx-auto" />
               </button>
               {/* Tagline — same style as the screenshot */}
-              <h1 className="text-[36px] sm:text-[56px] md:text-[72px] font-black tracking-[-0.04em] leading-[1.05]">
-                <span className="text-white">{t.tagline1}</span><br />
+              <h1 className="text-[24px] sm:text-[44px] md:text-[56px] font-black tracking-[-0.04em] leading-[1.05] whitespace-nowrap">
+                <span className="text-white">{t.tagline1}</span>{" "}
                 <span className="text-mars font-mercure italic">{t.tagline2}</span>
               </h1>
           </div>
@@ -321,7 +321,45 @@ export default function BusinessPage() {
             </div>
 
 
-          {/* ── SOCIAL PROOF — right after formula ── */}
+          {/* ── CREDIBILITY / STATS ── */}
+          <div className="w-full max-w-3xl mx-auto mb-6 sm:mb-10">
+            <div className="relative rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
+              {/* Subtle warm glow behind stats */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[60%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,85,0,0.05) 0%, transparent 70%)" }} />
+              <div className="relative z-10 px-6 sm:px-10 py-8 sm:py-10">
+                <p className="font-mercure italic text-[18px] sm:text-[24px] leading-[1.35] text-center max-w-sm mx-auto mb-8 sm:mb-10">
+                  <span className="text-white/80">The strategy is there.</span>
+                  <br />
+                  <span className="text-white/30">But people don&rsquo;t act.</span>
+                </p>
+                <div className="flex items-center justify-center gap-8 sm:gap-14">
+                  <div className="text-center">
+                    <p className="text-mars text-[30px] sm:text-[40px] font-black tracking-[-0.04em] leading-none">80%</p>
+                    <p className="text-white/40 text-[9px] uppercase tracking-[0.2em] mt-2">clear direction</p>
+                  </div>
+                  <div className="w-px h-12 bg-white/[0.08]" />
+                  <div className="text-center">
+                    <p className="text-[22px] sm:text-[30px] font-black tracking-[-0.03em] leading-none">
+                      <span className="text-white/80">Weeks</span>
+                      <span className="text-mars/40 mx-1.5 text-[16px] sm:text-[20px]">→</span>
+                      <span className="text-mars">Hours</span>
+                    </p>
+                    <p className="text-white/40 text-[9px] uppercase tracking-[0.2em] mt-2">played out in hours</p>
+                  </div>
+                  <div className="w-px h-12 bg-white/[0.08]" />
+                  <div className="text-center">
+                    <p className="text-mars text-[30px] sm:text-[40px] font-black tracking-[-0.04em] leading-none">
+                      9<span className="text-white/15">/</span>10
+                    </p>
+                    <p className="text-white/40 text-[9px] uppercase tracking-[0.2em] mt-2">unblocked</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── SOCIAL PROOF — right after stats ── */}
           <div className="w-full max-w-3xl mx-auto mb-8 sm:mb-12">
               <div className="relative rounded-2xl overflow-hidden">
                 <img src="/luxury5.jpg" alt="" className="absolute inset-0 w-full h-full object-cover grayscale opacity-[0.25]" style={{ objectPosition: "50% 35%" }} />
@@ -332,17 +370,17 @@ export default function BusinessPage() {
                   <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
                     <div className="text-center">
                       <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
-                      <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.realityPlays}</p>
+                      <p className="text-white/50 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-1">{t.realityPlays}</p>
                     </div>
                     <div className="w-px h-10 bg-white/[0.12]" />
                     <div className="text-center">
-                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">4</p>
-                      <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.countries}</p>
+                      <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">5</p>
+                      <p className="text-white/50 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-1">{t.countries}</p>
                     </div>
                     <div className="w-px h-10 bg-white/[0.12]" />
                     <div className="text-center">
                       <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">2020</p>
-                      <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">{t.founded}</p>
+                      <p className="text-white/50 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-1">{t.founded}</p>
                     </div>
                   </div>
 
