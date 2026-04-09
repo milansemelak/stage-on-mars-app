@@ -90,6 +90,15 @@ const CAMERA = [
   "Moment, keď sa rozhovor stane osobným",
 ];
 
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] gap-3 sm:gap-4 py-3 border-b border-neutral-100">
+      <p className="text-neutral-400 text-[10px] uppercase tracking-[0.15em] font-bold pt-0.5 shrink-0">{label}</p>
+      <div>{children}</div>
+    </div>
+  );
+}
+
 export default function TVPage() {
   return (
     <div className="min-h-screen bg-neutral-50 text-black">
@@ -106,7 +115,7 @@ export default function TVPage() {
       <div className="max-w-3xl mx-auto px-5 sm:px-10 py-8 sm:py-12">
 
         {/* TITLE */}
-        <div className="mb-6 sm:mb-8">
+        <div className="mb-8 sm:mb-10">
           <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-2">Stage on Mars Presents</p>
           <h1 className="text-[32px] sm:text-[48px] font-bold tracking-[-0.04em] leading-[1.05] mb-1">
             Human <span className="font-mercure italic text-mars">on Mars</span>
@@ -114,122 +123,138 @@ export default function TVPage() {
           <p className="text-neutral-400 text-[12px] sm:text-[13px] uppercase tracking-[0.15em] font-semibold">Talks from Outer Space</p>
         </div>
 
-        {/* EPISODE */}
-        <div className="mb-6">
-          <p className="text-neutral-400 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Produkčný Brief</p>
-          <h2 className="text-[22px] sm:text-[30px] font-bold tracking-[-0.03em]">
-            Yemi A.D. <span className="font-mercure italic text-mars">on Mars</span>
-          </h2>
-        </div>
-
-        {/* FORMAT */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <div>
-            <p className="text-neutral-400 text-[9px] sm:text-[10px] uppercase tracking-[0.15em] font-bold mb-0.5">Formát</p>
-            <p className="text-[12px] sm:text-[13px] font-semibold leading-snug">Rozhovor na kruhovom javisku</p>
-          </div>
-          <div>
-            <p className="text-neutral-400 text-[9px] sm:text-[10px] uppercase tracking-[0.15em] font-bold mb-0.5">Dĺžka</p>
-            <p className="text-[12px] sm:text-[13px] font-semibold">cca 45 min</p>
-          </div>
-          <div>
-            <p className="text-neutral-400 text-[9px] sm:text-[10px] uppercase tracking-[0.15em] font-bold mb-0.5">Účastníci</p>
-            <p className="text-[12px] sm:text-[13px] font-semibold">Yemi A.D. a Milan Šemelák</p>
-          </div>
-          <div>
-            <p className="text-neutral-400 text-[9px] sm:text-[10px] uppercase tracking-[0.15em] font-bold mb-0.5">Cieľ</p>
-            <p className="text-[12px] sm:text-[13px] font-semibold leading-snug">Zachytiť moment zlomu</p>
-          </div>
-        </div>
-
-        <p className="text-[14px] leading-[1.6] text-neutral-600 mb-8 sm:mb-10">
-          Zachytiť moment, kde sa rozhovor presunie z&nbsp;všeobecného uvažovania do osobnej, nepomenovanej otázky.
-        </p>
-
-        {/* PRIESTOR A ATMOSFÉRA */}
+        {/* BRIEF INFO — grid rows */}
         <div className="mb-8 sm:mb-10">
-          <h3 className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold text-mars mb-3">Priestor a Atmosféra</h3>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Produkčný Brief</p>
 
-          <p className="text-[13px] sm:text-[14px] leading-[1.7] text-neutral-700 mb-4">
-            Scéna je čistá, minimálna. Kruhové javisko je centrálny prvok. Dvaja ľudia oproti sebe, bez stola a&nbsp;bez bariér. Rozhovor má pôsobiť sústredene, bez rušenia. Dôležité sú pauzy, pohľady a zmena tempa.
-          </p>
+          <Row label="Epizóda">
+            <p className="text-[15px] sm:text-[17px] font-bold tracking-[-0.02em]">
+              Yemi A.D. <span className="font-mercure italic text-mars">on Mars</span>
+            </p>
+          </Row>
+          <Row label="Formát">
+            <p className="text-[13px] font-semibold">Rozhovor na kruhovom javisku</p>
+          </Row>
+          <Row label="Dĺžka">
+            <p className="text-[13px] font-semibold">cca 45 min</p>
+          </Row>
+          <Row label="Účastníci">
+            <p className="text-[13px] font-semibold">Yemi A.D. a Milan Šemelák</p>
+          </Row>
+          <Row label="Cieľ">
+            <p className="text-[13px] leading-[1.5] text-neutral-700">
+              Zachytiť moment, kde sa rozhovor presunie z&nbsp;všeobecného uvažovania do osobnej, nepomenovanej otázky.
+            </p>
+          </Row>
+        </div>
 
-          <p className="text-neutral-400 text-[9px] sm:text-[10px] uppercase tracking-[0.15em] font-bold mb-2">Kamera sleduje</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-0.5 mb-3">
-            {CAMERA.map((item, i) => (
-              <p key={i} className="text-[12px] sm:text-[13px] text-neutral-600 before:content-['·'] before:text-mars before:font-bold before:mr-1.5">{item}</p>
-            ))}
-          </div>
+        {/* PRIESTOR A ATMOSFÉRA — grid rows */}
+        <div className="mb-8 sm:mb-10">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Priestor a Atmosféra</p>
 
-          <p className="text-[13px] text-neutral-900 font-semibold italic">
-            Nejde o zaznamenanie odpovedí, ale situácie.
-          </p>
+          <Row label="Scéna">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Čistá, minimálna. Kruhové javisko je centrálny prvok. Dvaja ľudia oproti sebe, bez stola a&nbsp;bez bariér.
+            </p>
+          </Row>
+          <Row label="Atmosféra">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Sústredená, bez rušenia. Dôležité sú pauzy, pohľady a zmena tempa.
+            </p>
+          </Row>
+          <Row label="Kamera">
+            <div className="space-y-0.5">
+              {CAMERA.map((item, i) => (
+                <p key={i} className="text-[12px] sm:text-[13px] text-neutral-600 before:content-['·'] before:text-mars before:font-bold before:mr-1.5">{item}</p>
+              ))}
+            </div>
+          </Row>
+          <Row label="Kľúčové">
+            <p className="text-[13px] text-neutral-900 font-semibold italic">Nejde o zaznamenanie odpovedí, ale situácie.</p>
+          </Row>
         </div>
 
         {/* ŠTRUKTÚRA ROZHOVORU */}
         <div className="mb-8 sm:mb-10">
-          <h3 className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold text-mars mb-1">Štruktúra Rozhovoru</h3>
-          <p className="text-[12px] sm:text-[13px] text-neutral-400 mb-5">Rozhovor má jasnú gradáciu. Začína širšie a postupne sa zužuje.</p>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-1">Štruktúra Rozhovoru</p>
+          <p className="text-[12px] text-neutral-400 mb-4">Začína širšie, postupne sa zužuje.</p>
 
-          <div className="space-y-0">
-            {STRUCTURE.map((block, i) => (
-              <div key={i} className={`py-4 ${i < STRUCTURE.length - 1 ? "border-b border-neutral-100" : ""}`}>
-                {/* Phase header */}
-                <div className="flex items-baseline gap-2 sm:gap-2.5 mb-0.5">
-                  <span className="text-mars text-[11px] font-mono font-bold shrink-0">{block.phase}</span>
-                  <h4 className="text-[15px] sm:text-[17px] font-bold tracking-[-0.02em]">{block.title}</h4>
-                  <span className="text-neutral-300 text-[11px] ml-auto shrink-0">{block.time}</span>
-                </div>
+          {STRUCTURE.map((block, i) => (
+            <div key={i} className={`grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] gap-3 sm:gap-4 py-4 ${i < STRUCTURE.length - 1 ? "border-b border-neutral-100" : ""}`}>
+              {/* Left column — phase info */}
+              <div>
+                <span className="text-mars text-[12px] font-mono font-bold">{block.phase}</span>
+                <p className="text-neutral-300 text-[11px] mt-0.5">{block.time}</p>
+              </div>
 
-                <p className="text-neutral-400 text-[11px] sm:text-[12px] mb-2.5 ml-6 sm:ml-7">{block.note}</p>
+              {/* Right column — content */}
+              <div>
+                <h4 className="text-[15px] sm:text-[16px] font-bold tracking-[-0.02em] mb-0.5">{block.title}</h4>
+                <p className="text-neutral-400 text-[11px] sm:text-[12px] mb-2">{block.note}</p>
 
                 {/* Question */}
-                <div className="ml-6 sm:ml-7 mb-2.5 border-l-2 border-mars pl-3 sm:pl-4 py-1.5 bg-neutral-100/60 rounded-r-lg">
-                  <p className="text-[15px] sm:text-[17px] font-mercure italic leading-[1.3] text-black">
+                <div className="border-l-2 border-mars pl-3 py-1 mb-2 bg-neutral-100/60 rounded-r-lg">
+                  <p className="text-[14px] sm:text-[16px] font-mercure italic leading-[1.3] text-black">
                     {block.question}
                   </p>
                 </div>
 
                 {/* Follow-up */}
                 {block.followUp && (
-                  <div className="ml-6 sm:ml-7 mb-2.5 border-l-2 border-mars/40 pl-3 sm:pl-4 py-1.5">
+                  <div className="border-l-2 border-mars/40 pl-3 py-1 mb-2">
                     <p className="text-neutral-400 text-[9px] uppercase tracking-[0.15em] font-bold mb-0.5">Ak odpoveď ostáva všeobecná</p>
-                    <p className="text-[14px] sm:text-[15px] font-mercure italic text-mars leading-[1.3]">
+                    <p className="text-[13px] sm:text-[14px] font-mercure italic text-mars leading-[1.3]">
                       {block.followUp}
                     </p>
                   </div>
                 )}
 
                 {/* Goals */}
-                <div className="ml-6 sm:ml-7 flex flex-col gap-0.5">
+                <div className="flex flex-col gap-0.5">
                   {block.goal.map((g, j) => (
                     <p key={j} className="text-[11px] sm:text-[12px] text-neutral-400 leading-[1.5] before:content-['·'] before:text-neutral-300 before:mr-1.5">{g}</p>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         {/* KĽÚČOVÉ PRINCÍPY */}
         <div className="mb-8 sm:mb-10">
-          <h3 className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold text-mars mb-3">Kľúčové Princípy</h3>
-          <div className="space-y-0.5">
-            {PRINCIPLES.map((p, i) => (
-              <p key={i} className="text-[13px] sm:text-[14px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">{p}</p>
-            ))}
-          </div>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Kľúčové Princípy</p>
+          <Row label="Pravidlá">
+            <div className="space-y-0.5">
+              {PRINCIPLES.map((p, i) => (
+                <p key={i} className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">{p}</p>
+              ))}
+            </div>
+          </Row>
         </div>
 
         {/* POINTA */}
         <div className="mb-8 sm:mb-10">
-          <h3 className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold text-mars mb-2">Pointa</h3>
-          <p className="text-[14px] sm:text-[15px] text-neutral-400 leading-[1.6] mb-1">
-            Rozhovor ide od sveta k človeku. Od abstrakcie k osobnej otázke.
-          </p>
-          <p className="text-[14px] sm:text-[16px] text-black leading-[1.6] font-semibold">
-            Kľúčový moment je, keď hosť prestane hovoriť za biznis alebo ľudstvo a&nbsp;pomenuje svoju vlastnú otázku.
-          </p>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Pointa</p>
+          <Row label="Záver">
+            <div>
+              <p className="text-[13px] sm:text-[14px] text-neutral-400 leading-[1.6] mb-1">
+                Rozhovor ide od sveta k človeku. Od abstrakcie k osobnej otázke.
+              </p>
+              <p className="text-[13px] sm:text-[14px] text-black leading-[1.6] font-semibold">
+                Kľúčový moment je, keď hosť prestane hovoriť za biznis alebo ľudstvo a&nbsp;pomenuje svoju vlastnú otázku.
+              </p>
+            </div>
+          </Row>
+        </div>
+
+        {/* THE SPACE */}
+        <div className="mb-8 sm:mb-10">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">The Space</p>
+          <Row label="Javisko">
+            <div className="rounded-xl overflow-hidden">
+              <img src="/stage.jpg" alt="Stage on Mars \u2014 the circular stage" className="w-full h-auto" />
+            </div>
+          </Row>
         </div>
 
         {/* Footer */}
