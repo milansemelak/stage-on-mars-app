@@ -415,23 +415,30 @@ export default function BusinessPage() {
           </div>
 
           {/* ── BUILD YOUR PLAY — CTA ── */}
-          <FadeIn className="px-4 py-10 sm:py-16">
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">{t.letsMakeIt}</p>
-              <h2 className="text-[22px] sm:text-[32px] font-bold tracking-[-0.03em] mb-3">
-                {t.contactQ}
-              </h2>
-              <p className="font-mercure italic text-white/35 text-[12px] sm:text-[14px] mb-8 max-w-sm mx-auto">
-                {t.formulaBody}
-              </p>
-              <Link
-                href="/business/play"
-                className="inline-flex items-center gap-2 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold text-[13px] sm:text-[15px] uppercase tracking-[0.12em] text-white transition-all hover:scale-[1.03] hover:shadow-[0_12px_50px_-10px_rgba(255,85,0,0.6)]"
-                style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 100%)", boxShadow: "0 4px 24px -4px rgba(255,85,0,0.4)" }}
-              >
-                {t.buildPlay}
-                <span className="text-white/60">&rarr;</span>
-              </Link>
+          <FadeIn className="px-4 py-6 sm:py-10">
+            <div className="w-full max-w-3xl mx-auto">
+              <div className="relative rounded-2xl border border-mars/30 overflow-hidden" style={{ boxShadow: "0 0 60px -12px rgba(255,85,0,0.15), 0 0 120px -30px rgba(255,85,0,0.08)" }}>
+                <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
+                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
+                <div className="relative z-10 px-6 sm:px-10 py-10 sm:py-14 text-center">
+                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-5">{t.letsMakeIt}</p>
+                  <h2 className="text-[24px] sm:text-[36px] font-bold tracking-[-0.03em] mb-3">
+                    {t.contactQ}
+                  </h2>
+                  <p className="font-mercure italic text-white/35 text-[12px] sm:text-[14px] mb-10 max-w-sm mx-auto">
+                    {t.formulaBody}
+                  </p>
+                  <Link
+                    href="/business/play"
+                    className="relative inline-flex items-center gap-2 px-10 sm:px-12 py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.1em] text-white transition-all hover:scale-[1.02] overflow-hidden group/cta"
+                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
+                  >
+                    <div className="absolute inset-0 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
+                    <span className="relative z-10">{t.buildPlay}</span>
+                    <span className="relative z-10 text-white/60">&rarr;</span>
+                  </Link>
+                </div>
+              </div>
             </div>
           </FadeIn>
 
