@@ -474,14 +474,22 @@ export default function BusinessPage() {
 
       {/* ── SIMULATOR TEASER ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <Link
-            href="/play"
-            className="inline-flex items-center gap-2 text-mars/60 hover:text-mars text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] transition-colors"
-          >
-            {t.playmakerTitle}: {t.playQuestion}
-          </Link>
-        </div>
+        <Link href="/play" className="block max-w-3xl mx-auto group">
+          <div className="relative rounded-2xl border border-mars/20 hover:border-mars/40 overflow-hidden transition-all duration-500" style={{ boxShadow: "0 0 40px -10px rgba(255,85,0,0.08)" }}>
+            <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/50 to-transparent" />
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.05) 0%, transparent 60%)" }} />
+            <div className="relative z-10 flex items-center justify-between px-6 sm:px-8 py-5 sm:py-6">
+              <div>
+                <p className="text-mars/50 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold mb-1">{t.playmakerTitle}</p>
+                <p className="text-white/70 group-hover:text-white/90 text-[14px] sm:text-[16px] font-bold tracking-[-0.01em] transition-colors">{t.playmakerDesc1}</p>
+                <p className="text-white/30 text-[12px] sm:text-[13px] mt-0.5">{t.playmakerDesc2}</p>
+              </div>
+              <div className="shrink-0 ml-4 w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-mars/30 group-hover:border-mars/60 flex items-center justify-center transition-all group-hover:scale-105" style={{ background: "linear-gradient(135deg, rgba(255,85,0,0.1) 0%, rgba(255,85,0,0.02) 100%)" }}>
+                <span className="text-mars text-[16px] sm:text-[18px] group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+              </div>
+            </div>
+          </div>
+        </Link>
       </FadeIn>
 
       {/* ── TEAM — Stage box ── */}
