@@ -385,40 +385,38 @@ export default function BusinessPage() {
 
                 {/* Stats — uniform refined grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-white/[0.08] gap-0 border-t border-white/[0.08]">
-                  {/* 80% */}
+                  {/* 9/10 LEADERS */}
                   <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px]">
+                    <div className="flex flex-col items-center">
+                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">
+                        9<span className="text-white/15 text-[32px] sm:text-[40px] mx-0.5">/</span>10
+                      </p>
+                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">leaders</p>
+                    </div>
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
+                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">unblocked a<br />stuck decision</p>
+                  </div>
+
+                  {/* 1 DAY — time to clarity */}
+                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
+                    <div className="flex flex-col items-center">
+                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">
+                        1<span className="text-mars/50 text-[20px] sm:text-[26px] font-bold uppercase tracking-[0.1em] ml-1.5 align-middle">day</span>
+                      </p>
+                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">to clarity</p>
+                    </div>
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
+                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">what took weeks<br />played out in hours</p>
+                  </div>
+
+                  {/* 80% OF TEAMS */}
+                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
                     <div className="flex flex-col items-center">
                       <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">80<span className="text-mars/50 text-[28px] sm:text-[36px] align-top">%</span></p>
                       <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">of teams</p>
                     </div>
                     <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
                     <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">left with a<br />clear direction</p>
-                  </div>
-
-                  {/* Weeks → Hours */}
-                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
-                    <div className="flex flex-col items-center">
-                      <p className="font-black tracking-[-0.04em] leading-none flex items-baseline gap-2">
-                        <span className="text-white/80 text-[22px] sm:text-[28px]">Weeks</span>
-                        <span className="text-mars/40 text-[14px] sm:text-[16px]">&rarr;</span>
-                        <span className="text-mars text-[28px] sm:text-[36px] drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">Hours</span>
-                      </p>
-                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">time to clarity</p>
-                    </div>
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
-                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">what took weeks<br />played out in hours</p>
-                  </div>
-
-                  {/* 9/10 */}
-                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
-                    <div className="flex flex-col items-center">
-                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">
-                        9<span className="text-white/15 text-[32px] sm:text-[40px] mx-0.5">/</span>10
-                      </p>
-                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">teams</p>
-                    </div>
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
-                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">unblocked a<br />stuck decision</p>
                   </div>
                 </div>
               </div>
