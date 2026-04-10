@@ -369,84 +369,83 @@ export default function BusinessPage() {
 
           {/* ── CREDIBILITY / STATS ── */}
           <div className="w-full max-w-3xl mx-auto mb-6 sm:mb-10">
-            <div className="relative rounded-2xl border border-white/[0.12] overflow-hidden bg-white/[0.03]">
-              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
-              <div className="relative z-10 px-5 sm:px-10 pt-10 sm:pt-14 pb-8 sm:pb-12">
-                {/* Headline */}
-                <div className="text-center mb-10 sm:mb-14">
-                  <p className="text-mars/60 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] font-bold mb-4">The problem</p>
-                  <p className="font-mercure italic text-[22px] sm:text-[34px] leading-[1.25] max-w-xl mx-auto">
-                    <span className="text-white/90">The strategy is there.</span>
-                    <br />
-                    <span className="text-white/25">But nothing turns into action.</span>
-                  </p>
-                </div>
+            <div className="relative rounded-2xl border border-white/[0.12] overflow-hidden bg-gradient-to-b from-white/[0.04] to-transparent">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[60%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.1) 0%, transparent 70%)" }} />
 
-                {/* Stats — uniform refined grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-white/[0.08] gap-0 border-t border-white/[0.08]">
+              <div className="relative z-10 px-5 sm:px-10 pt-8 sm:pt-12 pb-6 sm:pb-10">
+                {/* Headline — tight */}
+                <p className="font-mercure italic text-[20px] sm:text-[32px] leading-[1.2] text-center max-w-xl mx-auto mb-8 sm:mb-12">
+                  <span className="text-white/90">The strategy is there.</span>{" "}
+                  <span className="text-white/25">But nothing moves.</span>
+                </p>
+
+                {/* Stats — punchy 3-col */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
                   {/* 9/10 LEADERS */}
-                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px]">
-                    <div className="flex flex-col items-center">
-                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">
-                        9<span className="text-white/15 text-[32px] sm:text-[40px] mx-0.5">/</span>10
-                      </p>
-                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">leaders</p>
-                    </div>
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
-                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">unblocked a<br />stuck decision</p>
+                  <div className="relative rounded-xl px-2 sm:px-4 py-5 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
+                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars/70 to-transparent" />
+                    <p className="text-mars text-[34px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
+                      9<span className="text-white/20 text-[22px] sm:text-[36px] mx-0.5">/</span>10
+                    </p>
+                    <p className="text-mars/70 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-2 sm:mt-3">leaders</p>
+                    <p className="text-white/40 text-[9px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">unblocked a stuck decision</p>
                   </div>
 
-                  {/* 1 DAY — time to clarity */}
-                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
-                    <div className="flex flex-col items-center">
-                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">
-                        4<span className="text-mars/50 text-[20px] sm:text-[26px] font-bold uppercase tracking-[0.1em] ml-1.5 align-middle">hours</span>
-                      </p>
-                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">to clarity</p>
-                    </div>
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
-                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">what took weeks<br />played out in hours</p>
+                  {/* 4 HOURS — hero stat, brighter */}
+                  <div className="relative rounded-xl px-2 sm:px-4 py-5 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.18) 0%, rgba(255,85,0,0.04) 100%)" }}>
+                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars to-transparent" />
+                    <p className="text-mars text-[34px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.5)]">
+                      4<span className="text-mars/60 text-[14px] sm:text-[22px] font-black uppercase tracking-[0.05em] ml-0.5">h</span>
+                    </p>
+                    <p className="text-mars/80 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-2 sm:mt-3">to clarity</p>
+                    <p className="text-white/40 text-[9px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">what used to take weeks</p>
                   </div>
 
                   {/* 80% OF TEAMS */}
-                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
-                    <div className="flex flex-col items-center">
-                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">80<span className="text-mars/50 text-[28px] sm:text-[36px] align-top">%</span></p>
-                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">of teams</p>
-                    </div>
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
-                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">left with a<br />clear direction</p>
+                  <div className="relative rounded-xl px-2 sm:px-4 py-5 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
+                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars/70 to-transparent" />
+                    <p className="text-mars text-[34px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
+                      80<span className="text-mars/60 text-[20px] sm:text-[32px] align-top">%</span>
+                    </p>
+                    <p className="text-mars/70 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-2 sm:mt-3">of teams</p>
+                    <p className="text-white/40 text-[9px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">left with a clear direction</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* ── BUILD YOUR PLAY — CTA ── */}
+          {/* ── BUILD YOUR PLAY — CTA (orange invitation) ── */}
           <div className="w-full max-w-3xl mx-auto mt-3 sm:mt-4 mb-6 sm:mb-10">
-            <div className="relative rounded-2xl border border-mars/30 overflow-hidden" style={{ boxShadow: "0 0 60px -12px rgba(255,85,0,0.15), 0 0 120px -30px rgba(255,85,0,0.08)" }}>
-              <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
-              <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.06) 0%, transparent 60%)" }} />
-              <div className="relative z-10 px-6 sm:px-10 py-10 sm:py-14 text-center">
-                <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-5">{t.letsMakeIt}</p>
-                <h2 className="text-[24px] sm:text-[36px] font-bold tracking-[-0.03em] mb-3">
-                  {t.contactQ}
-                </h2>
-                <p className="font-mercure italic text-white/35 text-[12px] sm:text-[14px] mb-10 max-w-sm mx-auto">
-                  Enter your question and we will build the right play for you.
-                </p>
-                <Link
-                  href="/business/play"
-                  className="relative inline-flex items-center gap-2 px-10 sm:px-12 py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.1em] text-white transition-all hover:scale-[1.02] overflow-hidden group/cta"
-                  style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
-                >
-                  <div className="absolute inset-0 opacity-0 group-hover/cta:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
-                  <span className="relative z-10">{t.buildPlay}</span>
-                  <span className="relative z-10 text-white/60">&rarr;</span>
-                </Link>
+            <Link href="/business/play" className="block group/cta">
+              <div
+                className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light"
+                style={{ boxShadow: "0 20px 80px -20px rgba(255,85,0,0.55), 0 8px 40px -12px rgba(255,85,0,0.35)" }}
+              >
+                {/* Top accent line */}
+                <div className="h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                {/* Subtle radial highlight */}
+                <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.18) 0%, transparent 55%)" }} />
+
+                <div className="relative z-10 px-6 sm:px-10 py-12 sm:py-16 text-center">
+                  <p className="text-[#0a0a0a]/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-black mb-5">{t.letsMakeIt}</p>
+                  <h2 className="text-[#0a0a0a] text-[28px] sm:text-[44px] font-black tracking-[-0.035em] leading-[1.05] mb-4">
+                    {t.contactQ}
+                  </h2>
+                  <p className="font-mercure italic text-[#0a0a0a]/60 text-[13px] sm:text-[15px] mb-10 max-w-md mx-auto leading-[1.5]">
+                    Enter your question and we will build the right play for you.
+                  </p>
+                  <span
+                    className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-2xl font-black text-[13px] sm:text-[15px] uppercase tracking-[0.15em] text-white bg-[#0a0a0a] transition-all group-hover/cta:scale-[1.03] group-hover/cta:shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)]"
+                  >
+                    <span>{t.buildPlay}</span>
+                    <span className="text-mars transition-transform duration-300 group-hover/cta:translate-x-1">&rarr;</span>
+                  </span>
+                  <p className="text-[#0a0a0a]/40 text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mt-8">Build &middot; Simulate &middot; Play</p>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
 
 
@@ -481,7 +480,8 @@ export default function BusinessPage() {
         </div>
       </FadeIn>
 
-      {/* ── PLAY SIMULATOR — standalone section ── */}
+      {/* ── PLAY SIMULATOR — moved to /business/play ── */}
+      {false && (
       <FadeIn className="px-4 py-3 sm:py-4">
         <div className="max-w-3xl mx-auto">
           <button
@@ -601,6 +601,7 @@ export default function BusinessPage() {
           </button>
         </div>
       </FadeIn>
+      )}
 
       {/* ── TEAM — Stage box ── */}
       <FadeIn className="px-4 py-3 sm:py-4">
