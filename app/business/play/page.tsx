@@ -317,6 +317,7 @@ function PlayPageInner() {
   const searchParams = useSearchParams();
   const questionParam = searchParams.get("q") || "";
   const companyParam = searchParams.get("company") || "";
+  const simulateOnly = searchParams.get("simulate") === "1";
 
   const [building, setBuilding] = useState(true);
   const [experience, setExperience] = useState<Experience | null>(null);
@@ -340,13 +341,22 @@ function PlayPageInner() {
   // Auto-trigger building animation on load
   useEffect(() => {
     if (!questionParam) return;
+    // Simulate-only flow: skip building animation, derive experience silently,
+    // and open the inline simulator immediately.
+    if (simulateOnly) {
+      setExperience(deriveExperience(questionParam, companyParam));
+      setBuilding(false);
+      openDigital(questionParam);
+      return;
+    }
     setBuilding(true);
     const timer = setTimeout(() => {
       setExperience(deriveExperience(questionParam, companyParam));
       setBuilding(false);
     }, 2200);
     return () => clearTimeout(timer);
-  }, [questionParam, companyParam]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [questionParam, companyParam, simulateOnly]);
 
   async function fetchSimulation(currentPlay: Play, overrideQuestion?: string) {
     setSimLoading(true);
@@ -405,14 +415,22 @@ function PlayPageInner() {
   }
 
   /* ── Builder landing (no question yet) ── */
-  const [builderQ, setBuilderQ] = useState("");
-  const [builderCo, setBuilderCo] = useState("");
+  const [realQ, setRealQ] = useState("");
+  const [realCo, setRealCo] = useState("");
+  const [simQ, setSimQ] = useState("");
 
-  function submitBuilder(overrideQ?: string) {
-    const q = overrideQ || builderQ;
+  function submitReal(overrideQ?: string) {
+    const q = overrideQ || realQ;
     if (!q.trim()) return;
     const params = new URLSearchParams({ q });
-    if (builderCo.trim()) params.set("company", builderCo);
+    if (realCo.trim()) params.set("company", realCo);
+    window.location.href = `/business/play?${params.toString()}`;
+  }
+
+  function submitSimulator(overrideQ?: string) {
+    const q = overrideQ || simQ;
+    if (!q.trim()) return;
+    const params = new URLSearchParams({ q, simulate: "1" });
     window.location.href = `/business/play?${params.toString()}`;
   }
 
@@ -435,53 +453,72 @@ function PlayPageInner() {
         <div className="pt-24 sm:pt-32 pb-16 px-4 flex flex-col items-center">
           {/* Hero */}
           <div className="text-center mb-10 sm:mb-14 max-w-2xl">
-            <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">Design your trip to Mars</p>
+            <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">Two ways to play</p>
             <h1 className="text-[28px] sm:text-[44px] font-bold tracking-[-0.04em] leading-[1.1] mb-4">
-              What question do you want<br className="hidden sm:block" /> to <span className="font-mercure italic text-mars">play?</span>
+              Design it for real,<br className="hidden sm:block" /> or <span className="font-mercure italic text-mars">simulate it now.</span>
             </h1>
             <p className="font-mercure italic text-white/35 text-[13px] sm:text-[15px] max-w-md mx-auto">
-              Your question becomes a real play on stage. People step into roles. Your perspective shifts.
+              Bring your question to a live stage in Prague — or watch a play unfold instantly in your browser.
             </p>
           </div>
 
-          {/* Builder box */}
-          <div className="w-full max-w-3xl">
-            <div className="relative group/input">
-              <div className="relative rounded-2xl border border-mars/50 bg-[#0a0a0a] transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/70 flex flex-col" style={{ boxShadow: "0 0 15px -2px rgba(255,85,0,0.3), 0 0 40px -8px rgba(255,85,0,0.15), 0 0 80px -15px rgba(255,85,0,0.08)" }}>
-                <div className="h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
+          <div className="w-full max-w-3xl space-y-8 sm:space-y-10">
 
-                <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-6 sm:pb-8 flex-1 flex flex-col">
-                  <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-bold mb-3">Design your trip to Mars</p>
+            {/* ════════════════════════════════════════════════════════
+                CARD 1 — DESIGN YOUR REAL EXPERIENCE (dark)
+                ════════════════════════════════════════════════════════ */}
+            <div className="relative group/input">
+              <div className="relative rounded-2xl border border-white/[0.12] bg-[#0a0a0a] transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/40 flex flex-col" style={{ boxShadow: "0 20px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset" }}>
+                <div className="h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+                {/* Header */}
+                <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-2">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-mars" />
+                    <p className="text-mars/80 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-black">Option 1 &middot; Real experience</p>
+                  </div>
+                  <h2 className="text-white text-[22px] sm:text-[28px] font-bold tracking-[-0.025em] leading-[1.1] mb-2">
+                    Design your live play
+                  </h2>
+                  <p className="font-mercure italic text-white/45 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
+                    We host it on the Stage on Mars in Prague. You bring your team and a real question — we design the play, run it live, and you leave with new perspectives. We get back to you within 24h.
+                  </p>
+                </div>
+
+                {/* Question input */}
+                <div className="relative z-10 px-6 sm:px-8 pt-6 pb-4 flex-1 flex flex-col">
+                  <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-3">Your question</p>
                   <textarea
-                    value={builderQ}
-                    onChange={(e) => setBuilderQ(e.target.value)}
-                    placeholder="What question do you want to play?"
-                    rows={3}
-                    className="w-full flex-1 min-h-[120px] sm:min-h-[100px] bg-transparent border-0 px-0 py-0 text-white text-[24px] sm:text-[28px] placeholder:text-white/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.02em] font-medium"
+                    value={realQ}
+                    onChange={(e) => setRealQ(e.target.value)}
+                    placeholder="What question do you want to play live?"
+                    rows={2}
+                    className="w-full min-h-[64px] bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/20 focus:outline-none resize-none leading-[1.35] tracking-[-0.01em] font-medium"
                     style={{ caretColor: "#FF5500" }}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitBuilder(); }
+                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitReal(); }
                     }}
                   />
                 </div>
-                <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-6 space-y-4">
+                <div className="relative z-10 px-6 sm:px-8 pb-6 space-y-4">
                   <div className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
                     <input
-                      value={builderCo}
-                      onChange={(e) => setBuilderCo(e.target.value)}
-                      placeholder="Company name"
+                      value={realCo}
+                      onChange={(e) => setRealCo(e.target.value)}
+                      placeholder="Company name (optional)"
                       className="flex-1 bg-transparent border-0 px-0 py-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px]"
                     />
                   </div>
                   <button
-                    onClick={() => submitBuilder()}
-                    disabled={!builderQ.trim()}
-                    className="relative w-full py-5 sm:py-6 rounded-2xl font-black text-[16px] sm:text-[18px] uppercase tracking-[0.1em] transition-all text-white disabled:opacity-20 disabled:shadow-none overflow-hidden group/btn"
+                    onClick={() => submitReal()}
+                    disabled={!realQ.trim()}
+                    className="relative w-full py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.12em] transition-all text-white disabled:opacity-20 disabled:shadow-none overflow-hidden group/btn"
                     style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
                   >
                     <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
-                    <span className="relative z-10">Build your play</span>
+                    <span className="relative z-10">Request your experience &rarr;</span>
                   </button>
+                  <p className="text-white/25 text-[10px] text-center">Free to inquire &middot; we reply within 24 hours</p>
                 </div>
 
                 {/* Ready-made experiences */}
@@ -493,8 +530,8 @@ function PlayPageInner() {
                   </div>
                   <div className="grid grid-cols-3 gap-2 w-full">
                     {readyMade.map((play, i) => (
-                      <button key={i} onClick={() => submitBuilder(play.q)} className="group flex items-center justify-center py-3 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
-                        <span className="transition-colors duration-500 text-[14px] sm:text-[16px] font-bold"><span className="text-white/50 group-hover:text-white/80">{play.theme}</span> <span className="text-mars/40 group-hover:text-mars/70">Play</span></span>
+                      <button key={i} onClick={() => submitReal(play.q)} className="group flex items-center justify-center py-3 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
+                        <span className="transition-colors duration-500 text-[13px] sm:text-[15px] font-bold"><span className="text-white/50 group-hover:text-white/80">{play.theme}</span> <span className="text-mars/40 group-hover:text-mars/70">Play</span></span>
                       </button>
                     ))}
                   </div>
@@ -503,22 +540,65 @@ function PlayPageInner() {
             </div>
 
             {/* ── OR divider ── */}
-            <div className="flex items-center gap-4 my-10 sm:my-14 max-w-md mx-auto">
+            <div className="flex items-center gap-4 max-w-md mx-auto">
               <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.12]" />
-              <p className="text-white/30 text-[10px] uppercase tracking-[0.35em] font-black shrink-0">Or simulate first</p>
+              <p className="text-white/30 text-[10px] uppercase tracking-[0.35em] font-black shrink-0">Or try it now</p>
               <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.12]" />
             </div>
 
-            {/* ── PLAY SIMULATOR CARD ── */}
-            <button
-              onClick={() => {
-                const q = "What does my company need the most right now?";
-                const params = new URLSearchParams({ q });
-                window.location.href = `/play?${params.toString()}`;
-              }}
-              className="w-full group block"
-            >
-              <div className="relative rounded-2xl overflow-hidden bg-mars transition-all duration-500 hover:bg-mars-light" style={{ boxShadow: "0 20px 80px -20px rgba(255,85,0,0.5), 0 8px 40px -12px rgba(255,85,0,0.3)" }}>
+            {/* ════════════════════════════════════════════════════════
+                CARD 2 — TRY THE AI SIMULATOR (orange)
+                ════════════════════════════════════════════════════════ */}
+            <div className="relative rounded-2xl overflow-hidden bg-mars" style={{ boxShadow: "0 20px 80px -20px rgba(255,85,0,0.5), 0 8px 40px -12px rgba(255,85,0,0.3)" }}>
+              <div className="h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+
+              {/* Header */}
+              <div className="px-6 sm:px-8 pt-8 sm:pt-10 pb-2">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0a0a0a] animate-pulse" />
+                  <p className="text-[#0a0a0a]/80 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-black">Option 2 &middot; AI simulator</p>
+                </div>
+                <h2 className="text-[#0a0a0a] text-[22px] sm:text-[28px] font-black tracking-[-0.025em] leading-[1.1] mb-2">
+                  Try a play right now
+                </h2>
+                <p className="font-mercure italic text-[#0a0a0a]/70 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
+                  Type a question. Watch a play unfold in your browser — characters, stage, perspectives — all simulated live. Free, instant, no signup.
+                </p>
+              </div>
+
+              {/* Question input */}
+              <div className="px-6 sm:px-8 pt-6 pb-4">
+                <p className="text-[#0a0a0a]/40 text-[9px] uppercase tracking-[0.25em] font-bold mb-3">Your question</p>
+                <textarea
+                  value={simQ}
+                  onChange={(e) => setSimQ(e.target.value)}
+                  placeholder="What does my company need the most right now?"
+                  rows={2}
+                  className="w-full min-h-[64px] bg-transparent border-0 px-0 py-0 text-[#0a0a0a] text-[18px] sm:text-[22px] placeholder:text-[#0a0a0a]/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.01em] font-medium"
+                  style={{ caretColor: "#0a0a0a" }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitSimulator(); }
+                  }}
+                />
+              </div>
+              <div className="px-6 sm:px-8 pb-8 space-y-3 border-t border-[#0a0a0a]/10 pt-5">
+                <button
+                  onClick={() => submitSimulator()}
+                  disabled={!simQ.trim()}
+                  className="relative w-full py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.12em] transition-all bg-[#0a0a0a] text-white hover:bg-black disabled:opacity-30 hover:scale-[1.01]"
+                >
+                  Run the simulator &rarr;
+                </button>
+                <p className="text-[#0a0a0a]/40 text-[10px] text-center">Plays in your browser &middot; ~30 seconds</p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Old static demo card hidden — kept for reference, not rendered */}
+          {false && (
+            <button className="w-full group block">
+              <div className="relative rounded-2xl overflow-hidden bg-mars">
                 <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
                   <p className="text-[#0a0a0a] text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-black mb-2 text-center">The Play Simulator</p>
                   <p className="text-[#0a0a0a]/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">Type a question. Watch it become a play.<br />Characters, stage, perspectives — all simulated live.</p>
@@ -621,8 +701,8 @@ function PlayPageInner() {
                 </div>
               </div>
             </button>
+          )}
 
-          </div>
         </div>
       </div>
     );
@@ -667,6 +747,7 @@ function PlayPageInner() {
             <div className="pt-6 sm:pt-10" style={{ animation: "fadeIn 0.8s ease both" }}>
 
               {/* Question as hero */}
+              {!simulateOnly && (
               <div className="text-center mb-10 sm:mb-14">
                 <div className="relative inline-block mb-6">
                   <div className="absolute -inset-6 sm:-inset-10 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.06)_0%,_transparent_70%)] pointer-events-none" />
@@ -682,8 +763,23 @@ function PlayPageInner() {
                 </div>
                 <p className="text-white/25 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-5">Here&#39;s what we designed for you</p>
               </div>
+              )}
+
+              {/* Simulator-only header */}
+              {simulateOnly && (
+                <div className="text-center mb-8 sm:mb-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-mars/[0.08] border border-mars/20 mb-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-mars animate-pulse" />
+                    <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-black">AI Simulator &middot; Live</p>
+                  </div>
+                  <h1 className="font-mercure italic text-white/85 text-[22px] sm:text-[32px] leading-[1.25] max-w-xl mx-auto px-4">
+                    &ldquo;{questionParam}&rdquo;
+                  </h1>
+                </div>
+              )}
 
               {/* Unified experience card */}
+              {!simulateOnly && (
               <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
                 <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
 
@@ -822,6 +918,7 @@ function PlayPageInner() {
                   </div>
                 )}
               </div>
+              )}
 
               {/* Inline Digital Playmaker */}
               {showDigital && (
@@ -999,24 +1096,52 @@ function PlayPageInner() {
                                 </div>
                               </div>
                             )}
-                            {/* Big CTA — take it live */}
-                            <div className="rounded-2xl overflow-hidden bg-mars mt-2">
-                              <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
-                                <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">This was a simulation</p>
-                                <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
-                                  Imagine this with real people.<br />On a real stage.
-                                </h3>
-                                <p className="font-mercure italic text-white/70 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
-                                  Your team, your questions, and perspectives no algorithm can generate.
-                                </p>
-                                <a
-                                  href="/business#contact"
-                                  className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
-                                >
-                                  Book your play on Mars &rarr;
-                                </a>
+                            {/* Big CTA — account creation (simulator-only) or book live */}
+                            {simulateOnly ? (
+                              <div className="rounded-2xl overflow-hidden bg-mars mt-2">
+                                <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
+                                  <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just simulated a play</p>
+                                  <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
+                                    Want to run more?<br />Create your free account.
+                                  </h3>
+                                  <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
+                                    Save your plays, run new questions, and bring your team into the simulator.
+                                  </p>
+                                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                                    <a
+                                      href={`/auth/signup?redirect=${encodeURIComponent(`/play?q=${encodeURIComponent(questionParam || "")}`)}`}
+                                      className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
+                                    >
+                                      Create free account &rarr;
+                                    </a>
+                                    <a
+                                      href="/business/play"
+                                      className="inline-flex items-center px-6 py-3.5 sm:py-4 rounded-xl border border-white/30 text-white/90 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:border-white/60 hover:text-white transition-all"
+                                    >
+                                      Or book a real play
+                                    </a>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
+                            ) : (
+                              <div className="rounded-2xl overflow-hidden bg-mars mt-2">
+                                <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
+                                  <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">This was a simulation</p>
+                                  <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
+                                    Imagine this with real people.<br />On a real stage.
+                                  </h3>
+                                  <p className="font-mercure italic text-white/70 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
+                                    Your team, your questions, and perspectives no algorithm can generate.
+                                  </p>
+                                  <a
+                                    href="/business#contact"
+                                    className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
+                                  >
+                                    Book your play on Mars &rarr;
+                                  </a>
+                                </div>
+                              </div>
+                            )}
 
                             <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all">
                               &larr; Back to cast
@@ -1032,7 +1157,7 @@ function PlayPageInner() {
               )}
 
               {/* Play Simulator teaser */}
-              {!showDigital && (
+              {!showDigital && !simulateOnly && (
                 <div className="mt-8 sm:mt-10">
                   <div className="text-center">
                     <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-3">Not sure yet? Try it first</p>

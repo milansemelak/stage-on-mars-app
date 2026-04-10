@@ -373,9 +373,9 @@ export default function BusinessPage() {
               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[60%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.1) 0%, transparent 70%)" }} />
 
-              <div className="relative z-10 px-5 sm:px-10 pt-8 sm:pt-12 pb-6 sm:pb-10">
+              <div className="relative z-10 px-4 sm:px-10 pt-10 sm:pt-12 pb-8 sm:pb-10">
                 {/* Headline — tight */}
-                <p className="font-mercure italic text-[20px] sm:text-[32px] leading-[1.2] text-center max-w-xl mx-auto mb-8 sm:mb-12">
+                <p className="font-mercure italic text-[22px] sm:text-[32px] leading-[1.2] text-center max-w-xl mx-auto mb-10 sm:mb-12">
                   <span className="text-white/90">The strategy is there.</span>{" "}
                   <span className="text-white/25">But nothing moves.</span>
                 </p>
@@ -383,33 +383,33 @@ export default function BusinessPage() {
                 {/* Stats — punchy 3-col */}
                 <div className="grid grid-cols-3 gap-2 sm:gap-4">
                   {/* 9/10 LEADERS */}
-                  <div className="relative rounded-xl px-2 sm:px-4 py-5 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
+                  <div className="relative rounded-xl px-1.5 sm:px-4 py-6 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
                     <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars/70 to-transparent" />
-                    <p className="text-mars text-[34px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
-                      9<span className="text-white/20 text-[22px] sm:text-[36px] mx-0.5">/</span>10
+                    <p className="text-mars text-[42px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
+                      9<span className="text-white/20 text-[26px] sm:text-[36px] mx-0.5">/</span>10
                     </p>
-                    <p className="text-mars/70 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-2 sm:mt-3">leaders</p>
-                    <p className="text-white/40 text-[9px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">unblocked a stuck decision</p>
+                    <p className="text-mars/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-3 sm:mt-3">leaders</p>
+                    <p className="text-white/45 text-[10px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">unblocked a stuck decision</p>
                   </div>
 
                   {/* 4 HOURS — hero stat, brighter */}
-                  <div className="relative rounded-xl px-2 sm:px-4 py-5 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.18) 0%, rgba(255,85,0,0.04) 100%)" }}>
+                  <div className="relative rounded-xl px-1.5 sm:px-4 py-6 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.18) 0%, rgba(255,85,0,0.04) 100%)" }}>
                     <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars to-transparent" />
-                    <p className="text-mars text-[34px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.5)]">
-                      4<span className="text-mars/60 text-[14px] sm:text-[22px] font-black uppercase tracking-[0.05em] ml-0.5">h</span>
+                    <p className="text-mars text-[42px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.5)]">
+                      4<span className="text-mars/60 text-[16px] sm:text-[22px] font-black uppercase tracking-[0.05em] ml-0.5">h</span>
                     </p>
-                    <p className="text-mars/80 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-2 sm:mt-3">to clarity</p>
-                    <p className="text-white/40 text-[9px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">what used to take weeks</p>
+                    <p className="text-mars/90 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-3 sm:mt-3">to clarity</p>
+                    <p className="text-white/45 text-[10px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">what used to take weeks</p>
                   </div>
 
                   {/* 80% OF TEAMS */}
-                  <div className="relative rounded-xl px-2 sm:px-4 py-5 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
+                  <div className="relative rounded-xl px-1.5 sm:px-4 py-6 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
                     <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars/70 to-transparent" />
-                    <p className="text-mars text-[34px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
-                      80<span className="text-mars/60 text-[20px] sm:text-[32px] align-top">%</span>
+                    <p className="text-mars text-[42px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
+                      80<span className="text-mars/60 text-[22px] sm:text-[32px] align-top">%</span>
                     </p>
-                    <p className="text-mars/70 text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-2 sm:mt-3">of teams</p>
-                    <p className="text-white/40 text-[9px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">left with a clear direction</p>
+                    <p className="text-mars/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-3 sm:mt-3">of teams</p>
+                    <p className="text-white/45 text-[10px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">left with a clear direction</p>
                   </div>
                 </div>
               </div>
