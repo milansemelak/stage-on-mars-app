@@ -372,42 +372,53 @@ export default function BusinessPage() {
             <div className="relative rounded-2xl border border-white/[0.12] overflow-hidden bg-white/[0.03]">
               <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/40 to-transparent" />
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(255,85,0,0.08) 0%, transparent 70%)" }} />
-              <div className="relative z-10 px-4 sm:px-8 pt-8 sm:pt-12 pb-5 sm:pb-8">
-                <p className="font-mercure italic text-[16px] sm:text-[28px] leading-[1.3] text-center mx-auto mb-8 sm:mb-10">
-                  <span className="text-white/90">The strategy is there.</span>
-                  <br />
-                  <span className="text-white/20">But nothing turns into action.</span>
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden px-5 py-5 md:py-7 text-center flex md:flex-col items-center md:items-center gap-4 md:gap-0">
-                    <div className="shrink-0">
-                      <p className="text-mars text-[32px] md:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">80%</p>
-                      <p className="text-white/30 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">of teams</p>
+              <div className="relative z-10 px-5 sm:px-10 pt-10 sm:pt-14 pb-8 sm:pb-12">
+                {/* Headline */}
+                <div className="text-center mb-10 sm:mb-14">
+                  <p className="text-mars/60 text-[9px] sm:text-[10px] uppercase tracking-[0.35em] font-bold mb-4">The problem</p>
+                  <p className="font-mercure italic text-[22px] sm:text-[34px] leading-[1.25] max-w-xl mx-auto">
+                    <span className="text-white/90">The strategy is there.</span>
+                    <br />
+                    <span className="text-white/25">But nothing turns into action.</span>
+                  </p>
+                </div>
+
+                {/* Stats — uniform refined grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-white/[0.08] gap-0 border-t border-white/[0.08]">
+                  {/* 80% */}
+                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px]">
+                    <div className="flex flex-col items-center">
+                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">80<span className="text-mars/50 text-[28px] sm:text-[36px] align-top">%</span></p>
+                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">of teams</p>
                     </div>
-                    <div className="hidden md:block h-[1px] bg-white/[0.06] my-3 md:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[13px] leading-[1.5]">left with a clear direction</p>
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
+                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">left with a<br />clear direction</p>
                   </div>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden px-5 py-5 md:py-7 text-center flex md:flex-col items-center md:items-center gap-4 md:gap-0">
-                    <div className="shrink-0">
-                      <p className="font-black tracking-[-0.03em] leading-none">
-                        <span className="text-white/90 text-[22px] md:text-[30px]">Weeks</span>
-                        <span className="text-mars/40 mx-1 text-[14px] md:text-[18px]">&rarr;</span>
-                        <span className="text-mars text-[22px] md:text-[30px] drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">Hours</span>
+
+                  {/* Weeks → Hours */}
+                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
+                    <div className="flex flex-col items-center">
+                      <p className="font-black tracking-[-0.04em] leading-none flex items-baseline gap-2">
+                        <span className="text-white/80 text-[22px] sm:text-[28px]">Weeks</span>
+                        <span className="text-mars/40 text-[14px] sm:text-[16px]">&rarr;</span>
+                        <span className="text-mars text-[28px] sm:text-[36px] drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">Hours</span>
                       </p>
-                      <p className="text-white/30 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">time to clarity</p>
+                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">time to clarity</p>
                     </div>
-                    <div className="hidden md:block h-[1px] bg-white/[0.06] my-3 md:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[11px] md:text-[13px] leading-[1.5]">weeks of talking played out in hours</p>
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
+                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">what took weeks<br />played out in hours</p>
                   </div>
-                  <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] overflow-hidden px-5 py-5 md:py-7 text-center flex md:flex-col items-center md:items-center gap-4 md:gap-0">
-                    <div className="shrink-0">
-                      <p className="text-mars text-[32px] md:text-[44px] font-black tracking-[-0.04em] leading-none drop-shadow-[0_0_30px_rgba(255,85,0,0.2)]">
-                        9<span className="text-white/15 text-[24px] md:text-[32px] mx-0.5">/</span>10
+
+                  {/* 9/10 */}
+                  <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
+                    <div className="flex flex-col items-center">
+                      <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">
+                        9<span className="text-white/15 text-[32px] sm:text-[40px] mx-0.5">/</span>10
                       </p>
-                      <p className="text-white/30 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.12em] mt-1">teams</p>
+                      <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">teams</p>
                     </div>
-                    <div className="hidden md:block h-[1px] bg-white/[0.06] my-3 md:my-4 mx-auto w-3/4" />
-                    <p className="text-white/50 text-[13px] leading-[1.5]">unblocked a stuck decision</p>
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.1] to-transparent w-full my-5" />
+                    <p className="text-white/55 text-[12px] sm:text-[13px] leading-[1.5] max-w-[180px]">unblocked a<br />stuck decision</p>
                   </div>
                 </div>
               </div>
