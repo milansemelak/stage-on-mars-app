@@ -401,7 +401,7 @@ export default function BusinessPage() {
                   <div className="px-5 py-8 md:py-10 text-center flex flex-col items-center justify-between min-h-[180px] md:min-h-[220px] border-t md:border-t-0 border-white/[0.08]">
                     <div className="flex flex-col items-center">
                       <p className="text-mars text-[44px] sm:text-[56px] font-black tracking-[-0.05em] leading-none drop-shadow-[0_0_40px_rgba(255,85,0,0.25)]">
-                        1<span className="text-mars/50 text-[20px] sm:text-[26px] font-bold uppercase tracking-[0.1em] ml-1.5 align-middle">day</span>
+                        4<span className="text-mars/50 text-[20px] sm:text-[26px] font-bold uppercase tracking-[0.1em] ml-1.5 align-middle">hours</span>
                       </p>
                       <p className="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] mt-3">to clarity</p>
                     </div>
