@@ -247,8 +247,8 @@ export default function Home() {
               />
 
               {/* Context toggle + Name input */}
-              <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/[0.06]">
-                <div className="inline-flex rounded-lg bg-white/[0.04] p-0.5">
+              <div className="flex items-center gap-2 pt-3 border-t border-white/[0.06]">
+                <div className="inline-flex shrink-0 rounded-lg bg-white/[0.04] p-0.5">
                   <button
                     onClick={() => setContext("personal")}
                     className={`px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all ${
@@ -271,7 +271,7 @@ export default function Home() {
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
                   placeholder="Your name"
-                  className="flex-1 max-w-[160px] bg-white/[0.04] rounded-lg px-3 py-1.5 text-[16px] sm:text-[11px] text-white/70 placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors text-right"
+                  className="min-w-0 flex-1 bg-white/[0.04] rounded-lg px-3 py-[7px] text-[16px] sm:text-[12px] text-white/80 placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors"
                 />
               </div>
             </div>
@@ -286,7 +286,7 @@ export default function Home() {
                 : "bg-mars/40 text-white/80 cursor-not-allowed hover:bg-mars/50"
             }`}
           >
-            {loading ? "Creating..." : "Put it on stage →"}
+            {loading ? "Creating..." : "Turn it into play →"}
           </button>
 
           {/* Trust line */}
