@@ -394,6 +394,13 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
     `Ending Perspective: ${play.endingPerspective}`,
     ``,
     `What happened on this stage? What did you witness?`,
+    ``,
+    `## HARD CONTRACT — READ BEFORE WRITING`,
+    `The "Author's Role" above is NOT flavor text. It is a PROMISE to the author. Whatever the Author's Role says the author physically does — choosing, saying, pointing, touching, turning away, refusing, building — MUST actually happen in the narration, in explicit words, and the author's position must reflect it in the corresponding step. If the Author's Role says "the author picks one and says it out loud", then one of the simulationSteps narration MUST literally describe the author picking and speaking. No substitutions. No paraphrases that skip the action. The reader must be able to point at a step and say "here is the moment the author did what the play promised."`,
+    ``,
+    `Also: every character listed above MUST appear in simulationSteps positions at least once and MUST be referenced by name in narration at least once. No ghost characters.`,
+    ``,
+    `The "Ending Perspective" above must be the final insight the stage delivers — the last simulation step should set it up, and one of the 3 perspectives should land on it.`,
   );
 
   if (clientName) {
