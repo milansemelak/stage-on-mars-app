@@ -452,89 +452,147 @@ function PlayPageInner() {
 
         <div className="pt-24 sm:pt-32 pb-16 px-4 flex flex-col items-center">
           {/* Hero */}
-          <div className="text-center mb-10 sm:mb-14 max-w-2xl">
-            <p className="text-mars/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-4">Two ways to play</p>
-            <h1 className="text-[28px] sm:text-[44px] font-bold tracking-[-0.04em] leading-[1.1] mb-4">
-              Design it for real,<br className="hidden sm:block" /> or <span className="font-mercure italic text-mars">simulate it now.</span>
+          <div className="text-center mb-10 sm:mb-14 max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.12] bg-white/[0.03] mb-5">
+              <div className="w-1.5 h-1.5 rounded-full bg-mars animate-pulse" />
+              <p className="text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold">Stage on Mars for business</p>
+            </div>
+            <h1 className="text-[30px] sm:text-[52px] font-black tracking-[-0.04em] leading-[1.05] mb-5 text-white">
+              Turn one hard question<br className="hidden sm:block" /> into <span className="text-mars">a decision in 4 hours.</span>
             </h1>
-            <p className="font-mercure italic text-white/35 text-[13px] sm:text-[15px] max-w-md mx-auto">
-              Bring your question to a live stage in Prague — or watch a play unfold instantly in your browser.
+            <p className="text-white/45 text-[14px] sm:text-[16px] leading-[1.55] max-w-xl mx-auto">
+              Book a live experience with your team in Prague — or run an instant AI simulation right now, free.
             </p>
+            <div className="flex items-center justify-center gap-5 sm:gap-8 mt-6 text-[11px] sm:text-[12px] text-white/40">
+              <span className="flex items-center gap-1.5"><span className="text-mars">50+</span> teams</span>
+              <span className="w-1 h-1 rounded-full bg-white/20" />
+              <span className="flex items-center gap-1.5"><span className="text-mars">9/10</span> leaders</span>
+              <span className="w-1 h-1 rounded-full bg-white/20" />
+              <span className="flex items-center gap-1.5"><span className="text-mars">4h</span> to clarity</span>
+            </div>
           </div>
 
-          <div className="w-full max-w-3xl space-y-8 sm:space-y-10">
+          <div className="w-full max-w-3xl space-y-6 sm:space-y-8">
 
             {/* ════════════════════════════════════════════════════════
-                CARD 1 — DESIGN YOUR REAL EXPERIENCE (dark)
+                CARD 1 — DESIGN YOUR REAL EXPERIENCE (structured product card)
                 ════════════════════════════════════════════════════════ */}
-            <div className="relative group/input">
-              <div className="relative rounded-2xl border border-white/[0.12] bg-[#0a0a0a] transition-all duration-700 overflow-hidden group-focus-within/input:border-mars/40 flex flex-col" style={{ boxShadow: "0 20px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset" }}>
-                <div className="h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-
-                {/* Header */}
-                <div className="relative z-10 px-6 sm:px-8 pt-8 sm:pt-10 pb-2">
-                  <div className="flex items-center gap-2 mb-3">
+            <div className="relative rounded-2xl border border-white/[0.12] bg-[#0a0a0a] overflow-hidden" style={{ boxShadow: "0 20px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset" }}>
+              {/* Top bar — product-header style */}
+              <div className="flex items-center justify-between px-6 sm:px-8 py-4 border-b border-white/[0.08] bg-white/[0.02]">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex items-center gap-1">
                     <div className="w-1.5 h-1.5 rounded-full bg-mars" />
-                    <p className="text-mars/80 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-black">Option 1 &middot; Real experience</p>
+                    <div className="w-1.5 h-1.5 rounded-full bg-mars/50" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-mars/20" />
                   </div>
-                  <h2 className="text-white text-[22px] sm:text-[28px] font-bold tracking-[-0.025em] leading-[1.1] mb-2">
-                    Design your live play
-                  </h2>
-                  <p className="font-mercure italic text-white/45 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
-                    We host it on the Stage on Mars in Prague. You bring your team and a real question — we design the play, run it live, and you leave with new perspectives. We get back to you within 24h.
-                  </p>
+                  <p className="text-white/50 text-[10px] uppercase tracking-[0.25em] font-bold">Plan 01 &middot; Live on Stage</p>
+                </div>
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-mars/10 border border-mars/20">
+                  <div className="w-1 h-1 rounded-full bg-mars animate-pulse" />
+                  <p className="text-mars text-[9px] font-black uppercase tracking-[0.2em]">Reply in 24h</p>
+                </div>
+              </div>
+
+              {/* Headline + price anchor */}
+              <div className="px-6 sm:px-8 pt-8 sm:pt-10 pb-6">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
+                  <div>
+                    <h2 className="text-white text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1.05] mb-2">
+                      Your team. Your question.<br />Played live on Mars.
+                    </h2>
+                    <p className="text-white/45 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
+                      We design a custom 4-hour play around the question that matters most — and run it with your team on our stage in Prague.
+                    </p>
+                  </div>
+                  <div className="sm:text-right shrink-0">
+                    <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-1">From</p>
+                    <p className="text-white text-[22px] sm:text-[26px] font-black tracking-[-0.02em] leading-none">€2,900</p>
+                    <p className="text-white/30 text-[10px] mt-1">per session &middot; up to 12 people</p>
+                  </div>
                 </div>
 
-                {/* Question input */}
-                <div className="relative z-10 px-6 sm:px-8 pt-6 pb-4 flex-1 flex flex-col">
-                  <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-3">Your question</p>
-                  <textarea
-                    value={realQ}
-                    onChange={(e) => setRealQ(e.target.value)}
-                    placeholder="What question do you want to play live?"
-                    rows={2}
-                    className="w-full min-h-[64px] bg-transparent border-0 px-0 py-0 text-white text-[18px] sm:text-[22px] placeholder:text-white/20 focus:outline-none resize-none leading-[1.35] tracking-[-0.01em] font-medium"
-                    style={{ caretColor: "#FF5500" }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitReal(); }
-                    }}
-                  />
+                {/* What's included — structured grid */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-5 mb-6">
+                  {[
+                    "Custom play designed for your question",
+                    "4-hour session with pro facilitators",
+                    "Up to 12 team members",
+                    "Stage on Mars venue in Prague",
+                    "Written insights report after",
+                    "Follow-up strategy call",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <svg className="w-3.5 h-3.5 text-mars shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                      <p className="text-white/65 text-[12px] sm:text-[12.5px] leading-[1.4]">{item}</p>
+                    </div>
+                  ))}
                 </div>
-                <div className="relative z-10 px-6 sm:px-8 pb-6 space-y-4">
-                  <div className="flex items-center gap-3 border-t border-white/[0.06] pt-4">
+
+                {/* Input block */}
+                <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] overflow-hidden mb-4">
+                  <div className="px-4 sm:px-5 pt-4 pb-2">
+                    <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-2">Step 1 &middot; Your question</p>
+                    <textarea
+                      value={realQ}
+                      onChange={(e) => setRealQ(e.target.value)}
+                      placeholder="e.g. What does our company need most right now?"
+                      rows={2}
+                      className="w-full min-h-[56px] bg-transparent border-0 px-0 py-0 text-white text-[15px] sm:text-[17px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.35] tracking-[-0.01em] font-medium"
+                      style={{ caretColor: "#FF5500" }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitReal(); }
+                      }}
+                    />
+                  </div>
+                  <div className="px-4 sm:px-5 pb-4 pt-2 border-t border-white/[0.05]">
+                    <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-1.5">Step 2 &middot; Company</p>
                     <input
                       value={realCo}
                       onChange={(e) => setRealCo(e.target.value)}
-                      placeholder="Company name (optional)"
-                      className="flex-1 bg-transparent border-0 px-0 py-0 text-white/50 placeholder:text-white/20 focus:outline-none text-[13px]"
+                      placeholder="Company name"
+                      className="w-full bg-transparent border-0 px-0 py-0 text-white/80 placeholder:text-white/25 focus:outline-none text-[14px] font-medium"
                     />
                   </div>
+                </div>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-2.5">
                   <button
                     onClick={() => submitReal()}
                     disabled={!realQ.trim()}
-                    className="relative w-full py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.12em] transition-all text-white disabled:opacity-20 disabled:shadow-none overflow-hidden group/btn"
-                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 40px -8px rgba(255,85,0,0.5), 0 2px 8px rgba(255,85,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15)" }}
+                    className="relative flex-1 py-4 rounded-xl font-black text-[13px] sm:text-[14px] uppercase tracking-[0.12em] transition-all text-white disabled:opacity-25 disabled:shadow-none overflow-hidden group/btn"
+                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 30px -8px rgba(255,85,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15)" }}
                   >
                     <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
-                    <span className="relative z-10">Request your experience &rarr;</span>
+                    <span className="relative z-10">Request your play &rarr;</span>
                   </button>
-                  <p className="text-white/25 text-[10px] text-center">Free to inquire &middot; we reply within 24 hours</p>
+                  <a
+                    href="mailto:play@stageonmars.com?subject=Book a call"
+                    className="sm:w-auto py-4 px-6 rounded-xl border border-white/[0.12] text-white/70 font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.12em] hover:border-white/30 hover:text-white transition-all text-center"
+                  >
+                    Book a call
+                  </a>
                 </div>
+                <p className="text-white/25 text-[10px] text-center mt-3">Free to inquire &middot; no credit card &middot; reply within 24h</p>
+              </div>
 
-                {/* Ready-made experiences */}
-                <div className="relative z-10 px-6 sm:px-8 pb-6 sm:pb-8">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.08]" />
-                    <p className="text-white/20 text-[9px] uppercase tracking-[0.3em] font-bold shrink-0">Or choose a ready-made experience</p>
-                    <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.08]" />
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 w-full">
-                    {readyMade.map((play, i) => (
-                      <button key={i} onClick={() => submitReal(play.q)} className="group flex items-center justify-center py-3 rounded-full border border-white/[0.08] hover:border-mars/30 bg-transparent hover:bg-mars/[0.04] transition-all duration-500">
-                        <span className="transition-colors duration-500 text-[13px] sm:text-[15px] font-bold"><span className="text-white/50 group-hover:text-white/80">{play.theme}</span> <span className="text-mars/40 group-hover:text-mars/70">Play</span></span>
-                      </button>
-                    ))}
-                  </div>
+              {/* Templates row */}
+              <div className="border-t border-white/[0.06] bg-white/[0.015] px-6 sm:px-8 py-5">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-white/40 text-[10px] uppercase tracking-[0.25em] font-black">Ready-made templates</p>
+                  <p className="text-white/20 text-[10px]">Click to pre-fill</p>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {readyMade.map((play, i) => (
+                    <button key={i} onClick={() => submitReal(play.q)} className="group text-left rounded-lg border border-white/[0.08] bg-white/[0.02] hover:border-mars/30 hover:bg-mars/[0.04] transition-all duration-300 p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-white/85 text-[13px] font-black tracking-[-0.01em]">{play.theme} Play</p>
+                        <span className="text-mars/40 group-hover:text-mars text-[14px]">&rarr;</span>
+                      </div>
+                      <p className="text-white/35 text-[10.5px] leading-[1.35] line-clamp-2">{play.q.split(".")[0]}</p>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
