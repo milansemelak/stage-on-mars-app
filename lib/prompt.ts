@@ -408,7 +408,7 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
     `The "Ending Perspective" above must be the final insight the stage delivers — the last simulation step should set it up, and one of the 4 perspectives should land on it.`,
     ``,
     `## PERSPECTIVES CONTRACT — 4 total, first is always from the author`,
-    `The first perspective MUST be from the author themselves. Its "character" field is ${clientName ? `"${clientName}"` : `"The Author"`}. Write it as something the author realized while playing their role — a first-person shift in awareness, not an outside observation. It should be the most personal of the four.`,
+    `The first perspective MUST be from the author themselves. Its "character" field is ${clientName ? `"${clientName}"` : (lang === "sk" ? `"Autor"` : lang === "cs" ? `"Autor"` : `"The Author"`)}. Write it as something the author realized while playing their role — a first-person shift in awareness, not an outside observation. It should be the most personal of the four.`,
     `The next 3 perspectives are each paired with a DIFFERENT character from the play. No character repeats. Every insight must reference what THAT character actually did in the simulation.`,
   );
 

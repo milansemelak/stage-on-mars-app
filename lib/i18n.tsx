@@ -239,6 +239,7 @@ const translations = {
     landingStageShowedYou: "What the stage showed you",
     landingAskSomethingElse: "Ask something else",
     landingTabTitle: "Stage on Mars — The Play Simulator",
+    landingYouBadge: "You",
   },
   sk: {
     // Header
@@ -473,6 +474,7 @@ const translations = {
     landingStageShowedYou: "Čo ti javisko ukázalo",
     landingAskSomethingElse: "Opýtať sa inak",
     landingTabTitle: "Stage on Mars — Play Simulator",
+    landingYouBadge: "Ty",
   },
   cs: {
     // Header
@@ -707,6 +709,7 @@ const translations = {
     landingStageShowedYou: "Co ti jeviště ukázalo",
     landingAskSomethingElse: "Zeptat se jinak",
     landingTabTitle: "Stage on Mars — Play Simulator",
+    landingYouBadge: "Ty",
   },
 } as const;
 

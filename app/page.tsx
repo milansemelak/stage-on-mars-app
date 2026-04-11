@@ -443,7 +443,7 @@ export default function Home() {
                     {t.landingStageShowedYou}
                   </h3>
                 </div>
-                <div className="space-y-3 sm:space-y-4">
+                <div className="space-y-4 sm:space-y-5">
                   {play.perspectives.map((p, i) => {
                     const perspective = typeof p === "object" ? (p as Perspective) : null;
                     const charName = perspective?.character || "";
@@ -452,22 +452,27 @@ export default function Home() {
                     const isAuthor = !matchedChar && !!charName;
                     const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
                     const accent = isAuthor
-                      ? { dot: "bg-[rgba(255,215,0,0.85)]", text: "text-[rgba(255,215,0,0.9)]", border: "border-[rgba(255,215,0,0.2)]", bg: "bg-[rgba(255,215,0,0.03)]" }
+                      ? { dot: "bg-[rgba(255,215,0,0.9)] shadow-[0_0_8px_rgba(255,215,0,0.5)]", text: "text-[rgba(255,215,0,0.95)]", border: "border-[rgba(255,215,0,0.3)]", bg: "bg-[rgba(255,215,0,0.04)]" }
                       : isAbstract
-                        ? { dot: "bg-white/65", text: "text-white/75", border: "border-white/12", bg: "bg-white/[0.02]" }
-                        : { dot: "bg-mars/90", text: "text-mars", border: "border-mars/20", bg: "bg-mars/[0.035]" };
+                        ? { dot: "bg-white/70", text: "text-white/80", border: "border-white/[0.14]", bg: "bg-white/[0.025]" }
+                        : { dot: "bg-mars shadow-[0_0_6px_rgba(255,85,0,0.5)]", text: "text-mars", border: "border-mars/25", bg: "bg-mars/[0.045]" };
                     return (
-                      <div key={i} className={`rounded-xl border ${accent.border} ${accent.bg} p-4 sm:p-5`} style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
+                      <div key={i} className={`rounded-xl border ${accent.border} ${accent.bg} p-5 sm:p-6`} style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
                         {perspective ? (
                           <>
-                            <div className="flex items-center gap-2 mb-2.5">
+                            <div className="flex items-center gap-2.5 mb-3">
                               <div className={`w-2 h-2 rounded-full ${accent.dot}`} />
-                              <p className={`${accent.text} text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.18em]`}>{perspective.character}</p>
+                              <p className={`${accent.text} text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.22em]`}>{perspective.character}</p>
+                              {isAuthor && (
+                                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[rgba(255,215,0,0.6)] border border-[rgba(255,215,0,0.3)] rounded-full px-2 py-0.5">
+                                  {t.landingYouBadge}
+                                </span>
+                              )}
                             </div>
-                            <p className="text-white/80 text-[15px] sm:text-[17px] leading-[1.55] font-mercure italic">{perspective.insight}</p>
+                            <p className="text-white/90 text-[16px] sm:text-[19px] leading-[1.55] font-mercure italic">{perspective.insight}</p>
                           </>
                         ) : (
-                          <p className="text-white/75 text-[15px] leading-[1.55] font-mercure italic">{String(p)}</p>
+                          <p className="text-white/85 text-[16px] sm:text-[19px] leading-[1.55] font-mercure italic">{String(p)}</p>
                         )}
                       </div>
                     );
