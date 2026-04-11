@@ -225,10 +225,9 @@ export default function Home() {
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
             <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">{t.landingHeroLabel}</p>
-            <h1 className="text-[clamp(28px,7vw,72px)] font-bold leading-[0.95] tracking-[-0.04em] text-center">
-              {t.landingHeadlineA}
-              <br />
-              <span className="text-mars">{t.landingHeadlineB}</span>
+            <h1 className="text-[clamp(22px,6vw,60px)] font-bold leading-[0.95] tracking-[-0.04em] text-center">
+              <span className="block whitespace-nowrap">{t.landingHeadlineA}</span>
+              <span className="block whitespace-nowrap text-mars">{t.landingHeadlineB}</span>
             </h1>
             <p className="font-mercure italic text-white/35 text-[14px] sm:text-[17px] mt-4 sm:mt-5 max-w-md mx-auto leading-[1.45]">
               {t.landingSubtitle}
