@@ -283,23 +283,23 @@ export default function Home() {
             className={`w-full mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.2em] uppercase transition-all duration-500 ${
               question.trim() && !loading
                 ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)]"
-                : "text-white/20 border border-white/[0.12] cursor-not-allowed"
+                : "bg-mars/40 text-white/80 cursor-not-allowed hover:bg-mars/50"
             }`}
           >
             {loading ? "Creating..." : "Put it on stage →"}
           </button>
 
           {/* Trust line */}
-          <p className="text-center mt-4 text-white/30 text-[11px]">
+          <p className="text-center mt-5 text-white/45 text-[11px]">
             {freePlaysUsed >= LANDING_FREE_PLAY_LIMIT
               ? "You've used your free play · create an account to continue"
               : "1 free play · no signup · then 30 days free with an account"}
           </p>
 
           {/* Sign in link */}
-          <p className="text-center mt-3 text-white/15 text-[11px]">
+          <p className="text-center mt-4 mb-10 text-white/50 text-[12px]">
             Already have an account?{" "}
-            <button onClick={() => router.push("/auth/login")} className="text-mars/40 hover:text-mars/70 transition-colors">
+            <button onClick={() => router.push("/auth/login")} className="text-mars font-semibold hover:text-mars-light transition-colors underline underline-offset-4 decoration-mars/40 hover:decoration-mars">
               Sign in
             </button>
           </p>
