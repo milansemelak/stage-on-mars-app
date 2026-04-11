@@ -511,7 +511,7 @@ function PlayPageInner() {
                     "Custom play built around your question",
                     "4 hours: intro → play → break → outro",
                     "Live on the Stage on Mars in Prague",
-                    "Guided by Sprievodca and a full cast",
+                    "Guided by a Play Pilot and a full cast",
                     "Designed for teams up to 12 people",
                     "New perspectives to take back home",
                   ].map((item, i) => (
