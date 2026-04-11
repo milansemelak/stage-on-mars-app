@@ -550,7 +550,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                         (c) => c.name.toLowerCase() === charName.toLowerCase()
                       )
                     : null;
-                  const isAuthor = !matchedChar && !!clientName && !!charName && charName.toLowerCase() === clientName.toLowerCase();
+                  // Any perspective whose character doesn't match a listed character is the author's voice
+                  const isAuthor = !matchedChar && !!charName;
                   const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
 
                   const accent = isAuthor

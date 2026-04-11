@@ -270,11 +270,15 @@ Good example (notice: no kneeling, rich variety):
   {"narration": "Everyone forms a triangle. Three points of tension, no resolution, just the shape of what remains.", "positions": {"The Conductor": "triangle", "First Violin": "triangle", "The Drum": "triangle", "The Silence": "edge-bottom"}}
 ]
 
-## Perspectives — the 3 truths the stage revealed
+## Perspectives — the 4 truths the stage revealed
 
-Exactly 3 perspectives. Not 5. Not 4. THREE. Each one must be so strong it could stand alone.
+EXACTLY 4 perspectives. Not 3. Not 5. FOUR.
 
-Each perspective is PAIRED WITH A SPECIFIC CHARACTER whose behavior on stage revealed it.
+Structure:
+- **Perspective 1** is ALWAYS from THE AUTHOR (the person who asked the question). Its "character" field is the author's name if provided (clientName), otherwise "The Author". This perspective is what THE AUTHOR themselves realized standing on that stage — what shifted in them, what they couldn't unsee after their own body played the role. It's first-person felt, not observed from outside.
+- **Perspectives 2, 3, 4** are each PAIRED WITH A SPECIFIC CHARACTER from the play whose behavior on stage revealed that truth. Use three DIFFERENT characters — no repeats.
+
+All four perspectives must be so strong each could stand alone.
 
 ### What makes a perspective GREAT:
 
@@ -327,14 +331,15 @@ Return ONLY valid JSON:
     {"narration": "Step 2 narration...", "positions": {"CharName": "close-to:OtherChar"}}
   ],
   "perspectives": [
-    {"character": "CharName", "insight": "One devastating sentence. Maybe two."},
-    {"character": "CharName", "insight": "Something that inverts the question."},
-    {"character": "CharName", "insight": "Something the author didn't want to hear."}
+    {"character": "<author name or 'The Author'>", "insight": "What the author realized from inside the play. First-person felt truth."},
+    {"character": "CharName1", "insight": "One devastating sentence paired with this character's behavior."},
+    {"character": "CharName2", "insight": "Something that inverts the question, grounded in what this character did."},
+    {"character": "CharName3", "insight": "Something the author didn't want to hear, revealed by this character."}
   ],
   "followUpQuestion": "The one question the play is now asking the author."
 }
 
-IMPORTANT: Use exact character names from the play. 5-7 simulation steps. EXACTLY 3 perspectives. 1 follow-up question. Each step's positions must match what the narration describes.
+IMPORTANT: Use exact character names from the play. 5-7 simulation steps. EXACTLY 4 perspectives (1 from the author + 3 from different characters). 1 follow-up question. Each step's positions must match what the narration describes.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
@@ -400,7 +405,11 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
     ``,
     `Also: every character listed above MUST appear in simulationSteps positions at least once and MUST be referenced by name in narration at least once. No ghost characters.`,
     ``,
-    `The "Ending Perspective" above must be the final insight the stage delivers — the last simulation step should set it up, and one of the 3 perspectives should land on it.`,
+    `The "Ending Perspective" above must be the final insight the stage delivers — the last simulation step should set it up, and one of the 4 perspectives should land on it.`,
+    ``,
+    `## PERSPECTIVES CONTRACT — 4 total, first is always from the author`,
+    `The first perspective MUST be from the author themselves. Its "character" field is ${clientName ? `"${clientName}"` : `"The Author"`}. Write it as something the author realized while playing their role — a first-person shift in awareness, not an outside observation. It should be the most personal of the four.`,
+    `The next 3 perspectives are each paired with a DIFFERENT character from the play. No character repeats. Every insight must reference what THAT character actually did in the simulation.`,
   );
 
   if (clientName) {

@@ -448,7 +448,8 @@ export default function Home() {
                     const perspective = typeof p === "object" ? (p as Perspective) : null;
                     const charName = perspective?.character || "";
                     const matchedChar = play.characters.find(c => c.name.toLowerCase() === charName.toLowerCase());
-                    const isAuthor = !matchedChar && clientName.trim() && charName.toLowerCase() === clientName.trim().toLowerCase();
+                    // Any perspective whose character doesn't match a listed character is the author's voice
+                    const isAuthor = !matchedChar && !!charName;
                     const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
                     const accent = isAuthor
                       ? { dot: "bg-[rgba(255,215,0,0.85)]", text: "text-[rgba(255,215,0,0.9)]", border: "border-[rgba(255,215,0,0.2)]", bg: "bg-[rgba(255,215,0,0.03)]" }
