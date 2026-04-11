@@ -42,9 +42,10 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     endingPerspective: play.endingPerspective,
   });
   const [copied, setCopied] = useState(false);
-  // Show perspectives immediately if they already exist (history/reload), hide until ritual if fresh
+  // Perspectives are hidden until the user explicitly ends the play.
+  // Exception: history reload (play already has perspectives AND simulationSteps) → show immediately.
   const [perspectivesRevealed, setPerspectivesRevealed] = useState(
-    !!(play.perspectives && play.perspectives.length > 0)
+    !!(play.perspectives && play.perspectives.length > 0 && play.simulationSteps && play.simulationSteps.length > 0)
   );
   // Layered perspective reveal — each one appears one at a time
   const [visiblePerspectives, setVisiblePerspectives] = useState(

@@ -387,6 +387,15 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
   parts.push(langInstruction, "");
 
   parts.push(
+    `## OUTPUT REQUIREMENT — READ FIRST`,
+    `You MUST return exactly 4 perspectives. Four. Not three. Not five.`,
+    `Perspective #1 is ALWAYS from the author. Its "character" field is ${clientName ? `"${clientName}"` : (lang === "sk" || lang === "cs" ? `"Autor"` : `"The Author"`)}. This is non-negotiable.`,
+    `Perspectives #2, #3, #4 are each paired with a DIFFERENT named character from the play.`,
+    `If you return 3 perspectives, the output is invalid and will be rejected.`,
+    ``,
+  );
+
+  parts.push(
     `The question that was explored:`,
     `"${question}"`,
     ``,
