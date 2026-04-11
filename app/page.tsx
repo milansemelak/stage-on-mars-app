@@ -350,20 +350,20 @@ export default function Home() {
 
                   {/* Setting / The Image */}
                   {play.image && (
-                    <div className="mt-5 pt-5 border-t border-white/[0.04]">
-                      <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] font-bold mb-2">{t.landingTheSetting}</p>
-                      <p className="font-mercure italic text-white/60 text-[14px] sm:text-[15px] leading-[1.55]">{play.image}</p>
+                    <div className="mt-6 pt-6 border-t border-white/[0.06]">
+                      <p className="text-mars text-[10px] uppercase tracking-[0.3em] font-black mb-2.5">{t.landingTheSetting}</p>
+                      <p className="font-mercure italic text-white/75 text-[15px] sm:text-[16px] leading-[1.55]">{play.image}</p>
                     </div>
                   )}
 
                   {/* Mood pills */}
                   {play.mood && (
-                    <div className="mt-5 flex flex-wrap gap-1.5">
+                    <div className="mt-5 flex flex-wrap gap-2">
                       {play.mood.split(/[,·]/).map((m, i) => {
                         const tag = m.trim();
                         if (!tag) return null;
                         return (
-                          <span key={i} className="inline-flex items-center px-2.5 py-1 rounded-full bg-mars/10 border border-mars/20 text-mars/80 text-[10px] font-bold uppercase tracking-[0.1em]">
+                          <span key={i} className="inline-flex items-center px-3 py-1.5 rounded-full bg-mars text-black text-[10px] font-black uppercase tracking-[0.15em] shadow-[0_2px_12px_rgba(255,85,0,0.25)]">
                             {tag}
                           </span>
                         );
@@ -373,14 +373,14 @@ export default function Home() {
 
                   {/* Dramatis personae */}
                   {play.characters && play.characters.length > 0 && (
-                    <div className="mt-5 pt-5 border-t border-white/[0.04]">
-                      <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] font-bold mb-3">{t.landingDramatisPersonae}</p>
+                    <div className="mt-6 pt-6 border-t border-white/[0.06]">
+                      <p className="text-mars text-[10px] uppercase tracking-[0.3em] font-black mb-3">{t.landingDramatisPersonae}</p>
                       <div className="flex flex-wrap gap-2">
                         {/* Author chip first */}
                         {clientName.trim() && (
-                          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(255,215,0,0.08)] border border-[rgba(255,215,0,0.25)]">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[rgba(255,215,0,0.8)]" />
-                            <span className="text-[rgba(255,215,0,0.85)] text-[11px] font-semibold">{clientName.trim()}</span>
+                          <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[rgba(255,215,0,0.12)] border border-[rgba(255,215,0,0.55)] shadow-[0_0_16px_rgba(255,215,0,0.08)]">
+                            <div className="w-2 h-2 rounded-full bg-[rgba(255,215,0,1)] shadow-[0_0_6px_rgba(255,215,0,0.8)]" />
+                            <span className="text-[rgba(255,230,130,1)] text-[12px] font-bold">{clientName.trim()}</span>
                           </div>
                         )}
                         {play.characters.map((c, i) => {
@@ -388,14 +388,14 @@ export default function Home() {
                           return (
                             <div
                               key={i}
-                              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${
+                              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-full border ${
                                 isAbstract
-                                  ? "bg-white/[0.03] border-white/15"
-                                  : "bg-mars/[0.08] border-mars/20"
+                                  ? "bg-white/[0.06] border-white/40"
+                                  : "bg-mars/[0.15] border-mars/60"
                               }`}
                             >
-                              <div className={`w-1.5 h-1.5 rounded-full ${isAbstract ? "bg-white/55" : "bg-mars/85"}`} />
-                              <span className={`text-[11px] font-semibold ${isAbstract ? "text-white/65" : "text-mars/85"}`}>{c.name}</span>
+                              <div className={`w-2 h-2 rounded-full ${isAbstract ? "bg-white" : "bg-mars shadow-[0_0_6px_rgba(255,85,0,0.6)]"}`} />
+                              <span className={`text-[12px] font-bold ${isAbstract ? "text-white" : "text-mars-light"}`}>{c.name}</span>
                             </div>
                           );
                         })}
