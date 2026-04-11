@@ -767,10 +767,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
           {/* Characters */}
           {(() => {
             // Compute collision-free label layouts once per frame
-            const FONT_SIZE = 2.4;
-            const CHAR_W = 1.15; // approx avg glyph width at FONT_SIZE
-            const LABEL_H = 2.8;
-            const BASE_OFFSET = 4.2;
+            // Sized for mobile readability — SVG units render proportionally
+            const FONT_SIZE = 3.0;
+            const CHAR_W = 1.45; // approx avg glyph width at FONT_SIZE
+            const LABEL_H = 3.6;
+            const BASE_OFFSET = 5;
 
             type LabelLayout = {
               x: number; y: number;
@@ -888,7 +889,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
                   x={label.x} y={label.y}
                   textAnchor={label.anchor}
                   fill={colors.text}
-                  fontSize={isAuthor ? 2.2 : (isActive ? 2.8 : 2.2)}
+                  fontSize={isAuthor ? 2.8 : (isActive ? 3.2 : 2.8)}
                   fontWeight={isAuthor ? 600 : (isActive ? 700 : 500)}
                   fontStyle={isAbstract || isAuthor ? "italic" : "normal"}
                   letterSpacing="0.03"

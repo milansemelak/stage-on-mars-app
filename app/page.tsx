@@ -459,10 +459,10 @@ export default function Home() {
 
             {/* ── PERSPECTIVES (distinct outro panel) ── */}
             {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
-              <div className="mt-8 sm:mt-12 rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent p-6 sm:p-10 animate-fade-in">
+              <div className="mt-8 sm:mt-12 rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent px-4 py-7 sm:p-10 animate-fade-in">
                 <div className="text-center mb-6 sm:mb-8">
-                  <p className="text-mars/60 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{t.landingPerspectivesRevealed}</p>
-                  <h3 className="font-mercure italic text-white/85 text-[20px] sm:text-[26px] leading-[1.2]">
+                  <p className="text-mars/60 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] font-bold mb-2">{t.landingPerspectivesRevealed}</p>
+                  <h3 className="font-mercure italic text-white/85 text-[18px] sm:text-[26px] leading-[1.25]">
                     {t.landingStageShowedYou}
                   </h3>
                 </div>
@@ -484,15 +484,15 @@ export default function Home() {
                       {/* AUTHOR — hero card */}
                       {authorP && (
                         <div
-                          className="relative rounded-2xl border-2 border-[rgba(255,215,0,0.35)] bg-gradient-to-b from-[rgba(255,215,0,0.08)] to-[rgba(255,215,0,0.02)] p-7 sm:p-10 shadow-[0_0_80px_-20px_rgba(255,215,0,0.35)] mb-6 sm:mb-8"
+                          className="relative rounded-2xl border-2 border-[rgba(255,215,0,0.35)] bg-gradient-to-b from-[rgba(255,215,0,0.08)] to-[rgba(255,215,0,0.02)] px-5 py-8 sm:p-10 shadow-[0_0_40px_-16px_rgba(255,215,0,0.35)] sm:shadow-[0_0_80px_-20px_rgba(255,215,0,0.35)] mb-6 sm:mb-8 mt-3"
                           style={{ animation: `fadeIn 0.6s ease 0s both` }}
                         >
-                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black border border-[rgba(255,215,0,0.5)]">
-                            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[rgba(255,215,0,0.95)]">
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 max-w-[calc(100%-24px)] px-2.5 sm:px-3 py-1 rounded-full bg-black border border-[rgba(255,215,0,0.5)] whitespace-nowrap overflow-hidden">
+                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.22em] sm:tracking-[0.25em] text-[rgba(255,215,0,0.95)] truncate block">
                               {authorP.character} · {t.landingYouBadge}
                             </span>
                           </div>
-                          <p className="text-white text-[18px] sm:text-[24px] leading-[1.4] font-mercure italic text-center mt-2">
+                          <p className="text-white text-[17px] sm:text-[24px] leading-[1.45] sm:leading-[1.4] font-mercure italic text-center">
                             {authorP.insight}
                           </p>
                         </div>
@@ -523,13 +523,13 @@ export default function Home() {
                                   className={`rounded-xl border ${accent.border} ${accent.bg} p-4 sm:p-5`}
                                   style={{ animation: `fadeIn 0.6s ease ${(i + 1) * 0.15}s both` }}
                                 >
-                                  <div className="flex items-center gap-2 mb-2.5">
-                                    <div className={`w-1.5 h-1.5 rounded-full ${accent.dot}`} />
-                                    <p className={`${accent.text} text-[10px] font-bold uppercase tracking-[0.2em] truncate`}>
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${accent.dot}`} />
+                                    <p className={`${accent.text} text-[10px] font-bold uppercase tracking-[0.18em] truncate`}>
                                       {sp.character}
                                     </p>
                                   </div>
-                                  <p className="text-white/85 text-[14px] sm:text-[15px] leading-[1.5] font-mercure italic">
+                                  <p className="text-white/85 text-[15px] sm:text-[15px] leading-[1.5] font-mercure italic">
                                     {sp.insight}
                                   </p>
                                 </div>
