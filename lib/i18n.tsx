@@ -234,6 +234,11 @@ const translations = {
     landingBookRealPlay: "Or book a real play",
     landingWhatIfAsked: "What if you asked",
     landingAskThisQ: "Ask this question →",
+    landingTheSetting: "The setting",
+    landingDramatisPersonae: "On stage",
+    landingStageShowedYou: "What the stage showed you",
+    landingAskSomethingElse: "Ask something else",
+    landingTabTitle: "Stage on Mars — The Play Simulator",
   },
   sk: {
     // Header
@@ -463,6 +468,11 @@ const translations = {
     landingBookRealPlay: "Alebo si rezervuj hru naživo",
     landingWhatIfAsked: "Čo ak by si sa opýtal",
     landingAskThisQ: "Opýtať sa →",
+    landingTheSetting: "Prostredie",
+    landingDramatisPersonae: "Na javisku",
+    landingStageShowedYou: "Čo ti javisko ukázalo",
+    landingAskSomethingElse: "Opýtať sa inak",
+    landingTabTitle: "Stage on Mars — Play Simulator",
   },
   cs: {
     // Header
@@ -692,6 +702,11 @@ const translations = {
     landingBookRealPlay: "Nebo si zarezervuj hru naživo",
     landingWhatIfAsked: "Co kdyby ses zeptal",
     landingAskThisQ: "Zeptat se →",
+    landingTheSetting: "Prostředí",
+    landingDramatisPersonae: "Na jevišti",
+    landingStageShowedYou: "Co ti jeviště ukázalo",
+    landingAskSomethingElse: "Zeptat se jinak",
+    landingTabTitle: "Stage on Mars — Play Simulator",
   },
 } as const;
 

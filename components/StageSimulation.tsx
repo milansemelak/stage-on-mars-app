@@ -851,6 +851,15 @@ export default function StageSimulation({ characters, simulation, simulationStep
       {/* Narration + Controls */}
       {hasStarted && (
         <div className="relative shrink-0">
+          {/* Progress bar */}
+          {!hasEnded && (
+            <div className="h-[2px] w-full bg-white/[0.04] overflow-hidden">
+              <div
+                className="h-full bg-mars/70 transition-all duration-500 ease-out"
+                style={{ width: `${Math.max(4, progress * 100)}%` }}
+              />
+            </div>
+          )}
           {/* Narration — tap the whole area to advance */}
           {!hasEnded ? (
             <button
@@ -892,22 +901,22 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
           {/* End the play */}
           {hasEnded && endingPhase >= 2 && (
-            <div className="px-5 sm:px-6 pb-4 animate-fade-in flex flex-col items-center gap-3">
+            <div className="px-5 sm:px-6 pb-5 animate-fade-in flex flex-col items-center gap-3">
               <button
                 onClick={() => { playBell(); onEnd?.(); }}
-                className="group w-full relative"
+                className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-mars/40 bg-mars/[0.06] hover:bg-mars/[0.12] hover:border-mars/60 transition-all duration-200"
               >
-                <div className="absolute -inset-2 bg-mars/10 blur-xl rounded-2xl animate-pulse-glow pointer-events-none" />
-                <div className="relative w-full py-4 rounded-2xl bg-mars group-hover:bg-mars-light transition-all duration-200 shadow-[0_4px_30px_rgba(255,85,0,0.4)] group-hover:shadow-[0_4px_40px_rgba(255,85,0,0.6)] group-active:scale-[0.98] text-center">
-                  <span className="text-white font-black text-sm sm:text-base uppercase tracking-[0.2em]">
-                    {t.endThePlay}
-                  </span>
-                </div>
+                <span className="text-mars font-bold text-[11px] sm:text-xs uppercase tracking-[0.2em]">
+                  {t.endThePlay}
+                </span>
+                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-mars">
+                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
+                </svg>
               </button>
 
               <button
                 onClick={handleReplay}
-                className="flex items-center gap-2 text-white/15 hover:text-white/30 text-[10px] transition-colors"
+                className="flex items-center gap-2 text-white/25 hover:text-white/50 text-[10px] transition-colors"
               >
                 <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current">
                   <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />

@@ -76,9 +76,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const t = setTimeout(() => setEntered(true), 400);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setEntered(true), 400);
+    return () => clearTimeout(timer);
   }, []);
+
+  // Translate document title per language
+  useEffect(() => {
+    if (typeof document !== "undefined" && t.landingTabTitle) {
+      document.title = t.landingTabTitle;
+    }
+  }, [t.landingTabTitle]);
 
   async function fetchSimulation(currentPlay: Play) {
     setSimLoading(true);
@@ -307,41 +314,101 @@ export default function Home() {
 
       {/* ── PLAY RESULT ── */}
       {(play || loading) && (
-        <section ref={resultRef} className="relative px-4 sm:px-6 pb-16 sm:pb-24">
+        <section ref={resultRef} className="relative px-4 sm:px-6 pb-16 sm:pb-24 pt-10 sm:pt-14">
           <div className="max-w-3xl mx-auto">
-
-            {/* Question echo */}
-            <div className="text-center mb-10 sm:mb-14 pt-4">
-              <p className="text-white/10 text-[10px] uppercase tracking-[0.3em] mb-3">{t.landingQuestionLabel}</p>
-              <p className="font-mercure italic text-white/30 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{question}&rdquo;</p>
-              <button onClick={reset} className="text-white/10 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/40 transition-colors">
-                {t.landingAskElse}
-              </button>
-            </div>
 
             {error && (
               <div className="text-center mb-8">
-                <p className="text-red-400/60 text-[13px]">{error}</p>
-                <button onClick={generate} className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] mt-2 hover:text-mars transition-colors">
+                <p className="text-red-400/60 text-sm">{error}</p>
+                <button onClick={generate} className="text-mars text-[11px] font-bold uppercase tracking-[0.15em] mt-2 hover:text-mars-light transition-colors">
                   Try again
                 </button>
               </div>
             )}
 
-            {/* Play info */}
+            {/* ── RICH PLAY CARD ── */}
             {play && (
-              <div className="mb-6 sm:mb-8 text-center">
-                <div className="inline-flex items-center gap-2 mb-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">{t.landingYourPlay}</p>
+              <div className="mb-8 sm:mb-10 rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+                {/* Top bar */}
+                <div className="flex items-center justify-between px-5 sm:px-7 py-3 border-b border-white/[0.04]">
+                  <div className="inline-flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                    <p className="text-mars/60 text-[10px] uppercase tracking-[0.25em] font-bold">{t.landingYourPlay}</p>
+                  </div>
+                  <button onClick={reset} className="text-white/35 hover:text-mars text-[10px] uppercase tracking-[0.15em] transition-colors">
+                    {t.landingAskSomethingElse} →
+                  </button>
                 </div>
-                <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em]">{play.name}</h3>
-                <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
+
+                <div className="px-5 sm:px-7 py-6 sm:py-8">
+                  {/* Title */}
+                  <h3 className="text-[26px] sm:text-[34px] font-black tracking-[-0.03em] leading-[1.05] mb-2">{play.name}</h3>
+
+                  {/* Question reference */}
+                  <p className="font-mercure italic text-white/35 text-[13px] sm:text-[14px] leading-[1.5]">
+                    &ldquo;{question}&rdquo;
+                  </p>
+
+                  {/* Setting / The Image */}
+                  {play.image && (
+                    <div className="mt-5 pt-5 border-t border-white/[0.04]">
+                      <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] font-bold mb-2">{t.landingTheSetting}</p>
+                      <p className="font-mercure italic text-white/60 text-[14px] sm:text-[15px] leading-[1.55]">{play.image}</p>
+                    </div>
+                  )}
+
+                  {/* Mood pills */}
+                  {play.mood && (
+                    <div className="mt-5 flex flex-wrap gap-1.5">
+                      {play.mood.split(/[,·]/).map((m, i) => {
+                        const tag = m.trim();
+                        if (!tag) return null;
+                        return (
+                          <span key={i} className="inline-flex items-center px-2.5 py-1 rounded-full bg-mars/10 border border-mars/20 text-mars/80 text-[10px] font-bold uppercase tracking-[0.1em]">
+                            {tag}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Dramatis personae */}
+                  {play.characters && play.characters.length > 0 && (
+                    <div className="mt-5 pt-5 border-t border-white/[0.04]">
+                      <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] font-bold mb-3">{t.landingDramatisPersonae}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {/* Author chip first */}
+                        {clientName.trim() && (
+                          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(255,215,0,0.08)] border border-[rgba(255,215,0,0.25)]">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[rgba(255,215,0,0.8)]" />
+                            <span className="text-[rgba(255,215,0,0.85)] text-[11px] font-semibold">{clientName.trim()}</span>
+                          </div>
+                        )}
+                        {play.characters.map((c, i) => {
+                          const isAbstract = c.description?.toLowerCase() === "abstract";
+                          return (
+                            <div
+                              key={i}
+                              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border ${
+                                isAbstract
+                                  ? "bg-white/[0.03] border-white/15"
+                                  : "bg-mars/[0.08] border-mars/20"
+                              }`}
+                            >
+                              <div className={`w-1.5 h-1.5 rounded-full ${isAbstract ? "bg-white/55" : "bg-mars/85"}`} />
+                              <span className={`text-[11px] font-semibold ${isAbstract ? "text-white/65" : "text-mars/85"}`}>{c.name}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
-            {/* Stage simulation */}
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+            {/* ── STAGE (its own panel) ── */}
+            <div className="rounded-2xl border border-white/[0.06] bg-[#060606] overflow-hidden">
               {(loading || simLoading) && (
                 <div className="text-center py-20 sm:py-28">
                   <div className="inline-flex gap-2 mb-5">
@@ -349,7 +416,7 @@ export default function Home() {
                       <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
                     ))}
                   </div>
-                  <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">
+                  <p className="text-white/35 text-[14px] font-mercure italic">
                     {loading ? t.landingCreatingPlay : t.landingChoreographing}
                   </p>
                 </div>
@@ -361,82 +428,101 @@ export default function Home() {
                     simulationSteps={play.simulationSteps}
                     characters={play.characters}
                     simulation={play.simulation}
+                    clientName={clientName.trim() || undefined}
                     onEnd={() => setSimEnded(true)}
                   />
                 </div>
               )}
-
-              {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
-                <div className="p-6 sm:p-8 border-t border-white/[0.04] animate-fade-in">
-                  <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">{t.landingPerspectivesRevealed}</p>
-                  <div className="space-y-3">
-                    {play.perspectives.map((p, i) => {
-                      const perspective = typeof p === "object" ? (p as Perspective) : null;
-                      return (
-                        <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
-                          {perspective ? (
-                            <>
-                              <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
-                              <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
-                            </>
-                          ) : (
-                            <p className="text-white/45 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
 
-            {/* Account creation CTA after play ends */}
-            {simEnded && (
-              <div className="mt-10 sm:mt-14 rounded-2xl overflow-hidden bg-mars">
-                <div className="px-6 sm:px-10 py-10 sm:py-12 text-center">
-                  <p className="text-white/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">{t.landingJustRanTitle}</p>
-                  <h3 className="text-white text-[22px] sm:text-[30px] font-black tracking-[-0.03em] leading-[1.15] mb-3">
-                    {t.landingRunMore}<br />{t.landingCreateFreeAccount}
+            {/* ── PERSPECTIVES (distinct outro panel) ── */}
+            {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
+              <div className="mt-8 sm:mt-12 rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent p-6 sm:p-10 animate-fade-in">
+                <div className="text-center mb-6 sm:mb-8">
+                  <p className="text-mars/60 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{t.landingPerspectivesRevealed}</p>
+                  <h3 className="font-mercure italic text-white/85 text-[20px] sm:text-[26px] leading-[1.2]">
+                    {t.landingStageShowedYou}
                   </h3>
-                  <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
-                    {t.landingTrialDesc}
-                  </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <button
-                      onClick={() => {
-                        localStorage.setItem("pendingQuestion", question);
-                        router.push("/auth/signup");
-                      }}
-                      className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
-                    >
-                      {t.landingCreateAccountBtn}
-                    </button>
-                    <a
-                      href="/business"
-                      className="inline-flex items-center px-6 py-3.5 sm:py-4 rounded-xl border border-white/30 text-white/90 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:border-white/60 hover:text-white transition-all"
-                    >
-                      {t.landingBookRealPlay}
-                    </a>
-                  </div>
+                </div>
+                <div className="space-y-3 sm:space-y-4">
+                  {play.perspectives.map((p, i) => {
+                    const perspective = typeof p === "object" ? (p as Perspective) : null;
+                    const charName = perspective?.character || "";
+                    const matchedChar = play.characters.find(c => c.name.toLowerCase() === charName.toLowerCase());
+                    const isAuthor = !matchedChar && clientName.trim() && charName.toLowerCase() === clientName.trim().toLowerCase();
+                    const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
+                    const accent = isAuthor
+                      ? { dot: "bg-[rgba(255,215,0,0.85)]", text: "text-[rgba(255,215,0,0.9)]", border: "border-[rgba(255,215,0,0.2)]", bg: "bg-[rgba(255,215,0,0.03)]" }
+                      : isAbstract
+                        ? { dot: "bg-white/65", text: "text-white/75", border: "border-white/12", bg: "bg-white/[0.02]" }
+                        : { dot: "bg-mars/90", text: "text-mars", border: "border-mars/20", bg: "bg-mars/[0.035]" };
+                    return (
+                      <div key={i} className={`rounded-xl border ${accent.border} ${accent.bg} p-4 sm:p-5`} style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
+                        {perspective ? (
+                          <>
+                            <div className="flex items-center gap-2 mb-2.5">
+                              <div className={`w-2 h-2 rounded-full ${accent.dot}`} />
+                              <p className={`${accent.text} text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.18em]`}>{perspective.character}</p>
+                            </div>
+                            <p className="text-white/80 text-[15px] sm:text-[17px] leading-[1.55] font-mercure italic">{perspective.insight}</p>
+                          </>
+                        ) : (
+                          <p className="text-white/75 text-[15px] leading-[1.55] font-mercure italic">{String(p)}</p>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
-            {/* Follow-up question */}
+            {/* ── FOLLOW-UP QUESTION (shown first, it's the hook) ── */}
             {simEnded && play && play.followUpQuestion && (
               <div className="text-center mt-10 sm:mt-14">
-                <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">{t.landingWhatIfAsked}</p>
-                <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
+                <p className="text-white/25 text-[10px] uppercase tracking-[0.25em] mb-3 font-bold">{t.landingWhatIfAsked}</p>
+                <p className="font-mercure italic text-white/60 text-[17px] sm:text-[22px] leading-[1.35] mb-5 max-w-xl mx-auto">&ldquo;{play.followUpQuestion}&rdquo;</p>
                 <button
                   onClick={() => {
                     const followUp = play.followUpQuestion!;
                     reset();
                     setTimeout(() => { setQuestion(followUp); }, 100);
                   }}
-                  className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
+                  className="inline-flex items-center px-5 py-2.5 rounded-full border border-mars/40 text-mars text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:border-mars transition-all"
                 >
                   {t.landingAskThisQ}
                 </button>
+              </div>
+            )}
+
+            {/* ── ACCOUNT CTA (quieter, comes after the hook) ── */}
+            {simEnded && (
+              <div className="mt-12 sm:mt-16 rounded-2xl border border-white/[0.08] bg-[#0c0c0c] overflow-hidden">
+                <div className="px-6 sm:px-10 py-8 sm:py-10 text-center">
+                  <p className="text-mars/70 text-[10px] uppercase tracking-[0.3em] font-bold mb-3">{t.landingJustRanTitle}</p>
+                  <h3 className="text-white text-[22px] sm:text-[28px] font-black tracking-[-0.03em] leading-[1.15] mb-3">
+                    {t.landingRunMore} <span className="text-mars">{t.landingCreateFreeAccount}</span>
+                  </h3>
+                  <p className="font-mercure italic text-white/45 text-[13px] sm:text-[14px] leading-[1.5] max-w-md mx-auto mb-6">
+                    {t.landingTrialDesc}
+                  </p>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <button
+                      onClick={() => {
+                        localStorage.setItem(STORAGE_KEYS.pendingQuestion, question);
+                        router.push("/auth/signup");
+                      }}
+                      className="inline-flex items-center px-7 sm:px-9 py-3.5 rounded-full bg-mars hover:bg-mars-light text-white text-[12px] font-bold uppercase tracking-[0.15em] transition-all shadow-[0_0_40px_-8px_rgba(255,85,0,0.6)]"
+                    >
+                      {t.landingCreateAccountBtn}
+                    </button>
+                    <a
+                      href="/business"
+                      className="inline-flex items-center px-5 py-3.5 text-white/45 hover:text-white/80 text-[12px] font-bold uppercase tracking-[0.15em] transition-all"
+                    >
+                      {t.landingBookRealPlay} →
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
           </div>
