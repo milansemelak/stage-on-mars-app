@@ -210,7 +210,7 @@ const translations = {
     // Landing page
     landingHeroLabel: "Play Simulator",
     landingHeadlineA: "Ask a question.",
-    landingHeadlineB: "See the play.",
+    landingHeadlineB: "Turn it into a play.",
     landingSubtitle: "Put your question on stage. Watch it play out. Leave with perspectives you couldn't see before.",
     landingQuestionLabel: "Your question",
     landingPlaceholder: "What's the one question you'd put on stage?",
@@ -439,7 +439,7 @@ const translations = {
     // Landing page
     landingHeroLabel: "Play Simulator",
     landingHeadlineA: "Polož otázku.",
-    landingHeadlineB: "Pozri hru.",
+    landingHeadlineB: "Premeň ju na hru.",
     landingSubtitle: "Polož svoju otázku na javisko. Sleduj, ako sa odohrá. Odíď s perspektívami, ktoré si sám nevidel.",
     landingQuestionLabel: "Tvoja otázka",
     landingPlaceholder: "Akú otázku by si postavil na javisko?",
@@ -668,7 +668,7 @@ const translations = {
     // Landing page
     landingHeroLabel: "Play Simulator",
     landingHeadlineA: "Polož otázku.",
-    landingHeadlineB: "Podívej se na hru.",
+    landingHeadlineB: "Proměň ji ve hru.",
     landingSubtitle: "Polož svoji otázku na jeviště. Sleduj, jak se odehraje. Odejdi s perspektivami, které jsi sám neviděl.",
     landingQuestionLabel: "Tvoje otázka",
     landingPlaceholder: "Jakou otázku bys postavil na jeviště?",
