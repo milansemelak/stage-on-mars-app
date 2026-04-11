@@ -217,14 +217,14 @@ export default function Home() {
             <div className="mb-6 sm:mb-8" style={{ animation: "float 6s ease-in-out infinite" }}>
               <img src="/logo.png" alt="Stage On Mars" className="h-10 sm:h-14 md:h-18 w-auto invert mx-auto" />
             </div>
-            <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Play Simulator</p>
+            <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">{t.landingHeroLabel}</p>
             <h1 className="text-[clamp(28px,7vw,72px)] font-bold leading-[0.95] tracking-[-0.04em] text-center">
-              Ask a question.
+              {t.landingHeadlineA}
               <br />
-              <span className="text-mars">See the play.</span>
+              <span className="text-mars">{t.landingHeadlineB}</span>
             </h1>
             <p className="font-mercure italic text-white/35 text-[14px] sm:text-[17px] mt-4 sm:mt-5 max-w-md mx-auto leading-[1.45]">
-              Put your question on stage. Watch it play out. Leave with perspectives you couldn&apos;t see before.
+              {t.landingSubtitle}
             </p>
           </div>
 
@@ -234,11 +234,11 @@ export default function Home() {
             <div className="absolute -inset-6 rounded-3xl opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-1000" style={{ background: "radial-gradient(ellipse at center, rgba(255,85,0,0.06) 0%, transparent 70%)" }} />
 
             <div className="relative rounded-2xl border border-white/[0.12] group-focus-within/input:border-mars/25 bg-white/[0.025] backdrop-blur-sm px-5 sm:px-6 pt-5 pb-4 transition-all duration-500">
-              <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] mb-3">Your question</p>
+              <p className="text-mars/50 text-[9px] uppercase tracking-[0.25em] mb-3">{t.landingQuestionLabel}</p>
               <textarea
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What's the one question you'd put on stage?"
+                placeholder={t.landingPlaceholder}
                 rows={2}
                 className="w-full bg-transparent border-0 px-0 pt-0 pb-3 text-white text-[17px] sm:text-[20px] placeholder:text-white/25 focus:outline-none resize-none leading-relaxed"
                 onKeyDown={(e) => {
@@ -270,7 +270,7 @@ export default function Home() {
                   type="text"
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
-                  placeholder="Your name"
+                  placeholder={t.landingNamePlaceholder}
                   className="min-w-0 flex-1 bg-white/[0.04] rounded-lg px-3 py-[7px] text-[16px] sm:text-[12px] text-white/80 placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors"
                 />
               </div>
@@ -286,21 +286,19 @@ export default function Home() {
                 : "bg-mars/40 text-white/80 cursor-not-allowed hover:bg-mars/50"
             }`}
           >
-            {loading ? "Creating..." : "Turn it into play →"}
+            {loading ? t.landingCTALoading : t.landingCTA}
           </button>
 
           {/* Trust line */}
           <p className="text-center mt-5 text-white/45 text-[11px]">
-            {freePlaysUsed >= LANDING_FREE_PLAY_LIMIT
-              ? "You've used your free play · create an account to continue"
-              : "1 free play · no signup · then 30 days free with an account"}
+            {freePlaysUsed >= LANDING_FREE_PLAY_LIMIT ? t.landingTrustExpired : t.landingTrust}
           </p>
 
           {/* Sign in link */}
           <p className="text-center mt-4 mb-10 text-white/50 text-[12px]">
-            Already have an account?{" "}
+            {t.landingHaveAccount}{" "}
             <button onClick={() => router.push("/auth/login")} className="text-mars font-semibold hover:text-mars-light transition-colors underline underline-offset-4 decoration-mars/40 hover:decoration-mars">
-              Sign in
+              {t.landingSignIn}
             </button>
           </p>
         </div>
@@ -314,10 +312,10 @@ export default function Home() {
 
             {/* Question echo */}
             <div className="text-center mb-10 sm:mb-14 pt-4">
-              <p className="text-white/10 text-[10px] uppercase tracking-[0.3em] mb-3">Your question</p>
+              <p className="text-white/10 text-[10px] uppercase tracking-[0.3em] mb-3">{t.landingQuestionLabel}</p>
               <p className="font-mercure italic text-white/30 text-[16px] sm:text-[20px] leading-[1.4]">&ldquo;{question}&rdquo;</p>
               <button onClick={reset} className="text-white/10 text-[10px] uppercase tracking-[0.15em] mt-4 hover:text-mars/40 transition-colors">
-                Ask something else
+                {t.landingAskElse}
               </button>
             </div>
 
@@ -335,7 +333,7 @@ export default function Home() {
               <div className="mb-6 sm:mb-8 text-center">
                 <div className="inline-flex items-center gap-2 mb-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Your play</p>
+                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">{t.landingYourPlay}</p>
                 </div>
                 <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em]">{play.name}</h3>
                 <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
@@ -352,7 +350,7 @@ export default function Home() {
                     ))}
                   </div>
                   <p className="text-white/25 text-[13px] sm:text-[14px] font-mercure italic">
-                    {loading ? "Creating your play..." : "Choreographing the stage..."}
+                    {loading ? t.landingCreatingPlay : t.landingChoreographing}
                   </p>
                 </div>
               )}
@@ -370,7 +368,7 @@ export default function Home() {
 
               {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
                 <div className="p-6 sm:p-8 border-t border-white/[0.04] animate-fade-in">
-                  <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                  <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">{t.landingPerspectivesRevealed}</p>
                   <div className="space-y-3">
                     {play.perspectives.map((p, i) => {
                       const perspective = typeof p === "object" ? (p as Perspective) : null;
@@ -396,12 +394,12 @@ export default function Home() {
             {simEnded && (
               <div className="mt-10 sm:mt-14 rounded-2xl overflow-hidden bg-mars">
                 <div className="px-6 sm:px-10 py-10 sm:py-12 text-center">
-                  <p className="text-white/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just ran a play</p>
+                  <p className="text-white/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">{t.landingJustRanTitle}</p>
                   <h3 className="text-white text-[22px] sm:text-[30px] font-black tracking-[-0.03em] leading-[1.15] mb-3">
-                    Want to run more?<br />Create your free account.
+                    {t.landingRunMore}<br />{t.landingCreateFreeAccount}
                   </h3>
                   <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
-                    30 days free · unlimited plays · EN / SK / CS · save your history.
+                    {t.landingTrialDesc}
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <button
@@ -411,13 +409,13 @@ export default function Home() {
                       }}
                       className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
                     >
-                      Create free account &rarr;
+                      {t.landingCreateAccountBtn}
                     </button>
                     <a
                       href="/business"
                       className="inline-flex items-center px-6 py-3.5 sm:py-4 rounded-xl border border-white/30 text-white/90 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:border-white/60 hover:text-white transition-all"
                     >
-                      Or book a real play
+                      {t.landingBookRealPlay}
                     </a>
                   </div>
                 </div>
@@ -427,7 +425,7 @@ export default function Home() {
             {/* Follow-up question */}
             {simEnded && play && play.followUpQuestion && (
               <div className="text-center mt-10 sm:mt-14">
-                <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
+                <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">{t.landingWhatIfAsked}</p>
                 <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
                 <button
                   onClick={() => {
@@ -437,7 +435,7 @@ export default function Home() {
                   }}
                   className="text-mars/50 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars transition-colors"
                 >
-                  Ask this question →
+                  {t.landingAskThisQ}
                 </button>
               </div>
             )}
