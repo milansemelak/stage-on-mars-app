@@ -460,7 +460,7 @@ function PlayPageInner() {
             <h1 className="text-[30px] sm:text-[52px] font-black tracking-[-0.04em] leading-[1.05] mb-5 text-white">
               Turn one hard question<br className="hidden sm:block" /> into <span className="text-mars">a decision in 4 hours.</span>
             </h1>
-            <p className="text-white/45 text-[14px] sm:text-[16px] leading-[1.55] max-w-xl mx-auto">
+            <p className="font-mercure italic text-white/50 text-[14px] sm:text-[17px] leading-[1.55] max-w-xl mx-auto">
               Book a live experience with your team in Prague — or run an instant AI simulation right now, free.
             </p>
             <div className="flex items-center justify-center gap-5 sm:gap-8 mt-6 text-[11px] sm:text-[12px] text-white/40">
@@ -486,7 +486,7 @@ function PlayPageInner() {
                     <div className="w-1.5 h-1.5 rounded-full bg-mars/50" />
                     <div className="w-1.5 h-1.5 rounded-full bg-mars/20" />
                   </div>
-                  <p className="text-white/50 text-[10px] uppercase tracking-[0.25em] font-bold">Plan 01 &middot; Live on Stage</p>
+                  <p className="text-white/50 text-[10px] uppercase tracking-[0.25em] font-bold">Live on Stage &middot; Prague</p>
                 </div>
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-mars/10 border border-mars/20">
                   <div className="w-1 h-1 rounded-full bg-mars animate-pulse" />
@@ -496,31 +496,24 @@ function PlayPageInner() {
 
               {/* Headline + price anchor */}
               <div className="px-6 sm:px-8 pt-8 sm:pt-10 pb-6">
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
-                  <div>
-                    <h2 className="text-white text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1.05] mb-2">
-                      Your team. Your question.<br />Played live on Mars.
-                    </h2>
-                    <p className="text-white/45 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
-                      We design a custom 4-hour play around the question that matters most — and run it with your team on our stage in Prague.
-                    </p>
-                  </div>
-                  <div className="sm:text-right shrink-0">
-                    <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-1">From</p>
-                    <p className="text-white text-[22px] sm:text-[26px] font-black tracking-[-0.02em] leading-none">€2,900</p>
-                    <p className="text-white/30 text-[10px] mt-1">per session &middot; up to 12 people</p>
-                  </div>
+                <div className="mb-5">
+                  <h2 className="text-white text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1.05] mb-2">
+                    Your team. Your question.<br />Played live on Mars.
+                  </h2>
+                  <p className="text-white/45 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
+                    We design a custom 4-hour play around the question that matters most — and run it with your team on our stage in Prague.
+                  </p>
                 </div>
 
                 {/* What's included — structured grid */}
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-5 mb-6">
                   {[
-                    "Custom play designed for your question",
-                    "4-hour session with pro facilitators",
-                    "Up to 12 team members",
-                    "Stage on Mars venue in Prague",
-                    "Written insights report after",
-                    "Follow-up strategy call",
+                    "Custom play built around your question",
+                    "4 hours: intro → play → break → outro",
+                    "Live on the Stage on Mars in Prague",
+                    "Guided by Sprievodca and a full cast",
+                    "Designed for teams up to 12 people",
+                    "New perspectives to take back home",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <svg className="w-3.5 h-3.5 text-mars shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
