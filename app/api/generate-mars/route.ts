@@ -29,6 +29,7 @@ type MarsRequest = {
   question: string;
   lang?: "en" | "sk" | "cs";
   clientName?: string;
+  phase?: "sim" | "perspectives";
 };
 
 export async function POST(request: NextRequest) {
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body: MarsRequest = await request.json();
-    const { play, question, lang, clientName } = body;
+    const { play, question, lang, clientName, phase = "sim" } = body;
 
     if (!play || !question?.trim()) {
       return NextResponse.json(
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: buildMarsPrompt(play, question, lang, clientName),
+          content: buildMarsPrompt(play, question, lang, clientName, phase),
         },
       ],
     });
@@ -111,7 +112,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Repair pass — if perspectives < 4 or no author perspective, ask LLM to add missing
+    // Repair pass — only when generating perspectives: ensure 4 perspectives and author card exists
     const playCharacters = (play.characters || []).map((c) => c.name.toLowerCase());
     const perspectivesArr = Array.isArray(parsed.perspectives) ? parsed.perspectives as Array<{ character?: string; insight?: string }> : [];
     const hasAuthor = perspectivesArr.some((p) => {
@@ -119,7 +120,7 @@ export async function POST(request: NextRequest) {
       if (!c) return false;
       return !playCharacters.includes(c);
     });
-    if (perspectivesArr.length < 4 || !hasAuthor) {
+    if (phase === "perspectives" && (perspectivesArr.length < 4 || !hasAuthor)) {
       const authorLabel = clientName || (lang === "sk" || lang === "cs" ? "Autor" : "The Author");
       try {
         const repairMsg = await callWithRetry({
@@ -154,21 +155,21 @@ export async function POST(request: NextRequest) {
     const sanitizedJson = sanitizeCyrillic(JSON.stringify(parsed));
     parsed = JSON.parse(sanitizedJson);
 
-    // Build result with backward compat — produce both simulation (string) and simulationSteps
-    const result: Record<string, unknown> = {
-      perspectives: parsed.perspectives,
-      followUpQuestion: parsed.followUpQuestion || null,
-    };
+    // Build result based on phase
+    const result: Record<string, unknown> = {};
 
-    if (parsed.simulationSteps && Array.isArray(parsed.simulationSteps)) {
-      result.simulationSteps = parsed.simulationSteps;
-      // Also produce flat simulation string for text display / export
-      result.simulation = (parsed.simulationSteps as { narration: string }[])
-        .map((s) => s.narration)
-        .join(" ");
-    } else if (parsed.simulation) {
-      // Old format fallback
-      result.simulation = parsed.simulation;
+    if (phase === "sim") {
+      if (parsed.simulationSteps && Array.isArray(parsed.simulationSteps)) {
+        result.simulationSteps = parsed.simulationSteps;
+        result.simulation = (parsed.simulationSteps as { narration: string }[])
+          .map((s) => s.narration)
+          .join(" ");
+      } else if (parsed.simulation) {
+        result.simulation = parsed.simulation;
+      }
+    } else {
+      result.perspectives = parsed.perspectives;
+      result.followUpQuestion = parsed.followUpQuestion || null;
     }
 
     return NextResponse.json(result);

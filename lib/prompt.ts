@@ -353,10 +353,12 @@ export function buildMarsPrompt(
     authorRole: string;
     endingPerspective: string;
     mood: string;
+    simulationSteps?: { narration: string; positions: Record<string, string> }[];
   },
   question: string,
   lang?: "en" | "sk" | "cs",
-  clientName?: string
+  clientName?: string,
+  phase: "sim" | "perspectives" = "sim"
 ): string {
   const characterList = play.characters
     .map((c) => `- ${c.name} (${c.description})`)
@@ -386,52 +388,92 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
 
   parts.push(langInstruction, "");
 
-  parts.push(
-    `## OUTPUT REQUIREMENT — READ FIRST`,
-    `You MUST return exactly 4 perspectives. Four. Not three. Not five.`,
-    `Perspective #1 is ALWAYS from the author. Its "character" field is ${clientName ? `"${clientName}"` : (lang === "sk" || lang === "cs" ? `"Autor"` : `"The Author"`)}. This is non-negotiable.`,
-    `Perspectives #2, #3, #4 are each paired with a DIFFERENT named character from the play.`,
-    `If you return 3 perspectives, the output is invalid and will be rejected.`,
-    ``,
-  );
+  const authorLabel = clientName || (lang === "sk" || lang === "cs" ? "Autor" : "The Author");
 
-  parts.push(
-    `The question that was explored:`,
-    `"${question}"`,
-    ``,
-    `The play:`,
-    `Name: ${play.name}`,
-    `Mood: ${play.mood}`,
-    `Image: ${play.image}`,
-    `Characters:\n${characterList}`,
-    `Author's Role: ${play.authorRole}`,
-    `Ending Perspective: ${play.endingPerspective}`,
-    ``,
-    `What happened on this stage? What did you witness?`,
-    ``,
-    `## HARD CONTRACT — READ BEFORE WRITING`,
-    `The "Author's Role" above is NOT flavor text. It is a PROMISE to the author. Whatever the Author's Role says the author physically does — choosing, saying, pointing, touching, turning away, refusing, building — MUST actually happen in the narration, in explicit words, and the author's position must reflect it in the corresponding step. If the Author's Role says "the author picks one and says it out loud", then one of the simulationSteps narration MUST literally describe the author picking and speaking. No substitutions. No paraphrases that skip the action. The reader must be able to point at a step and say "here is the moment the author did what the play promised."`,
-    ``,
-    `Also: every character listed above MUST appear in simulationSteps positions at least once and MUST be referenced by name in narration at least once. No ghost characters.`,
-    ``,
-    `The "Ending Perspective" above must be the final insight the stage delivers — the last simulation step should set it up, and one of the 4 perspectives should land on it.`,
-    ``,
-    `## PERSPECTIVES CONTRACT — 4 total, first is always from the author`,
-    `The first perspective MUST be from the author themselves. Its "character" field is ${clientName ? `"${clientName}"` : (lang === "sk" ? `"Autor"` : lang === "cs" ? `"Autor"` : `"The Author"`)}. Write it as something the author realized while playing their role — a first-person shift in awareness, not an outside observation. It should be the most personal of the four.`,
-    `The next 3 perspectives are each paired with a DIFFERENT character from the play. No character repeats. Every insight must reference what THAT character actually did in the simulation.`,
-  );
+  if (phase === "sim") {
+    // PHASE 1: only simulationSteps
+    parts.push(
+      `## OUTPUT REQUIREMENT — READ FIRST`,
+      `Return ONLY simulationSteps. Do NOT include perspectives, followUpQuestion, or any other key.`,
+      ``,
+      `The question that was explored:`,
+      `"${question}"`,
+      ``,
+      `The play:`,
+      `Name: ${play.name}`,
+      `Mood: ${play.mood}`,
+      `Image: ${play.image}`,
+      `Characters:\n${characterList}`,
+      `Author's Role: ${play.authorRole}`,
+      `Ending Perspective: ${play.endingPerspective}`,
+      ``,
+      `What happened on this stage? What did you witness? 5-7 simulation steps.`,
+      ``,
+      `## HARD CONTRACT — READ BEFORE WRITING`,
+      `The "Author's Role" above is NOT flavor text. It is a PROMISE to the author. Whatever the Author's Role says the author physically does — choosing, saying, pointing, touching, turning away, refusing, building — MUST actually happen in the narration, in explicit words, and the author's position must reflect it in the corresponding step. If the Author's Role says "the author picks one and says it out loud", then one of the simulationSteps narration MUST literally describe the author picking and speaking. No substitutions. No paraphrases that skip the action.`,
+      ``,
+      `Every character listed above MUST appear in simulationSteps positions at least once and MUST be referenced by name in narration at least once. No ghost characters.`,
+      ``,
+      `The "Ending Perspective" above must be what the last step sets up.`,
+    );
 
-  if (clientName) {
+    if (clientName) {
+      parts.push(
+        ``,
+        `The person who asked this question is named "${clientName}". Use their name instead of "the author" in the narration.`
+      );
+    }
+
     parts.push(
       ``,
-      `The person who asked this question is named "${clientName}". Use their name instead of "the author" in the simulation and perspectives.`
+      `Return ONLY valid JSON in this exact shape: { "simulationSteps": [...] }. No perspectives. No followUpQuestion. No other text.`,
+    );
+  } else {
+    // PHASE 2: only perspectives + followUpQuestion, given simulationSteps as context
+    const stepsText = (play.simulationSteps || [])
+      .map((s, i) => `${i + 1}. ${s.narration}`)
+      .join("\n");
+
+    parts.push(
+      `## OUTPUT REQUIREMENT — READ FIRST`,
+      `Return ONLY perspectives and followUpQuestion. Do NOT include simulationSteps.`,
+      `You MUST return exactly 4 perspectives. Four. Not three. Not five.`,
+      `Perspective #1 is ALWAYS from the author. Its "character" field is "${authorLabel}". This is non-negotiable.`,
+      `Perspectives #2, #3, #4 are each paired with a DIFFERENT named character from the play.`,
+      ``,
+      `The question that was asked:`,
+      `"${question}"`,
+      ``,
+      `The play that was performed:`,
+      `Name: ${play.name}`,
+      `Mood: ${play.mood}`,
+      `Characters:\n${characterList}`,
+      `Author's Role: ${play.authorRole}`,
+      ``,
+      `## What actually happened on stage (the simulation the author just witnessed):`,
+      stepsText || "(no steps recorded)",
+      ``,
+      `## PERSPECTIVES CONTRACT — 4 total`,
+      `Perspective #1: From the author ("${authorLabel}"). A first-person shift in awareness — what THEY realized standing in their role. The most personal of the four. Write as if the author is saying it themselves about themselves.`,
+      `Perspectives #2, #3, #4: Each paired with a DIFFERENT character from the play. Reference what THAT character actually did in the steps above. No character repeats. No generic wisdom.`,
+      ``,
+      `Each perspective must be INVERSION + SPECIFICITY + ACCUSATION + BREVITY (1-2 sentences max). Reference the actual events above, not abstract ideas.`,
+      ``,
+      `After the perspectives, generate ONE follow-up question the play is now asking the author. Goes deeper, not sideways. Emerges from the strongest perspective.`,
+    );
+
+    if (clientName) {
+      parts.push(
+        ``,
+        `The author's name is "${clientName}". Use it in the author perspective's character field.`
+      );
+    }
+
+    parts.push(
+      ``,
+      `Return ONLY valid JSON in this exact shape: { "perspectives": [{"character": "${authorLabel}", "insight": "..."}, {"character": "CharName1", "insight": "..."}, {"character": "CharName2", "insight": "..."}, {"character": "CharName3", "insight": "..."}], "followUpQuestion": "..." }. No other text.`,
     );
   }
-
-  parts.push(
-    ``,
-    `Return ONLY valid JSON with "simulationSteps" and "perspectives". No other text.`,
-  );
 
   if (lang === "sk") {
     parts.push("", "POSLEDNÁ KONTROLA: Prečítaj si KAŽDÉ slovo. Je to reálne slovenské slovo? 'súvet' NEEXISTUJE (správne: veta). 'odvážnosť' NEEXISTUJE (správne: odvaha). Ak si nie si istý, použi jednoduchšie slovo.");

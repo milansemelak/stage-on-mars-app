@@ -94,7 +94,7 @@ export default function Home() {
       const res = await fetch("/api/generate-mars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play: currentPlay, question, lang, clientName: clientName.trim() || undefined, context }),
+        body: JSON.stringify({ play: currentPlay, question, lang, clientName: clientName.trim() || undefined, context, phase: "sim" }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
@@ -102,8 +102,6 @@ export default function Home() {
         ...currentPlay,
         simulation: data.simulation,
         simulationSteps: data.simulationSteps,
-        perspectives: data.perspectives,
-        followUpQuestion: data.followUpQuestion || undefined,
       };
       setPlay(updated);
       setSimReady(true);
@@ -111,6 +109,31 @@ export default function Home() {
       setError("Simulation failed. Try again.");
     } finally {
       setSimLoading(false);
+    }
+  }
+
+  const [perspectivesLoading, setPerspectivesLoading] = useState(false);
+
+  async function fetchPerspectives() {
+    if (!play || !play.simulationSteps) return;
+    setPerspectivesLoading(true);
+    try {
+      const res = await fetch("/api/generate-mars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ play, question, lang, clientName: clientName.trim() || undefined, context, phase: "perspectives" }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      setPlay((prev) => prev ? {
+        ...prev,
+        perspectives: data.perspectives,
+        followUpQuestion: data.followUpQuestion || undefined,
+      } : prev);
+    } catch {
+      setError("Perspectives failed to load. Try again.");
+    } finally {
+      setPerspectivesLoading(false);
     }
   }
 
@@ -428,7 +451,7 @@ export default function Home() {
                     characters={play.characters}
                     simulation={play.simulation}
                     clientName={clientName.trim() || undefined}
-                    onEnd={() => setSimEnded(true)}
+                    onEnd={() => { setSimEnded(true); fetchPerspectives(); }}
                   />
                 </div>
               )}

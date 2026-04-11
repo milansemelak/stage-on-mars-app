@@ -33,6 +33,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
   const [showPrescription, setShowPrescription] = useState(false);
   const [prescribed, setPrescribed] = useState(false);
   const [marsLoading, setMarsLoading] = useState(false);
+  const [perspectivesLoading, setPerspectivesLoading] = useState(false);
   const [marsError, setMarsError] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [editData, setEditData] = useState({
@@ -104,7 +105,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
       const response = await fetch("/api/generate-mars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play: currentPlay, question, lang, clientName }),
+        body: JSON.stringify({ play: currentPlay, question, lang, clientName, phase: "sim" }),
       });
       if (!response.ok) throw new Error("Failed");
       const data = await response.json();
@@ -112,6 +113,33 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
         ...currentPlay,
         simulation: data.simulation,
         simulationSteps: data.simulationSteps,
+        // Clear any stale perspectives — they will be fetched after END
+        perspectives: undefined,
+        followUpQuestion: undefined,
+      };
+      setCurrentPlay(updated);
+      onPlayUpdate?.(updated);
+    } catch {
+      setMarsError(t.marsError);
+    } finally {
+      setMarsLoading(false);
+    }
+  }
+
+  async function fetchPerspectives() {
+    if (!currentPlay.simulationSteps) return;
+    setPerspectivesLoading(true);
+    setMarsError(null);
+    try {
+      const response = await fetch("/api/generate-mars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ play: currentPlay, question, lang, clientName, phase: "perspectives" }),
+      });
+      if (!response.ok) throw new Error("Failed");
+      const data = await response.json();
+      const updated = {
+        ...currentPlay,
         perspectives: data.perspectives,
         followUpQuestion: data.followUpQuestion || undefined,
       };
@@ -121,7 +149,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     } catch {
       setMarsError(t.marsError);
     } finally {
-      setMarsLoading(false);
+      setPerspectivesLoading(false);
     }
   }
 
@@ -516,8 +544,22 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                   setVisiblePerspectives(0);
                   setTypedChars(0);
                   setTypingDone(false);
+                  if (!currentPlay.perspectives || currentPlay.perspectives.length === 0) {
+                    fetchPerspectives();
+                  }
                 }}
               />
+            </div>
+          )}
+
+          {/* ── Perspectives loading — after END click ── */}
+          {perspectivesLoading && perspectivesRevealed && (
+            <div className="rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent p-8 sm:p-10 animate-fade-in text-center">
+              <div className="inline-flex items-center gap-3 text-mars/70 text-xs font-bold uppercase tracking-[0.25em]">
+                <span className="w-2 h-2 rounded-full bg-mars animate-pulse" />
+                {t.whatTheStageRevealed}
+                <span className="w-2 h-2 rounded-full bg-mars animate-pulse" />
+              </div>
             </div>
           )}
 
