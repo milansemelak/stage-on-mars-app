@@ -458,10 +458,10 @@ function PlayPageInner() {
               <p className="text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold">Stage on Mars for business</p>
             </div>
             <h1 className="text-[30px] sm:text-[52px] font-black tracking-[-0.04em] leading-[1.05] mb-5 text-white">
-              Turn one hard question<br className="hidden sm:block" /> into <span className="text-mars">a decision in 4 hours.</span>
+              Turn your biggest question<br /><span className="text-mars">into decisions in 4 hours.</span>
             </h1>
             <p className="font-mercure italic text-white/50 text-[14px] sm:text-[17px] leading-[1.55] max-w-xl mx-auto">
-              Book a live experience with your team in Prague — or run an instant AI simulation right now, free.
+              A live experience with your team on the Stage on Mars in Prague.
             </p>
             <div className="flex items-center justify-center gap-5 sm:gap-8 mt-6 text-[11px] sm:text-[12px] text-white/40">
               <span className="flex items-center gap-1.5"><span className="text-mars">50+</span> teams</span>
