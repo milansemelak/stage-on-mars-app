@@ -6,7 +6,10 @@ export const STORAGE_KEYS = {
   lang: "som-lang",
   email: "som-email",
   pendingQuestion: "som-pending-question",
+  landingFreePlays: "som-landing-free-plays",
 } as const;
+
+export const LANDING_FREE_PLAY_LIMIT = 1;
 
 /**
  * Returns a user-scoped localStorage key.

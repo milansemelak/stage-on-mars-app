@@ -3,8 +3,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useI18n, type Lang } from "@/lib/i18n";
+import { STORAGE_KEYS, LANDING_FREE_PLAY_LIMIT } from "@/lib/constants";
 import type { Play, Perspective } from "@/lib/types";
 import StageSimulation from "@/components/StageSimulation";
+
+const LANGS: { code: Lang; label: string }[] = [
+  { code: "en", label: "EN" },
+  { code: "sk", label: "SK" },
+  { code: "cs", label: "CS" },
+];
 
 /* ── Cycling quotes ── */
 const VOICES = [
@@ -38,23 +46,34 @@ function Voices() {
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
+  const { lang, setLang, t } = useI18n();
   const router = useRouter();
   const [entered, setEntered] = useState(false);
   const [question, setQuestion] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [context, setContext] = useState<"personal" | "business">("personal");
   const [play, setPlay] = useState<Play | null>(null);
   const [loading, setLoading] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
   const [simReady, setSimReady] = useState(false);
   const [simEnded, setSimEnded] = useState(false);
+  const [freePlaysUsed, setFreePlaysUsed] = useState(0);
   const [error, setError] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
 
-  // Logged-in users go straight to play
+  // Logged-in users go straight to /play (trial + subscription logic lives there)
   useEffect(() => {
     if (!authLoading && user) {
       router.replace("/play");
     }
   }, [user, authLoading, router]);
+
+  // Load free-play counter from localStorage
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const raw = localStorage.getItem(STORAGE_KEYS.landingFreePlays);
+    setFreePlaysUsed(raw ? parseInt(raw, 10) || 0 : 0);
+  }, []);
 
   useEffect(() => {
     const t = setTimeout(() => setEntered(true), 400);
@@ -68,7 +87,7 @@ export default function Home() {
       const res = await fetch("/api/generate-mars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play: currentPlay, question, lang: "en" }),
+        body: JSON.stringify({ play: currentPlay, question, lang, clientName: clientName.trim() || undefined, context }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
@@ -90,6 +109,14 @@ export default function Home() {
 
   async function generate() {
     if (!question.trim()) return;
+
+    // Gate: anonymous users get LANDING_FREE_PLAY_LIMIT plays, then must sign up
+    if (!user && freePlaysUsed >= LANDING_FREE_PLAY_LIMIT) {
+      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+      router.push("/auth/signup");
+      return;
+    }
+
     setLoading(true);
     setPlay(null);
     setError("");
@@ -102,7 +129,7 @@ export default function Home() {
       const res = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, lang: "en" }),
+        body: JSON.stringify({ question, lang, context, clientName: clientName.trim() || undefined }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
@@ -110,6 +137,10 @@ export default function Home() {
         const generatedPlay = data.plays[0];
         setPlay(generatedPlay);
         setLoading(false);
+        // Increment free-play counter
+        const next = freePlaysUsed + 1;
+        setFreePlaysUsed(next);
+        localStorage.setItem(STORAGE_KEYS.landingFreePlays, String(next));
         fetchSimulation(generatedPlay);
       }
     } catch {
@@ -146,6 +177,21 @@ export default function Home() {
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
+
+      {/* ── LANG SWITCHER (top-right) ── */}
+      <div className="absolute top-5 right-5 z-20 flex items-center gap-1 rounded-full bg-white/[0.04] border border-white/[0.06] px-1 py-1 backdrop-blur-sm">
+        {LANGS.map((l) => (
+          <button
+            key={l.code}
+            onClick={() => setLang(l.code)}
+            className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-[0.1em] transition-all ${
+              lang === l.code ? "bg-mars text-white" : "text-white/40 hover:text-white/70"
+            }`}
+          >
+            {l.label}
+          </button>
+        ))}
+      </div>
 
       {/* ── HERO ── */}
       <section className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
@@ -194,11 +240,40 @@ export default function Home() {
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="What's the one question you'd put on stage?"
                 rows={2}
-                className="w-full bg-transparent border-0 px-0 pt-0 pb-2 text-white text-[17px] sm:text-[20px] placeholder:text-white/25 focus:outline-none resize-none leading-relaxed"
+                className="w-full bg-transparent border-0 px-0 pt-0 pb-3 text-white text-[17px] sm:text-[20px] placeholder:text-white/25 focus:outline-none resize-none leading-relaxed"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); generate(); }
                 }}
               />
+
+              {/* Context toggle + Name input */}
+              <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/[0.06]">
+                <div className="inline-flex rounded-lg bg-white/[0.04] p-0.5">
+                  <button
+                    onClick={() => setContext("personal")}
+                    className={`px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all ${
+                      context === "personal" ? "bg-white/12 text-white" : "text-white/35 hover:text-white/60"
+                    }`}
+                  >
+                    {t.personal}
+                  </button>
+                  <button
+                    onClick={() => setContext("business")}
+                    className={`px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all ${
+                      context === "business" ? "bg-white/12 text-white" : "text-white/35 hover:text-white/60"
+                    }`}
+                  >
+                    {t.business}
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  placeholder="Your name"
+                  className="flex-1 max-w-[160px] bg-white/[0.04] rounded-lg px-3 py-1.5 text-[16px] sm:text-[11px] text-white/70 placeholder:text-white/25 focus:outline-none focus:ring-1 focus:ring-mars/30 border border-transparent focus:border-mars/20 transition-colors text-right"
+                />
+              </div>
             </div>
           </div>
 
@@ -216,7 +291,9 @@ export default function Home() {
 
           {/* Trust line */}
           <p className="text-center mt-4 text-white/30 text-[11px]">
-            Free · no signup · plays in ~30 seconds
+            {freePlaysUsed >= LANDING_FREE_PLAY_LIMIT
+              ? "You've used your free play · create an account to continue"
+              : "1 free play · no signup · then 30 days free with an account"}
           </p>
 
           {/* Sign in link */}
@@ -324,7 +401,7 @@ export default function Home() {
                     Want to run more?<br />Create your free account.
                   </h3>
                   <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
-                    Save your plays, ask new questions, and explore the method with your team.
+                    30 days free · unlimited plays · EN / SK / CS · save your history.
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                     <button
