@@ -520,18 +520,19 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           )}
 
-          {/* ── Perspectives — layered reveal ── */}
+          {/* ── Perspectives — unified panel, color-coded by character type ── */}
           {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && (
-            <div className="relative">
+            <div className="rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent p-6 sm:p-10 animate-fade-in">
               {/* Header */}
-              <div className="flex items-center gap-3 mb-6" style={currentPlay.simulation ? { animation: "perspectiveReveal 0.8s ease-out forwards" } : undefined}>
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
-                <span className="text-[11px] font-bold uppercase tracking-[0.25em] text-mars/50">{t.whatTheStageRevealed}</span>
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/20 to-transparent" />
+              <div className="text-center mb-6 sm:mb-8" style={currentPlay.simulation ? { animation: "perspectiveReveal 0.8s ease-out forwards" } : undefined}>
+                <p className="text-mars/60 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{t.whatTheStageRevealed}</p>
+                <h3 className="font-mercure italic text-white/85 text-[20px] sm:text-[26px] leading-[1.2]">
+                  {t.landingStageShowedYou}
+                </h3>
               </div>
 
               {/* Perspectives — appear one by one */}
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 {currentPlay.perspectives.map((p, i) => {
                   // Only show perspectives that have been revealed
                   const isVisible = !currentPlay.simulation || visiblePerspectives > i;
@@ -541,7 +542,6 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                   const perspective = isStructured ? (p as Perspective) : null;
                   const insightText = perspective ? perspective.insight : (p as string);
                   const charName = perspective?.character;
-                  const isFirst = i === 0;
                   const isLatest = currentPlay.simulation && visiblePerspectives === i + 1;
 
                   // Find matching character for color
@@ -550,66 +550,28 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                         (c) => c.name.toLowerCase() === charName.toLowerCase()
                       )
                     : null;
+                  const isAuthor = !matchedChar && !!clientName && !!charName && charName.toLowerCase() === clientName.toLowerCase();
                   const isAbstract = matchedChar?.description?.toLowerCase() === "abstract";
 
-                  // Hero perspective (first) — dominant card
-                  if (isFirst) {
-                    return (
-                      <div
-                        key={i}
-                        className={`relative rounded-2xl overflow-hidden transition-opacity duration-1000 ${isLatest ? "animate-fade-in" : ""}`}
-                      >
-                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-mars/60 to-transparent" />
-                        <div className="bg-gradient-to-b from-mars/[0.08] via-mars/[0.04] to-transparent border border-mars/15 rounded-2xl px-6 sm:px-8 pt-7 pb-8">
-                          <p className="text-white/95 text-lg sm:text-xl leading-relaxed font-medium">
-                            &ldquo;{insightText}&rdquo;
-                          </p>
-                          {charName && (
-                            <div className="mt-5 flex items-center gap-3">
-                              <div className={`w-2 h-2 rounded-full ${isAbstract ? "bg-white/25" : "bg-mars/50"}`} />
-                              <span className={`text-xs font-bold uppercase tracking-widest ${
-                                isAbstract ? "text-white/35 font-mercure italic" : "text-mars-light/50"
-                              }`}>
-                                {charName}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  }
+                  const accent = isAuthor
+                    ? { dot: "bg-[rgba(255,215,0,0.85)]", text: "text-[rgba(255,215,0,0.9)]", border: "border-[rgba(255,215,0,0.2)]", bg: "bg-[rgba(255,215,0,0.03)]" }
+                    : isAbstract
+                      ? { dot: "bg-white/65", text: "text-white/75", border: "border-white/[0.12]", bg: "bg-white/[0.02]" }
+                      : { dot: "bg-mars/90", text: "text-mars", border: "border-mars/20", bg: "bg-mars/[0.035]" };
 
-                  // Later perspectives — when they appear, previous ones dim slightly
                   return (
                     <div
                       key={i}
-                      className={`relative rounded-xl border px-5 sm:px-6 py-5 transition-all duration-1000 ${
-                        isLatest
-                          ? "animate-fade-in border-mars/15 bg-mars/[0.04]"
-                          : "border-white/[0.06] bg-white/[0.02]"
-                      }`}
+                      className={`rounded-xl border ${accent.border} ${accent.bg} p-4 sm:p-5 ${isLatest ? "animate-fade-in" : ""}`}
+                      style={{ animation: !currentPlay.simulation ? `fadeIn 0.6s ease ${i * 0.15}s both` : undefined }}
                     >
-                      <div className="flex gap-4 items-start">
-                        <div
-                          className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${
-                            isAbstract ? "bg-white/20" : "bg-mars/30"
-                          }`}
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className={`text-sm sm:text-base leading-relaxed transition-colors duration-1000 ${
-                            isLatest ? "text-white/90" : "text-white/55"
-                          }`}>
-                            {insightText}
-                          </p>
-                          {charName && (
-                            <span className={`text-[10px] font-bold uppercase tracking-widest mt-2 block ${
-                              isAbstract ? "text-white/20 font-mercure italic" : "text-mars-light/30"
-                            }`}>
-                              {charName}
-                            </span>
-                          )}
+                      {charName && (
+                        <div className="flex items-center gap-2 mb-2.5">
+                          <div className={`w-2 h-2 rounded-full ${accent.dot}`} />
+                          <p className={`${accent.text} text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.18em]`}>{charName}</p>
                         </div>
-                      </div>
+                      )}
+                      <p className="text-white/85 text-[15px] sm:text-[17px] leading-[1.55] font-mercure italic">{insightText}</p>
                     </div>
                   );
                 })}
