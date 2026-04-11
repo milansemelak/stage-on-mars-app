@@ -10,7 +10,7 @@ import StageSimulation from "@/components/StageSimulation";
 const VOICES = [
   { text: "Absolutely genius. The fastest way to break through corporate thinking.", name: "Vik Maraj", co: "Unstoppable Conversations" },
   { text: "It either confirms what you believe, or shows you a different reality.", name: "Alexandra Lobkowicz", co: "House of Lobkowicz" },
-  { text: "You drop the titles, the ego, the learned masks and go deep.", name: "Raul Rodriguez", co: "Dajana Rodriguez" },
+  { text: "You drop the titles, the ego, the learned masks and go deep.", name: "Raul Rodriguez", co: "Dajana Rodriguez Fashion" },
   { text: "Brilliant and healing for the company and our people.", name: "Ondřej Novotný", co: "Oktagon MMA" },
 ];
 
@@ -45,6 +45,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
   const [simReady, setSimReady] = useState(false);
+  const [simEnded, setSimEnded] = useState(false);
   const [error, setError] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -93,6 +94,7 @@ export default function Home() {
     setPlay(null);
     setError("");
     setSimReady(false);
+    setSimEnded(false);
 
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 200);
 
@@ -122,6 +124,7 @@ export default function Home() {
     setLoading(false);
     setError("");
     setSimReady(false);
+    setSimEnded(false);
     setSimLoading(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -141,6 +144,7 @@ export default function Home() {
       <style jsx global>{`
         @keyframes glow-pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.15); } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
       {/* ── HERO ── */}
@@ -173,8 +177,8 @@ export default function Home() {
               <br />
               <span className="text-mars">See the play.</span>
             </h1>
-            <p className="text-white/25 text-[13px] sm:text-[15px] mt-4 sm:mt-5 max-w-sm mx-auto leading-relaxed">
-              AI turns your question into a reality play with characters, a stage, and perspectives you haven&apos;t seen.
+            <p className="font-mercure italic text-white/35 text-[14px] sm:text-[17px] mt-4 sm:mt-5 max-w-md mx-auto leading-[1.45]">
+              Put your question on stage. Watch it play out. Leave with perspectives you couldn&apos;t see before.
             </p>
           </div>
 
@@ -201,17 +205,22 @@ export default function Home() {
           <button
             onClick={generate}
             disabled={!question.trim() || loading}
-            className={`w-full mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.25em] uppercase transition-all duration-500 ${
+            className={`w-full mt-8 py-4 sm:py-5 rounded-full font-black text-base sm:text-lg tracking-[0.2em] uppercase transition-all duration-500 ${
               question.trim() && !loading
                 ? "bg-mars hover:bg-mars-light text-white shadow-[0_0_60px_-8px_rgba(255,85,0,0.5)]"
                 : "text-white/20 border border-white/[0.12] cursor-not-allowed"
             }`}
           >
-            {loading ? "Creating..." : "Play"}
+            {loading ? "Creating..." : "Put it on stage →"}
           </button>
 
+          {/* Trust line */}
+          <p className="text-center mt-4 text-white/30 text-[11px]">
+            Free · no signup · plays in ~30 seconds
+          </p>
+
           {/* Sign in link */}
-          <p className="text-center mt-6 text-white/15 text-[11px]">
+          <p className="text-center mt-3 text-white/15 text-[11px]">
             Already have an account?{" "}
             <button onClick={() => router.push("/auth/login")} className="text-mars/40 hover:text-mars/70 transition-colors">
               Sign in
@@ -249,7 +258,7 @@ export default function Home() {
               <div className="mb-6 sm:mb-8 text-center">
                 <div className="inline-flex items-center gap-2 mb-3">
                   <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Play Simulator</p>
+                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold">Your play</p>
                 </div>
                 <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em]">{play.name}</h3>
                 <p className="text-white/20 text-[11px] mt-1 font-mercure italic">{play.mood} · {play.characters.length} characters</p>
@@ -277,18 +286,19 @@ export default function Home() {
                     simulationSteps={play.simulationSteps}
                     characters={play.characters}
                     simulation={play.simulation}
+                    onEnd={() => setSimEnded(true)}
                   />
                 </div>
               )}
 
-              {simReady && play && play.perspectives && play.perspectives.length > 0 && (
-                <div className="p-6 sm:p-8 border-t border-white/[0.04]">
-                  <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives</p>
+              {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
+                <div className="p-6 sm:p-8 border-t border-white/[0.04] animate-fade-in">
+                  <p className="text-mars/30 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
                   <div className="space-y-3">
                     {play.perspectives.map((p, i) => {
                       const perspective = typeof p === "object" ? (p as Perspective) : null;
                       return (
-                        <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
+                        <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
                           {perspective ? (
                             <>
                               <p className="text-mars/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
@@ -305,8 +315,40 @@ export default function Home() {
               )}
             </div>
 
+            {/* Account creation CTA after play ends */}
+            {simEnded && (
+              <div className="mt-10 sm:mt-14 rounded-2xl overflow-hidden bg-mars">
+                <div className="px-6 sm:px-10 py-10 sm:py-12 text-center">
+                  <p className="text-white/70 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just ran a play</p>
+                  <h3 className="text-white text-[22px] sm:text-[30px] font-black tracking-[-0.03em] leading-[1.15] mb-3">
+                    Want to run more?<br />Create your free account.
+                  </h3>
+                  <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
+                    Save your plays, ask new questions, and explore the method with your team.
+                  </p>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <button
+                      onClick={() => {
+                        localStorage.setItem("pendingQuestion", question);
+                        router.push("/auth/signup");
+                      }}
+                      className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
+                    >
+                      Create free account &rarr;
+                    </button>
+                    <a
+                      href="/business"
+                      className="inline-flex items-center px-6 py-3.5 sm:py-4 rounded-xl border border-white/30 text-white/90 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:border-white/60 hover:text-white transition-all"
+                    >
+                      Or book a real play
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Follow-up question */}
-            {simReady && play && play.followUpQuestion && (
+            {simEnded && play && play.followUpQuestion && (
               <div className="text-center mt-10 sm:mt-14">
                 <p className="text-white/12 text-[10px] uppercase tracking-[0.25em] mb-3">What if you asked</p>
                 <p className="font-mercure italic text-white/35 text-[16px] sm:text-[20px] leading-[1.4] mb-5">&ldquo;{play.followUpQuestion}&rdquo;</p>
@@ -340,7 +382,7 @@ export default function Home() {
                 <div className="flex items-center justify-center gap-8 sm:gap-14 mb-8 sm:mb-10">
                   <div className="text-center">
                     <p className="text-[28px] sm:text-[36px] font-bold tracking-[-0.03em] text-white/90">800+</p>
-                    <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Reality plays</p>
+                    <p className="text-white/50 text-[9px] uppercase tracking-[0.2em] mt-1">Plays on the real stage</p>
                   </div>
                   <div className="w-px h-10 bg-white/[0.12]" />
                   <div className="text-center">

@@ -376,8 +376,8 @@ export default function BusinessPage() {
               <div className="relative z-10 px-4 sm:px-10 pt-10 sm:pt-12 pb-8 sm:pb-10">
                 {/* Headline — tight */}
                 <p className="font-mercure italic text-[22px] sm:text-[32px] leading-[1.2] text-center max-w-xl mx-auto mb-10 sm:mb-12">
-                  <span className="text-white/90">The strategy is there.</span>{" "}
-                  <span className="text-white/25">But nothing moves.</span>
+                  <span className="text-white/90">We move</span>{" "}
+                  <span className="text-white/25">what your organization can&rsquo;t.</span>
                 </p>
 
                 {/* Stats — punchy 3-col */}
