@@ -436,32 +436,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
 
-  // Typewriter effect for narration
-  const [displayedText, setDisplayedText] = useState("");
-  const typewriterRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => {
-    if (!hasStarted) return;
-    const fullText = sentences[currentStep] || "";
-    setDisplayedText("");
-    let charIndex = 0;
 
-    if (typewriterRef.current) clearInterval(typewriterRef.current);
-
-    typewriterRef.current = setInterval(() => {
-      charIndex++;
-      setDisplayedText(fullText.slice(0, charIndex));
-      if (charIndex >= fullText.length) {
-        if (typewriterRef.current) clearInterval(typewriterRef.current);
-      }
-    }, 25);
-
-    return () => { if (typewriterRef.current) clearInterval(typewriterRef.current); };
-  }, [currentStep, sentences, hasStarted]);
-
-  // Ghost trail: store previous positions when step changes
-  const [ghostPositions, setGhostPositions] = useState<Position[]>([]);
-  const [ghostOpacity, setGhostOpacity] = useState(0);
 
 
   // Final circle formation for ritual ending
@@ -527,23 +503,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
       transitionFromRef.current = currentPositions.current.map(p => ({ ...p }));
       transitionStartRef.current = performance.now();
       prevPositionsRef.current = currentPositions.current.map(p => ({ ...p }));
-      // Trigger ghost trail at the "from" positions
-      if (hasStarted && !hasEnded) {
-        setGhostPositions(transitionFromRef.current.map(p => ({ ...p })));
-        setGhostOpacity(0.4);
-        // Fade out ghost over 1.5s
-        const fadeStart = performance.now();
-        const fadeGhost = () => {
-          const elapsed = performance.now() - fadeStart;
-          const remaining = Math.max(0, 1 - elapsed / 1500);
-          setGhostOpacity(remaining * 0.4);
-          if (remaining > 0) requestAnimationFrame(fadeGhost);
-        };
-        requestAnimationFrame(fadeGhost);
-      }
     }
     prevTargetsRef.current = targets;
-  }, [targets, hasStarted, hasEnded]);
+  }, [targets]);
 
   // Initialize
   useEffect(() => {
@@ -806,84 +768,44 @@ export default function StageSimulation({ characters, simulation, simulationStep
             );
           })}
 
-          {/* Ghost trails — fading previous positions */}
-          {ghostOpacity > 0.01 && ghostPositions.map((gp, i) => {
-            const rp = renderPositions[i];
-            if (!gp || !rp) return null;
-            const dist = Math.sqrt((rp.x - gp.x) ** 2 + (rp.y - gp.y) ** 2);
-            if (dist < 2) return null; // no trail for minimal movement
-            const char = allCharacters[i];
-            const isAuthor = char?.description === "author";
-            return (
-              <g key={`ghost-${i}`} opacity={ghostOpacity}>
-                <circle cx={gp.x} cy={gp.y} r={1.5}
-                  fill={isAuthor ? "rgba(255,215,0,0.3)" : "rgba(255,85,0,0.3)"}
-                />
-                <line x1={gp.x} y1={gp.y} x2={rp.x} y2={rp.y}
-                  stroke={isAuthor ? "rgba(255,215,0,0.15)" : "rgba(255,85,0,0.15)"}
-                  strokeWidth="0.4" strokeDasharray="0.8,1"
-                />
-              </g>
-            );
-          })}
-
           {/* Characters */}
           {(() => {
-            // Pre-compute label positions with collision avoidance
-            const labelOffsets = renderPositions.map((pos, i) => {
+            // Pre-compute label positions with collision avoidance (vertical only — stable)
+            const labelOffsets = renderPositions.map((pos) => {
               const above = pos.y < CY;
               return { x: 0, y: above ? -4.5 : 5.5, above };
             });
 
-            // Resolve overlaps: push labels apart vertically AND horizontally
-            const LABEL_MIN_DIST_Y = 5;
-            const LABEL_MIN_DIST_X = 16; // minimum horizontal distance between label centers
-            for (let pass = 0; pass < 5; pass++) {
+            // Resolve overlaps: push labels apart vertically when horizontally close
+            const LABEL_MIN_DIST = 6;
+            for (let pass = 0; pass < 4; pass++) {
               for (let i = 0; i < renderPositions.length; i++) {
                 for (let j = i + 1; j < renderPositions.length; j++) {
                   const pi = renderPositions[i];
                   const pj = renderPositions[j];
-                  const liX = pi.x + labelOffsets[i].x;
-                  const ljX = pj.x + labelOffsets[j].x;
                   const liY = pi.y + labelOffsets[i].y;
                   const ljY = pj.y + labelOffsets[j].y;
-                  const dx = Math.abs(liX - ljX);
+                  const dx = Math.abs(pi.x - pj.x);
                   const dy = Math.abs(liY - ljY);
-                  // If labels are both horizontally AND vertically close, they overlap
-                  if (dx < LABEL_MIN_DIST_X && dy < LABEL_MIN_DIST_Y) {
-                    // Push vertically first
-                    const pushY = (LABEL_MIN_DIST_Y - dy) / 2 + 0.5;
+                  if (dx < 18 && dy < LABEL_MIN_DIST) {
+                    const push = (LABEL_MIN_DIST - dy) / 2 + 0.5;
                     if (liY < ljY) {
-                      labelOffsets[i].y -= pushY;
-                      labelOffsets[j].y += pushY;
+                      labelOffsets[i].y -= push;
+                      labelOffsets[j].y += push;
                     } else {
-                      labelOffsets[i].y += pushY;
-                      labelOffsets[j].y -= pushY;
-                    }
-                    // If dots are very close horizontally (< 10 SVG units), also push labels apart on X
-                    if (dx < 10) {
-                      const pushX = (10 - dx) / 2 + 2;
-                      if (liX < ljX || pi.x < pj.x) {
-                        labelOffsets[i].x -= pushX;
-                        labelOffsets[j].x += pushX;
-                      } else {
-                        labelOffsets[i].x += pushX;
-                        labelOffsets[j].x -= pushX;
-                      }
+                      labelOffsets[i].y += push;
+                      labelOffsets[j].y -= push;
                     }
                   }
                 }
               }
             }
 
-            // Clamp labels inside stage ring (y: 10..90, x: 5..95)
+            // Clamp labels inside stage ring (y 10..90)
             for (let i = 0; i < renderPositions.length; i++) {
               const absLabelY = renderPositions[i].y + labelOffsets[i].y;
               if (absLabelY < 10) labelOffsets[i].y = 10 - renderPositions[i].y;
               if (absLabelY > 90) labelOffsets[i].y = 90 - renderPositions[i].y;
-              const absLabelX = renderPositions[i].x + labelOffsets[i].x;
-              if (absLabelX < 5) labelOffsets[i].x = 5 - renderPositions[i].x;
-              if (absLabelX > 95) labelOffsets[i].x = 95 - renderPositions[i].x;
             }
 
             return renderPositions.map((pos, i) => {
@@ -901,11 +823,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
                   : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)" };
 
               const labelY = labelOffsets[i].y;
-              const labelX = labelOffsets[i].x;
               const labelAbove = labelY < 0;
               // Smart text anchor: push label inward if dot is near the edges
-              const effectiveX = pos.x + labelX;
-              const xFromCenter = effectiveX - CX;
+              const xFromCenter = pos.x - CX;
               const anchor: "start" | "middle" | "end" =
                 xFromCenter > 12 ? "end" : xFromCenter < -12 ? "start" : "middle";
 
@@ -938,7 +858,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
                   {/* Name */}
                   <text
-                    x={labelX} y={labelY}
+                    x={0} y={labelY}
                     textAnchor={anchor}
                     fill={colors.text}
                     fontSize={isAuthor ? 2.4 : (isActive ? 2.6 : 2.2)}
@@ -993,10 +913,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
               className="w-full px-8 sm:px-10 py-5 cursor-pointer active:bg-white/[0.02] transition-colors"
             >
               <p
-                className="font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center"
+                className="font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
                 key={currentStep}
               >
-                {displayedText}<span className="animate-pulse text-mars/40">|</span>
+                {sentences[currentStep]}
               </p>
               <div className="mt-4 flex items-center justify-center gap-3">
                 <span className="text-white/25 text-[10px]">
