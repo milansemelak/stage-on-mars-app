@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Character, SimulationStep } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
@@ -410,25 +410,15 @@ function playBell() {
   }
 }
 
-// ── Ambient Audio Types ──────────────────────────────────
-type AmbientAudioState = {
-  ctx: AudioContext;
-  oscillatorMain: OscillatorNode;
-  oscillatorVibrato: OscillatorNode;
-  vibratoGain: GainNode;
-  masterGain: GainNode;
-};
-
 export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, onEnd }: Props) {
   const { t } = useI18n();
 
   const authorLabel = clientName || t.author;
   const allCharacters = useMemo(() => {
-    const alreadyExists = characters.some(
-      (c) => c.name.toLowerCase() === authorLabel.toLowerCase()
-    );
-    if (alreadyExists) return characters;
-    return [{ name: authorLabel, description: "author" }, ...characters];
+    // Author is ALWAYS added as a separate gold entity, even if a character shares the same name
+    return [{ name: authorLabel, description: "author" }, ...characters.filter(
+      (c) => c.name.toLowerCase() !== authorLabel.toLowerCase()
+    )];
   }, [characters, authorLabel]);
 
   const sentences = useMemo(() => {
@@ -446,106 +436,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
 
-  // ── Ambient Audio ──────────────────────────────────────
-  const ambientRef = useRef<AmbientAudioState | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-
-  /** Start the ambient drone — call on user gesture (handleStart) */
-  const startAmbientDrone = useCallback(() => {
-    try {
-      const ctx = new AudioContext();
-      audioCtxRef.current = ctx;
-
-      // Master gain — starts at 0, ramps to 0.15 over 2s
-      const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0, ctx.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 2);
-      masterGain.connect(ctx.destination);
-
-      // Vibrato LFO — slow modulation of the drone frequency
-      const vibratoGain = ctx.createGain();
-      vibratoGain.gain.setValueAtTime(3, ctx.currentTime); // +/- 3Hz wobble
-
-      const oscillatorVibrato = ctx.createOscillator();
-      oscillatorVibrato.type = "sine";
-      oscillatorVibrato.frequency.setValueAtTime(0.3, ctx.currentTime); // slow vibrato
-      oscillatorVibrato.connect(vibratoGain);
-
-      // Main drone oscillator — low sine wave 65Hz
-      const oscillatorMain = ctx.createOscillator();
-      oscillatorMain.type = "sine";
-      oscillatorMain.frequency.setValueAtTime(65, ctx.currentTime);
-      vibratoGain.connect(oscillatorMain.frequency); // vibrato modulates pitch
-      oscillatorMain.connect(masterGain);
-
-      oscillatorVibrato.start();
-      oscillatorMain.start();
-
-      ambientRef.current = { ctx, oscillatorMain, oscillatorVibrato, vibratoGain, masterGain };
-    } catch {
-      // Web Audio not available — silent fail
-    }
-  }, []);
-
-  /** Fade out ambient drone over 3 seconds, then stop */
-  const fadeOutAmbientDrone = useCallback(() => {
-    const ambient = ambientRef.current;
-    if (!ambient) return;
-    try {
-      const { ctx, oscillatorMain, oscillatorVibrato, masterGain } = ambient;
-      const now = ctx.currentTime;
-      masterGain.gain.cancelScheduledValues(now);
-      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-      masterGain.gain.linearRampToValueAtTime(0, now + 3);
-      // Stop oscillators after fade completes
-      setTimeout(() => {
-        try {
-          oscillatorMain.stop();
-          oscillatorVibrato.stop();
-        } catch { /* already stopped */ }
-      }, 3200);
-    } catch {
-      // silent fail
-    }
-    ambientRef.current = null;
-  }, []);
-
-  /** Play a short accent ping — subtle high-frequency blip */
-  const playAccentPing = useCallback(() => {
-    const ctx = audioCtxRef.current;
-    if (!ctx || ctx.state === "closed") return;
-    try {
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-      gain.connect(ctx.destination);
-
-      const osc = ctx.createOscillator();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(800, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
-      osc.connect(gain);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.1);
-    } catch {
-      // silent fail
-    }
-  }, []);
-
-  /** Clean up AudioContext on unmount */
-  useEffect(() => {
-    return () => {
-      try {
-        ambientRef.current?.oscillatorMain.stop();
-        ambientRef.current?.oscillatorVibrato.stop();
-      } catch { /* already stopped */ }
-      ambientRef.current = null;
-      if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
-        audioCtxRef.current.close().catch(() => {});
-      }
-      audioCtxRef.current = null;
-    };
-  }, []);
 
   // Final circle formation for ritual ending
   const finalCirclePositions = useMemo(() => {
@@ -679,7 +569,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
   // Author-controlled: advance to next step on tap
   const advanceStep = () => {
     if (!hasStarted || hasEnded) return;
-    playAccentPing();
     if (currentStep < sentences.length - 1) {
       setCurrentStep((p) => p + 1);
     } else {
@@ -694,7 +583,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
     if (endingTriggered.current) return;
     endingTriggered.current = true;
     setIsPlaying(false);
-    fadeOutAmbientDrone();
     setTimeout(() => {
       setHasEnded(true);
       setEndingPhase(1);
@@ -706,7 +594,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   const handleStart = () => {
     playBell();
-    startAmbientDrone();
     setHasStarted(true);
     setHasEnded(false);
     setEndingPhase(0);
@@ -880,72 +767,112 @@ export default function StageSimulation({ characters, simulation, simulationStep
           })}
 
           {/* Characters */}
-          {renderPositions.map((pos, i) => {
-            const char = allCharacters[i];
-            if (!char) return null;
-            const isAuthor = char.description === "author";
-            const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
-            const isActive = hasStarted && movedCharacters.has(i);
-            const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
+          {(() => {
+            // Pre-compute label positions with collision avoidance
+            const labelOffsets = renderPositions.map((pos, i) => {
+              const above = pos.y < CY;
+              return { x: 0, y: above ? -4.5 : 5.5, above };
+            });
 
-            const colors = isAuthor
-              ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)", textDim: "rgba(255,215,0,0.5)" }
-              : isAbstract
-                ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)", textDim: "rgba(255,255,255,0.4)" }
-                : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)", textDim: "rgba(255,179,128,0.55)" };
+            // Resolve overlaps: if two labels are too close, push them apart vertically
+            const LABEL_MIN_DIST = 5; // minimum vertical distance between label centers in SVG units
+            for (let pass = 0; pass < 3; pass++) {
+              for (let i = 0; i < renderPositions.length; i++) {
+                for (let j = i + 1; j < renderPositions.length; j++) {
+                  const pi = renderPositions[i];
+                  const pj = renderPositions[j];
+                  const liY = pi.y + labelOffsets[i].y;
+                  const ljY = pj.y + labelOffsets[j].y;
+                  const dx = Math.abs(pi.x - pj.x);
+                  const dy = Math.abs(liY - ljY);
+                  // Only resolve if labels are horizontally close AND vertically overlapping
+                  if (dx < 18 && dy < LABEL_MIN_DIST) {
+                    const push = (LABEL_MIN_DIST - dy) / 2 + 0.5;
+                    if (liY < ljY) {
+                      labelOffsets[i].y -= push;
+                      labelOffsets[j].y += push;
+                    } else {
+                      labelOffsets[i].y += push;
+                      labelOffsets[j].y -= push;
+                    }
+                  }
+                }
+              }
+            }
 
-            // Simple, stable label placement — never leaves the stage
-            const above = pos.y < CY;
-            const nameY = above ? (isActive ? -5 : -4.5) : (isActive ? 6 : 5.5);
-            // Smart text anchor: push label inward if dot is near the edges
-            const xFromCenter = pos.x - CX;
-            const anchor: "start" | "middle" | "end" =
-              xFromCenter > 12 ? "end" : xFromCenter < -12 ? "start" : "middle";
+            // Clamp labels inside stage ring (keep within y 10..90 relative to dot)
+            for (let i = 0; i < renderPositions.length; i++) {
+              const absLabelY = renderPositions[i].y + labelOffsets[i].y;
+              if (absLabelY < 10) labelOffsets[i].y = 10 - renderPositions[i].y;
+              if (absLabelY > 90) labelOffsets[i].y = 90 - renderPositions[i].y;
+            }
 
-            return (
-              <g key={i} transform={`translate(${pos.x}, ${pos.y})`}>
-                {/* Glow */}
-                <circle cx={0} cy={0}
-                  r={isAuthor ? 4 : (isActive ? 7 : 4)}
-                  fill={colors.glow}
-                  filter={isAuthor ? "url(#glow-author)" : "url(#glow-char)"}
-                />
+            return renderPositions.map((pos, i) => {
+              const char = allCharacters[i];
+              if (!char) return null;
+              const isAuthor = char.description === "author";
+              const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
+              const isActive = hasStarted && movedCharacters.has(i);
+              const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
 
-                {/* Dot */}
-                <circle cx={0} cy={0} r={dotR}
-                  fill={colors.fill}
-                  stroke={colors.stroke}
-                  strokeWidth={isAuthor ? 0.3 : (isActive ? 0.4 : 0.2)}
-                />
+              const colors = isAuthor
+                ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)" }
+                : isAbstract
+                  ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)" }
+                  : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)" };
 
-                {/* Active pulse */}
-                {isActive && !isAuthor && (
-                  <circle cx={0} cy={0} r="4" fill="none"
-                    stroke={isAbstract ? "rgba(255,255,255,0.2)" : "rgba(255,85,0,0.35)"}
-                    strokeWidth="0.2"
+              const labelY = labelOffsets[i].y;
+              const labelAbove = labelY < 0;
+              // Smart text anchor: push label inward if dot is near the edges
+              const xFromCenter = pos.x - CX;
+              const anchor: "start" | "middle" | "end" =
+                xFromCenter > 12 ? "end" : xFromCenter < -12 ? "start" : "middle";
+
+              return (
+                <g key={i} transform={`translate(${pos.x}, ${pos.y})`}>
+                  {/* Glow */}
+                  <circle cx={0} cy={0}
+                    r={isAuthor ? 4 : (isActive ? 7 : 4)}
+                    fill={colors.glow}
+                    filter={isAuthor ? "url(#glow-author)" : "url(#glow-char)"}
+                  />
+
+                  {/* Dot */}
+                  <circle cx={0} cy={0} r={dotR}
+                    fill={colors.fill}
+                    stroke={colors.stroke}
+                    strokeWidth={isAuthor ? 0.3 : (isActive ? 0.4 : 0.2)}
+                  />
+
+                  {/* Active pulse */}
+                  {isActive && !isAuthor && (
+                    <circle cx={0} cy={0} r="4" fill="none"
+                      stroke={isAbstract ? "rgba(255,255,255,0.2)" : "rgba(255,85,0,0.35)"}
+                      strokeWidth="0.2"
+                    >
+                      <animate attributeName="r" values="3.5;7;3.5" dur="2.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.8;0;0.8" dur="2.5s" repeatCount="indefinite" />
+                    </circle>
+                  )}
+
+                  {/* Name */}
+                  <text
+                    x={0} y={labelY}
+                    textAnchor={anchor}
+                    fill={colors.text}
+                    fontSize={isAuthor ? 2.4 : (isActive ? 2.6 : 2.2)}
+                    fontWeight={isAuthor ? 600 : (isActive ? 700 : 500)}
+                    fontStyle={isAbstract || isAuthor ? "italic" : "normal"}
+                    letterSpacing="0.03"
+                    className="select-none"
+                    dominantBaseline={labelAbove ? "auto" : "hanging"}
                   >
-                    <animate attributeName="r" values="3.5;7;3.5" dur="2.5s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.8;0;0.8" dur="2.5s" repeatCount="indefinite" />
-                  </circle>
-                )}
-
-                {/* Name */}
-                <text
-                  x={0} y={nameY}
-                  textAnchor={anchor}
-                  fill={colors.text}
-                  fontSize={isAuthor ? 2.4 : (isActive ? 2.8 : 2.4)}
-                  fontWeight={isAuthor ? 600 : (isActive ? 700 : 500)}
-                  fontStyle={isAbstract || isAuthor ? "italic" : "normal"}
-                  letterSpacing="0.03"
-                  className="select-none"
-                  dominantBaseline={above ? "auto" : "hanging"}
-                >
-                  {char.name}
-                </text>
-              </g>
-            );
-          })}
+                    {char.name}
+                  </text>
+                </g>
+              );
+            });
+          })()}
         </svg>
       </div>
 
