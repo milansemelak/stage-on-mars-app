@@ -53,6 +53,9 @@ export default function Home() {
   const [clientName, setClientName] = useState("");
   const [context, setContext] = useState<"personal" | "business">("personal");
   const [play, setPlay] = useState<Play | null>(null);
+  const playRef = useRef<Play | null>(null);
+  // Keep ref in sync so async callbacks always see latest play
+  playRef.current = play;
   const [loading, setLoading] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
   const [simReady, setSimReady] = useState(false);
@@ -115,13 +118,18 @@ export default function Home() {
   const [perspectivesLoading, setPerspectivesLoading] = useState(false);
 
   async function fetchPerspectives() {
-    if (!play || !play.simulationSteps) return;
+    // Use ref to avoid stale closure — onEnd callback may hold old play reference
+    const currentPlay = playRef.current;
+    if (!currentPlay || !currentPlay.simulationSteps) {
+      console.warn("fetchPerspectives: no play or simulationSteps", { play: !!currentPlay, steps: !!currentPlay?.simulationSteps });
+      return;
+    }
     setPerspectivesLoading(true);
     try {
       const res = await fetch("/api/generate-mars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play, question, lang, clientName: clientName.trim() || undefined, context, phase: "perspectives" }),
+        body: JSON.stringify({ play: currentPlay, question, lang, clientName: clientName.trim() || undefined, context, phase: "perspectives" }),
       });
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();

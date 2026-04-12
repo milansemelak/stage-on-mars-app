@@ -24,6 +24,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
   const { lang, t } = useI18n();
   const { user } = useAuth();
   const [currentPlay, setCurrentPlay] = useState(play);
+  const playRef = useRef(currentPlay);
+  playRef.current = currentPlay;
 
   // Sync when parent passes a new play (e.g. regeneration)
   useEffect(() => {
@@ -127,19 +129,20 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
   }
 
   async function fetchPerspectives() {
-    if (!currentPlay.simulationSteps) return;
+    const cp = playRef.current;
+    if (!cp.simulationSteps) return;
     setPerspectivesLoading(true);
     setMarsError(null);
     try {
       const response = await fetch("/api/generate-mars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ play: currentPlay, question, lang, clientName, phase: "perspectives" }),
+        body: JSON.stringify({ play: cp, question, lang, clientName, phase: "perspectives" }),
       });
       if (!response.ok) throw new Error("Failed");
       const data = await response.json();
       const updated = {
-        ...currentPlay,
+        ...cp,
         perspectives: data.perspectives,
         followUpQuestion: data.followUpQuestion || undefined,
       };
