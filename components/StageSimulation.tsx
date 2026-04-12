@@ -630,7 +630,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   return (
     <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col min-h-[75vh] sm:min-h-[70vh]">
       {/* Stage — fills available space */}
-      <div className="relative w-full flex-1 min-h-0 overflow-hidden">
+      <div className="relative w-full flex-1 min-h-0 overflow-hidden aspect-square">
         <div
           className="absolute inset-0"
           style={{
@@ -666,7 +666,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
         )}
 
         <svg
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0"
+          width="100%"
+          height="100%"
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid meet"
         >

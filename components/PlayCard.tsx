@@ -555,14 +555,51 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           )}
 
-          {/* ── Perspectives loading — after END click ── */}
-          {perspectivesLoading && perspectivesRevealed && (
-            <div className="rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent p-8 sm:p-10 animate-fade-in text-center">
-              <div className="inline-flex items-center gap-3 text-mars/70 text-xs font-bold uppercase tracking-[0.25em]">
-                <span className="w-2 h-2 rounded-full bg-mars animate-pulse" />
-                {t.whatTheStageRevealed}
-                <span className="w-2 h-2 rounded-full bg-mars animate-pulse" />
+          {/* ── Perspectives loading — skeleton cards ── */}
+          {perspectivesLoading && perspectivesRevealed && !(currentPlay.perspectives?.length) && (
+            <div className="rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent px-4 py-7 sm:p-10 animate-fade-in">
+              <div className="text-center mb-6 sm:mb-8">
+                <p className="text-mars/60 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] font-bold mb-2 animate-pulse">{t.whatTheStageRevealed}</p>
+                <h3 className="font-mercure italic text-white/40 text-[18px] sm:text-[26px] leading-[1.25] animate-pulse">{t.landingStageShowedYou}</h3>
               </div>
+              {/* Author skeleton */}
+              <div className="rounded-2xl border-2 border-[rgba(255,215,0,0.15)] bg-[rgba(255,215,0,0.02)] px-5 py-8 sm:p-10 mb-6 sm:mb-8 mt-3 animate-pulse">
+                <div className="mx-auto w-28 h-3 rounded-full bg-[rgba(255,215,0,0.15)] mb-5" />
+                <div className="space-y-2.5 max-w-xs mx-auto">
+                  <div className="h-3 rounded-full bg-white/[0.06]" />
+                  <div className="h-3 rounded-full bg-white/[0.04] w-4/5 mx-auto" />
+                </div>
+              </div>
+              {/* Character skeletons */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-px flex-1 bg-white/[0.06]" />
+                <div className="w-16 h-2 rounded-full bg-white/[0.08] animate-pulse" />
+                <div className="h-px flex-1 bg-white/[0.06]" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                {[0, 1, 2].map((j) => (
+                  <div key={j} className="rounded-xl border border-mars/10 bg-mars/[0.02] p-4 sm:p-5 animate-pulse" style={{ animationDelay: `${j * 0.15}s` }}>
+                    <div className="w-20 h-2 rounded-full bg-mars/15 mb-3" />
+                    <div className="space-y-2">
+                      <div className="h-2.5 rounded-full bg-white/[0.04]" />
+                      <div className="h-2.5 rounded-full bg-white/[0.03] w-3/4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Perspectives error — retry ── */}
+          {perspectivesRevealed && !perspectivesLoading && !(currentPlay.perspectives?.length) && marsError && (
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/[0.04] px-4 py-8 sm:p-10 animate-fade-in text-center">
+              <p className="text-red-400/70 text-sm mb-4">{marsError}</p>
+              <button
+                onClick={() => { setMarsError(null); fetchPerspectives(); }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-mars/40 bg-mars/[0.06] hover:bg-mars/[0.12] hover:border-mars/60 transition-all"
+              >
+                <span className="text-mars font-bold text-[11px] uppercase tracking-[0.2em]">{lang === "sk" ? "Skúsiť znova" : lang === "cs" ? "Zkusit znovu" : "Try again"}</span>
+              </button>
             </div>
           )}
 
