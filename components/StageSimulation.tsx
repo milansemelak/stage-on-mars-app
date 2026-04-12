@@ -523,7 +523,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   // Animation loop with eased transitions
   useEffect(() => {
-    const TRANSITION_DURATION = 2500; // ms for characters to reach target
+    const TRANSITION_DURATION = 1800; // ms for characters to reach target
 
     const animate = (time: number) => {
       const pos = currentPositions.current;
@@ -543,17 +543,16 @@ export default function StageSimulation({ characters, simulation, simulationStep
           pos[i].y = from[i].y + (targets[i].y - from[i].y) * t;
         }
       } else {
-        // Fallback to lerp
         for (let i = 0; i < pos.length; i++) {
-          pos[i].x += (targets[i].x - pos[i].x) * 0.02;
-          pos[i].y += (targets[i].y - pos[i].y) * 0.02;
+          pos[i].x += (targets[i].x - pos[i].x) * 0.04;
+          pos[i].y += (targets[i].y - pos[i].y) * 0.04;
         }
       }
 
-      // Subtle breathing
+      // Very subtle breathing — barely perceptible, no jitter
       const rendered = pos.map((p, i) => ({
-        x: p.x + Math.sin(time * 0.0008 + i * 2.5) * 0.3,
-        y: p.y + Math.cos(time * 0.0006 + i * 1.8) * 0.2,
+        x: p.x + Math.sin(time * 0.0004 + i * 2.5) * 0.08,
+        y: p.y + Math.cos(time * 0.0003 + i * 1.8) * 0.06,
       }));
 
       setRenderPositions(rendered);

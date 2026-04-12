@@ -667,7 +667,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                               >
                                 <div className="flex items-center gap-2 mb-2">
                                   <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${accent.dot}`} />
-                                  <p className={`${accent.text} text-[10px] font-bold uppercase tracking-[0.18em] truncate`}>
+                                  <p className={`${accent.text} text-[10px] font-bold uppercase tracking-[0.18em]`}>
                                     {sp.character}
                                   </p>
                                 </div>

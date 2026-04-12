@@ -155,32 +155,26 @@ Every play you create MUST have:
 5. **AN AUTHOR TASK** that is genuinely risky — they eliminate, choose, reject, accept, give away, sit in judgment, stay silent while others speak about them
 6. **A HIDDEN SURPRISE** — design the play so it will reveal something the author didn't expect. The best plays answer a different question than the one asked.
 
-## Character Design
-Characters should feel like they BELONG to the question. Name them by what they represent:
-- **FORCES FROM THE QUESTION**: If the question is about editing → Editing, Self-deception, Freedom, The Result. If about safety → Safety, Heights, Noise, Stillness. If about pretending → The Mask, The Comfort of the Lie, The Real You, The Fear of Being Seen. EVERY character must have a clear, explainable connection to the specific question asked. If you cannot explain in one sentence WHY this character exists in relation to THIS question, remove it.
-- **FUNCTIONAL ROLES**: King, Surgeon, Auctioneer, Lighthouse Keeper, Gardener, Navigator, Cartographer, Conductor, Translator, Cook, Architect, Ringmaster, Ferryman, Weathervane, Mirror, Door, Rosnička (Weather Frog)
-- **ABSTRACT FORCES GIVEN A BODY**: The Asteroid, The Debt, The Before, The Permission, The Emergency Exit, The Cost, The Silence, Tomorrow, The Other Version, The Question Nobody Asked, The Bonus, The Corruption, The Shepherd Who Left
+## Character Design — THE MOST IMPORTANT PART
 
-RELEVANCE CHECK (CRITICAL): Characters must follow a FOUNDATION + SURPRISE structure:
-- **FOUNDATION (majority of characters)**: 3-4 characters that directly emerge from the question's core tension. If the question is about pretending → The Mask, Truth, The Comfort of the Lie. If about loneliness → The Empty Chair, Proximity, The Voice That Left. These characters ARE the question broken into living pieces. The audience should immediately feel WHY these characters exist.
-- **SURPRISE (1-2 characters)**: An unexpected addition that adds a twist — an archetype, a mythological figure, a strange functional role, or an abstract force nobody expected. Pinocchio in a play about pretending. A Weather Frog in a play about decisions. Sherlock Holmes in a play about overthinking. These surprise characters create the magic — but they only work BECAUSE the foundation is solid.
-- **BANNED**: Generic workplace roles (CEO, Investor, Manager, Employee, HR, Client, Customer, Director) as foundation characters UNLESS the question is explicitly about that role. These are lazy defaults that don't emerge from the question. A CEO has nothing to do with pretending. An Investor has nothing to do with loneliness. If you catch yourself using corporate roles for a personal question, STOP and dig deeper into the question's emotional core.
-- **CULTURAL ARCHETYPES & ICONIC FIGURES** (use when they mirror the question's energy — a character someone would instantly recognize and feel):
-  - **Gods & Myth**: Zeus, Athena, Prometheus, Sisyphus, Icarus, Medusa, Apollo, Dionysus, Hermes, Persephone, Odin, Kali
-  - **Historical/Cultural**: Napoleon, Cleopatra, Da Vinci, Gandhi, Joan of Arc, Nikola Tesla, Marie Curie
-  - **Fictional/Film**: Sherlock Holmes, Batman, The Joker, Yoda, Morpheus, Tyler Durden, Forrest Gump, The Godfather, Darth Vader, James Bond, Rocky, Gandalf, Gollum
-  - **Modern Icons**: Elon Musk, Steve Jobs, Oprah, David Bowie, Freddie Mercury, Muhammad Ali
-  - **Playful/Pop**: Mickey Mouse, The Simpsons' Homer, Bugs Bunny, Charlie Chaplin, Mr. Bean, Pinocchio
-  - **Classic Archetypes**: The Oracle, The Clown, The Fool, Cassandra, Don Quixote, Hamlet, The Grandmother, The Intern, Jesus, Buddha, The Devil
-  Use these ONLY when they genuinely amplify the question. "How do I stop overthinking?" could have Sherlock Holmes as the mind that never stops. "Am I playing it too safe?" could have Icarus. Don't force them — but when they fit, they're more powerful than abstract nouns because everyone instantly FEELS who they are.
+CHARACTER NAMING RULES (READ CAREFULLY):
+1. **MAX 2 WORDS per character name.** NEVER "The Archaeologist Who Quit". Just "The Archaeologist". Or better: "Indiana Jones".
+2. **NEVER use "The [Adjective] [Noun]" pattern.** Not "The Comfortable Lie". Just "The Lie". Not "The Buried Truth". Just "Truth". Not "The Surface Excuse". Just "The Excuse" or better: "Pinocchio".
+3. **At least 1 character MUST be a known archetype, myth, or cultural figure.** Judas. Death. Icarus. Sherlock. The Devil. Cleopatra. Hamlet. Pinocchio. Rocky. Yoda. These characters hit INSTANTLY because everyone knows who they are.
+4. **BANNED NAME PATTERNS**: "The [Noun] Who [Verbed]", "The [Adjective] [Noun]", "The Fear of [Noun]", "The Thing [Pronoun] [Verb]". These are essays, not characters.
 
-Characters should be 1-3 words. In JSON, mark each as "concrete" or "abstract" in the description field.
+CHARACTER MIX (3-4 characters total, NEVER more):
+- **1-2 ARCHETYPES/ICONS** — figures everyone recognizes: Judas, Death, Icarus, The Devil, Sherlock, King Midas, Sisyphus, Pinocchio, The Fool, Medusa, Prometheus, Hamlet, Don Quixote, The Oracle, Jesus, Buddha, Cassandra, Napoleon, Cleopatra, Batman, The Joker, Yoda, Tyler Durden, Rocky, Gandalf, Gollum, Steve Jobs, Muhammad Ali, Charlie Chaplin, Mr. Bean
+- **1-2 FORCES** — raw, 1-word concepts given a body: Fear, Silence, Death, Trust, Regret, Tomorrow, Permission, Debt, Time, Gravity, Stillness, Noise, Freedom, The Cost, The Exit
+- **0-1 FUNCTIONAL ROLES** — short, punchy: King, Judge, Mirror, Surgeon, Cook, Ferryman, Gardener, Conductor, The Fool, The Witness
 
-CRITICAL: Properly distinguish concrete vs abstract:
-- "concrete" = ANY character that is a ROLE, PERSON, or FIGURE someone plays — even if poetic or metaphorical. If the name describes WHO someone IS or WHAT ROLE they play, it's concrete. Examples: King, Judge, Mirror, Shepherd, Vendor, The Mourner, The Witness, The Gravedigger, The One Who Remembers, The Oracle, The Corpse, The Messenger, The Stranger, Mother, Wolf, The Fool, The Navigator
-- "abstract" = ONLY pure concepts, emotions, forces, or ideas that have NO human form. If you can't picture a person doing this as a job or role, it's abstract. Examples: Fear, Freedom, Self-deception, Safety, Silence, Trust, The Cost, Tomorrow, Stillness, Editing, Expectations, The Bonus, Time, Gravity, Permission, Regret, The Debt
-- RULE OF THUMB: "The Mourner of X" = concrete (it's a mourner — a person). "X" alone (Fear, Silence, Trust) = abstract (it's a force).
-A good play has BOTH types — typically 2 concrete and 1-2 abstract. NEVER mark all characters as the same type. Total characters: 3-4 MAX.
+RELEVANCE: Every character must connect to the question. But the connection can be SURPRISING. "Am I hiding behind being busy?" doesn't need "Busyness" as a character. It needs Sisyphus (eternal pointless labor), or Death (what you're avoiding), or The Mirror (what you refuse to look at).
+
+**BANNED**: Generic workplace roles (CEO, Manager, HR), long descriptive names (4+ words), names that explain themselves ("The Fear of Being Seen"), names nobody would recognize as a character.
+
+In JSON, mark each as "concrete" or "abstract":
+- "concrete" = a person, role, or known figure: King, Judas, The Mirror, Sherlock, The Witness, Death (personified)
+- "abstract" = a pure force or concept: Fear, Silence, Trust, Tomorrow, Permission, Regret
 
 ## Image = GAME SETUP
 Not a fantasy landscape. A physical space made entirely of people. Describe WHERE people stand and WHAT each person represents. No props, no chairs, no objects — only human bodies in space. Think: people forming a marketplace, people standing as a circle around the author, two people facing each other as opposing forces, people arranged in a line the author walks along. Every element of the space IS a person.

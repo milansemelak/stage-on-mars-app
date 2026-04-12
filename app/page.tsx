@@ -589,7 +589,7 @@ export default function Home() {
                                 >
                                   <div className="flex items-center gap-2 mb-2">
                                     <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${accent.dot}`} />
-                                    <p className={`${accent.text} text-[10px] font-bold uppercase tracking-[0.18em] truncate`}>
+                                    <p className={`${accent.text} text-[10px] font-bold uppercase tracking-[0.18em]`}>
                                       {sp.character}
                                     </p>
                                   </div>
@@ -628,20 +628,30 @@ export default function Home() {
               </div>
             )}
 
-            {/* ── FOLLOW-UP QUESTION (shown first, it's the hook) ── */}
+            {/* ── FOLLOW-UP QUESTION — visually distinct call to action ── */}
             {simEnded && play && play.followUpQuestion && (
-              <div className="text-center mt-10 sm:mt-14">
-                <p className="text-white/25 text-[10px] uppercase tracking-[0.25em] mb-3 font-bold">{t.landingWhatIfAsked}</p>
-                <p className="font-mercure italic text-white/60 text-[17px] sm:text-[22px] leading-[1.35] mb-5 max-w-xl mx-auto">&ldquo;{play.followUpQuestion}&rdquo;</p>
+              <div className="mt-12 sm:mt-16 animate-fade-in">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                  <span className="text-mars text-[10px] font-black uppercase tracking-[0.3em]">{t.landingWhatIfAsked}</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                </div>
                 <button
                   onClick={() => {
                     const followUp = play.followUpQuestion!;
                     reset();
                     setTimeout(() => { setQuestion(followUp); }, 100);
                   }}
-                  className="inline-flex items-center px-5 py-2.5 rounded-full border border-mars/40 text-mars text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:border-mars transition-all"
+                  className="group w-full text-left cursor-pointer"
                 >
-                  {t.landingAskThisQ}
+                  <div className="rounded-2xl border-2 border-mars/40 bg-gradient-to-br from-mars/[0.12] to-mars/[0.04] px-6 sm:px-8 py-6 sm:py-8 hover:border-mars/60 hover:from-mars/[0.18] hover:to-mars/[0.08] transition-all shadow-[0_0_50px_-12px_rgba(255,85,0,0.3)] hover:shadow-[0_0_60px_-10px_rgba(255,85,0,0.45)]">
+                    <p className="text-white font-mercure italic text-[17px] sm:text-[22px] leading-[1.4] mb-4">
+                      &ldquo;{play.followUpQuestion}&rdquo;
+                    </p>
+                    <span className="text-mars group-hover:text-mars-light text-[11px] font-black uppercase tracking-[0.2em] transition-colors">
+                      {t.landingAskThisQ} →
+                    </span>
+                  </div>
                 </button>
               </div>
             )}
