@@ -1153,10 +1153,10 @@ function PlayPageInner() {
                                 <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
                                   <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just simulated a play</p>
                                   <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
-                                    Want to run more?<br />Create your free account.
+                                    Want to play more?<br />Create your free account.
                                   </h3>
                                   <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
-                                    Save your plays, run new questions, and bring your team into the simulator.
+                                    Save your plays, ask new questions, and bring your team into the simulator.
                                   </p>
                                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                                     <a
