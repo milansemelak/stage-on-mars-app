@@ -60,6 +60,7 @@ export default function Home() {
   const [simLoading, setSimLoading] = useState(false);
   const [simReady, setSimReady] = useState(false);
   const [simEnded, setSimEnded] = useState(false);
+  const [revealedCount, setRevealedCount] = useState(0);
   const [freePlaysUsed, setFreePlaysUsed] = useState(0);
   const [error, setError] = useState("");
   const [shareLoading, setShareLoading] = useState(false);
@@ -118,6 +119,17 @@ export default function Home() {
   }
 
   const [perspectivesLoading, setPerspectivesLoading] = useState(false);
+
+  // Staggered perspective reveal — reveal one at a time
+  useEffect(() => {
+    if (!play?.perspectives?.length) { setRevealedCount(0); return; }
+    const total = play.perspectives.length;
+    if (revealedCount >= total) return;
+    // First perspective (author) appears after 600ms, then each subsequent after 800ms
+    const delay = revealedCount === 0 ? 600 : 800;
+    const timer = setTimeout(() => setRevealedCount(c => c + 1), delay);
+    return () => clearTimeout(timer);
+  }, [play?.perspectives?.length, revealedCount]);
 
   async function fetchPerspectives() {
     // Use ref to avoid stale closure — onEnd callback may hold old play reference
@@ -198,6 +210,7 @@ export default function Home() {
     setSimEnded(false);
     setSimLoading(false);
     setShareLoading(false);
+    setRevealedCount(0);
     setShareCopied(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -471,13 +484,16 @@ export default function Home() {
             {/* ── STAGE (its own panel) ── */}
             <div className="rounded-2xl border border-white/[0.06] bg-[#060606] overflow-hidden">
               {(loading || simLoading) && (
-                <div className="text-center py-20 sm:py-28">
-                  <div className="inline-flex gap-2 mb-5">
+                <div className="text-center py-16 sm:py-24 px-6">
+                  <p className="font-mercure italic text-white/20 text-[15px] sm:text-[20px] leading-[1.5] mb-8 animate-pulse">
+                    &ldquo;{question}&rdquo;
+                  </p>
+                  <div className="inline-flex gap-2 mb-4">
                     {[0, 1, 2].map((i) => (
-                      <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                      <div key={i} className="w-2 h-2 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
                     ))}
                   </div>
-                  <p className="text-white/35 text-[14px] font-mercure italic">
+                  <p className="text-white/30 text-[12px] font-black uppercase tracking-[0.25em]">
                     {loading ? t.landingCreatingPlay : t.landingChoreographing}
                   </p>
                 </div>
@@ -546,10 +562,10 @@ export default function Home() {
                   return (
                     <>
                       {/* AUTHOR — hero card */}
-                      {authorP && (
+                      {authorP && revealedCount >= 1 && (
                         <div
                           className="relative rounded-2xl border-2 border-[rgba(255,215,0,0.35)] bg-gradient-to-b from-[rgba(255,215,0,0.08)] to-[rgba(255,215,0,0.02)] px-5 py-8 sm:p-10 shadow-[0_0_40px_-16px_rgba(255,215,0,0.35)] sm:shadow-[0_0_80px_-20px_rgba(255,215,0,0.35)] mb-6 sm:mb-8 mt-3"
-                          style={{ animation: `fadeIn 0.6s ease 0s both` }}
+                          style={{ animation: `fadeIn 0.8s ease 0s both` }}
                         >
                           <div className="absolute -top-3 left-1/2 -translate-x-1/2 max-w-[calc(100%-24px)] px-2.5 sm:px-3 py-1 rounded-full bg-black border border-[rgba(255,215,0,0.5)] whitespace-nowrap overflow-hidden">
                             <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.22em] sm:tracking-[0.25em] text-[rgba(255,215,0,0.95)] truncate block">
@@ -563,9 +579,9 @@ export default function Home() {
                       )}
 
                       {/* CHARACTERS — compact grid */}
-                      {charPs.length > 0 && (
+                      {charPs.length > 0 && revealedCount >= 2 && (
                         <>
-                          <div className="flex items-center gap-3 mb-4 sm:mb-5">
+                          <div className="flex items-center gap-3 mb-4 sm:mb-5" style={{ animation: `fadeIn 0.6s ease 0s both` }}>
                             <div className="h-px flex-1 bg-white/[0.08]" />
                             <span className="text-white/35 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em]">
                               {t.characters}
@@ -574,6 +590,8 @@ export default function Home() {
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                             {charPs.map((sp, i) => {
+                              // revealedCount: 1 = author, 2+ = characters (i+2 because author takes slot 1)
+                              if (revealedCount < i + 2) return null;
                               const matched = play.characters.find(
                                 (c) => c.name.toLowerCase() === sp.character.toLowerCase()
                               );
@@ -585,7 +603,7 @@ export default function Home() {
                                 <div
                                   key={i}
                                   className={`rounded-xl border ${accent.border} ${accent.bg} p-4 sm:p-5`}
-                                  style={{ animation: `fadeIn 0.6s ease ${(i + 1) * 0.15}s both` }}
+                                  style={{ animation: `fadeIn 0.8s ease 0s both` }}
                                 >
                                   <div className="flex items-center gap-2 mb-2">
                                     <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${accent.dot}`} />

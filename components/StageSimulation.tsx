@@ -436,6 +436,33 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
 
+  // Typewriter effect for narration
+  const [displayedText, setDisplayedText] = useState("");
+  const typewriterRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+    const fullText = sentences[currentStep] || "";
+    setDisplayedText("");
+    let charIndex = 0;
+
+    if (typewriterRef.current) clearInterval(typewriterRef.current);
+
+    typewriterRef.current = setInterval(() => {
+      charIndex++;
+      setDisplayedText(fullText.slice(0, charIndex));
+      if (charIndex >= fullText.length) {
+        if (typewriterRef.current) clearInterval(typewriterRef.current);
+      }
+    }, 25);
+
+    return () => { if (typewriterRef.current) clearInterval(typewriterRef.current); };
+  }, [currentStep, sentences, hasStarted]);
+
+  // Ghost trail: store previous positions when step changes
+  const [ghostPositions, setGhostPositions] = useState<Position[]>([]);
+  const [ghostOpacity, setGhostOpacity] = useState(0);
+
 
   // Final circle formation for ritual ending
   const finalCirclePositions = useMemo(() => {
@@ -500,9 +527,23 @@ export default function StageSimulation({ characters, simulation, simulationStep
       transitionFromRef.current = currentPositions.current.map(p => ({ ...p }));
       transitionStartRef.current = performance.now();
       prevPositionsRef.current = currentPositions.current.map(p => ({ ...p }));
+      // Trigger ghost trail at the "from" positions
+      if (hasStarted && !hasEnded) {
+        setGhostPositions(transitionFromRef.current.map(p => ({ ...p })));
+        setGhostOpacity(0.4);
+        // Fade out ghost over 1.5s
+        const fadeStart = performance.now();
+        const fadeGhost = () => {
+          const elapsed = performance.now() - fadeStart;
+          const remaining = Math.max(0, 1 - elapsed / 1500);
+          setGhostOpacity(remaining * 0.4);
+          if (remaining > 0) requestAnimationFrame(fadeGhost);
+        };
+        requestAnimationFrame(fadeGhost);
+      }
     }
     prevTargetsRef.current = targets;
-  }, [targets]);
+  }, [targets, hasStarted, hasEnded]);
 
   // Initialize
   useEffect(() => {
@@ -765,6 +806,27 @@ export default function StageSimulation({ characters, simulation, simulationStep
             );
           })}
 
+          {/* Ghost trails — fading previous positions */}
+          {ghostOpacity > 0.01 && ghostPositions.map((gp, i) => {
+            const rp = renderPositions[i];
+            if (!gp || !rp) return null;
+            const dist = Math.sqrt((rp.x - gp.x) ** 2 + (rp.y - gp.y) ** 2);
+            if (dist < 2) return null; // no trail for minimal movement
+            const char = allCharacters[i];
+            const isAuthor = char?.description === "author";
+            return (
+              <g key={`ghost-${i}`} opacity={ghostOpacity}>
+                <circle cx={gp.x} cy={gp.y} r={1.5}
+                  fill={isAuthor ? "rgba(255,215,0,0.3)" : "rgba(255,85,0,0.3)"}
+                />
+                <line x1={gp.x} y1={gp.y} x2={rp.x} y2={rp.y}
+                  stroke={isAuthor ? "rgba(255,215,0,0.15)" : "rgba(255,85,0,0.15)"}
+                  strokeWidth="0.4" strokeDasharray="0.8,1"
+                />
+              </g>
+            );
+          })}
+
           {/* Characters */}
           {(() => {
             // Pre-compute label positions with collision avoidance
@@ -931,10 +993,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
               className="w-full px-8 sm:px-10 py-5 cursor-pointer active:bg-white/[0.02] transition-colors"
             >
               <p
-                className="font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
+                className="font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center"
                 key={currentStep}
               >
-                {sentences[currentStep]}
+                {displayedText}<span className="animate-pulse text-mars/40">|</span>
               </p>
               <div className="mt-4 flex items-center justify-center gap-3">
                 <span className="text-white/25 text-[10px]">
