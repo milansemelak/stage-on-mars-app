@@ -906,7 +906,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
           {hasEnded && endingPhase >= 2 && (
             <div className="px-5 sm:px-6 pb-5 animate-fade-in flex flex-col items-center gap-3">
               <button
-                onClick={() => { onEnd?.(); }}
+                onClick={() => { playBell(); onEnd?.(); }}
                 className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-mars/40 bg-mars/[0.06] hover:bg-mars/[0.12] hover:border-mars/60 transition-all duration-200"
               >
                 <span className="text-mars font-bold text-[11px] sm:text-xs uppercase tracking-[0.2em]">
