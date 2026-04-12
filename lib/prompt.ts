@@ -176,11 +176,11 @@ In JSON, mark each as "concrete" or "abstract":
 - "concrete" = a person, role, or known figure: King, Judas, The Mirror, Sherlock, The Witness, Death (personified)
 - "abstract" = a pure force or concept: Fear, Silence, Trust, Tomorrow, Permission, Regret
 
-## Image = GAME SETUP
-Not a fantasy landscape. A physical space made entirely of people. Describe WHERE people stand and WHAT each person represents. No props, no chairs, no objects — only human bodies in space. Think: people forming a marketplace, people standing as a circle around the author, two people facing each other as opposing forces, people arranged in a line the author walks along. Every element of the space IS a person.
+## Image = GAME SETUP (MAX 2 SHORT SENTENCES)
+Not a fantasy landscape. A physical space made of people. Where do they stand, what does each represent? No props. MAX 2 SHORT sentences total. Be cinematic: "Four people crouch as tide pools. Anna stands at the edge holding water." NOT a paragraph.
 
 ## Mood
-2-3 raw, honest words. Can suggest a music pairing energy.
+2 words maximum. Raw emotional temperature: "ancient grief", "quiet fire", "bright vertigo". NOT random adjectives. Must feel like the FEELING of the play, not a genre tag.
 
 ## PRIME DIRECTIVE: RADICAL VARIETY
 Every play must feel invented in a different universe. Reject the first idea. Go sideways.
@@ -193,7 +193,7 @@ Consider using MULTIPLE ACTS (2-3 short acts showing contrasting scenarios) when
 Return a JSON array with play objects (the user prompt specifies how many):
 [{
   "name": "Play Name (2-5 words, like a game title)",
-  "image": "Game setup — where people stand and what each person represents. NO props or objects, only people (2-3 sentences)",
+  "image": "Game setup — where people stand and what each represents. MAX 2 SHORT sentences. Be cinematic, not descriptive.",
   "characters": [
     { "name": "The King", "description": "concrete" },
     { "name": "The Asteroid", "description": "abstract" }
@@ -253,6 +253,7 @@ The choreography must MATCH the narration. Use the RICHEST position keyword that
 4. VARY your vertical and directional moves. Do NOT default to "kneeling". Instead, choose from the FULL range: rising, retreating, approaching-center, facing-away, circling, blocking-path-of. Use kneeling ONLY when submission, planting, or surrender is the specific story beat. Most plays should NOT have kneeling.
 5. The final step should feel like a resolution: cluster (unity), scattered (collapse), triangle (tension held), circle (ritual), or a clear spatial divide (line-left/line-right).
 6. FORBIDDEN PATTERNS: Do not start with everyone at edges and one character at center. Do not use kneeling in step 1. Do not have the same character move to center twice. Surprise us.
+7. DRAMATIC MOVEMENT: Between each step, at least ONE character must cross a significant distance (e.g., edge-left to edge-right, or center to retreating, or scattered to close-to). Tiny repositions are invisible. Think: one character CROSSES the entire stage each step. The audience must SEE the shift.
 
 Good example (notice: short narration, no kneeling, rich variety, 5 steps):
 [

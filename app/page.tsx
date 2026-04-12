@@ -649,7 +649,7 @@ export default function Home() {
                       &ldquo;{play.followUpQuestion}&rdquo;
                     </p>
                     <span className="text-mars group-hover:text-mars-light text-[11px] font-black uppercase tracking-[0.2em] transition-colors">
-                      {t.landingAskThisQ} →
+                      {t.landingAskThisQ}
                     </span>
                   </div>
                 </button>

@@ -773,37 +773,55 @@ export default function StageSimulation({ characters, simulation, simulationStep
               return { x: 0, y: above ? -4.5 : 5.5, above };
             });
 
-            // Resolve overlaps: if two labels are too close, push them apart vertically
-            const LABEL_MIN_DIST = 5; // minimum vertical distance between label centers in SVG units
-            for (let pass = 0; pass < 3; pass++) {
+            // Resolve overlaps: push labels apart vertically AND horizontally
+            const LABEL_MIN_DIST_Y = 5;
+            const LABEL_MIN_DIST_X = 16; // minimum horizontal distance between label centers
+            for (let pass = 0; pass < 5; pass++) {
               for (let i = 0; i < renderPositions.length; i++) {
                 for (let j = i + 1; j < renderPositions.length; j++) {
                   const pi = renderPositions[i];
                   const pj = renderPositions[j];
+                  const liX = pi.x + labelOffsets[i].x;
+                  const ljX = pj.x + labelOffsets[j].x;
                   const liY = pi.y + labelOffsets[i].y;
                   const ljY = pj.y + labelOffsets[j].y;
-                  const dx = Math.abs(pi.x - pj.x);
+                  const dx = Math.abs(liX - ljX);
                   const dy = Math.abs(liY - ljY);
-                  // Only resolve if labels are horizontally close AND vertically overlapping
-                  if (dx < 18 && dy < LABEL_MIN_DIST) {
-                    const push = (LABEL_MIN_DIST - dy) / 2 + 0.5;
+                  // If labels are both horizontally AND vertically close, they overlap
+                  if (dx < LABEL_MIN_DIST_X && dy < LABEL_MIN_DIST_Y) {
+                    // Push vertically first
+                    const pushY = (LABEL_MIN_DIST_Y - dy) / 2 + 0.5;
                     if (liY < ljY) {
-                      labelOffsets[i].y -= push;
-                      labelOffsets[j].y += push;
+                      labelOffsets[i].y -= pushY;
+                      labelOffsets[j].y += pushY;
                     } else {
-                      labelOffsets[i].y += push;
-                      labelOffsets[j].y -= push;
+                      labelOffsets[i].y += pushY;
+                      labelOffsets[j].y -= pushY;
+                    }
+                    // If dots are very close horizontally (< 10 SVG units), also push labels apart on X
+                    if (dx < 10) {
+                      const pushX = (10 - dx) / 2 + 2;
+                      if (liX < ljX || pi.x < pj.x) {
+                        labelOffsets[i].x -= pushX;
+                        labelOffsets[j].x += pushX;
+                      } else {
+                        labelOffsets[i].x += pushX;
+                        labelOffsets[j].x -= pushX;
+                      }
                     }
                   }
                 }
               }
             }
 
-            // Clamp labels inside stage ring (keep within y 10..90 relative to dot)
+            // Clamp labels inside stage ring (y: 10..90, x: 5..95)
             for (let i = 0; i < renderPositions.length; i++) {
               const absLabelY = renderPositions[i].y + labelOffsets[i].y;
               if (absLabelY < 10) labelOffsets[i].y = 10 - renderPositions[i].y;
               if (absLabelY > 90) labelOffsets[i].y = 90 - renderPositions[i].y;
+              const absLabelX = renderPositions[i].x + labelOffsets[i].x;
+              if (absLabelX < 5) labelOffsets[i].x = 5 - renderPositions[i].x;
+              if (absLabelX > 95) labelOffsets[i].x = 95 - renderPositions[i].x;
             }
 
             return renderPositions.map((pos, i) => {
@@ -821,9 +839,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
                   : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)" };
 
               const labelY = labelOffsets[i].y;
+              const labelX = labelOffsets[i].x;
               const labelAbove = labelY < 0;
               // Smart text anchor: push label inward if dot is near the edges
-              const xFromCenter = pos.x - CX;
+              const effectiveX = pos.x + labelX;
+              const xFromCenter = effectiveX - CX;
               const anchor: "start" | "middle" | "end" =
                 xFromCenter > 12 ? "end" : xFromCenter < -12 ? "start" : "middle";
 
@@ -856,7 +876,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
                   {/* Name */}
                   <text
-                    x={0} y={labelY}
+                    x={labelX} y={labelY}
                     textAnchor={anchor}
                     fill={colors.text}
                     fontSize={isAuthor ? 2.4 : (isActive ? 2.6 : 2.2)}
