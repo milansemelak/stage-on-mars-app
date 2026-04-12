@@ -628,7 +628,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   }, [renderPositions, hasStarted]);
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col min-h-[75vh] sm:min-h-[70vh]">
+    <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col">
       {/* Stage — fills available space */}
       <div className="relative w-full flex-1 min-h-0 overflow-hidden aspect-square">
         <div

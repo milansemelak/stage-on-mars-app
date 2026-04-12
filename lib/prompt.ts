@@ -211,7 +211,7 @@ Return a JSON array with play objects (the user prompt specifies how many):
   "mood": "2-3 words"
 }]
 
-Generate 3-5 characters per play (fewer characters = stronger dynamics).
+Generate 3-4 characters per play. MAX 4. Fewer characters = stronger dynamics, cleaner stage.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
@@ -226,8 +226,8 @@ Now report what you witnessed.
 ## The Simulation — what unfolded on stage (WITH CHOREOGRAPHY)
 Describe what actually happened with THESE specific characters, in THIS specific space. Reference them by name. Show the game mechanic playing out — how the rules created pressure, where someone broke a constraint, what the author's physical task revealed.
 
-Write it as 5-7 STEPS. Each step has:
-- **narration**: 1-2 sentences of stage direction (present tense, physical, active)
+Write it as 4-5 STEPS. Not more. Each tap should feel meaningful. Each step has:
+- **narration**: 1 sentence of stage direction (present tense, physical, active). MAX 20 words. Punchy, cinematic, no filler.
 - **positions**: WHERE each character is on stage at that moment. Use these position keywords:
   - "center" — center of the stage
   - "close-to:CharName" — moves close to another character (use their exact name)
@@ -260,14 +260,13 @@ The choreography must MATCH the narration. Use the RICHEST position keyword that
 5. The final step should feel like a resolution: cluster (unity), scattered (collapse), triangle (tension held), circle (ritual), or a clear spatial divide (line-left/line-right).
 6. FORBIDDEN PATTERNS: Do not start with everyone at edges and one character at center. Do not use kneeling in step 1. Do not have the same character move to center twice. Surprise us.
 
-Good example (notice: no kneeling, rich variety):
+Good example (notice: short narration, no kneeling, rich variety, 5 steps):
 [
-  {"narration": "The Conductor stands at center, arms wide. The Orchestra scatters across the stage, each facing a different direction.", "positions": {"The Conductor": "center", "First Violin": "scattered", "The Drum": "scattered", "The Silence": "edge-top"}},
-  {"narration": "First Violin circles the Conductor, testing the distance. The Drum retreats further.", "positions": {"First Violin": "circling:The Conductor", "The Drum": "retreating"}},
-  {"narration": "The Silence rises from the back of the stage. The Conductor turns away.", "positions": {"The Silence": "rising", "The Conductor": "facing-away"}},
-  {"narration": "First Violin blocks the Conductor's path. The Drum approaches for the first time.", "positions": {"First Violin": "blocking-path-of:The Conductor", "The Drum": "approaching-center"}},
-  {"narration": "The Conductor and The Silence stand back to back. The music has stopped.", "positions": {"The Conductor": "back-to-back:The Silence", "First Violin": "far-from:The Drum"}},
-  {"narration": "Everyone forms a triangle. Three points of tension, no resolution, just the shape of what remains.", "positions": {"The Conductor": "triangle", "First Violin": "triangle", "The Drum": "triangle", "The Silence": "edge-bottom"}}
+  {"narration": "The Conductor stands at center. The Orchestra scatters, each facing away.", "positions": {"The Conductor": "center", "First Violin": "scattered", "The Drum": "scattered", "The Silence": "edge-top"}},
+  {"narration": "First Violin circles the Conductor. The Drum retreats.", "positions": {"First Violin": "circling:The Conductor", "The Drum": "retreating"}},
+  {"narration": "The Silence rises. The Conductor turns away.", "positions": {"The Silence": "rising", "The Conductor": "facing-away"}},
+  {"narration": "First Violin blocks the Conductor's path. The Drum approaches.", "positions": {"First Violin": "blocking-path-of:The Conductor", "The Drum": "approaching-center"}},
+  {"narration": "Everyone forms a triangle. No resolution, just the shape of what remains.", "positions": {"The Conductor": "triangle", "First Violin": "triangle", "The Drum": "triangle", "The Silence": "edge-bottom"}}
 ]
 
 ## Perspectives — the 4 truths the stage revealed
@@ -339,7 +338,7 @@ Return ONLY valid JSON:
   "followUpQuestion": "The one question the play is now asking the author."
 }
 
-IMPORTANT: Use exact character names from the play. 5-7 simulation steps. EXACTLY 4 perspectives (1 from the author + 3 from different characters). 1 follow-up question. Each step's positions must match what the narration describes.
+IMPORTANT: Use exact character names from the play. 4-5 simulation steps (NOT more). Each narration MAX 20 words. EXACTLY 4 perspectives (1 from the author + 3 from different characters). 1 follow-up question. Each step's positions must match what the narration describes.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
@@ -407,7 +406,7 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
       `Author's Role: ${play.authorRole}`,
       `Ending Perspective: ${play.endingPerspective}`,
       ``,
-      `What happened on this stage? What did you witness? 5-7 simulation steps.`,
+      `What happened on this stage? What did you witness? 4-5 simulation steps. Each narration MAX 20 words.`,
       ``,
       `## HARD CONTRACT — READ BEFORE WRITING`,
       `The "Author's Role" above is NOT flavor text. It is a PROMISE to the author. Whatever the Author's Role says the author physically does — choosing, saying, pointing, touching, turning away, refusing, building — MUST actually happen in the narration, in explicit words, and the author's position must reflect it in the corresponding step. If the Author's Role says "the author picks one and says it out loud", then one of the simulationSteps narration MUST literally describe the author picking and speaking. No substitutions. No paraphrases that skip the action.`,
