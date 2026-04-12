@@ -1151,7 +1151,7 @@ function PlayPageInner() {
                             {simulateOnly ? (
                               <div className="rounded-2xl overflow-hidden bg-mars mt-2">
                                 <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
-                                  <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just simulated a play</p>
+                                  <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just played with your reality</p>
                                   <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
                                     Want to play more?<br />Create your free account.
                                   </h3>
