@@ -457,6 +457,18 @@ export default function Home() {
               )}
             </div>
 
+            {/* ── PERSPECTIVES LOADING ── */}
+            {simEnded && perspectivesLoading && !(play?.perspectives?.length) && (
+              <div className="mt-8 sm:mt-12 rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent px-4 py-10 sm:p-10 animate-fade-in text-center">
+                <div className="inline-flex items-center gap-3">
+                  {[0, 1, 2].map((j) => (
+                    <div key={j} className="w-2 h-2 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${j * 0.25}s infinite` }} />
+                  ))}
+                </div>
+                <p className="text-white/30 text-[13px] font-mercure italic mt-4">{t.landingStageShowedYou}...</p>
+              </div>
+            )}
+
             {/* ── PERSPECTIVES (distinct outro panel) ── */}
             {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
               <div className="mt-8 sm:mt-12 rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent px-4 py-7 sm:p-10 animate-fade-in">

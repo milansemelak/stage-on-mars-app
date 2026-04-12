@@ -765,97 +765,27 @@ export default function StageSimulation({ characters, simulation, simulationStep
           })}
 
           {/* Characters */}
-          {(() => {
-            // Compute collision-free label layouts once per frame
-            // Sized for mobile readability — SVG units render proportionally
-            const FONT_SIZE = 3.0;
-            const CHAR_W = 1.45; // approx avg glyph width at FONT_SIZE
-            const LABEL_H = 3.6;
-            const BASE_OFFSET = 5;
+          {renderPositions.map((pos, i) => {
+            const char = allCharacters[i];
+            if (!char) return null;
+            const isAuthor = char.description === "author";
+            const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
+            const isActive = hasStarted && movedCharacters.has(i);
+            const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
 
-            type LabelLayout = {
-              x: number; y: number;
-              wx: number; wy: number; // world position of label center
-              width: number;
-              anchor: "start" | "middle" | "end";
-              baseline: "auto" | "middle" | "hanging";
-              nx: number; ny: number;
-            };
+            const colors = isAuthor
+              ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)", textDim: "rgba(255,215,0,0.5)" }
+              : isAbstract
+                ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)", textDim: "rgba(255,255,255,0.4)" }
+                : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)", textDim: "rgba(255,179,128,0.55)" };
 
-            const layouts: LabelLayout[] = renderPositions.map((pos, i) => {
-              const ch = allCharacters[i];
-              let dx = pos.x - CX;
-              let dy = pos.y - CY;
-              const dist = Math.hypot(dx, dy);
-              let nx: number, ny: number;
-              if (dist < 0.5) {
-                // Near center — alternate above/below by index
-                nx = 0; ny = i % 2 === 0 ? -1 : 1;
-              } else {
-                nx = dx / dist;
-                ny = dy / dist;
-              }
-              const width = (ch?.name?.length || 5) * CHAR_W;
-              const lx = nx * BASE_OFFSET;
-              const ly = ny * BASE_OFFSET;
-              return {
-                x: lx,
-                y: ly,
-                wx: pos.x + lx,
-                wy: pos.y + ly,
-                width,
-                nx, ny,
-                anchor: nx > 0.35 ? "start" : nx < -0.35 ? "end" : "middle",
-                baseline: ny > 0.35 ? "hanging" : ny < -0.35 ? "auto" : "middle",
-              };
-            });
-
-            // Collision resolution — push overlapping labels further along their radial direction
-            const bbox = (l: LabelLayout) => {
-              const x0 = l.anchor === "start" ? l.wx : l.anchor === "end" ? l.wx - l.width : l.wx - l.width / 2;
-              const y0 = l.baseline === "hanging" ? l.wy : l.baseline === "auto" ? l.wy - LABEL_H : l.wy - LABEL_H / 2;
-              return { x0, y0, x1: x0 + l.width, y1: y0 + LABEL_H };
-            };
-            for (let iter = 0; iter < 30; iter++) {
-              let moved = false;
-              for (let a = 0; a < layouts.length; a++) {
-                for (let b = a + 1; b < layouts.length; b++) {
-                  const ba = bbox(layouts[a]);
-                  const bb = bbox(layouts[b]);
-                  const ox = Math.min(ba.x1, bb.x1) - Math.max(ba.x0, bb.x0);
-                  const oy = Math.min(ba.y1, bb.y1) - Math.max(ba.y0, bb.y0);
-                  if (ox > 0 && oy > 0) {
-                    const push = 0.6;
-                    layouts[a].x += layouts[a].nx * push;
-                    layouts[a].y += layouts[a].ny * push;
-                    layouts[a].wx += layouts[a].nx * push;
-                    layouts[a].wy += layouts[a].ny * push;
-                    layouts[b].x += layouts[b].nx * push;
-                    layouts[b].y += layouts[b].ny * push;
-                    layouts[b].wx += layouts[b].nx * push;
-                    layouts[b].wy += layouts[b].ny * push;
-                    moved = true;
-                  }
-                }
-              }
-              if (!moved) break;
-            }
-
-            return renderPositions.map((pos, i) => {
-              const char = allCharacters[i];
-              if (!char) return null;
-              const isAuthor = char.description === "author";
-              const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
-              const isActive = hasStarted && movedCharacters.has(i);
-              const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
-
-              const colors = isAuthor
-                ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)", textDim: "rgba(255,215,0,0.5)" }
-                : isAbstract
-                  ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)", textDim: "rgba(255,255,255,0.4)" }
-                  : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)", textDim: "rgba(255,179,128,0.55)" };
-
-              const label = layouts[i];
+            // Simple, stable label placement — never leaves the stage
+            const above = pos.y < CY;
+            const nameY = above ? (isActive ? -5 : -4.5) : (isActive ? 6 : 5.5);
+            // Smart text anchor: push label inward if dot is near the edges
+            const xFromCenter = pos.x - CX;
+            const anchor: "start" | "middle" | "end" =
+              xFromCenter > 12 ? "end" : xFromCenter < -12 ? "start" : "middle";
 
             return (
               <g key={i} transform={`translate(${pos.x}, ${pos.y})`}>
@@ -886,22 +816,21 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
                 {/* Name */}
                 <text
-                  x={label.x} y={label.y}
-                  textAnchor={label.anchor}
+                  x={0} y={nameY}
+                  textAnchor={anchor}
                   fill={colors.text}
-                  fontSize={isAuthor ? 2.8 : (isActive ? 3.2 : 2.8)}
+                  fontSize={isAuthor ? 2.4 : (isActive ? 2.8 : 2.4)}
                   fontWeight={isAuthor ? 600 : (isActive ? 700 : 500)}
                   fontStyle={isAbstract || isAuthor ? "italic" : "normal"}
                   letterSpacing="0.03"
                   className="select-none"
-                  dominantBaseline={label.baseline}
+                  dominantBaseline={above ? "auto" : "hanging"}
                 >
                   {char.name}
                 </text>
               </g>
             );
-            });
-          })()}
+          })}
         </svg>
       </div>
 
