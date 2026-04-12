@@ -45,6 +45,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     endingPerspective: play.endingPerspective,
   });
   const [copied, setCopied] = useState(false);
+  const [shareLoading, setShareLoading] = useState(false);
   // Perspectives are hidden until the user explicitly ends the play.
   // Exception: history reload (play already has perspectives AND simulationSteps) → show immediately.
   const [perspectivesRevealed, setPerspectivesRevealed] = useState(
@@ -176,17 +177,30 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     setShowPrescription(true);
   }
 
-  async function handleShare() {
-    const text = `${currentPlay.name}\n\n"${question}"\n\n${t.theImage}: ${currentPlay.image}\n\n${t.characters}: ${currentPlay.characters.map((c) => c.name).join(", ")}\n\n${t.authorsRole}: ${currentPlay.authorRole}\n\nhttps://playbook.stageonmars.com`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: currentPlay.name, text });
-      } catch {
-        // User cancelled
-      }
-    } else {
-      await navigator.clipboard.writeText(text);
+  async function handleShareLink() {
+    if (shareLoading) return;
+    setShareLoading(true);
+    try {
+      const res = await fetch("/api/plays", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          play_data: currentPlay,
+          question: question || "",
+          lang,
+          client_name: clientName || "",
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to share");
+      const data = await res.json();
+      const url = `https://playbook.stageonmars.com/p/${data.code}`;
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch (err) {
+      console.error("Share link error:", err);
+    } finally {
+      setShareLoading(false);
     }
   }
 
@@ -741,6 +755,13 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               >
                 {t.prescribe}
               </a>
+              <button
+                onClick={handleShareLink}
+                disabled={shareLoading}
+                className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all disabled:opacity-50"
+              >
+                {shareLoading ? t.sharing : copied ? t.linkCopied : t.shareLink}
+              </button>
               <button
                 onClick={handlePrescribe}
                 className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"

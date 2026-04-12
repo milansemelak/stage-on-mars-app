@@ -146,6 +146,14 @@ const translations = {
     forWhomPlaceholder: "Name",
     // Share
     sharePlay: "Share",
+    shareLink: "Share link",
+    linkCopied: "Link copied!",
+    sharing: "Sharing...",
+    sharedPlay: "Shared Play",
+    createYourOwn: "Create your own play",
+    playNotFound: "Play not found",
+    playNotFoundDesc: "This shared play link is invalid or has expired.",
+    goHome: "Go to Stage on Mars",
     // Favorites
     favorite: "Favorite",
     unfavorite: "Unfavorite",
@@ -240,6 +248,17 @@ const translations = {
     landingAskSomethingElse: "Ask something else",
     landingTabTitle: "Stage on Mars — The Play Simulator",
     landingYouBadge: "You",
+    // Perspectives Journal
+    playTab: "Play",
+    journalTab: "Perspectives",
+    journalTitle: "Your Perspective Journal",
+    journalEmpty: "No perspectives yet.",
+    journalEmptySub: "Play your first game.",
+    journalFrom: "from",
+    journalAppearedIn: "appeared in",
+    journalPlaysCount: "plays",
+    journalPerspectives: "perspectives",
+    journalFromPlays: "from",
   },
   sk: {
     // Header
@@ -381,6 +400,14 @@ const translations = {
     forWhomPlaceholder: "Meno",
     // Share
     sharePlay: "Zdieľať",
+    shareLink: "Zdieľať odkaz",
+    linkCopied: "Odkaz skopírovaný!",
+    sharing: "Zdieľam...",
+    sharedPlay: "Zdieľaná hra",
+    createYourOwn: "Vytvor si vlastnú hru",
+    playNotFound: "Hra nenájdená",
+    playNotFoundDesc: "Tento odkaz na zdieľanú hru je neplatný alebo vypršal.",
+    goHome: "Prejsť na Stage on Mars",
     // Favorites
     favorite: "Obľúbené",
     unfavorite: "Zrušiť obľúbené",
@@ -475,6 +502,17 @@ const translations = {
     landingAskSomethingElse: "Opýtať sa inak",
     landingTabTitle: "Stage on Mars — Play Simulator",
     landingYouBadge: "Ty",
+    // Perspectives Journal
+    playTab: "Hra",
+    journalTab: "Perspektívy",
+    journalTitle: "Tvoj denník perspektív",
+    journalEmpty: "Zatiaľ žiadne perspektívy.",
+    journalEmptySub: "Vygeneruj svoju prvú hru.",
+    journalFrom: "z hry",
+    journalAppearedIn: "sa objavil v",
+    journalPlaysCount: "hrách",
+    journalPerspectives: "perspektív",
+    journalFromPlays: "z",
   },
   cs: {
     // Header
@@ -616,6 +654,14 @@ const translations = {
     forWhomPlaceholder: "Jméno",
     // Share
     sharePlay: "Sdílet",
+    shareLink: "Sdílet odkaz",
+    linkCopied: "Odkaz zkopírován!",
+    sharing: "Sdílím...",
+    sharedPlay: "Sdílená hra",
+    createYourOwn: "Vytvoř si vlastní hru",
+    playNotFound: "Hra nenalezena",
+    playNotFoundDesc: "Tento odkaz na sdílenou hru je neplatný nebo vypršel.",
+    goHome: "Přejít na Stage on Mars",
     // Favorites
     favorite: "Oblíbené",
     unfavorite: "Zrušit oblíbené",
@@ -710,6 +756,17 @@ const translations = {
     landingAskSomethingElse: "Zeptat se jinak",
     landingTabTitle: "Stage on Mars — Play Simulator",
     landingYouBadge: "Ty",
+    // Perspectives Journal
+    playTab: "Hra",
+    journalTab: "Perspektivy",
+    journalTitle: "Tvůj deník perspektiv",
+    journalEmpty: "Zatím žádné perspektivy.",
+    journalEmptySub: "Vygeneruj svoji první hru.",
+    journalFrom: "ze hry",
+    journalAppearedIn: "se objevil v",
+    journalPlaysCount: "hrách",
+    journalPerspectives: "perspektiv",
+    journalFromPlays: "z",
   },
 } as const;
 

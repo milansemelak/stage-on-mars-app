@@ -62,6 +62,8 @@ export default function Home() {
   const [simEnded, setSimEnded] = useState(false);
   const [freePlaysUsed, setFreePlaysUsed] = useState(0);
   const [error, setError] = useState("");
+  const [shareLoading, setShareLoading] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
   // Logged-in users go straight to /play (trial + subscription logic lives there)
@@ -195,7 +197,36 @@ export default function Home() {
     setSimReady(false);
     setSimEnded(false);
     setSimLoading(false);
+    setShareLoading(false);
+    setShareCopied(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function handleShareLink() {
+    if (shareLoading || !play) return;
+    setShareLoading(true);
+    try {
+      const res = await fetch("/api/plays", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          play_data: play,
+          question,
+          lang,
+          client_name: clientName.trim() || "",
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to share");
+      const data = await res.json();
+      const url = `https://playbook.stageonmars.com/p/${data.code}`;
+      await navigator.clipboard.writeText(url);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 3000);
+    } catch (err) {
+      console.error("Share link error:", err);
+    } finally {
+      setShareLoading(false);
+    }
   }
 
   // Show nothing while checking auth
@@ -600,6 +631,26 @@ export default function Home() {
               </div>
             )}
 
+            {/* ── SHARE BUTTON ── */}
+            {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
+              <div className="text-center mt-6 sm:mt-8 animate-fade-in">
+                <button
+                  onClick={handleShareLink}
+                  disabled={shareLoading}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/[0.12] bg-white/[0.03] text-white/50 hover:text-white/80 hover:border-white/25 text-[11px] font-bold uppercase tracking-[0.15em] transition-all disabled:opacity-40"
+                >
+                  {shareLoading ? (
+                    <span className="w-3 h-3 border border-white/30 border-t-white/70 rounded-full animate-spin" />
+                  ) : shareCopied ? (
+                    <svg className="w-3.5 h-3.5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  ) : (
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
+                  )}
+                  {shareCopied ? t.linkCopied : t.sharePlay}
+                </button>
+              </div>
+            )}
+
             {/* ── FOLLOW-UP QUESTION (shown first, it's the hook) ── */}
             {simEnded && play && play.followUpQuestion && (
               <div className="text-center mt-10 sm:mt-14">
@@ -614,6 +665,19 @@ export default function Home() {
                   className="inline-flex items-center px-5 py-2.5 rounded-full border border-mars/40 text-mars text-[11px] font-bold uppercase tracking-[0.15em] hover:bg-mars/10 hover:border-mars transition-all"
                 >
                   {t.landingAskThisQ}
+                </button>
+              </div>
+            )}
+
+            {/* ── SHARE LINK ── */}
+            {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
+              <div className="text-center mt-8 sm:mt-10">
+                <button
+                  onClick={handleShareLink}
+                  disabled={shareLoading}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.03] text-white/50 hover:text-white/80 hover:border-white/30 text-[11px] font-bold uppercase tracking-[0.15em] transition-all disabled:opacity-50"
+                >
+                  {shareLoading ? t.sharing : shareCopied ? t.linkCopied : t.shareLink}
                 </button>
               </div>
             )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Character, SimulationStep } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
@@ -410,6 +410,15 @@ function playBell() {
   }
 }
 
+// ── Ambient Audio Types ──────────────────────────────────
+type AmbientAudioState = {
+  ctx: AudioContext;
+  oscillatorMain: OscillatorNode;
+  oscillatorVibrato: OscillatorNode;
+  vibratoGain: GainNode;
+  masterGain: GainNode;
+};
+
 export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, onEnd }: Props) {
   const { t } = useI18n();
 
@@ -436,6 +445,107 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasStarted, setHasStarted] = useState(false);
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
+
+  // ── Ambient Audio ──────────────────────────────────────
+  const ambientRef = useRef<AmbientAudioState | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  /** Start the ambient drone — call on user gesture (handleStart) */
+  const startAmbientDrone = useCallback(() => {
+    try {
+      const ctx = new AudioContext();
+      audioCtxRef.current = ctx;
+
+      // Master gain — starts at 0, ramps to 0.15 over 2s
+      const masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 2);
+      masterGain.connect(ctx.destination);
+
+      // Vibrato LFO — slow modulation of the drone frequency
+      const vibratoGain = ctx.createGain();
+      vibratoGain.gain.setValueAtTime(3, ctx.currentTime); // +/- 3Hz wobble
+
+      const oscillatorVibrato = ctx.createOscillator();
+      oscillatorVibrato.type = "sine";
+      oscillatorVibrato.frequency.setValueAtTime(0.3, ctx.currentTime); // slow vibrato
+      oscillatorVibrato.connect(vibratoGain);
+
+      // Main drone oscillator — low sine wave 65Hz
+      const oscillatorMain = ctx.createOscillator();
+      oscillatorMain.type = "sine";
+      oscillatorMain.frequency.setValueAtTime(65, ctx.currentTime);
+      vibratoGain.connect(oscillatorMain.frequency); // vibrato modulates pitch
+      oscillatorMain.connect(masterGain);
+
+      oscillatorVibrato.start();
+      oscillatorMain.start();
+
+      ambientRef.current = { ctx, oscillatorMain, oscillatorVibrato, vibratoGain, masterGain };
+    } catch {
+      // Web Audio not available — silent fail
+    }
+  }, []);
+
+  /** Fade out ambient drone over 3 seconds, then stop */
+  const fadeOutAmbientDrone = useCallback(() => {
+    const ambient = ambientRef.current;
+    if (!ambient) return;
+    try {
+      const { ctx, oscillatorMain, oscillatorVibrato, masterGain } = ambient;
+      const now = ctx.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      masterGain.gain.linearRampToValueAtTime(0, now + 3);
+      // Stop oscillators after fade completes
+      setTimeout(() => {
+        try {
+          oscillatorMain.stop();
+          oscillatorVibrato.stop();
+        } catch { /* already stopped */ }
+      }, 3200);
+    } catch {
+      // silent fail
+    }
+    ambientRef.current = null;
+  }, []);
+
+  /** Play a short accent ping — subtle high-frequency blip */
+  const playAccentPing = useCallback(() => {
+    const ctx = audioCtxRef.current;
+    if (!ctx || ctx.state === "closed") return;
+    try {
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+      gain.connect(ctx.destination);
+
+      const osc = ctx.createOscillator();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(800, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
+      osc.connect(gain);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.1);
+    } catch {
+      // silent fail
+    }
+  }, []);
+
+  /** Clean up AudioContext on unmount */
+  useEffect(() => {
+    return () => {
+      try {
+        ambientRef.current?.oscillatorMain.stop();
+        ambientRef.current?.oscillatorVibrato.stop();
+      } catch { /* already stopped */ }
+      ambientRef.current = null;
+      if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
+        audioCtxRef.current.close().catch(() => {});
+      }
+      audioCtxRef.current = null;
+    };
+  }, []);
 
   // Final circle formation for ritual ending
   const finalCirclePositions = useMemo(() => {
@@ -569,6 +679,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   // Author-controlled: advance to next step on tap
   const advanceStep = () => {
     if (!hasStarted || hasEnded) return;
+    playAccentPing();
     if (currentStep < sentences.length - 1) {
       setCurrentStep((p) => p + 1);
     } else {
@@ -583,6 +694,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
     if (endingTriggered.current) return;
     endingTriggered.current = true;
     setIsPlaying(false);
+    fadeOutAmbientDrone();
     setTimeout(() => {
       setHasEnded(true);
       setEndingPhase(1);
@@ -594,6 +706,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
   const handleStart = () => {
     playBell();
+    startAmbientDrone();
     setHasStarted(true);
     setHasEnded(false);
     setEndingPhase(0);

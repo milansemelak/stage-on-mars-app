@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect, useRef, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import QuestionInput from "@/components/QuestionInput";
 import PlayCard from "@/components/PlayCard";
+import PerspectivesJournal from "@/components/PerspectivesJournal";
 import { Play, HistoryEntry } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
@@ -114,6 +115,7 @@ function PlayPage() {
   const playRef = useRef<HTMLDivElement>(null);
   const generatingRef = useRef(false);
   const [followUpTrigger, setFollowUpTrigger] = useState(0);
+  const [activeTab, setActiveTab] = useState<"play" | "journal">("play");
 
   // Random question suggestion
   const questionPool = context === "personal" ? PERSONAL_QUESTIONS_KEYS : BUSINESS_QUESTIONS_KEYS;
@@ -457,101 +459,134 @@ function PlayPage() {
 
   return (
     <div className="min-h-[calc(100vh-72px)]">
-      {/* Input section */}
-      <div className={`${!play && !loading ? "pt-8 sm:pt-16" : "pt-4 sm:pt-10"} transition-all`}>
-        <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
-          {!play && !loading && (
-            <div className="mb-8 sm:mb-10">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-                {t.headline}
-              </h1>
-              <p className="text-white/35 text-sm sm:text-base mt-1">
-                {t.subheadline}
-              </p>
-            </div>
-          )}
-
-          <QuestionInput
-            question={question}
-            onChange={setQuestion}
-            onSubmit={generatePlay}
-            loading={loading}
-            context={context}
-            onContextChange={setContext}
-            clientName={clientName}
-            onClientNameChange={setClientName}
-          />
-
-          {/* Daily question suggestion */}
-          {!play && !loading && (
-            <div className="mt-5 space-y-2">
-              <button
-                onClick={useDailyQuestion}
-                className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
-              >
-                {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
-              </button>
-
-              {playCount > 0 && (
-                <div className="text-white/15 text-xs">
-                  {playCount} {t.playsGenerated}
-                </div>
-              )}
-            </div>
-          )}
+      {/* Tab bar */}
+      <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 pt-4 sm:pt-6">
+        <div className="flex gap-1 bg-white/[0.04] rounded-lg p-0.5 w-fit">
+          <button
+            onClick={() => setActiveTab("play")}
+            className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              activeTab === "play" ? "bg-white/12 text-white" : "text-white/35 hover:text-white/60"
+            }`}
+          >
+            {t.playTab}
+          </button>
+          <button
+            onClick={() => setActiveTab("journal")}
+            className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              activeTab === "journal" ? "bg-white/12 text-white" : "text-white/35 hover:text-white/60"
+            }`}
+          >
+            {t.journalTab}
+          </button>
         </div>
       </div>
 
-      {/* Loading state */}
-      {loading && (
-        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-4 sm:mt-6">
-          <div className="py-2 flex items-center justify-center">
-            <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
-              {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
-            </p>
-          </div>
-          <PlaySkeleton />
+      {activeTab === "journal" ? (
+        <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 py-6 sm:py-8">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-6">
+            {t.journalTitle}
+          </h2>
+          <PerspectivesJournal />
         </div>
-      )}
+      ) : (
+        <>
+          {/* Input section */}
+          <div className={`${!play && !loading ? "pt-4 sm:pt-10" : "pt-2 sm:pt-6"} transition-all`}>
+            <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
+              {!play && !loading && (
+                <div className="mb-8 sm:mb-10">
+                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                    {t.headline}
+                  </h1>
+                  <p className="text-white/35 text-sm sm:text-base mt-1">
+                    {t.subheadline}
+                  </p>
+                </div>
+              )}
 
-      {/* Error */}
-      {error && (
-        <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-6">
-          <div className="rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-red-400 text-sm">
-            {error}
+              <QuestionInput
+                question={question}
+                onChange={setQuestion}
+                onSubmit={generatePlay}
+                loading={loading}
+                context={context}
+                onContextChange={setContext}
+                clientName={clientName}
+                onClientNameChange={setClientName}
+              />
+
+              {/* Daily question suggestion */}
+              {!play && !loading && (
+                <div className="mt-5 space-y-2">
+                  <button
+                    onClick={useDailyQuestion}
+                    className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
+                  >
+                    {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
+                  </button>
+
+                  {playCount > 0 && (
+                    <div className="text-white/15 text-xs">
+                      {playCount} {t.playsGenerated}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      )}
 
-      {/* Play result */}
-      {play && (
-        <div ref={playRef} className="mx-auto w-full max-w-2xl px-5 sm:px-8 py-6 sm:py-8">
-          <div className="flex items-center justify-between mb-4 animate-fade-slide-up">
-            <p className="text-sm text-white/25 italic truncate mr-4">
-              &ldquo;{askedQuestion}&rdquo;
-            </p>
-            <button
-              onClick={generatePlay}
-              disabled={loading}
-              className="text-xs text-mars-light/60 hover:text-mars-light transition-colors whitespace-nowrap border border-mars/20 rounded-lg px-3 py-1.5 hover:border-mars/40"
-            >
-              {t.regenerate}
-            </button>
-          </div>
+          {/* Loading state */}
+          {loading && (
+            <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-4 sm:mt-6">
+              <div className="py-2 flex items-center justify-center">
+                <p className="font-mercure text-white/40 text-sm sm:text-base italic animate-fade-in text-center" key={loadingMsg}>
+                  {t[LOADING_MESSAGES_KEYS[loadingMsg]]}
+                </p>
+              </div>
+              <PlaySkeleton />
+            </div>
+          )}
 
-          <PlayCard
-            play={play}
-            question={askedQuestion}
-            onPlayUpdate={handlePlayUpdate}
-            onAskQuestion={(q) => {
-              setQuestion(q);
-              // Trigger auto-generation (increment counter to always fire)
-              setFollowUpTrigger((n) => n + 1);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-            clientName={clientName.trim() || undefined}
-          />
-        </div>
+          {/* Error */}
+          {error && (
+            <div className="mx-auto max-w-2xl px-5 sm:px-8 mt-6">
+              <div className="rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-red-400 text-sm">
+                {error}
+              </div>
+            </div>
+          )}
+
+          {/* Play result */}
+          {play && (
+            <div ref={playRef} className="mx-auto w-full max-w-2xl px-5 sm:px-8 py-6 sm:py-8">
+              <div className="flex items-center justify-between mb-4 animate-fade-slide-up">
+                <p className="text-sm text-white/25 italic truncate mr-4">
+                  &ldquo;{askedQuestion}&rdquo;
+                </p>
+                <button
+                  onClick={generatePlay}
+                  disabled={loading}
+                  className="text-xs text-mars-light/60 hover:text-mars-light transition-colors whitespace-nowrap border border-mars/20 rounded-lg px-3 py-1.5 hover:border-mars/40"
+                >
+                  {t.regenerate}
+                </button>
+              </div>
+
+              <PlayCard
+                play={play}
+                question={askedQuestion}
+                onPlayUpdate={handlePlayUpdate}
+                onAskQuestion={(q) => {
+                  setQuestion(q);
+                  // Trigger auto-generation (increment counter to always fire)
+                  setFollowUpTrigger((n) => n + 1);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                clientName={clientName.trim() || undefined}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
