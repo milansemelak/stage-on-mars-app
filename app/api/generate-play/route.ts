@@ -108,6 +108,13 @@ export async function POST(request: NextRequest) {
     const sanitizedJson = sanitizeCyrillic(JSON.stringify(plays));
     plays = JSON.parse(sanitizedJson);
 
+    // Hard cap: max 4 characters per play
+    for (const play of plays) {
+      if (play.characters && play.characters.length > 4) {
+        play.characters = play.characters.slice(0, 4);
+      }
+    }
+
     return NextResponse.json({ plays });
   } catch (error) {
     console.error("Error generating play:", error);

@@ -646,19 +646,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* ── SHARE LINK ── */}
-            {simEnded && play && play.perspectives && play.perspectives.length > 0 && (
-              <div className="text-center mt-8 sm:mt-10">
-                <button
-                  onClick={handleShareLink}
-                  disabled={shareLoading}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.03] text-white/50 hover:text-white/80 hover:border-white/30 text-[11px] font-bold uppercase tracking-[0.15em] transition-all disabled:opacity-50"
-                >
-                  {shareLoading ? t.sharing : shareCopied ? t.linkCopied : t.shareLink}
-                </button>
-              </div>
-            )}
-
             {/* ── ACCOUNT CTA (quieter, comes after the hook) ── */}
             {simEnded && (
               <div className="mt-12 sm:mt-16 rounded-2xl border border-white/[0.08] bg-[#0c0c0c] overflow-hidden">
