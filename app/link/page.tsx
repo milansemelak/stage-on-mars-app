@@ -32,7 +32,7 @@ const links = [
   },
   {
     title: "Hra s realitou",
-    description: "Živý show formát. S Milanom Šemelákom.",
+    description: "Živý interaktívny show. Produkčný brief.",
     href: "/hrasrealitou",
   },
 ];
