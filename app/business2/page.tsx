@@ -297,6 +297,25 @@ export default function BusinessPage() {
       </FadeIn>
 
 
+      {/* ── INSTAGRAM ── */}
+      <FadeIn className="px-4 py-3 sm:py-4 pb-8 sm:pb-12">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-white/15 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold text-center mb-4 sm:mb-6">@stage_on_mars</p>
+          <div
+            className="[&_behold-widget]:block"
+            ref={(el) => {
+              if (el && !document.querySelector('script[src*="behold.so"]')) {
+                const s = document.createElement("script");
+                s.type = "module";
+                s.src = "https://w.behold.so/widget.js";
+                document.head.append(s);
+              }
+            }}
+            dangerouslySetInnerHTML={{ __html: '<behold-widget feed-id="dIhZfoeR63aCCPOqfshk"></behold-widget>' }}
+          />
+        </div>
+      </FadeIn>
+
       {/* FOOTER */}
       <footer className="py-6 px-6 border-t border-white/[0.03]">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-white/25 text-[10px]">
