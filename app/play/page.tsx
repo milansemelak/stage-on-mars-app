@@ -367,46 +367,49 @@ function PlayPage() {
         <div className="pt-8 sm:pt-16">
           <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
             <div className="mb-8 sm:mb-10">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+              <h1 className="text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1.1]">
                 {t.headline}
               </h1>
-              <p className="text-white/35 text-sm sm:text-base mt-1">
+              <p className="text-white/25 text-[13px] sm:text-[14px] mt-2 tracking-wide">
                 {t.subheadline}
               </p>
             </div>
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-5">
-              <div className="space-y-2">
-                <p className="text-white/70 text-base sm:text-lg font-medium">
-                  {t.accountRequiredTitle}
-                </p>
-                <p className="text-white/35 text-sm">
-                  {t.accountRequiredDesc}
-                </p>
-              </div>
+            <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+              <div className="p-6 sm:p-8 text-center space-y-5">
+                <div className="space-y-2">
+                  <p className="text-white/70 text-base sm:text-lg font-bold">
+                    {t.accountRequiredTitle}
+                  </p>
+                  <p className="text-white/25 text-[13px] sm:text-[14px]">
+                    {t.accountRequiredDesc}
+                  </p>
+                </div>
 
-              <div className="flex flex-col gap-3">
-                <button
-                  onClick={() => {
-                    if (question.trim()) {
-                      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
-                    }
-                    router.push("/auth/signup");
-                  }}
-                  className="px-6 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-semibold transition-colors"
-                >
-                  {t.createAccount}
-                </button>
-                <button
-                  onClick={() => {
-                    if (question.trim()) {
-                      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
-                    }
-                    router.push("/auth/login");
-                  }}
-                  className="text-white/30 hover:text-white/50 text-sm transition-colors"
-                >
-                  {t.alreadyHaveAccount}
-                </button>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={() => {
+                      if (question.trim()) {
+                        localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+                      }
+                      router.push("/auth/signup");
+                    }}
+                    className="w-full py-4 rounded-full bg-mars hover:bg-mars-light text-white font-black text-sm tracking-[0.15em] uppercase transition-all shadow-[0_0_40px_-8px_rgba(255,85,0,0.4)]"
+                  >
+                    {t.createAccount}
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (question.trim()) {
+                        localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+                      }
+                      router.push("/auth/login");
+                    }}
+                    className="text-white/20 hover:text-white/40 text-[12px] transition-colors"
+                  >
+                    {t.alreadyHaveAccount}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -422,34 +425,37 @@ function PlayPage() {
         <div className="pt-8 sm:pt-16">
           <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
             <div className="mb-8 sm:mb-10">
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+              <h1 className="text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1.1]">
                 {t.headline}
               </h1>
-              <p className="text-white/35 text-sm sm:text-base mt-1">
+              <p className="text-white/25 text-[13px] sm:text-[14px] mt-2 tracking-wide">
                 {t.subheadline}
               </p>
             </div>
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] p-6 sm:p-8 text-center space-y-5">
-              <div className="space-y-2">
-                <p className="text-white/70 text-base sm:text-lg font-medium">
-                  {t.trialExpiredTitle}
-                </p>
-                <p className="text-white/35 text-sm">
-                  {t.trialExpiredDesc}
-                </p>
-              </div>
+            <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.015] overflow-hidden">
+              <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/15 to-transparent" />
+              <div className="p-6 sm:p-8 text-center space-y-5">
+                <div className="space-y-2">
+                  <p className="text-white/70 text-base sm:text-lg font-bold">
+                    {t.trialExpiredTitle}
+                  </p>
+                  <p className="text-white/25 text-[13px] sm:text-[14px]">
+                    {t.trialExpiredDesc}
+                  </p>
+                </div>
 
-              <button
-                onClick={() => {
-                  if (question.trim()) {
-                    localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
-                  }
-                  router.push("/auth/subscribe");
-                }}
-                className="px-8 py-3 rounded-lg bg-mars hover:bg-mars-light text-white font-semibold transition-colors"
-              >
-                {t.authSubscribe}
-              </button>
+                <button
+                  onClick={() => {
+                    if (question.trim()) {
+                      localStorage.setItem(STORAGE_KEYS.pendingQuestion, question.trim());
+                    }
+                    router.push("/auth/subscribe");
+                  }}
+                  className="w-full py-4 rounded-full bg-mars hover:bg-mars-light text-white font-black text-sm tracking-[0.15em] uppercase transition-all shadow-[0_0_40px_-8px_rgba(255,85,0,0.4)]"
+                >
+                  {t.authSubscribe}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -461,22 +467,24 @@ function PlayPage() {
     <div className="min-h-[calc(100vh-72px)]">
       {/* Tab bar */}
       <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 pt-4 sm:pt-6">
-        <div className="flex gap-1 bg-white/[0.04] rounded-lg p-0.5 w-fit">
+        <div className="flex gap-6 border-b border-white/[0.06]">
           <button
             onClick={() => setActiveTab("play")}
-            className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
-              activeTab === "play" ? "bg-white/12 text-white" : "text-white/35 hover:text-white/60"
+            className={`pb-3 text-[13px] font-bold uppercase tracking-[0.15em] transition-all relative ${
+              activeTab === "play" ? "text-white" : "text-white/25 hover:text-white/45"
             }`}
           >
             {t.playTab}
+            {activeTab === "play" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-mars" />}
           </button>
           <button
             onClick={() => setActiveTab("journal")}
-            className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
-              activeTab === "journal" ? "bg-white/12 text-white" : "text-white/35 hover:text-white/60"
+            className={`pb-3 text-[13px] font-bold uppercase tracking-[0.15em] transition-all relative ${
+              activeTab === "journal" ? "text-white" : "text-white/25 hover:text-white/45"
             }`}
           >
             {t.journalTab}
+            {activeTab === "journal" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-mars" />}
           </button>
         </div>
       </div>
@@ -495,10 +503,10 @@ function PlayPage() {
             <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
               {!play && !loading && (
                 <div className="mb-8 sm:mb-10">
-                  <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+                  <h1 className="text-[28px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1.1]">
                     {t.headline}
                   </h1>
-                  <p className="text-white/35 text-sm sm:text-base mt-1">
+                  <p className="text-white/25 text-[13px] sm:text-[14px] mt-2 tracking-wide">
                     {t.subheadline}
                   </p>
                 </div>

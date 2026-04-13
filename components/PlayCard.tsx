@@ -599,8 +599,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             <div className="rounded-2xl border border-mars/[0.12] bg-gradient-to-b from-mars/[0.04] to-transparent px-4 py-7 sm:p-10 animate-fade-in">
               {/* Header */}
               <div className="text-center mb-6 sm:mb-8" style={currentPlay.simulation ? { animation: "perspectiveReveal 0.8s ease-out forwards" } : undefined}>
-                <p className="text-mars/60 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] font-bold mb-2">{t.whatTheStageRevealed}</p>
-                <h3 className="font-mercure italic text-white/85 text-[18px] sm:text-[26px] leading-[1.25]">
+                <p className="text-mars/50 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] font-bold mb-2">{t.whatTheStageRevealed}</p>
+                <h3 className="text-white/80 text-[18px] sm:text-[24px] font-bold tracking-[-0.02em] leading-[1.2]">
                   {t.landingStageShowedYou}
                 </h3>
               </div>
@@ -633,7 +633,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                             {authorP.character} · {t.landingYouBadge}
                           </span>
                         </div>
-                        <p className="text-white text-[17px] sm:text-[24px] leading-[1.45] sm:leading-[1.4] font-mercure italic text-center">
+                        <p className="text-white/90 text-[15px] sm:text-[18px] leading-[1.6] sm:leading-[1.55] text-center">
                           {authorP.insight}
                         </p>
                       </div>
@@ -671,7 +671,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                                     {sp.character}
                                   </p>
                                 </div>
-                                <p className="text-white/85 text-[15px] leading-[1.5] font-mercure italic">
+                                <p className="text-white/70 text-[13px] leading-[1.6]">
                                   {sp.insight}
                                 </p>
                               </div>
