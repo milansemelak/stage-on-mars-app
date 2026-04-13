@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Hra s realitou — Stage on Mars",
-  description: "Živý, interaktívny show formát, kde sa skutočné otázky menia na živé situácie. S Milanom Šemelákom.",
+  description: "Produkčný brief. Živý show formát, kde sa skutočné otázky menia na živé situácie. S Milanom Šemelákom.",
   openGraph: {
     title: "Hra s realitou",
-    description: "Dajte mi svoju otázku. A zahráme ju.",
+    description: "Produkčný brief. Živý interaktívny show formát.",
     siteName: "Stage on Mars",
     type: "website",
     images: [
@@ -20,7 +20,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Hra s realitou",
-    description: "Dajte mi svoju otázku. A zahráme ju.",
+    description: "Produkčný brief. Živý interaktívny show formát.",
     images: ["/stage.jpg"],
   },
 };
@@ -29,37 +29,44 @@ const FORMAT_FLOW = [
   {
     phase: "01",
     title: "Otvorenie",
-    description: "Nastavenie pravidiel a energie.\nRýchle, jasné, bez vysvetľovania.",
+    time: "3 min",
+    description: "Nastavenie pravidiel a energie. Rýchle, jasné, bez vysvetľovania.",
   },
   {
     phase: "02",
-    title: "Warm-up (bezpečná hra)",
-    description: 'Hra s absurdnými alebo "bulvárnymi" situáciami.\nCieľ: uvoľniť publikum, ukázať princíp.',
+    title: "Warm-up",
+    time: "10\u201315 min",
+    description: "Absurdné situácie, humor. Publikum pochopí princíp a uvoľní sa.",
   },
   {
     phase: "03",
-    title: "Prvá reálna otázka",
-    description: 'Prechod z "hry" do reality.\nKrátka, živá situácia z publika.',
+    title: "Prvá reálna hra",
+    time: "15\u201320 min",
+    description: "Prechod do reality. Krátka, živá situácia z publika.",
   },
   {
     phase: "04",
     title: "Hlbšia hra",
+    time: "20\u201325 min",
     description: "Eskalácia: viac napätia, viac pravdy, viac dynamiky.",
   },
   {
     phase: "05",
-    title: "Talk segment (voliteľné)",
-    description: "Rozhovor s hosťom.\nNie o príbehu — o otázke, ktorú žije.",
+    title: "Talk segment",
+    time: "voliteľné",
+    description: "Rozhovor s hosťom. Nie o jeho príbehu — o otázke, ktorú žije.",
   },
   {
     phase: "06",
     title: "Finále",
-    description: "Najsilnejšia hra večera.\nBez vysvetlenia. Len skúsenosť.",
+    time: "15\u201320 min",
+    description: "Najsilnejšia hra večera. Bez vysvetlenia. Len skúsenosť.",
   },
   {
     phase: "07",
     title: "Záver",
-    description: "Krátke uzavretie.\nOtvorenie priestoru na vlastnú reflexiu.",
+    time: "3 min",
+    description: "Krátke uzavretie. Priestor na vlastnú reflexiu.",
   },
 ];
 
@@ -69,37 +76,6 @@ const PRINCIPLES = [
   "Rýchlosť je dôležitejšia než presnosť.",
   "Humor otvára dvere k pravde.",
   "Každý je súčasťou systému.",
-];
-
-const HOW_IT_WORKS = [
-  {
-    step: "01",
-    title: "Otázka",
-    description: "Niekto z publika prinesie skutočnú otázku alebo situáciu.",
-  },
-  {
-    step: "02",
-    title: "Obsadenie",
-    description: "Milan vyberie ľudí z publika a priradí im role:",
-    items: ["ľudia zo života", "časti osobnosti", "neviditeľné sily (strach, tlak, očakávania…)"],
-  },
-  {
-    step: "03",
-    title: "Hra",
-    description: "Situácia sa začne odvíjať.\nBez scenára. Bez prípravy.",
-  },
-  {
-    step: "04",
-    title: "Zmena",
-    description: "Objaví sa nový pohľad, posun alebo uvedomenie.\nNiekedy jemné. Niekedy veľmi silné.",
-  },
-];
-
-const EXPERIENCE = [
-  "vidia svoj problém zvonka",
-  "zažijú nové perspektívy",
-  "uvoľnia napätie cez humor",
-  "odchádzajú s pocitom posunu",
 ];
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
@@ -120,7 +96,7 @@ export default function HraSRealitouPage() {
           <Link href="/business">
             <img src="/logo.png" alt="Stage On Mars" className="h-6 sm:h-7 w-auto opacity-50 hover:opacity-100 transition-opacity" />
           </Link>
-          <span className="text-neutral-300 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold">Hra s realitou</span>
+          <span className="text-neutral-300 text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold">Confidential</span>
         </div>
       </nav>
 
@@ -132,26 +108,32 @@ export default function HraSRealitouPage() {
           <h1 className="text-[32px] sm:text-[48px] font-bold tracking-[-0.04em] leading-[1.05] mb-1">
             Hra s <span className="font-mercure italic text-mars">realitou</span>
           </h1>
-          <p className="text-neutral-400 text-[12px] sm:text-[13px] uppercase tracking-[0.15em] font-semibold">S Milanom Šemelákom</p>
+          <p className="text-neutral-400 text-[12px] sm:text-[13px] uppercase tracking-[0.15em] font-semibold">Produkčný Brief</p>
         </div>
 
-        {/* WHAT IS IT */}
+        {/* BRIEF INFO */}
         <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">What Is It</p>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">O Formáte</p>
 
           <Row label="Formát">
-            <p className="text-[13px] font-semibold">Živý, interaktívny show formát</p>
+            <p className="text-[13px] font-semibold">Živý interaktívny show</p>
           </Row>
-          <Row label="Princíp">
-            <p className="text-[13px] leading-[1.6] text-neutral-700">
-              Skutočné otázky sa menia na živé situácie.
-              Diváci prinesú otázku, problém alebo napätie zo svojho života.
-              Milan Šemelák z&nbsp;nich v&nbsp;reálnom čase vytvorí systém — obsadí ľudí do rolí a&nbsp;nechá situáciu odohrať.
+          <Row label="Dĺžka">
+            <p className="text-[13px] font-semibold">90–120 min (flexibilné)</p>
+          </Row>
+          <Row label="Publikum">
+            <p className="text-[13px] font-semibold">30–300 ľudí</p>
+          </Row>
+          <Row label="Host">
+            <p className="text-[15px] sm:text-[17px] font-bold tracking-[-0.02em]">
+              Milan <span className="font-mercure italic text-mars">Šemelák</span>
             </p>
           </Row>
-          <Row label="Výsledok">
+          <Row label="Čo sa deje">
             <p className="text-[13px] leading-[1.6] text-neutral-700">
-              To, čo bolo neviditeľné alebo zamotané, sa zrazu stáva viditeľným.
+              Ľudia z&nbsp;publika prinesú otázku, problém alebo napätie zo svojho života.
+              Milan z&nbsp;nich v&nbsp;reálnom čase vytvorí systém — obsadí ľudí do rolí a&nbsp;nechá situáciu odohrať.
+              To, čo bolo neviditeľné, sa stáva viditeľným.
             </p>
           </Row>
           <Row label="Kľúčové">
@@ -159,79 +141,50 @@ export default function HraSRealitouPage() {
           </Row>
         </div>
 
-        {/* WHY IT EXISTS */}
+        {/* THE SPACE */}
         <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Why It Exists</p>
-
-          <Row label="Problém">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Priestor</p>
+          <Row label="Javisko">
+            <div className="rounded-xl overflow-hidden">
+              <img src="/stage.jpg" alt="Stage on Mars — the circular stage" className="w-full h-auto" />
+            </div>
+          </Row>
+          <Row label="Setup">
             <p className="text-[13px] leading-[1.6] text-neutral-700">
-              Ľudia sú zaseknutí vo vlastných príbehoch.
-              Premýšľajú, analyzujú, hľadajú odpovede —
-              ale nevidia, čo sa skutočne deje.
+              Kruhové alebo otvorené javisko. Bez stola, bez bariér.
+              Publikum okolo alebo v&nbsp;polkruhu. Intímny kontakt.
             </p>
           </Row>
-          <Row label="Účel">
-            <div className="space-y-0.5">
-              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">ukázať realitu zvonka</p>
-              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">umožniť zažiť inú perspektívu</p>
-              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">vytvoriť priestor, kde sa veci môžu pohnúť</p>
-            </div>
-          </Row>
-          <Row label="Kľúčové">
-            <p className="text-[13px] text-neutral-900 font-semibold italic">Nie cez rady. Cez skúsenosť.</p>
+          <Row label="Atmosféra">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Sústredená, ale uvoľnená. Striedanie humoru a&nbsp;ticha.
+              Energia v&nbsp;miestnosti je súčasťou formátu.
+            </p>
           </Row>
         </div>
 
-        {/* HOW IT WORKS */}
+        {/* DRAMATURGIA */}
         <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-1">How It Works</p>
-          <p className="text-[12px] text-neutral-400 mb-4">Od otázky po zmenu. V reálnom čase.</p>
-
-          {HOW_IT_WORKS.map((block, i) => (
-            <div key={i} className={`grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] gap-3 sm:gap-4 py-4 ${i < HOW_IT_WORKS.length - 1 ? "border-b border-neutral-100" : ""}`}>
-              <div>
-                <span className="text-mars text-[12px] font-mono font-bold">{block.step}</span>
-              </div>
-              <div>
-                <h4 className="text-[15px] sm:text-[16px] font-bold tracking-[-0.02em] mb-0.5">{block.title}</h4>
-                {block.description.split("\n").map((line, j) => (
-                  <p key={j} className="text-[13px] leading-[1.6] text-neutral-700">{line}</p>
-                ))}
-                {block.items && (
-                  <div className="mt-1 space-y-0.5">
-                    {block.items.map((item, j) => (
-                      <p key={j} className="text-[12px] sm:text-[13px] text-neutral-600 before:content-['·'] before:text-mars before:font-bold before:mr-1.5">{item}</p>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* FORMAT FLOW */}
-        <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-1">Format Flow</p>
-          <p className="text-[12px] text-neutral-400 mb-4">Štruktúra večera od otvorenia po záver.</p>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-1">Dramaturgia</p>
+          <p className="text-[12px] text-neutral-400 mb-4">Štruktúra večera. Začína ľahko, končí silno.</p>
 
           {FORMAT_FLOW.map((block, i) => (
             <div key={i} className={`grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] gap-3 sm:gap-4 py-4 ${i < FORMAT_FLOW.length - 1 ? "border-b border-neutral-100" : ""}`}>
               <div>
                 <span className="text-mars text-[12px] font-mono font-bold">{block.phase}</span>
+                <p className="text-neutral-300 text-[11px] mt-0.5">{block.time}</p>
               </div>
               <div>
                 <h4 className="text-[15px] sm:text-[16px] font-bold tracking-[-0.02em] mb-0.5">{block.title}</h4>
-                {block.description.split("\n").map((line, j) => (
-                  <p key={j} className="text-[13px] leading-[1.6] text-neutral-700">{line}</p>
-                ))}
+                <p className="text-[13px] leading-[1.6] text-neutral-700">{block.description}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* KEY PRINCIPLES */}
+        {/* PRINCÍPY */}
         <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Key Principles</p>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Princípy Formátu</p>
           <Row label="Pravidlá">
             <div className="space-y-0.5">
               {PRINCIPLES.map((p, i) => (
@@ -241,54 +194,79 @@ export default function HraSRealitouPage() {
           </Row>
         </div>
 
-        {/* ROLE OF THE HOST */}
+        {/* ROLA HOSTITEĽA */}
         <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Role of the Host</p>
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Rola Hostiteľa</p>
 
-          <Row label="Kto">
-            <p className="text-[15px] sm:text-[17px] font-bold tracking-[-0.02em]">
-              Milan <span className="font-mercure italic text-mars">Šemelák</span>
-            </p>
-          </Row>
           <Row label="Nie je">
-            <p className="text-[13px] leading-[1.6] text-neutral-700">facilitátor ani kouč</p>
+            <p className="text-[13px] leading-[1.6] text-neutral-700">facilitátor, kouč ani terapeut</p>
           </Row>
           <Row label="Je">
-            <div className="space-y-0.5">
-              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">režisér</p>
-              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">moderátor</p>
-              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">pozorovateľ reality</p>
-            </div>
-          </Row>
-          <Row label="Kľúčové">
-            <p className="text-[13px] text-neutral-900 font-semibold italic">Vytvára situácie, v ktorých sa veci ukážu samy.</p>
-          </Row>
-        </div>
-
-        {/* WHAT PEOPLE EXPERIENCE */}
-        <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">What People Experience</p>
-          <Row label="Zážitok">
-            <div className="space-y-0.5">
-              {EXPERIENCE.map((item, i) => (
-                <p key={i} className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">{item}</p>
-              ))}
-            </div>
-          </Row>
-          <Row label="Kľúčové">
-            <p className="text-[13px] text-neutral-900 font-semibold italic">
-              Nie preto, že dostali odpoveď. Ale preto, že niečo uvideli inak.
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Režisér situácií. Vytvára podmienky, v&nbsp;ktorých sa veci ukážu samy.
+              Pracuje s&nbsp;tým, čo je v&nbsp;miestnosti — s&nbsp;ľuďmi, energiou, napätím.
             </p>
           </Row>
         </div>
 
-        {/* THE SPACE */}
+        {/* ČO PUBLIKUM ZAŽIJE */}
         <div className="mb-8 sm:mb-10">
-          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">The Space</p>
-          <Row label="Javisko">
-            <div className="rounded-xl overflow-hidden">
-              <img src="/stage.jpg" alt="Stage on Mars — the circular stage" className="w-full h-auto" />
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Čo Publikum Zažije</p>
+          <Row label="Zážitok">
+            <div className="space-y-0.5">
+              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">vidia problémy zvonka, z&nbsp;iného uhla</p>
+              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">zažijú perspektívy, ktoré si sami nevedia vytvoriť</p>
+              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">uvoľnia napätie cez humor a&nbsp;hru</p>
+              <p className="text-[13px] text-neutral-700 leading-[1.6] before:content-['·'] before:text-mars before:font-bold before:mr-1.5">odchádzajú s&nbsp;pocitom posunu — bez rád a&nbsp;vysvetlení</p>
             </div>
+          </Row>
+        </div>
+
+        {/* TECHNICKÉ POŽIADAVKY */}
+        <div className="mb-8 sm:mb-10">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Technické Požiadavky</p>
+
+          <Row label="Priestor">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Otvorený priestor s&nbsp;možnosťou pohybu. Javisko alebo voľná plocha min. 4&times;4m.
+            </p>
+          </Row>
+          <Row label="Zvuk">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              1&times; bezdrôtový mikrofón pre hostiteľa. PA systém pre publikum.
+            </p>
+          </Row>
+          <Row label="Svetlo">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Základné javiskové osvetlenie. Možnosť stlmiť svetlá v&nbsp;hľadisku.
+            </p>
+          </Row>
+          <Row label="Príprava">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Žiadna príprava od publika. Žiadne predošlé skúsenosti potrebné.
+              Milan potrebuje 30 min na prípravu priestoru.
+            </p>
+          </Row>
+        </div>
+
+        {/* POUŽITIE */}
+        <div className="mb-8 sm:mb-10">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Kde To Funguje</p>
+
+          <Row label="Eventy">
+            <p className="text-[13px] font-semibold">Konferencie, firemné eventy, festivaly</p>
+          </Row>
+          <Row label="Komunity">
+            <p className="text-[13px] font-semibold">Coworkingy, meetupy, súkromné skupiny</p>
+          </Row>
+          <Row label="Médiá">
+            <p className="text-[13px] font-semibold">Live show, podcast s publikom, TV formát</p>
+          </Row>
+          <Row label="Škálovanie">
+            <p className="text-[13px] leading-[1.6] text-neutral-700">
+              Funguje pre 30 ľudí v&nbsp;obývačke aj pre 300 na konferencii.
+              Formát sa prispôsobí priestoru, nie naopak.
+            </p>
           </Row>
         </div>
 
@@ -296,12 +274,23 @@ export default function HraSRealitouPage() {
         <div className="mb-8 sm:mb-10">
           <div className="border-l-2 border-mars pl-4 py-2">
             <p className="text-[18px] sm:text-[22px] font-mercure italic leading-[1.3] text-black">
-              „Dajte mi svoju otázku.
+              {"\u201EDajte mi svoju otázku."}
             </p>
             <p className="text-[18px] sm:text-[22px] font-mercure italic leading-[1.3] text-mars">
-              A zahráme ju."
+              {"A zahráme ju.\u201C"}
             </p>
           </div>
+        </div>
+
+        {/* KONTAKT */}
+        <div className="mb-8 sm:mb-10">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">Kontakt</p>
+          <Row label="Booking">
+            <a href="mailto:play@stageonmars.com" className="text-[13px] font-semibold text-black hover:text-mars transition-colors">play@stageonmars.com</a>
+          </Row>
+          <Row label="Web">
+            <a href="https://stageonmars.com" target="_blank" rel="noopener noreferrer" className="text-[13px] font-semibold text-black hover:text-mars transition-colors">stageonmars.com</a>
+          </Row>
         </div>
 
         {/* Footer */}
