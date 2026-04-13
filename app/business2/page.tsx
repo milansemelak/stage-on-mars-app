@@ -186,12 +186,55 @@ export default function BusinessPage() {
                 YPO <span className="text-white/15 mx-0.5">·</span>{" "}
                 PwC <span className="text-white/15 mx-0.5">·</span>{" "}
                 O₂ <span className="text-white/15 mx-0.5">·</span>{" "}
+                UniCredit <span className="text-white/15 mx-0.5">·</span>{" "}
                 Oktagon MMA <span className="text-white/15 mx-0.5">·</span>{" "}
                 House of Lobkowicz <span className="text-white/15 mx-0.5">·</span>{" "}
                 London Business School <span className="text-white/15 mx-0.5">·</span>{" "}
                 Česká spořitelna <span className="text-white/15 mx-0.5">·</span>{" "}
+                Lasvit <span className="text-white/15 mx-0.5">·</span>{" "}
+                Ipsen <span className="text-white/15 mx-0.5">·</span>{" "}
+                MSD <span className="text-white/15 mx-0.5">·</span>{" "}
+                Direct Group <span className="text-white/15 mx-0.5">·</span>{" "}
                 Raiffeisenbank
               </p>
+            </div>
+          </div>
+        </div>
+      </FadeIn>
+
+
+      {/* ── METRICS ── */}
+      <FadeIn className="px-4 py-3 sm:py-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4">
+            {/* 9/10 LEADERS */}
+            <div className="relative rounded-xl px-1.5 sm:px-4 py-6 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars/70 to-transparent" />
+              <p className="text-mars text-[42px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
+                9<span className="text-white/20 text-[26px] sm:text-[36px] mx-0.5">/</span>10
+              </p>
+              <p className="text-mars/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-3">leaders</p>
+              <p className="text-white/45 text-[10px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">unblocked a stuck decision</p>
+            </div>
+
+            {/* 4 HOURS */}
+            <div className="relative rounded-xl px-1.5 sm:px-4 py-6 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.18) 0%, rgba(255,85,0,0.04) 100%)" }}>
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars to-transparent" />
+              <p className="text-mars text-[42px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.5)]">
+                4<span className="text-mars/60 text-[16px] sm:text-[22px] font-black uppercase tracking-[0.05em] ml-0.5">h</span>
+              </p>
+              <p className="text-mars/90 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-3">to clarity</p>
+              <p className="text-white/45 text-[10px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">what used to take weeks</p>
+            </div>
+
+            {/* 80% OF TEAMS */}
+            <div className="relative rounded-xl px-1.5 sm:px-4 py-6 sm:py-7 text-center overflow-hidden" style={{ background: "linear-gradient(180deg, rgba(255,85,0,0.08) 0%, rgba(255,85,0,0.02) 100%)" }}>
+              <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-mars/70 to-transparent" />
+              <p className="text-mars text-[42px] sm:text-[56px] font-black tracking-[-0.06em] leading-[0.9] drop-shadow-[0_0_30px_rgba(255,85,0,0.35)]">
+                80<span className="text-mars/60 text-[22px] sm:text-[32px] align-top">%</span>
+              </p>
+              <p className="text-mars/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.18em] mt-3">of teams</p>
+              <p className="text-white/45 text-[10px] sm:text-[12px] leading-[1.35] mt-2 sm:mt-3 font-mercure italic">left with a clear direction</p>
             </div>
           </div>
         </div>
