@@ -5,7 +5,7 @@ export const metadata = {
   description: "Produkčný brief. Živý show formát, kde sa skutočné otázky menia na živé situácie. S Milanom Šemelákom.",
   openGraph: {
     title: "Hra s realitou",
-    description: "Produkčný brief. Živý interaktívny show formát.",
+    description: "Produkčný brief. Živá interaktívna show.",
     siteName: "Stage on Mars",
     type: "website",
     images: [
@@ -20,7 +20,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Hra s realitou",
-    description: "Produkčný brief. Živý interaktívny show formát.",
+    description: "Produkčný brief. Živá interaktívna show.",
     images: ["/stage.jpg"],
   },
 };
@@ -116,7 +116,7 @@ export default function HraSRealitouPage() {
           <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-3">O Formáte</p>
 
           <Row label="Formát">
-            <p className="text-[13px] font-semibold">Živý interaktívny show</p>
+            <p className="text-[13px] font-semibold">Živá interaktívna show</p>
           </Row>
           <Row label="Dĺžka">
             <p className="text-[13px] font-semibold">90–120 min (flexibilné)</p>

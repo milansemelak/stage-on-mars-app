@@ -32,7 +32,7 @@ const links = [
   },
   {
     title: "Hra s realitou",
-    description: "Živý interaktívny show. Produkčný brief.",
+    description: "Živá interaktívna show. Produkčný brief.",
     href: "/hrasrealitou",
   },
 ];
