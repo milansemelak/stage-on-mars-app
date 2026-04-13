@@ -30,6 +30,11 @@ const links = [
     description: "Talks from Outer Space. Production brief.",
     href: "/show",
   },
+  {
+    title: "Hra s realitou",
+    description: "Živý show formát. S Milanom Šemelákom.",
+    href: "/hrasrealitou",
+  },
 ];
 
 export default function LinkPage() {
