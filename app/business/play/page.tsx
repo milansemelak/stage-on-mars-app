@@ -319,6 +319,7 @@ function PlayPageInner() {
   const companyParam = searchParams.get("company") || "";
   const simulateOnly = searchParams.get("simulate") === "1";
 
+  /* ── State ── */
   const [building, setBuilding] = useState(true);
   const [experience, setExperience] = useState<Experience | null>(null);
   const [selectedPeople, setSelectedPeople] = useState(1);
@@ -326,30 +327,43 @@ function PlayPageInner() {
   const [play, setPlay] = useState<Play | null>(null);
   const [playLoading, setPlayLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showDigital, setShowDigital] = useState(false);
+
+  // Simulator state
+  const [showSimulator, setShowSimulator] = useState(false);
   const [simLoading, setSimLoading] = useState(false);
   const [simReady, setSimReady] = useState(false);
   const [simPhase, setSimPhase] = useState<"cast" | "stage" | "perspectives">("cast");
   const [simEnded, setSimEnded] = useState(false);
+
+  // Booking form state
   const [cardName, setCardName] = useState("");
   const [cardEmail, setCardEmail] = useState("");
   const [cardDate, setCardDate] = useState("");
   const [cardSent, setCardSent] = useState(false);
 
-  const resultRef = useRef<HTMLDivElement>(null);
+  // Landing form state
+  const [realQ, setRealQ] = useState("");
+  const [realCo, setRealCo] = useState("");
 
-  // Auto-trigger building animation on load
+  const resultRef = useRef<HTMLDivElement>(null);
+  const bookingRef = useRef<HTMLDivElement>(null);
+
+  /* ── Auto-trigger on load when ?q= is present ── */
   useEffect(() => {
     if (!questionParam) return;
-    // Simulate-only flow: skip building animation, derive experience silently,
-    // and open the inline simulator immediately.
+
+    // Simulate-only flow: skip building, go straight to simulator
     if (simulateOnly) {
       setExperience(deriveExperience(questionParam, companyParam));
       setBuilding(false);
-      openDigital(questionParam);
+      fetchPlayAndSimulation(questionParam);
       return;
     }
+
+    // Normal flow: building animation, then fetch play preview
     setBuilding(true);
+    fetchPlayPreview(questionParam);
+
     const timer = setTimeout(() => {
       setExperience(deriveExperience(questionParam, companyParam));
       setBuilding(false);
@@ -358,6 +372,29 @@ function PlayPageInner() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionParam, companyParam, simulateOnly]);
 
+  /* ── Fetch play preview (name, characters, image) ── */
+  async function fetchPlayPreview(q: string) {
+    setPlayLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/generate-play", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q, context: "business", lang: "en", clientName: companyParam || undefined }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      if (data.plays?.[0]) {
+        setPlay(data.plays[0]);
+      }
+    } catch {
+      setError("Something went wrong. Try again.");
+    } finally {
+      setPlayLoading(false);
+    }
+  }
+
+  /* ── Fetch simulation (for the optional simulator link) ── */
   async function fetchSimulation(currentPlay: Play, overrideQuestion?: string) {
     setSimLoading(true);
     setSimReady(false);
@@ -386,14 +423,14 @@ function PlayPageInner() {
     }
   }
 
-  async function openDigital(overrideQuestion?: string) {
-    setShowDigital(true);
+  /* ── Full fetch: play + simulation (for simulate-only mode) ── */
+  async function fetchPlayAndSimulation(q: string) {
+    setShowSimulator(true);
     setPlayLoading(true);
     setError("");
     setSimPhase("cast");
     setSimEnded(false);
 
-    const q = overrideQuestion || questionParam;
     try {
       const res = await fetch("/api/generate-play", {
         method: "POST",
@@ -414,350 +451,169 @@ function PlayPageInner() {
     }
   }
 
-  /* ── Builder landing (no question yet) ── */
-  const [realQ, setRealQ] = useState("");
-  const [realCo, setRealCo] = useState("");
-  const [simQ, setSimQ] = useState("");
+  /* ── Open the optional simulator from the link ── */
+  function openSimulator() {
+    if (!play) return;
+    setShowSimulator(true);
+    setSimPhase("cast");
+    setSimEnded(false);
+    fetchSimulation(play, questionParam);
+  }
 
-  function submitReal(overrideQ?: string) {
+  /* ── Submit from landing page ── */
+  function submitQuestion(overrideQ?: string) {
     const q = overrideQ || realQ;
     if (!q.trim()) return;
     const params = new URLSearchParams({ q });
-    if (realCo.trim()) params.set("company", realCo);
+    if ((overrideQ ? "" : realCo).trim() || realCo.trim()) {
+      const co = overrideQ ? "" : realCo;
+      if (co.trim()) params.set("company", co);
+    }
     window.location.href = `/business/play?${params.toString()}`;
   }
 
-  function submitSimulator(overrideQ?: string) {
-    const q = overrideQ || simQ;
-    if (!q.trim()) return;
-    const params = new URLSearchParams({ q, simulate: "1" });
-    window.location.href = `/business/play?${params.toString()}`;
-  }
+  /* ══════════════════════════════════════════════════════════════════
+     LANDING STATE — no ?q= param
+     ══════════════════════════════════════════════════════════════════ */
+
+  const [activeQ, setActiveQ] = useState(0);
+  const [typing, setTyping] = useState(false);
 
   if (!questionParam) {
-    const readyMade = [
-      { theme: "Strategy", q: "Where is your company really heading \u2014 and what\u2019s pulling it off course?" },
-      { theme: "Vision", q: "What does your company look like in 5 years? Your team builds that future on stage." },
-      { theme: "Team", q: "What\u2019s really going on in your team? What holds it together, what pulls it apart." },
+    const questions = [
+      "Where are we really heading?",
+      "What\u2019s going on in our team?",
+      "Our best people are leaving. Why?",
+      "We need to change. But something is resisting.",
+      "There\u2019s a decision we keep avoiding.",
+      "What do we not say out loud?",
+      "We doubled in size. What broke?",
+      "What kind of leader do we need?",
+      "Where does innovation go to die here?",
     ];
 
     return (
-      <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] overflow-x-hidden">
+      <div className="min-h-screen bg-mars text-white flex flex-col overflow-x-hidden">
+        <style jsx global>{`
+          @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        `}</style>
+
         {/* Top bar */}
-        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 py-4 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.04]">
+        <nav className="flex items-center justify-between px-5 sm:px-8 py-4">
           <Link href="/business">
-            <img src="/logo.png" alt="Stage On Mars" className="h-7 sm:h-8 w-auto invert opacity-70 hover:opacity-100 transition-opacity" />
+            <img src="/logo.png" alt="Stage On Mars" className="h-6 sm:h-7 w-auto invert opacity-60 hover:opacity-100 transition-opacity" />
           </Link>
         </nav>
 
-        <div className="pt-24 sm:pt-32 pb-16 px-4 flex flex-col items-center">
-          {/* Hero */}
-          <div className="text-center mb-10 sm:mb-14 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.12] bg-white/[0.03] mb-5">
-              <div className="w-1.5 h-1.5 rounded-full bg-mars animate-pulse" />
-              <p className="text-white/60 text-[10px] uppercase tracking-[0.25em] font-bold">Stage on Mars for business</p>
-            </div>
-            <h1 className="text-[30px] sm:text-[52px] font-black tracking-[-0.04em] leading-[1.05] mb-5 text-white">
-              Turn your biggest question<br /><span className="text-mars">into decisions in 4 hours.</span>
-            </h1>
-            <p className="font-mercure italic text-white/50 text-[14px] sm:text-[17px] leading-[1.55] max-w-xl mx-auto">
-              A live experience with your team on the Stage on Mars in Prague.
-            </p>
-            <div className="flex items-center justify-center gap-5 sm:gap-8 mt-6 text-[11px] sm:text-[12px] text-white/40">
-              <span className="flex items-center gap-1.5"><span className="text-mars">50+</span> teams</span>
-              <span className="w-1 h-1 rounded-full bg-white/20" />
-              <span className="flex items-center gap-1.5"><span className="text-mars">9/10</span> leaders</span>
-              <span className="w-1 h-1 rounded-full bg-white/20" />
-              <span className="flex items-center gap-1.5"><span className="text-mars">4h</span> to clarity</span>
-            </div>
-          </div>
+        {/* Main — full height centered */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6 sm:px-10 pb-10">
 
-          <div className="w-full max-w-3xl space-y-6 sm:space-y-8">
-
-            {/* ════════════════════════════════════════════════════════
-                CARD 1 — DESIGN YOUR REAL EXPERIENCE (structured product card)
-                ════════════════════════════════════════════════════════ */}
-            <div className="relative rounded-2xl border border-white/[0.12] bg-[#0a0a0a] overflow-hidden" style={{ boxShadow: "0 20px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset" }}>
-              {/* Top bar — product-header style */}
-              <div className="flex items-center justify-between px-6 sm:px-8 py-4 border-b border-white/[0.08] bg-white/[0.02]">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-mars" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-mars/50" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-mars/20" />
-                  </div>
-                  <p className="text-white/50 text-[10px] uppercase tracking-[0.25em] font-bold">Live on Stage &middot; Prague</p>
-                </div>
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-mars/10 border border-mars/20">
-                  <div className="w-1 h-1 rounded-full bg-mars animate-pulse" />
-                  <p className="text-mars text-[9px] font-black uppercase tracking-[0.2em]">Reply in 24h</p>
-                </div>
-              </div>
-
-              {/* Headline + price anchor */}
-              <div className="px-6 sm:px-8 pt-8 sm:pt-10 pb-6">
-                <div className="mb-5">
-                  <h2 className="text-white text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1.05] mb-2">
-                    Your team. Your question.<br />Played live on Mars.
-                  </h2>
-                  <p className="text-white/45 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
-                    We design a custom 4-hour play around the question that matters most — and run it with your team on our stage in Prague.
-                  </p>
-                </div>
-
-                {/* What's included — structured grid */}
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 sm:p-5 mb-6">
-                  {[
-                    "Custom play built around your question",
-                    "4 hours: intro → play → break → outro",
-                    "Live on the Stage on Mars in Prague",
-                    "Guided by a Play Pilot and a full cast",
-                    "Designed for teams up to 12 people",
-                    "New perspectives to take back home",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <svg className="w-3.5 h-3.5 text-mars shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                      <p className="text-white/65 text-[12px] sm:text-[12.5px] leading-[1.4]">{item}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Input block */}
-                <div className="rounded-xl border border-white/[0.08] bg-white/[0.02] overflow-hidden mb-4">
-                  <div className="px-4 sm:px-5 pt-4 pb-2">
-                    <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-2">Step 1 &middot; Your question</p>
-                    <textarea
-                      value={realQ}
-                      onChange={(e) => setRealQ(e.target.value)}
-                      placeholder="e.g. What does our company need most right now?"
-                      rows={2}
-                      className="w-full min-h-[56px] bg-transparent border-0 px-0 py-0 text-white text-[15px] sm:text-[17px] placeholder:text-white/25 focus:outline-none resize-none leading-[1.35] tracking-[-0.01em] font-medium"
-                      style={{ caretColor: "#FF5500" }}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitReal(); }
-                      }}
-                    />
-                  </div>
-                  <div className="px-4 sm:px-5 pb-4 pt-2 border-t border-white/[0.05]">
-                    <p className="text-white/30 text-[9px] uppercase tracking-[0.25em] font-bold mb-1.5">Step 2 &middot; Company</p>
-                    <input
-                      value={realCo}
-                      onChange={(e) => setRealCo(e.target.value)}
-                      placeholder="Company name"
-                      className="w-full bg-transparent border-0 px-0 py-0 text-white/80 placeholder:text-white/25 focus:outline-none text-[14px] font-medium"
-                    />
-                  </div>
-                </div>
-
-                {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-2.5">
-                  <button
-                    onClick={() => submitReal()}
-                    disabled={!realQ.trim()}
-                    className="relative flex-1 py-4 rounded-xl font-black text-[13px] sm:text-[14px] uppercase tracking-[0.12em] transition-all text-white disabled:opacity-25 disabled:shadow-none overflow-hidden group/btn"
-                    style={{ background: "linear-gradient(135deg, #FF5500 0%, #e04800 50%, #FF5500 100%)", boxShadow: "0 8px 30px -8px rgba(255,85,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15)" }}
-                  >
-                    <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500" style={{ background: "linear-gradient(135deg, #ff6a1a 0%, #FF5500 50%, #ff6a1a 100%)" }} />
-                    <span className="relative z-10">Request your play &rarr;</span>
-                  </button>
-                  <a
-                    href="mailto:play@stageonmars.com?subject=Book a call"
-                    className="sm:w-auto py-4 px-6 rounded-xl border border-white/[0.12] text-white/70 font-bold text-[13px] sm:text-[14px] uppercase tracking-[0.12em] hover:border-white/30 hover:text-white transition-all text-center"
-                  >
-                    Book a call
-                  </a>
-                </div>
-                <p className="text-white/25 text-[10px] text-center mt-3">Free to inquire &middot; no credit card &middot; reply within 24h</p>
-              </div>
-
-              {/* Templates row */}
-              <div className="border-t border-white/[0.06] bg-white/[0.015] px-6 sm:px-8 py-5">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-white/40 text-[10px] uppercase tracking-[0.25em] font-black">Ready-made templates</p>
-                  <p className="text-white/20 text-[10px]">Click to pre-fill</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  {readyMade.map((play, i) => (
-                    <button key={i} onClick={() => submitReal(play.q)} className="group text-left rounded-lg border border-white/[0.08] bg-white/[0.02] hover:border-mars/30 hover:bg-mars/[0.04] transition-all duration-300 p-3">
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-white/85 text-[13px] font-black tracking-[-0.01em]">{play.theme} Play</p>
-                        <span className="text-mars/40 group-hover:text-mars text-[14px]">&rarr;</span>
-                      </div>
-                      <p className="text-white/35 text-[10.5px] leading-[1.35] line-clamp-2">{play.q.split(".")[0]}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* ── OR divider ── */}
-            <div className="flex items-center gap-4 max-w-md mx-auto">
-              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.12]" />
-              <p className="text-white/30 text-[10px] uppercase tracking-[0.35em] font-black shrink-0">Or try it now</p>
-              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.12]" />
-            </div>
-
-            {/* ════════════════════════════════════════════════════════
-                CARD 2 — TRY THE AI SIMULATOR (orange)
-                ════════════════════════════════════════════════════════ */}
-            <div className="relative rounded-2xl overflow-hidden bg-mars" style={{ boxShadow: "0 20px 80px -20px rgba(255,85,0,0.5), 0 8px 40px -12px rgba(255,85,0,0.3)" }}>
-              <div className="h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-
-              {/* Header */}
-              <div className="px-6 sm:px-8 pt-8 sm:pt-10 pb-2">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#0a0a0a] animate-pulse" />
-                  <p className="text-[#0a0a0a]/80 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-black">Option 2 &middot; AI simulator</p>
-                </div>
-                <h2 className="text-[#0a0a0a] text-[22px] sm:text-[28px] font-black tracking-[-0.025em] leading-[1.1] mb-2">
-                  Try a play right now
-                </h2>
-                <p className="font-mercure italic text-[#0a0a0a]/70 text-[13px] sm:text-[14px] leading-[1.5] max-w-lg">
-                  Type a question. Watch a play unfold in your browser — characters, stage, perspectives — all simulated live. Free, instant, no signup.
+          {!typing ? (
+            <>
+              {/* The big question */}
+              <div className="text-center max-w-2xl mb-10 sm:mb-14" key={activeQ} style={{ animation: "fade-up 0.4s ease both" }}>
+                <p className="text-white/40 text-[11px] sm:text-[12px] uppercase tracking-[0.3em] mb-6">
+                  {String(activeQ + 1).padStart(2, "0")} / {String(questions.length).padStart(2, "0")}
                 </p>
-              </div>
-
-              {/* Question input */}
-              <div className="px-6 sm:px-8 pt-6 pb-4">
-                <p className="text-[#0a0a0a]/40 text-[9px] uppercase tracking-[0.25em] font-bold mb-3">Your question</p>
-                <textarea
-                  value={simQ}
-                  onChange={(e) => setSimQ(e.target.value)}
-                  placeholder="What does my company need the most right now?"
-                  rows={2}
-                  className="w-full min-h-[64px] bg-transparent border-0 px-0 py-0 text-[#0a0a0a] text-[18px] sm:text-[22px] placeholder:text-[#0a0a0a]/30 focus:outline-none resize-none leading-[1.35] tracking-[-0.01em] font-medium"
-                  style={{ caretColor: "#0a0a0a" }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitSimulator(); }
-                  }}
-                />
-              </div>
-              <div className="px-6 sm:px-8 pb-8 space-y-3 border-t border-[#0a0a0a]/10 pt-5">
+                <h1 className="text-[32px] sm:text-[56px] font-black tracking-[-0.04em] leading-[1.05] mb-8">
+                  {questions[activeQ]}
+                </h1>
                 <button
-                  onClick={() => submitSimulator()}
-                  disabled={!simQ.trim()}
-                  className="relative w-full py-4 sm:py-5 rounded-2xl font-black text-[14px] sm:text-[16px] uppercase tracking-[0.12em] transition-all bg-[#0a0a0a] text-white hover:bg-black disabled:opacity-30 hover:scale-[1.01]"
+                  onClick={() => submitQuestion(questions[activeQ])}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-mars text-[13px] sm:text-[14px] font-black uppercase tracking-[0.1em] hover:scale-105 active:scale-100 transition-transform shadow-[0_4px_30px_rgba(0,0,0,0.2)]"
                 >
-                  Run the simulator &rarr;
+                  This is my question
                 </button>
-                <p className="text-[#0a0a0a]/40 text-[10px] text-center">Plays in your browser &middot; ~30 seconds</p>
               </div>
+
+              {/* Navigation */}
+              <div className="flex items-center gap-6">
+                <button
+                  onClick={() => setActiveQ((prev) => (prev - 1 + questions.length) % questions.length)}
+                  className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
+                >
+                  &larr;
+                </button>
+
+                {/* Dots */}
+                <div className="flex items-center gap-2">
+                  {questions.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveQ(i)}
+                      className={`rounded-full transition-all duration-300 ${
+                        i === activeQ ? "w-6 h-2 bg-white" : "w-2 h-2 bg-white/30 hover:bg-white/50"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setActiveQ((prev) => (prev + 1) % questions.length)}
+                  className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white/60 hover:text-white hover:border-white/60 transition-all"
+                >
+                  &rarr;
+                </button>
+              </div>
+
+              {/* Switch to typing */}
+              <button
+                onClick={() => setTyping(true)}
+                className="mt-10 text-white/40 text-[12px] sm:text-[13px] hover:text-white/70 transition-colors"
+              >
+                I have a different question
+              </button>
+            </>
+          ) : (
+            /* Custom question mode */
+            <div className="w-full max-w-xl text-center" style={{ animation: "fade-up 0.4s ease both" }}>
+              <textarea
+                value={realQ}
+                onChange={(e) => setRealQ(e.target.value)}
+                placeholder="What are we really dealing with?"
+                rows={2}
+                autoFocus
+                className="w-full bg-transparent border-0 text-white text-[28px] sm:text-[44px] font-black tracking-[-0.04em] leading-[1.1] placeholder:text-white/30 focus:outline-none resize-none text-center"
+                style={{ caretColor: "white" }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitQuestion(); }
+                }}
+              />
+              <div className="flex items-center justify-center gap-4 mt-8">
+                <button
+                  onClick={() => submitQuestion()}
+                  disabled={!realQ.trim()}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white text-mars text-[13px] sm:text-[14px] font-black uppercase tracking-[0.1em] hover:scale-105 active:scale-100 transition-transform shadow-[0_4px_30px_rgba(0,0,0,0.2)] disabled:opacity-30 disabled:hover:scale-100"
+                >
+                  Play this question
+                </button>
+              </div>
+              <button
+                onClick={() => setTyping(false)}
+                className="mt-6 text-white/40 text-[12px] sm:text-[13px] hover:text-white/70 transition-colors"
+              >
+                &larr; Back to questions
+              </button>
             </div>
-
-          </div>
-
-          {/* Old static demo card hidden — kept for reference, not rendered */}
-          {false && (
-            <button className="w-full group block">
-              <div className="relative rounded-2xl overflow-hidden bg-mars">
-                <div className="px-5 sm:px-8 pt-6 sm:pt-8 pb-0">
-                  <p className="text-[#0a0a0a] text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-black mb-2 text-center">The Play Simulator</p>
-                  <p className="text-[#0a0a0a]/60 text-[11px] sm:text-[12px] text-center mb-5 max-w-xs mx-auto leading-[1.3]">Type a question. Watch it become a play.<br />Characters, stage, perspectives — all simulated live.</p>
-                  <div className="max-w-[380px] mx-auto">
-                    <div className="relative rounded-[12px] bg-[#1a1a1c] p-[3px] shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-                      <div className="rounded-[10px] overflow-hidden bg-[#0a0a0c]">
-                        <div className="flex items-center justify-between px-3 pt-2 pb-1">
-                          <div className="flex items-center gap-1.5">
-                            <div className="flex gap-[3px]">
-                              <div className="w-[5px] h-[5px] rounded-full bg-[#ff5f57]" />
-                              <div className="w-[5px] h-[5px] rounded-full bg-[#febc2e]" />
-                              <div className="w-[5px] h-[5px] rounded-full bg-[#28c840]" />
-                            </div>
-                            <span className="text-[6px] text-white/30 font-bold tracking-wider ml-1">SIMULATOR</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <div className="w-[4px] h-[4px] rounded-full bg-emerald-400/80 animate-pulse" />
-                            <span className="text-[5px] text-emerald-400/50 font-bold">LIVE</span>
-                          </div>
-                        </div>
-                        <div className="relative h-[220px] sm:h-[280px] bg-[#0c0a08]">
-                          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 170" preserveAspectRatio="xMidYMid meet">
-                            <defs>
-                              <filter id="bp-glow" x="-200%" y="-200%" width="500%" height="500%">
-                                <feGaussianBlur stdDeviation="3" result="blur" />
-                                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                              </filter>
-                              <filter id="bp-glow-big" x="-200%" y="-200%" width="500%" height="500%">
-                                <feGaussianBlur stdDeviation="6" result="blur" />
-                                <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                              </filter>
-                              <radialGradient id="bp-stage-glow" cx="50%" cy="48%" r="35%">
-                                <stop offset="0%" stopColor="rgba(255,85,0,0.12)" />
-                                <stop offset="50%" stopColor="rgba(255,85,0,0.04)" />
-                                <stop offset="100%" stopColor="rgba(0,0,0,0)" />
-                              </radialGradient>
-                              <radialGradient id="bp-ring-glow" cx="50%" cy="48%" r="42%">
-                                <stop offset="70%" stopColor="rgba(0,0,0,0)" />
-                                <stop offset="85%" stopColor="rgba(255,85,0,0.06)" />
-                                <stop offset="100%" stopColor="rgba(0,0,0,0)" />
-                              </radialGradient>
-                            </defs>
-                            <rect x="0" y="0" width="200" height="170" fill="url(#bp-stage-glow)" />
-                            <rect x="0" y="0" width="200" height="170" fill="url(#bp-ring-glow)" />
-                            <circle cx="100" cy="80" r="62" fill="none" stroke="rgba(255,85,0,0.7)" strokeWidth="1.8" />
-                            <circle cx="100" cy="80" r="62" fill="none" stroke="rgba(255,85,0,0.15)" strokeWidth="6" filter="url(#bp-glow-big)" />
-                            <g>
-                              <animateTransform attributeName="transform" type="translate" values="0,0; 2,-1.5; -1.5,2; 0,0" dur="12s" repeatCount="indefinite" />
-                              <circle cx="118" cy="52" r="5" fill="rgba(255,215,0,0.9)" filter="url(#bp-glow)" />
-                              <text x="118" y="61" textAnchor="middle" fill="rgba(255,215,0,0.5)" fontSize="4" fontStyle="italic">You</text>
-                            </g>
-                            <g>
-                              <animateTransform attributeName="transform" type="translate" values="0,0; -2,3; 3,-2; 0,0" dur="14s" repeatCount="indefinite" />
-                              <circle cx="78" cy="56" r="7" fill="rgba(255,85,0,0.9)" filter="url(#bp-glow)" />
-                              <text x="78" y="67" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="4" fontWeight="700">Need</text>
-                            </g>
-                            <g>
-                              <animateTransform attributeName="transform" type="translate" values="0,0; 2,-2; -3,2; 0,0" dur="10s" repeatCount="indefinite" />
-                              <circle cx="72" cy="82" r="6.5" fill="rgba(255,85,0,0.85)" filter="url(#bp-glow)" />
-                              <text x="72" y="93" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="4" fontWeight="700">Growth</text>
-                            </g>
-                            <g>
-                              <animateTransform attributeName="transform" type="translate" values="0,0; -2,2; 2,-3; 0,0" dur="16s" repeatCount="indefinite" />
-                              <circle cx="125" cy="72" r="6" fill="rgba(190,190,190,0.7)" filter="url(#bp-glow)" />
-                              <text x="125" y="83" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="4" fontWeight="700">Fear</text>
-                            </g>
-                            <g>
-                              <animateTransform attributeName="transform" type="translate" values="0,0; 2,1.5; -2,-2; 0,0" dur="13s" repeatCount="indefinite" />
-                              <circle cx="118" cy="98" r="5.5" fill="rgba(180,180,180,0.6)" />
-                              <text x="118" y="109" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="4" fontWeight="700">Risk</text>
-                            </g>
-                            <g>
-                              <animateTransform attributeName="transform" type="translate" values="0,0; -2,-1.5; 1.5,2; 0,0" dur="15s" repeatCount="indefinite" />
-                              <circle cx="78" cy="100" r="5" fill="rgba(170,170,170,0.55)" />
-                              <text x="78" y="111" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="4" fontWeight="700">Time</text>
-                            </g>
-                            <g>
-                              <animateTransform attributeName="transform" type="translate" values="0,0; 1.5,1.5; -2,-1; 0,0" dur="18s" repeatCount="indefinite" />
-                              <circle cx="100" cy="115" r="5" fill="rgba(160,160,160,0.5)" />
-                              <text x="100" y="126" textAnchor="middle" fill="rgba(255,255,255,0.25)" fontSize="4" fontWeight="700">Truth</text>
-                            </g>
-                          </svg>
-                        </div>
-                        <div className="px-3 sm:px-5 pb-3 sm:pb-5">
-                          <div className="rounded-xl bg-white/[0.05] border border-white/[0.10] px-4 sm:px-5 py-3 sm:py-3.5 flex items-center gap-3">
-                            <p className="text-white/70 font-mercure italic text-[11px] sm:text-[14px] leading-[1.3] flex-1">&ldquo;What does my company need<br />the most right now?&rdquo;</p>
-                            <div className="w-[28px] h-[28px] sm:w-[34px] sm:h-[34px] rounded-lg bg-mars flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(255,85,0,0.4)] animate-pulse">
-                              <span className="text-white text-[10px] sm:text-[13px]">&#9654;</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="px-5 sm:px-8 py-5 sm:py-6 text-center">
-                  <span className="inline-flex items-center px-8 py-3 rounded-xl border border-[#0a0a0a]/40 text-[#0a0a0a] text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.15em] group-hover:bg-[#0a0a0a] group-hover:text-white transition-all">
-                    Simulate &rarr;
-                  </span>
-                </div>
-              </div>
-            </button>
           )}
+        </div>
 
+        {/* Footer */}
+        <div className="px-6 sm:px-10 pb-5 flex items-center justify-between text-[10px] sm:text-[11px] text-white/30">
+          <div className="flex items-center gap-4">
+            <span><span className="text-white/50">50+</span> teams</span>
+            <span><span className="text-white/50">9/10</span> leaders</span>
+            <span><span className="text-white/50">4h</span> to clarity</span>
+          </div>
+          <a href="mailto:play@stageonmars.com" className="hover:text-white/60 transition-colors">play@stageonmars.com</a>
         </div>
       </div>
     );
   }
+
+  /* ══════════════════════════════════════════════════════════════════
+     RESULT STATE — has ?q= param
+     ══════════════════════════════════════════════════════════════════ */
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#EDEDED] overflow-x-hidden">
@@ -776,11 +632,10 @@ function PlayPageInner() {
 
       <div className="pt-16" />
 
-      {/* Results */}
       <section ref={resultRef} className="relative px-4">
         <div className="max-w-3xl mx-auto">
 
-          {/* Building state */}
+          {/* ── Building state (2.2s loading animation) ── */}
           {building && (
             <div className="text-center py-20 sm:py-32">
               <div className="inline-flex gap-2 mb-6">
@@ -793,202 +648,31 @@ function PlayPageInner() {
             </div>
           )}
 
-          {/* Experience Designer */}
+          {/* ── Result content ── */}
           {experience && !building && (
             <div className="pt-6 sm:pt-10" style={{ animation: "fadeIn 0.8s ease both" }}>
 
-              {/* Question as hero */}
-              {!simulateOnly && (
-              <div className="text-center mb-10 sm:mb-14">
-                <div className="relative inline-block mb-6">
-                  <div className="absolute -inset-6 sm:-inset-10 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.06)_0%,_transparent_70%)] pointer-events-none" />
-                  <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-5">Your question</p>
-                  <h1 className="font-mercure italic text-white/80 text-[26px] sm:text-[38px] leading-[1.25] max-w-xl mx-auto">
-                    &ldquo;{questionParam}&rdquo;
-                  </h1>
-                </div>
-                <div className="flex items-center gap-3 justify-center mt-2">
-                  <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-mars/30" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-mars/40" />
-                  <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-mars/30" />
-                </div>
-                <p className="text-white/25 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-5">Here&#39;s what we designed for you</p>
-              </div>
-              )}
-
-              {/* Simulator-only header */}
+              {/* ════════════════════════════════════════════════════════
+                  SIMULATE-ONLY MODE — full simulator experience
+                  ════════════════════════════════════════════════════════ */}
               {simulateOnly && (
-                <div className="text-center mb-8 sm:mb-10">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-mars/[0.08] border border-mars/20 mb-4">
-                    <div className="w-1.5 h-1.5 rounded-full bg-mars animate-pulse" />
-                    <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-black">AI Simulator &middot; Live</p>
+                <>
+                  {/* Header */}
+                  <div className="text-center mb-8 sm:mb-10">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-mars/[0.08] border border-mars/20 mb-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-mars animate-pulse" />
+                      <p className="text-mars text-[10px] uppercase tracking-[0.25em] font-black">AI Simulator &middot; Live</p>
+                    </div>
+                    <h1 className="font-mercure italic text-white/85 text-[22px] sm:text-[32px] leading-[1.25] max-w-xl mx-auto px-4">
+                      &ldquo;{questionParam}&rdquo;
+                    </h1>
                   </div>
-                  <h1 className="font-mercure italic text-white/85 text-[22px] sm:text-[32px] leading-[1.25] max-w-xl mx-auto px-4">
-                    &ldquo;{questionParam}&rdquo;
-                  </h1>
-                </div>
-              )}
 
-              {/* Unified experience card */}
-              {!simulateOnly && (
-              <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
-                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
-
-                {!cardSent ? (
-                  <div className="px-6 sm:px-8 py-8 sm:py-10">
-
-                    {/* Experience header */}
-                    <div className="text-center mb-8">
-                      <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-5">The Stage on Mars Experience</p>
-                      <h2 className="text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-[0.95] mb-3">
-                        <span className="text-white/90">{companyParam || experience.theme}</span>{" "}
-                        <span className="text-mars font-mercure italic">on Mars</span>
-                      </h2>
-                      <p className="text-white/30 text-[11px] sm:text-[12px] mb-4">A live experience for your team</p>
-                      <p className="text-white/45 text-[13px] sm:text-[15px] leading-[1.6] max-w-md mx-auto">
-                        {experience.pitch}
-                      </p>
-                    </div>
-
-                    {/* How it works */}
-                    <div className="mb-8">
-                      <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
-                      <div className="grid grid-cols-3 gap-4 sm:gap-6">
-                        <div className="text-center">
-                          <span className="inline-flex w-6 h-6 rounded-full bg-mars/15 border border-mars/20 items-center justify-center text-mars text-[11px] font-bold mb-2">1</span>
-                          <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.5]">Bring a real question</p>
-                        </div>
-                        <div className="text-center">
-                          <span className="inline-flex w-6 h-6 rounded-full bg-mars/15 border border-mars/20 items-center justify-center text-mars text-[11px] font-bold mb-2">2</span>
-                          <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.5]">Play it out live on stage</p>
-                        </div>
-                        <div className="text-center">
-                          <span className="inline-flex w-6 h-6 rounded-full bg-mars/15 border border-mars/20 items-center justify-center text-mars text-[11px] font-bold mb-2">3</span>
-                          <p className="text-white/40 text-[11px] sm:text-[12px] leading-[1.5]">Leave with new perspectives</p>
-                        </div>
-                      </div>
-                      <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mt-6" />
-                    </div>
-
-                    {/* Configure */}
-                    <div className="space-y-5 mb-8">
-                      <div>
-                        <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2.5">Group size</p>
-                        <div className="grid grid-cols-3 gap-2">
-                          {PEOPLE_OPTIONS.map((opt, i) => (
-                            <button
-                              key={i}
-                              onClick={() => setSelectedPeople(i)}
-                              className={`rounded-xl border py-3 px-3 text-center transition-all duration-300 ${
-                                selectedPeople === i
-                                  ? "border-mars/30 bg-mars/[0.06]"
-                                  : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
-                              }`}
-                            >
-                              <p className={`text-[16px] sm:text-[20px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/40"}`}>{opt.label}</p>
-                              <p className={`text-[9px] uppercase tracking-[0.15em] mt-0.5 ${selectedPeople === i ? "text-mars/50" : "text-white/20"}`}>{opt.description}</p>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2.5">Location</p>
-                        <div className="grid grid-cols-3 gap-2">
-                          {VENUE_OPTIONS.map((opt, i) => (
-                            <button
-                              key={i}
-                              onClick={() => setSelectedVenue(i)}
-                              className={`rounded-xl border py-3 px-3 text-center transition-all duration-300 ${
-                                selectedVenue === i
-                                  ? "border-mars/30 bg-mars/[0.06]"
-                                  : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
-                              }`}
-                            >
-                              <p className={`text-[12px] sm:text-[14px] font-bold ${selectedVenue === i ? "text-white/90" : "text-white/40"}`}>{opt.label}</p>
-                              <p className={`text-[9px] mt-1 leading-[1.3] ${selectedVenue === i ? "text-mars/50" : "text-white/20"}`}>{opt.sub}</p>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Contact */}
-                    <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
-                    <p className="text-white/35 text-[12px] mb-4">Leave your details and we&#39;ll get back to you with a tailored offer.</p>
-                    <div className="flex flex-col sm:flex-row gap-3 mb-3">
-                      <input
-                        value={cardName}
-                        onChange={(e) => setCardName(e.target.value)}
-                        placeholder="Your name"
-                        className="flex-1 rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors"
-                      />
-                      <input
-                        value={cardEmail}
-                        onChange={(e) => setCardEmail(e.target.value)}
-                        type="email"
-                        placeholder="Your email"
-                        className="flex-1 rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors"
-                      />
-                    </div>
-                    <input
-                      value={cardDate}
-                      onChange={(e) => setCardDate(e.target.value)}
-                      placeholder="Ideal date (e.g. March 2026, Q2, flexible...)"
-                      className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors mb-4"
-                    />
-                    <button
-                      onClick={() => {
-                        if (!cardEmail.trim() || !cardName.trim()) return;
-                        const subject = encodeURIComponent(`Play Card: ${companyParam || experience.theme} on Mars`);
-                        const body = encodeURIComponent(
-                          `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyParam || "\u2014"}\n\nQuestion: ${questionParam}\n\nExperience: ${companyParam || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nLocation: ${VENUE_OPTIONS[selectedVenue].label}\nIdeal date: ${cardDate || "\u2014"}`
-                        );
-                        window.location.href = `mailto:play@stageonmars.com?subject=${subject}&body=${body}`;
-                        setCardSent(true);
-                      }}
-                      disabled={!cardEmail.trim() || !cardName.trim()}
-                      className={`w-full py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all ${
-                        cardEmail.trim() && cardName.trim()
-                          ? "bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]"
-                          : "bg-mars/30 text-white/40 cursor-not-allowed"
-                      }`}
-                    >
-                      Send to Mars
-                    </button>
-
-                    <p className="text-white/15 text-[11px] text-center mt-4">Trusted by 50+ teams across Europe</p>
-                  </div>
-                ) : (
-                  <div className="px-6 sm:px-8 py-8 sm:py-10 text-center">
-                    <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
-                    </div>
-                    <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Sent to Mars</p>
-                    <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
-                  </div>
-                )}
-              </div>
-              )}
-
-              {/* Inline Digital Playmaker */}
-              {showDigital && (
-                <div className="mt-8 sm:mt-10">
+                  {/* Simulator content */}
                   <div className="relative">
                     <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
 
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-6 sm:mb-8">
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
-                        <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Play Simulator</p>
-                      </div>
-                      <button onClick={() => { setShowDigital(false); setPlay(null); setPlayLoading(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
-                        Close
-                      </button>
-                    </div>
-
-                    {/* Loading state */}
+                    {/* Loading */}
                     {playLoading && (
                       <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
                         <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
@@ -1003,10 +687,9 @@ function PlayPageInner() {
                       </div>
                     )}
 
-                    {/* Gaming interface */}
+                    {/* Full simulator interface */}
                     {play && !playLoading && (
                       <div className="space-y-4">
-
                         {/* Phase nav tabs */}
                         <div className="flex items-center gap-1 rounded-xl bg-white/[0.05] border border-white/[0.12] p-1">
                           {[
@@ -1147,52 +830,33 @@ function PlayPageInner() {
                                 </div>
                               </div>
                             )}
-                            {/* Big CTA — account creation (simulator-only) or book live */}
-                            {simulateOnly ? (
-                              <div className="rounded-2xl overflow-hidden bg-mars mt-2">
-                                <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
-                                  <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just played with your reality</p>
-                                  <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
-                                    Want to play more?<br />Create your free account.
-                                  </h3>
-                                  <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
-                                    Save your plays, ask new questions, and bring your team into the simulator.
-                                  </p>
-                                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                                    <a
-                                      href={`/auth/signup?redirect=${encodeURIComponent(`/play?q=${encodeURIComponent(questionParam || "")}`)}`}
-                                      className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
-                                    >
-                                      Create free account &rarr;
-                                    </a>
-                                    <a
-                                      href="/business/play"
-                                      className="inline-flex items-center px-6 py-3.5 sm:py-4 rounded-xl border border-white/30 text-white/90 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:border-white/60 hover:text-white transition-all"
-                                    >
-                                      Or book a real play
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="rounded-2xl overflow-hidden bg-mars mt-2">
-                                <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
-                                  <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">This was a simulation</p>
-                                  <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
-                                    Imagine this with real people.<br />On a real stage.
-                                  </h3>
-                                  <p className="font-mercure italic text-white/70 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
-                                    Your team, your questions, and perspectives no algorithm can generate.
-                                  </p>
+
+                            {/* CTA after simulator */}
+                            <div className="rounded-2xl overflow-hidden bg-mars mt-2">
+                              <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
+                                <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">You just played with your reality</p>
+                                <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
+                                  Want to play more?<br />Create your free account.
+                                </h3>
+                                <p className="font-mercure italic text-white/75 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
+                                  Save your plays, ask new questions, and bring your team into the simulator.
+                                </p>
+                                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                                   <a
-                                    href="/business#contact"
+                                    href={`/auth/signup?redirect=${encodeURIComponent(`/play?q=${encodeURIComponent(questionParam || "")}`)}`}
                                     className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
                                   >
-                                    Book your play on Mars &rarr;
+                                    Create free account &rarr;
+                                  </a>
+                                  <a
+                                    href="/business/play"
+                                    className="inline-flex items-center px-6 py-3.5 sm:py-4 rounded-xl border border-white/30 text-white/90 text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:border-white/60 hover:text-white transition-all"
+                                  >
+                                    Or book a real play
                                   </a>
                                 </div>
                               </div>
-                            )}
+                            </div>
 
                             <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all">
                               &larr; Back to cast
@@ -1204,29 +868,431 @@ function PlayPageInner() {
 
                     {error && <p className="text-red-400/60 text-[12px] mt-4 text-center">{error}</p>}
                   </div>
-                </div>
+                </>
               )}
 
-              {/* Play Simulator teaser */}
-              {!showDigital && !simulateOnly && (
-                <div className="mt-8 sm:mt-10">
-                  <div className="text-center">
-                    <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-3">Not sure yet? Try it first</p>
-                    <button
-                      onClick={() => openDigital(questionParam)}
-                      className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 rounded-xl border border-mars/30 bg-mars/[0.06] hover:border-mars/50 hover:bg-mars/[0.12] transition-all duration-300 group/digi"
-                    >
-                      <div className="w-2 h-2 rounded-full bg-mars animate-pulse" />
-                      <span className="text-mars text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em]">Play Simulator</span>
-                      <span className="text-white/25 text-[11px]">— preview your play digitally</span>
-                    </button>
+              {/* ════════════════════════════════════════════════════════
+                  NORMAL FLOW — Play Preview Card + Booking Form
+                  ════════════════════════════════════════════════════════ */}
+              {!simulateOnly && (
+                <>
+                  {/* Question as hero */}
+                  <div className="text-center mb-10 sm:mb-14">
+                    <div className="relative inline-block mb-6">
+                      <div className="absolute -inset-6 sm:-inset-10 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.06)_0%,_transparent_70%)] pointer-events-none" />
+                      <p className="text-mars/50 text-[10px] sm:text-[11px] uppercase tracking-[0.4em] mb-5">Your question</p>
+                      <h1 className="font-mercure italic text-white/80 text-[26px] sm:text-[38px] leading-[1.25] max-w-xl mx-auto">
+                        &ldquo;{questionParam}&rdquo;
+                      </h1>
+                    </div>
+                    <div className="flex items-center gap-3 justify-center mt-2">
+                      <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-mars/30" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-mars/40" />
+                      <div className="h-[1px] w-8 bg-gradient-to-l from-transparent to-mars/30" />
+                    </div>
+                    <p className="text-white/25 text-[11px] sm:text-[12px] uppercase tracking-[0.2em] mt-5">Here&#39;s what we designed for you</p>
                   </div>
-                </div>
+
+                  {/* ── Play Preview Card (the hook) ── */}
+                  <div className="rounded-2xl border border-mars/20 bg-mars/[0.04] overflow-hidden">
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                    <div className="px-6 sm:px-8 py-8 sm:py-10">
+
+                      {/* Play header */}
+                      <div className="text-center mb-8">
+                        <p className="text-white/20 text-[10px] uppercase tracking-[0.3em] mb-5">Your Play{companyParam ? ` for ${companyParam}` : ""}</p>
+                        <h2 className="text-[32px] sm:text-[44px] font-black tracking-[-0.04em] leading-[0.95] mb-3">
+                          <span className="text-white/90">{companyParam || experience.theme}</span>{" "}
+                          <span className="text-mars font-mercure italic">on Mars</span>
+                        </h2>
+                      </div>
+
+                      {/* Business pitch */}
+                      <p className="text-white/45 text-[13px] sm:text-[15px] leading-[1.6] max-w-md mx-auto text-center mb-8">
+                        {experience.pitch}
+                      </p>
+
+                      {/* Characters grid (loading or loaded) */}
+                      {playLoading && (
+                        <div className="text-center py-10">
+                          <div className="inline-flex gap-2 mb-4">
+                            {[0, 1, 2].map((i) => (
+                              <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                            ))}
+                          </div>
+                          <p className="text-white/40 text-[12px] font-mercure italic">Building your cast...</p>
+                        </div>
+                      )}
+
+                      {play && !playLoading && (
+                        <>
+                          <div className="mb-6">
+                            <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                              {play.characters.map((char, i) => (
+                                <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
+                                  <div className="flex items-center gap-2.5 mb-2.5">
+                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">{char.name.charAt(0)}</div>
+                                    <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
+                                  </div>
+                                  <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Opening image */}
+                          {play.image && (
+                            <div className="rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4 mb-6">
+                              <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                              <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
+                            </div>
+                          )}
+                        </>
+                      )}
+
+                      {/* Hook line */}
+                      <div className="text-center mt-6">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-5" />
+                        <p className="font-mercure italic text-white/35 text-[13px] sm:text-[15px] leading-[1.5]">
+                          This is what your team would play. On a real stage. With real people.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── Booking Form ── */}
+                  <div ref={bookingRef} className="mt-8 sm:mt-10 rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+
+                    {!cardSent ? (
+                      <div className="px-6 sm:px-8 py-8 sm:py-10">
+                        <div className="text-center mb-8">
+                          <h3 className="text-[24px] sm:text-[32px] font-black tracking-[-0.03em] leading-[1.05] text-white mb-2">
+                            Let&#39;s make it real
+                          </h3>
+                          <p className="text-white/35 text-[12px] sm:text-[13px]">Tell us about your team and we&#39;ll send a tailored offer.</p>
+                        </div>
+
+                        {/* Pre-filled question */}
+                        <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 mb-6">
+                          <p className="text-white/25 text-[9px] uppercase tracking-[0.25em] font-bold mb-1.5">Your question</p>
+                          <p className="text-white/60 text-[13px] font-mercure italic leading-[1.4]">&ldquo;{questionParam}&rdquo;</p>
+                        </div>
+
+                        {/* Group size */}
+                        <div className="mb-5">
+                          <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2.5">Group size</p>
+                          <div className="grid grid-cols-3 gap-2">
+                            {PEOPLE_OPTIONS.map((opt, i) => (
+                              <button
+                                key={i}
+                                onClick={() => setSelectedPeople(i)}
+                                className={`rounded-xl border py-3 px-3 text-center transition-all duration-300 ${
+                                  selectedPeople === i
+                                    ? "border-mars/30 bg-mars/[0.06]"
+                                    : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
+                                }`}
+                              >
+                                <p className={`text-[16px] sm:text-[20px] font-bold tracking-tight ${selectedPeople === i ? "text-white/90" : "text-white/40"}`}>{opt.label}</p>
+                                <p className={`text-[9px] uppercase tracking-[0.15em] mt-0.5 ${selectedPeople === i ? "text-mars/50" : "text-white/20"}`}>{opt.description}</p>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Location */}
+                        <div className="mb-6">
+                          <p className="text-white/25 text-[10px] uppercase tracking-[0.3em] mb-2.5">Location</p>
+                          <div className="grid grid-cols-3 gap-2">
+                            {VENUE_OPTIONS.map((opt, i) => (
+                              <button
+                                key={i}
+                                onClick={() => setSelectedVenue(i)}
+                                className={`rounded-xl border py-3 px-3 text-center transition-all duration-300 ${
+                                  selectedVenue === i
+                                    ? "border-mars/30 bg-mars/[0.06]"
+                                    : "border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]"
+                                }`}
+                              >
+                                <p className={`text-[12px] sm:text-[14px] font-bold ${selectedVenue === i ? "text-white/90" : "text-white/40"}`}>{opt.label}</p>
+                                <p className={`text-[9px] mt-1 leading-[1.3] ${selectedVenue === i ? "text-mars/50" : "text-white/20"}`}>{opt.sub}</p>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Contact fields */}
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
+                        <div className="flex flex-col sm:flex-row gap-3 mb-3">
+                          <input
+                            value={cardName}
+                            onChange={(e) => setCardName(e.target.value)}
+                            placeholder="Your name"
+                            className="flex-1 rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors"
+                          />
+                          <input
+                            value={cardEmail}
+                            onChange={(e) => setCardEmail(e.target.value)}
+                            type="email"
+                            placeholder="Your email"
+                            className="flex-1 rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors"
+                          />
+                        </div>
+                        <input
+                          value={cardDate}
+                          onChange={(e) => setCardDate(e.target.value)}
+                          placeholder="Ideal date (e.g. March 2026, Q2, flexible...)"
+                          className="w-full rounded-xl bg-white/[0.03] border border-white/[0.08] focus:border-mars/30 px-4 py-3 text-[13px] text-white placeholder:text-white/20 focus:outline-none transition-colors mb-4"
+                        />
+
+                        {/* Send to Mars CTA */}
+                        <button
+                          onClick={() => {
+                            if (!cardEmail.trim() || !cardName.trim()) return;
+                            const subject = encodeURIComponent(`Play Card: ${companyParam || experience.theme} on Mars`);
+                            const body = encodeURIComponent(
+                              `Name: ${cardName}\nEmail: ${cardEmail}\nCompany: ${companyParam || "\u2014"}\n\nQuestion: ${questionParam}\n\nExperience: ${companyParam || experience.theme} on Mars\n${experience.pitch}\n\nGroup: ${PEOPLE_OPTIONS[selectedPeople].label} people\nLocation: ${VENUE_OPTIONS[selectedVenue].label}\nIdeal date: ${cardDate || "\u2014"}`
+                            );
+                            window.location.href = `mailto:play@stageonmars.com?subject=${subject}&body=${body}`;
+                            setCardSent(true);
+                          }}
+                          disabled={!cardEmail.trim() || !cardName.trim()}
+                          className={`w-full py-3.5 rounded-xl font-bold text-[13px] uppercase tracking-[0.15em] transition-all ${
+                            cardEmail.trim() && cardName.trim()
+                              ? "bg-mars hover:bg-mars-light text-white shadow-[0_4px_20px_-4px_rgba(255,85,0,0.3)]"
+                              : "bg-mars/30 text-white/40 cursor-not-allowed"
+                          }`}
+                        >
+                          Send to Mars
+                        </button>
+
+                        <p className="text-white/15 text-[11px] text-center mt-4">Trusted by 50+ teams across Europe</p>
+                      </div>
+                    ) : (
+                      <div className="px-6 sm:px-8 py-8 sm:py-10 text-center">
+                        <div className="w-10 h-10 rounded-full bg-mars/20 border border-mars/30 flex items-center justify-center mx-auto mb-4">
+                          <svg className="w-5 h-5 text-mars" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                        </div>
+                        <p className="text-white/80 text-[16px] sm:text-[18px] font-bold mb-2">Sent to Mars</p>
+                        <p className="text-white/30 text-[12px] sm:text-[13px]">We&#39;ll get back to you with a tailored offer, {cardName.split(" ")[0]}.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* ── Optional simulator link ── */}
+                  {!showSimulator && (
+                    <div className="mt-8 text-center">
+                      <button
+                        onClick={openSimulator}
+                        disabled={!play || playLoading}
+                        className="text-white/25 text-[12px] hover:text-white/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        Want a preview? <span className="underline underline-offset-2">Run the AI simulator</span>
+                      </button>
+                    </div>
+                  )}
+
+                  {/* ── Inline simulator (when opened from link) ── */}
+                  {showSimulator && play && (
+                    <div className="mt-8 sm:mt-10">
+                      <div className="relative">
+                        <div className="absolute -inset-4 sm:-inset-8 bg-[radial-gradient(ellipse_at_center,_rgba(255,85,0,0.04)_0%,_transparent_70%)] pointer-events-none" />
+
+                        {/* Header */}
+                        <div className="flex items-center justify-between mb-6 sm:mb-8">
+                          <div className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-mars" style={{ animation: "glow-pulse 2s ease-in-out infinite" }} />
+                            <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.3em] font-bold">Play Simulator</p>
+                          </div>
+                          <button onClick={() => { setShowSimulator(false); setSimLoading(false); setSimReady(false); setSimPhase("cast"); setSimEnded(false); }} className="text-white/70 text-[10px] uppercase tracking-[0.15em] hover:text-white/70 transition-colors">
+                            Close
+                          </button>
+                        </div>
+
+                        {/* Loading */}
+                        {simLoading && !simReady && (
+                          <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                            <div className="text-center py-20 sm:py-28">
+                              <div className="inline-flex gap-2 mb-5">
+                                {[0, 1, 2].map((i) => (
+                                  <div key={i} className="w-2.5 h-2.5 rounded-full bg-mars" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                                ))}
+                              </div>
+                              <p className="text-white/65 text-[13px] sm:text-[14px] font-mercure italic">Preparing the simulation...</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Simulator phases */}
+                        {play.simulationSteps && (simReady || simEnded) && (
+                          <div className="space-y-4">
+                            {/* Phase nav */}
+                            <div className="flex items-center gap-1 rounded-xl bg-white/[0.05] border border-white/[0.12] p-1">
+                              {[
+                                { id: "cast" as const, label: "Cast", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" },
+                                { id: "stage" as const, label: "Stage", icon: "M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15l3.5-4.5 2.5 3.01L14.5 9l4.5 6H5z" },
+                                { id: "perspectives" as const, label: "Perspectives", icon: "M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" },
+                              ].map((tab) => (
+                                <button
+                                  key={tab.id}
+                                  onClick={() => {
+                                    if (tab.id === "stage" && !simReady) return;
+                                    if (tab.id === "perspectives" && !simEnded) return;
+                                    setSimPhase(tab.id);
+                                  }}
+                                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-[13px] sm:text-[14px] uppercase tracking-[0.15em] font-bold transition-all ${
+                                    simPhase === tab.id
+                                      ? "bg-white/[0.06] text-white/80"
+                                      : (tab.id === "stage" && !simReady) || (tab.id === "perspectives" && !simEnded)
+                                      ? "text-white/25 cursor-not-allowed"
+                                      : "text-white/65 hover:text-white/60"
+                                  }`}
+                                >
+                                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current"><path d={tab.icon} /></svg>
+                                  {tab.label}
+                                </button>
+                              ))}
+                            </div>
+
+                            {/* Cast */}
+                            {simPhase === "cast" && (
+                              <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                                <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4">
+                                  <h3 className="text-[20px] sm:text-[26px] font-bold tracking-[-0.03em]">{play.name}</h3>
+                                  <p className="text-white/60 text-[11px] mt-1 font-mercure italic">{play.mood} &middot; {play.characters.length} characters</p>
+                                </div>
+                                <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                                  <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-4 font-bold">Characters on stage</p>
+                                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    {play.characters.map((char, i) => (
+                                      <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.5s ease ${i * 0.1}s both` }}>
+                                        <div className="flex items-center gap-2.5 mb-2.5">
+                                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60">{char.name.charAt(0)}</div>
+                                          <p className="text-white/70 text-[13px] font-bold tracking-[-0.01em]">{char.name}</p>
+                                        </div>
+                                        <p className="text-white/65 text-[11px] leading-[1.5] font-mercure">{char.description}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                                {play.image && (
+                                  <div className="mx-6 sm:mx-8 mb-6 sm:mb-8 rounded-xl bg-mars/[0.03] border border-mars/[0.06] p-4">
+                                    <p className="text-mars/70 text-[9px] uppercase tracking-[0.25em] mb-2 font-bold">Opening image</p>
+                                    <p className="text-white/55 text-[13px] leading-[1.6] font-mercure italic">{play.image}</p>
+                                  </div>
+                                )}
+                                <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                                  <button
+                                    onClick={() => { if (simReady) setSimPhase("stage"); }}
+                                    disabled={!simReady}
+                                    className={`w-full py-4 rounded-xl text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.15em] transition-all ${
+                                      simReady ? "bg-mars/10 border border-mars/20 text-mars/80 hover:bg-mars/15 hover:border-mars/30 cursor-pointer" : "bg-white/[0.05] border border-white/[0.10] text-white/70 cursor-wait"
+                                    }`}
+                                  >
+                                    {simReady ? (
+                                      <span className="flex items-center justify-center gap-2">
+                                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M8 5v14l11-7z" /></svg>
+                                        Enter the Stage
+                                      </span>
+                                    ) : (
+                                      <span className="flex items-center justify-center gap-2">
+                                        <div className="inline-flex gap-1.5">
+                                          {[0, 1, 2].map((i) => (
+                                            <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" style={{ animation: `glow-pulse 1.2s ease-in-out ${i * 0.25}s infinite` }} />
+                                          ))}
+                                        </div>
+                                        Choreographing the stage...
+                                      </span>
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Stage */}
+                            {simPhase === "stage" && simReady && play.simulationSteps && (
+                              <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                                <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                                <div className="p-4 sm:p-6">
+                                  <StageSimulation simulationSteps={play.simulationSteps} characters={play.characters} simulation={play.simulation} onEnd={() => { setSimEnded(true); setSimPhase("perspectives"); }} />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Perspectives */}
+                            {simPhase === "perspectives" && simEnded && (
+                              <div className="space-y-4">
+                                {play.perspectives && play.perspectives.length > 0 && (
+                                  <div className="rounded-2xl border border-white/[0.12] bg-white/[0.04] overflow-hidden">
+                                    <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
+                                    <div className="p-6 sm:p-8">
+                                      <p className="text-mars/70 text-[13px] sm:text-[14px] uppercase tracking-[0.25em] mb-5 font-bold">Perspectives revealed</p>
+                                      <div className="space-y-3">
+                                        {play.perspectives.map((p, i) => {
+                                          const perspective = typeof p === "object" ? (p as Perspective) : null;
+                                          return (
+                                            <div key={i} className="rounded-xl bg-white/[0.05] border border-white/[0.10] p-4 hover:border-white/[0.15] transition-all" style={{ animation: `fadeIn 0.6s ease ${i * 0.15}s both` }}>
+                                              {perspective ? (
+                                                <div className="flex gap-3">
+                                                  <div className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-mars/20 to-mars/5 flex items-center justify-center text-[11px] font-bold text-mars/60 mt-0.5">{perspective.character.charAt(0)}</div>
+                                                  <div>
+                                                    <p className="text-mars/60 text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5">{perspective.character}</p>
+                                                    <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{perspective.insight}</p>
+                                                  </div>
+                                                </div>
+                                              ) : (
+                                                <p className="text-white/65 text-[13px] leading-[1.6] font-mercure italic">{String(p)}</p>
+                                              )}
+                                            </div>
+                                          );
+                                        })}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                {/* Post-simulation CTA — links back to booking */}
+                                <div className="rounded-2xl overflow-hidden bg-mars mt-2">
+                                  <div className="px-6 sm:px-10 py-10 sm:py-14 text-center">
+                                    <p className="text-white/60 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] font-bold mb-3">This was a simulation</p>
+                                    <h3 className="text-white text-[22px] sm:text-[30px] font-bold tracking-[-0.03em] leading-[1.15] mb-3">
+                                      Imagine this with real people.<br />On a real stage.
+                                    </h3>
+                                    <p className="font-mercure italic text-white/70 text-[13px] sm:text-[15px] leading-[1.5] max-w-md mx-auto mb-6">
+                                      Your team, your questions, and perspectives no algorithm can generate.
+                                    </p>
+                                    <button
+                                      onClick={() => {
+                                        bookingRef.current?.scrollIntoView({ behavior: "smooth" });
+                                      }}
+                                      className="inline-flex items-center px-8 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-[#0a0a0a] text-white text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.15em] hover:bg-[#1a1a1a] transition-all shadow-lg"
+                                    >
+                                      Book your play on Mars &rarr;
+                                    </button>
+                                  </div>
+                                </div>
+
+                                <button onClick={() => { setSimEnded(false); setSimPhase("cast"); }} className="w-full py-3 rounded-xl border border-white/[0.10] text-white/60 text-[10px] uppercase tracking-[0.15em] font-bold hover:text-white/55 hover:border-white/[0.15] transition-all">
+                                  &larr; Back to cast
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {error && <p className="text-red-400/60 text-[12px] mt-4 text-center">{error}</p>}
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
 
-              {/* Back */}
+              {/* Back link */}
               <div className="text-center mt-8 mb-16">
-                <a href="/business" className="inline-flex items-center gap-2 text-white/15 text-[11px] hover:text-white/30 transition-colors">
+                <a href="/business/play" className="inline-flex items-center gap-2 text-white/15 text-[11px] hover:text-white/30 transition-colors">
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
                   <span>New question</span>
                 </a>
