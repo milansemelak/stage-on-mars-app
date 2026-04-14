@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Character, SimulationStep } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 
@@ -605,6 +605,16 @@ export default function StageSimulation({ characters, simulation, simulationStep
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [targets]);
+
+  // After every React render, re-apply RAF positions so React never overwrites
+  // the smooth DOM state with stale renderPositions
+  useLayoutEffect(() => {
+    const pos = currentPositions.current;
+    for (let i = 0; i < pos.length; i++) {
+      const el = groupRefs.current[i];
+      if (el) el.setAttribute("transform", `translate(${pos[i].x}, ${pos[i].y})`);
+    }
+  });
 
   // Author-controlled: advance to next step on tap
   const advanceStep = () => {
