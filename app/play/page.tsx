@@ -521,7 +521,6 @@ function PlayPage() {
                     <DailyQuestionCard
                       onUseQuestion={(q) => {
                         setQuestion(q);
-                        setFollowUpTrigger((n) => n + 1);
                       }}
                     />
                   ) : (
