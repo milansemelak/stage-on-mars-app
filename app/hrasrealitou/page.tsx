@@ -326,6 +326,10 @@ export default function HraSRealitouPage() {
         <div className="mb-10 sm:mb-14">
           <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-4">Tone</p>
 
+          <div className="rounded-xl overflow-hidden mb-6">
+            <img src="/poster.png" alt="Is your reality shit? Come and play! — Reality Play with Milan Semelak" className="w-full h-auto" />
+          </div>
+
           <div className="space-y-4 text-[14px] sm:text-[15px] leading-[1.7] text-neutral-800">
             <p>
               Je to rýchle.<br />
@@ -348,6 +352,10 @@ export default function HraSRealitouPage() {
         {/* ROLE OF THE HOST */}
         <div className="mb-10 sm:mb-14">
           <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-4">Role of the Host</p>
+
+          <div className="rounded-xl overflow-hidden mb-6">
+            <img src="/reality play.png" alt="Milan Šemelák — Reality Play" className="w-full h-auto" />
+          </div>
 
           <div className="space-y-4 text-[14px] sm:text-[15px] leading-[1.7] text-neutral-800">
             <p className="font-semibold text-black">
