@@ -705,7 +705,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
       {isFullscreen && (
         <button
           onClick={() => { clearAutoAdvance(); setIsFullscreen(false); }}
-          className="absolute top-4 right-4 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white/30 hover:text-white/60 transition-all"
+          className="absolute top-4 right-4 z-[60] w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white/30 hover:text-white/60 transition-all"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -714,7 +714,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
       )}
 
       {/* Stage — fills available space */}
-      <div className="relative w-full flex-1 min-h-0 overflow-hidden aspect-square">
+      <div className={`relative w-full flex-1 min-h-0 overflow-hidden ${isFullscreen ? "" : "aspect-square"}`}>
         <div
           className="absolute inset-0"
           style={{

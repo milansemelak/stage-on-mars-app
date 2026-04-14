@@ -412,10 +412,19 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             )}
           </div>
 
-          {/* Characters — concrete vs abstract */}
+          {/* Characters — author + concrete vs abstract */}
           <div className="animate-fade-slide-up stagger-3">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Author card — always first */}
+              <div className="char-reveal char-delay-0 rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] bg-amber-500/[0.06] border-amber-500/20 hover:border-amber-500/35">
+                <div className="font-bold text-sm sm:text-base text-amber-300">
+                  {clientName || t.author}
+                </div>
+                <div className="text-[10px] uppercase tracking-widest mt-1 text-amber-400/30">
+                  {t.landingYouBadge}
+                </div>
+              </div>
               {currentPlay.characters.map((char, i) => {
                 const isAbstract =
                   char.description?.toLowerCase() === "abstract";
@@ -648,7 +657,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                           </span>
                           <div className="h-px flex-1 bg-white/[0.08]" />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                           {charPs.map((sp, i) => {
                             const isVisible = !currentPlay.simulation || visiblePerspectives >= i + 2;
                             if (!isVisible) return null;
@@ -662,16 +671,16 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                             return (
                               <div
                                 key={i}
-                                className={`rounded-xl border ${accent.border} ${accent.bg} p-4 sm:p-5 animate-fade-in`}
+                                className={`rounded-xl border ${accent.border} ${accent.bg} px-5 py-5 sm:px-6 sm:py-6 animate-fade-in`}
                                 style={{ animation: !currentPlay.simulation ? `fadeIn 0.6s ease ${(i + 1) * 0.15}s both` : undefined }}
                               >
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex items-center gap-2 mb-3">
                                   <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${accent.dot}`} />
                                   <p className={`${accent.text} text-[10px] font-bold uppercase tracking-[0.18em]`}>
                                     {sp.character}
                                   </p>
                                 </div>
-                                <p className="text-white/70 text-[13px] leading-[1.6]">
+                                <p className="text-white/70 text-sm leading-[1.7]">
                                   {sp.insight}
                                 </p>
                               </div>
