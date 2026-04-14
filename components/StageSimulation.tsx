@@ -394,9 +394,9 @@ function splitIntoSentences(text: string): string[] {
   return text.split(/(?<=[.!?])\s+/).filter((s) => s.trim().length > 0);
 }
 
-// Ease-out cubic for more theatrical movement
-function easeOutCubic(t: number): number {
-  return 1 - Math.pow(1 - t, 3);
+// Smooth ease-in-out for theatrical movement
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
 // Play the hotel bell sound
@@ -463,7 +463,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
         });
         setFadeState("visible");
       }, 500);
-    }, 5000);
+    }, 6000);
   };
 
   // Cleanup auto-advance on unmount
@@ -518,7 +518,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
     return lines;
   }, [hasChoreography, simulationSteps, currentStep, movedCharacters]);
 
-  // Animated positions with eased interpolation
+  // Direct DOM refs for smooth animation (bypasses React reconciler)
+  const groupRefs = useRef<(SVGGElement | null)[]>([]);
   const currentPositions = useRef<Position[]>([]);
   const [renderPositions, setRenderPositions] = useState<Position[]>([]);
   const rafRef = useRef<number>(0);
@@ -553,9 +554,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
     }
   }, [allCharacters]);
 
-  // Animation loop with eased transitions
+  // Animation loop — direct DOM manipulation for butter-smooth 60fps
   useEffect(() => {
-    const TRANSITION_DURATION = 1800; // ms for characters to reach target
+    const TRANSITION_DURATION = 2500;
 
     const animate = (time: number) => {
       const pos = currentPositions.current;
@@ -566,7 +567,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
 
       const elapsed = time - transitionStartRef.current;
       const rawT = Math.min(elapsed / TRANSITION_DURATION, 1);
-      const t = easeOutCubic(rawT);
+      const t = easeInOutCubic(rawT);
 
       const from = transitionFromRef.current;
       if (from.length === targets.length) {
@@ -576,19 +577,26 @@ export default function StageSimulation({ characters, simulation, simulationStep
         }
       } else {
         for (let i = 0; i < pos.length; i++) {
-          pos[i].x += (targets[i].x - pos[i].x) * 0.1;
-          pos[i].y += (targets[i].y - pos[i].y) * 0.1;
+          pos[i].x += (targets[i].x - pos[i].x) * 0.06;
+          pos[i].y += (targets[i].y - pos[i].y) * 0.06;
         }
       }
 
-      setRenderPositions(pos.map(p => ({ ...p })));
+      // Direct DOM update — no React re-renders during animation
+      for (let i = 0; i < pos.length; i++) {
+        const el = groupRefs.current[i];
+        if (el) el.setAttribute("transform", `translate(${pos[i].x}, ${pos[i].y})`);
+      }
 
-      // Stop animation when transition is complete
       const settled = from.length === targets.length
         ? rawT >= 1
         : pos.every((p, i) => Math.abs(p.x - targets[i].x) < 0.1 && Math.abs(p.y - targets[i].y) < 0.1);
+
       if (!settled) {
         rafRef.current = requestAnimationFrame(animate);
+      } else {
+        // Sync React state once at end for labels, trails, connections
+        setRenderPositions(pos.map(p => ({ ...p })));
       }
     };
 
@@ -883,7 +891,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
                 xFromCenter > 12 ? "end" : xFromCenter < -12 ? "start" : "middle";
 
               return (
-                <g key={i} transform={`translate(${pos.x}, ${pos.y})`}>
+                <g key={i} ref={(el) => { groupRefs.current[i] = el; }} transform={`translate(${pos.x}, ${pos.y})`}>
                   {/* Glow */}
                   <circle cx={0} cy={0}
                     r={isAuthor ? 4 : (isActive ? 7 : 4)}
