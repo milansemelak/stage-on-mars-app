@@ -36,6 +36,31 @@ export type HistoryEntry = {
   favorite?: boolean;
   rxNumber?: string;
   clientName?: string;
+  threadId?: string;
+  id?: string; // Supabase UUID, present after server sync
+};
+
+// Server-side play record (matches Supabase `plays` table)
+export type PlayRecord = {
+  id: string;
+  user_id: string;
+  question: string;
+  context: string;
+  play_data: Play;
+  timestamp: number;
+  favorite: boolean;
+  rx_number: string | null;
+  client_name: string | null;
+  thread_id: string | null;
+  created_at: string;
+};
+
+// Grouped thread of plays
+export type PlayThread = {
+  threadId: string;
+  entries: HistoryEntry[];
+  firstQuestion: string;
+  lastTimestamp: number;
 };
 
 export type GenerateRequest = {

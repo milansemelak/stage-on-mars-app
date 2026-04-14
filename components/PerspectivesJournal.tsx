@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { HistoryEntry, Perspective } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
-import { STORAGE_KEYS, userKey } from "@/lib/constants";
-import { useAuth } from "@/lib/auth-context";
 
 type ExtractedPerspective = {
   character: string;
@@ -22,23 +20,60 @@ type GroupedCharacter = {
   isAuthor: boolean;
 };
 
-export default function PerspectivesJournal() {
-  const { t } = useI18n();
-  const { user } = useAuth();
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+type Props = {
+  history: HistoryEntry[];
+};
 
-  const historyKey = userKey(STORAGE_KEYS.playHistory, user?.id);
+export default function PerspectivesJournal({ history }: Props) {
+  const { t } = useI18n();
+  const [threadFilter, setThreadFilter] = useState<string | null>(null);
+  const [synthesis, setSynthesis] = useState<string | null>(null);
+  const [synthesisLoading, setSynthesisLoading] = useState(false);
+
+  const fetchSynthesis = useCallback(async (bustCache = false) => {
+    setSynthesisLoading(true);
+    try {
+      const url = bustCache ? "/api/journal-synthesis?bust=1" : "/api/journal-synthesis";
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setSynthesis(data.synthesis);
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setSynthesisLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem(historyKey) || "[]");
-    setHistory(saved);
-  }, [historyKey]);
+    if (history.length >= 5) {
+      fetchSynthesis();
+    }
+  }, [history.length, fetchSynthesis]);
+
+  // Get unique threads for filter dropdown
+  const threads = useMemo(() => {
+    const map = new Map<string, { id: string; question: string }>();
+    for (const entry of history) {
+      if (entry.threadId && !map.has(entry.threadId)) {
+        map.set(entry.threadId, { id: entry.threadId, question: entry.question });
+      }
+    }
+    return Array.from(map.values());
+  }, [history]);
+
+  // Filter history by thread if selected
+  const filteredHistory = useMemo(() => {
+    if (!threadFilter) return history;
+    return history.filter((e) => e.threadId === threadFilter);
+  }, [history, threadFilter]);
 
   // Extract all perspectives from all plays
   const allPerspectives = useMemo(() => {
     const extracted: ExtractedPerspective[] = [];
 
-    for (const entry of history) {
+    for (const entry of filteredHistory) {
       const play = entry.play;
       if (!play.perspectives || play.perspectives.length === 0) continue;
 
@@ -71,7 +106,7 @@ export default function PerspectivesJournal() {
     }
 
     return extracted;
-  }, [history, t.author]);
+  }, [filteredHistory, t.author]);
 
   // Group by character name
   const grouped = useMemo(() => {
@@ -130,9 +165,49 @@ export default function PerspectivesJournal() {
 
   return (
     <div className="space-y-8">
-      {/* Stats */}
-      <div className="text-white/30 text-sm">
-        {allPerspectives.length} {t.journalPerspectives} {t.journalFromPlays} {playsWithPerspectives} {playsWithPerspectives === 1 ? t.historyPlay : t.historyPlays}
+      {/* Synthesis card */}
+      {synthesis && (
+        <div className="rounded-2xl border border-amber-500/15 bg-amber-500/[0.03] overflow-hidden">
+          <div className="h-[1px] bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
+          <div className="px-5 py-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-amber-400/50 text-[10px] font-bold uppercase tracking-[0.2em]">
+                {t.journalSynthesisLabel}
+              </p>
+              <button
+                onClick={() => fetchSynthesis(true)}
+                disabled={synthesisLoading}
+                className="text-[10px] text-white/20 hover:text-white/40 transition-colors uppercase tracking-wider"
+              >
+                {synthesisLoading ? "..." : t.journalSynthesisRegenerate}
+              </button>
+            </div>
+            <p className="text-amber-200/70 text-sm leading-relaxed">
+              {synthesis}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Stats + thread filter */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="text-white/30 text-sm">
+          {allPerspectives.length} {t.journalPerspectives} {t.journalFromPlays} {playsWithPerspectives} {playsWithPerspectives === 1 ? t.historyPlay : t.historyPlays}
+        </div>
+        {threads.length >= 2 && (
+          <select
+            value={threadFilter || ""}
+            onChange={(e) => setThreadFilter(e.target.value || null)}
+            className="bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-1.5 text-xs text-white/50 outline-none focus:border-mars/30 transition-colors"
+          >
+            <option value="">{t.journalAllThreads}</option>
+            {threads.map((th) => (
+              <option key={th.id} value={th.id}>
+                &ldquo;{th.question.slice(0, 40)}{th.question.length > 40 ? "…" : ""}&rdquo;
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       {/* Grouped perspectives */}

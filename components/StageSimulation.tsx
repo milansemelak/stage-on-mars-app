@@ -435,10 +435,63 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasStarted, setHasStarted] = useState(false);
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fadeState, setFadeState] = useState<"visible" | "fading">("visible");
+  const autoAdvanceRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
 
 
 
+
+  // Fullscreen body lock
+  useEffect(() => {
+    if (isFullscreen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [isFullscreen]);
+
+  // Escape key exits fullscreen
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsFullscreen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [isFullscreen]);
+
+  // Auto-advance narration every 5 seconds
+  const clearAutoAdvance = () => {
+    if (autoAdvanceRef.current) {
+      clearInterval(autoAdvanceRef.current);
+      autoAdvanceRef.current = null;
+    }
+  };
+
+  const startAutoAdvance = () => {
+    clearAutoAdvance();
+    autoAdvanceRef.current = setInterval(() => {
+      setFadeState("fading");
+      setTimeout(() => {
+        setCurrentStep((prev) => {
+          const next = prev + 1;
+          if (next >= sentences.length) {
+            clearAutoAdvance();
+            triggerEnding();
+            return prev;
+          }
+          return next;
+        });
+        setFadeState("visible");
+      }, 500);
+    }, 5000);
+  };
+
+  // Cleanup auto-advance on unmount
+  useEffect(() => clearAutoAdvance, []);
 
   // Final circle formation for ritual ending
   const finalCirclePositions = useMemo(() => {
@@ -573,9 +626,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const advanceStep = () => {
     if (!hasStarted || hasEnded) return;
     if (currentStep < sentences.length - 1) {
+      setFadeState("visible");
       setCurrentStep((p) => p + 1);
+      // Reset auto-advance timer on manual tap
+      startAutoAdvance();
     } else {
-      // Last step reached — trigger ending
+      clearAutoAdvance();
       triggerEnding();
     }
   };
@@ -585,6 +641,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const triggerEnding = () => {
     if (endingTriggered.current) return;
     endingTriggered.current = true;
+    clearAutoAdvance();
     setIsPlaying(false);
     setTimeout(() => {
       setHasEnded(true);
@@ -592,25 +649,33 @@ export default function StageSimulation({ characters, simulation, simulationStep
     }, 2000);
     setTimeout(() => {
       setEndingPhase(2);
+      setIsFullscreen(false);
     }, 4000);
   };
 
   const handleStart = () => {
     playBell();
+    setIsFullscreen(true);
     setHasStarted(true);
     setHasEnded(false);
     setEndingPhase(0);
     endingTriggered.current = false;
     setCurrentStep(0);
     setIsPlaying(true);
+    setFadeState("visible");
+    // Start auto-advance after a brief delay for the first step
+    setTimeout(() => startAutoAdvance(), 1000);
   };
 
   const handleReplay = () => {
+    setIsFullscreen(true);
     setHasEnded(false);
     setEndingPhase(0);
     endingTriggered.current = false;
     setCurrentStep(0);
     setIsPlaying(true);
+    setFadeState("visible");
+    setTimeout(() => startAutoAdvance(), 1000);
   };
 
   const progress = sentences.length > 1 ? currentStep / (sentences.length - 1) : 0;
@@ -631,7 +696,23 @@ export default function StageSimulation({ characters, simulation, simulationStep
   }, [renderPositions, hasStarted]);
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col">
+    <div className={`overflow-hidden bg-[#080808] flex flex-col transition-all duration-300 ${
+      isFullscreen
+        ? "fixed inset-0 z-50 h-[100dvh] w-screen rounded-none"
+        : "rounded-2xl"
+    }`}>
+      {/* Close button — fullscreen only */}
+      {isFullscreen && (
+        <button
+          onClick={() => { clearAutoAdvance(); setIsFullscreen(false); }}
+          className="absolute top-4 right-4 z-50 w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white/30 hover:text-white/60 transition-all"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+
       {/* Stage — fills available space */}
       <div className="relative w-full flex-1 min-h-0 overflow-hidden aspect-square">
         <div
@@ -707,6 +788,21 @@ export default function StageSimulation({ characters, simulation, simulationStep
           <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.12)" strokeWidth="0.8" filter="url(#glow-soft)" />
           <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,85,0,0.5)" strokeWidth="0.2" />
           <circle cx="50" cy="50" r="38" fill="rgba(255,85,0,0.015)" />
+
+          {/* Progress ring */}
+          {hasStarted && !hasEnded && (
+            <circle
+              cx="50" cy="50" r="42"
+              fill="none"
+              stroke="rgba(255,85,0,0.35)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              filter="url(#glow-soft)"
+              strokeDasharray={`${progress * 264} 264`}
+              transform="rotate(-90 50 50)"
+              style={{ transition: "stroke-dasharray 0.5s ease-out" }}
+            />
+          )}
 
           {/* Ritual ending — ring pulse */}
           {hasEnded && (
@@ -898,15 +994,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
       {/* Narration + Controls */}
       {hasStarted && (
         <div className="relative shrink-0">
-          {/* Progress bar */}
-          {!hasEnded && (
-            <div className="h-[2px] w-full bg-white/[0.04] overflow-hidden">
-              <div
-                className="h-full bg-mars/70 transition-all duration-500 ease-out"
-                style={{ width: `${Math.max(4, progress * 100)}%` }}
-              />
-            </div>
-          )}
           {/* Narration — tap the whole area to advance */}
           {!hasEnded ? (
             <button
@@ -914,7 +1001,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
               className="w-full px-8 sm:px-10 py-5 cursor-pointer active:bg-white/[0.02] transition-colors"
             >
               <p
-                className="font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center animate-fade-in"
+                className={`font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center transition-opacity duration-500 ${
+                  fadeState === "fading" ? "opacity-0" : "opacity-100"
+                }`}
                 key={currentStep}
               >
                 {sentences[currentStep]}

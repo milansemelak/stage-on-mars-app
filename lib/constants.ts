@@ -7,6 +7,9 @@ export const STORAGE_KEYS = {
   email: "som-email",
   pendingQuestion: "som-pending-question",
   landingFreePlays: "som-landing-free-plays",
+  dailyQuestion: "som-daily-question",
+  dailyQuestionDate: "som-daily-q-date",
+  migrationDone: "som-migration-done",
 } as const;
 
 export const LANDING_FREE_PLAY_LIMIT = 1;

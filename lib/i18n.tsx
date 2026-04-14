@@ -259,6 +259,17 @@ const translations = {
     journalPlaysCount: "plays",
     journalPerspectives: "perspectives",
     journalFromPlays: "from",
+    journalAllThreads: "All threads",
+    // Daily question
+    dailyQuestionLabel: "Your question for today",
+    // Journal synthesis
+    journalSynthesisLabel: "What the stage sees in you",
+    journalSynthesisRegenerate: "Regenerate",
+    // Threads
+    historyThreads: "Threads",
+    historyAllPlays: "All plays",
+    threadQuestions: "questions",
+    threadFollowUp: "follow-up",
   },
   sk: {
     // Header
@@ -513,6 +524,17 @@ const translations = {
     journalPlaysCount: "hrách",
     journalPerspectives: "perspektív",
     journalFromPlays: "z",
+    journalAllThreads: "Všetky vlákna",
+    // Daily question
+    dailyQuestionLabel: "Tvoja dnešná otázka",
+    // Journal synthesis
+    journalSynthesisLabel: "Čo v tebe vidí javisko",
+    journalSynthesisRegenerate: "Obnoviť",
+    // Threads
+    historyThreads: "Vlákna",
+    historyAllPlays: "Všetky hry",
+    threadQuestions: "otázok",
+    threadFollowUp: "nadväzujúca",
   },
   cs: {
     // Header
@@ -767,6 +789,17 @@ const translations = {
     journalPlaysCount: "hrách",
     journalPerspectives: "perspektiv",
     journalFromPlays: "z",
+    journalAllThreads: "Všechna vlákna",
+    // Daily question
+    dailyQuestionLabel: "Tvoje dnešní otázka",
+    // Journal synthesis
+    journalSynthesisLabel: "Co v tobě vidí jeviště",
+    journalSynthesisRegenerate: "Obnovit",
+    // Threads
+    historyThreads: "Vlákna",
+    historyAllPlays: "Všechny hry",
+    threadQuestions: "otázek",
+    threadFollowUp: "navazující",
   },
 } as const;
 

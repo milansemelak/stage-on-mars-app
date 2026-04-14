@@ -5,10 +5,12 @@ import { useSearchParams, useRouter } from "next/navigation";
 import QuestionInput from "@/components/QuestionInput";
 import PlayCard from "@/components/PlayCard";
 import PerspectivesJournal from "@/components/PerspectivesJournal";
+import DailyQuestionCard from "@/components/DailyQuestionCard";
 import { Play, HistoryEntry } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
-import { MAX_HISTORY, TRIAL_DAYS, STORAGE_KEYS, userKey } from "@/lib/constants";
+import { TRIAL_DAYS, STORAGE_KEYS } from "@/lib/constants";
+import { usePlayHistory } from "@/hooks/usePlayHistory";
 
 const LOADING_MESSAGES_KEYS = [
   "loading1",
@@ -108,7 +110,6 @@ function PlayPage() {
   const [error, setError] = useState<string | null>(null);
   const [askedQuestion, setAskedQuestion] = useState("");
   const [loadingMsg, setLoadingMsg] = useState(0);
-  const [playCount, setPlayCount] = useState(0);
   const [accessStatus, setAccessStatus] = useState<"loading" | "active" | "trial-expired" | "no-account">("loading");
   const [questionIdx, setQuestionIdx] = useState(0);
   const { lang, t } = useI18n();
@@ -159,14 +160,9 @@ function PlayPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context]);
 
-  // Load play count (scoped to user)
-  const historyKey = userKey(STORAGE_KEYS.playHistory, user?.id);
-  useEffect(() => {
-    const history = JSON.parse(
-      localStorage.getItem(historyKey) || "[]"
-    );
-    setPlayCount(history.length);
-  }, [historyKey]);
+  const { history: playHistoryData, savePlay, updatePlay } = usePlayHistory(user?.id);
+  const currentTimestampRef = useRef(0);
+  const currentThreadIdRef = useRef<string | null>(null);
 
   // Determine access status
   useEffect(() => {
@@ -286,6 +282,12 @@ function PlayPage() {
     setPlay(null);
     setAskedQuestion(question);
 
+    // Fresh question → new thread; follow-up → reuse current thread
+    const isFollowUp = followUpTrigger > 0 && currentThreadIdRef.current;
+    if (!isFollowUp) {
+      currentThreadIdRef.current = Date.now().toString(36);
+    }
+
     try {
       const response = await fetch("/api/generate-play", {
         method: "POST",
@@ -300,24 +302,19 @@ function PlayPage() {
       const data = await response.json();
       setPlay(data.plays[0]);
 
-      // Save to localStorage (user-scoped)
-      const history: HistoryEntry[] = JSON.parse(
-        localStorage.getItem(historyKey) || "[]"
-      );
-      const rxNumber = `SOM-${Date.now().toString(36).toUpperCase().slice(-6)}`;
-      history.unshift({
+      // Save to server + localStorage
+      const ts = Date.now();
+      currentTimestampRef.current = ts;
+      const rxNumber = `SOM-${ts.toString(36).toUpperCase().slice(-6)}`;
+      savePlay({
         question,
         context,
         play: data.plays[0],
-        timestamp: Date.now(),
+        timestamp: ts,
         rxNumber,
         clientName: clientName.trim() || undefined,
+        threadId: currentThreadIdRef.current || undefined,
       });
-      localStorage.setItem(
-        historyKey,
-        JSON.stringify(history.slice(0, MAX_HISTORY))
-      );
-      setPlayCount(Math.min(history.length, MAX_HISTORY));
 
       // Rotate question suggestion
       setQuestionIdx((prev) => (prev + 1) % questionPool.length);
@@ -332,18 +329,12 @@ function PlayPage() {
       setLoading(false);
       generatingRef.current = false;
     }
-  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, accessStatus, router, historyKey]);
+  }, [question, context, lang, clientName, questionPool.length, t.errorMessage, user, accessStatus, router, savePlay]);
 
   function handlePlayUpdate(updatedPlay: Play) {
     setPlay(updatedPlay);
-    const history: HistoryEntry[] = JSON.parse(localStorage.getItem(historyKey) || "[]");
-    const idx = history.findIndex(
-      (e) =>
-        e.play.name === updatedPlay.name && e.question === askedQuestion
-    );
-    if (idx !== -1) {
-      history[idx].play = updatedPlay;
-      localStorage.setItem(historyKey, JSON.stringify(history));
+    if (currentTimestampRef.current) {
+      updatePlay(currentTimestampRef.current, updatedPlay);
     }
   }
 
@@ -494,7 +485,7 @@ function PlayPage() {
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-6">
             {t.journalTitle}
           </h2>
-          <PerspectivesJournal />
+          <PerspectivesJournal history={playHistoryData} />
         </div>
       ) : (
         <>
@@ -525,17 +516,26 @@ function PlayPage() {
 
               {/* Daily question suggestion */}
               {!play && !loading && (
-                <div className="mt-5 space-y-2">
-                  <button
-                    onClick={useDailyQuestion}
-                    className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
-                  >
-                    {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
-                  </button>
+                <div className="mt-5 space-y-3">
+                  {playHistoryData.length >= 3 ? (
+                    <DailyQuestionCard
+                      onUseQuestion={(q) => {
+                        setQuestion(q);
+                        setFollowUpTrigger((n) => n + 1);
+                      }}
+                    />
+                  ) : (
+                    <button
+                      onClick={useDailyQuestion}
+                      className="text-white/30 hover:text-white/50 text-sm transition-colors text-left group"
+                    >
+                      {t.trySuggestion}: <span className="font-mercure italic text-white/40 group-hover:text-mars/60 transition-colors">&ldquo;{dailyQuestion}&rdquo;</span>
+                    </button>
+                  )}
 
-                  {playCount > 0 && (
+                  {playHistoryData.length > 0 && (
                     <div className="text-white/15 text-xs">
-                      {playCount} {t.playsGenerated}
+                      {playHistoryData.length} {t.playsGenerated}
                     </div>
                   )}
                 </div>
