@@ -48,9 +48,9 @@ export async function POST(request: NextRequest) {
     }
 
     const message = await callWithRetry({
-      model: "claude-sonnet-4-20250514",
+      model: phase === "perspectives" ? "claude-opus-4-6" : "claude-sonnet-4-20250514",
       max_tokens: 4096,
-      temperature: 1.0,
+      temperature: phase === "perspectives" ? 0.7 : 1.0,
       system: MARS_SYSTEM_PROMPT,
       messages: [
         {

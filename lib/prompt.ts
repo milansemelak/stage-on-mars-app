@@ -425,7 +425,12 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
   } else {
     // PHASE 2: only perspectives + followUpQuestion, given simulationSteps as context
     const stepsText = (play.simulationSteps || [])
-      .map((s, i) => `${i + 1}. ${s.narration}`)
+      .map((s, i) => {
+        const posInfo = s.positions
+          ? Object.entries(s.positions).map(([name, pos]) => `${name}: ${pos}`).join(", ")
+          : "";
+        return `${i + 1}. ${s.narration}${posInfo ? ` [${posInfo}]` : ""}`;
+      })
       .join("\n");
 
     parts.push(
@@ -446,6 +451,13 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
       ``,
       `## What actually happened on stage (the simulation the author just witnessed):`,
       stepsText || "(no steps recorded)",
+      ``,
+      `## BEFORE WRITING — THINK THROUGH THESE:`,
+      `1. What was the original question REALLY about, underneath the words?`,
+      `2. What did the choreography reveal that CONTRADICTS the question's premise?`,
+      `3. Which character's spatial behavior was most surprising or revealing?`,
+      `4. What would make the author say "Oh. I didn't want to know that"?`,
+      `Now write perspectives that capture THAT reversal.`,
       ``,
       `## PERSPECTIVES CONTRACT — 4 total`,
       `Perspective #1: From the author ("${authorLabel}"). A first-person shift in awareness — what THEY realized standing in their role. The most personal of the four. Write as if the author is saying it themselves about themselves.`,

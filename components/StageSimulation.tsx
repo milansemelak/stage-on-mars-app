@@ -286,7 +286,7 @@ function computeStepPositions(
  */
 function separatePositions(positions: Position[]) {
   const MIN_DIST = 16;
-  const iterations = 5;
+  const iterations = 8;
 
   for (let iter = 0; iter < iterations; iter++) {
     for (let i = 0; i < positions.length; i++) {
@@ -547,19 +547,20 @@ export default function StageSimulation({ characters, simulation, simulationStep
         }
       } else {
         for (let i = 0; i < pos.length; i++) {
-          pos[i].x += (targets[i].x - pos[i].x) * 0.04;
-          pos[i].y += (targets[i].y - pos[i].y) * 0.04;
+          pos[i].x += (targets[i].x - pos[i].x) * 0.1;
+          pos[i].y += (targets[i].y - pos[i].y) * 0.1;
         }
       }
 
-      // Very subtle breathing — barely perceptible, no jitter
-      const rendered = pos.map((p, i) => ({
-        x: p.x + Math.sin(time * 0.0004 + i * 2.5) * 0.08,
-        y: p.y + Math.cos(time * 0.0003 + i * 1.8) * 0.06,
-      }));
+      setRenderPositions(pos.map(p => ({ ...p })));
 
-      setRenderPositions(rendered);
-      rafRef.current = requestAnimationFrame(animate);
+      // Stop animation when transition is complete
+      const settled = from.length === targets.length
+        ? rawT >= 1
+        : pos.every((p, i) => Math.abs(p.x - targets[i].x) < 0.1 && Math.abs(p.y - targets[i].y) < 0.1);
+      if (!settled) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
     };
 
     rafRef.current = requestAnimationFrame(animate);
