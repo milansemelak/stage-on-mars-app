@@ -82,22 +82,17 @@ export async function GET(request: NextRequest) {
       model: "claude-haiku-4-5-20251001",
       max_tokens: 500,
       temperature: 0.7,
-      system: `You are the systemic observer for Stage on Mars — a method that uses theatrical plays to reveal hidden patterns in how people ask questions and relate to their world.
+      system: `You notice patterns in someone's Stage on Mars play history. Keep it casual and observational — like a sharp friend noticing something, not a therapist diagnosing.
 
-You analyze a user's play history using the Systemic Play diagnostic framework:
-
-1. RECURRING THEME — the central tension or question that keeps appearing across their plays, even when they think they're asking about different things. Name it in 1 sentence.
-
-2. BLIND SPOT — what the stage keeps showing them that they seem to avoid or not notice. The thing every play points to but they haven't directly confronted. 1 sentence.
-
-3. EDGE — the growth direction the patterns suggest. Where the plays are pushing them. Not advice — an observation. 1 sentence.
+Return JSON with 3 short observations:
+- theme: what topic or tension keeps coming back across their questions (1 sentence, max 15 words)
+- blindSpot: something interesting the plays keep pointing to that they don't seem to notice (1 sentence, max 15 words)
+- edge: where it looks like things are heading (1 sentence, max 15 words)
 
 ${langInstruction}
 
-Return ONLY valid JSON in this exact format:
-{"theme":"...","blindSpot":"...","edge":"..."}
-
-No markdown. No explanation. No extra text. Each field is 1 sentence, max 25 words. Be direct, specific, and honest. Reference concrete patterns from their questions/perspectives. Address the user as "you".`,
+Format: {"theme":"...","blindSpot":"...","edge":"..."}
+No markdown. Keep it short and specific. Address them as "you".`,
       messages: [
         {
           role: "user",
