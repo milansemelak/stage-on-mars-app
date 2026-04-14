@@ -163,10 +163,10 @@ CHARACTER NAMING RULES (READ CAREFULLY):
 3. **At least 1 character MUST be a known archetype, myth, or cultural figure.** Judas. Death. Icarus. Sherlock. The Devil. Cleopatra. Hamlet. Pinocchio. Rocky. Yoda. These characters hit INSTANTLY because everyone knows who they are.
 4. **BANNED NAME PATTERNS**: "The [Noun] Who [Verbed]", "The [Adjective] [Noun]", "The Fear of [Noun]", "The Thing [Pronoun] [Verb]". These are essays, not characters.
 
-CHARACTER MIX (exactly 3 characters — the author is added as 4th on stage automatically):
-- **1 ARCHETYPE/ICON** — a figure everyone recognizes: Judas, Death, Icarus, The Devil, Sherlock, King Midas, Sisyphus, Pinocchio, The Fool, Medusa, Prometheus, Hamlet, Don Quixote, The Oracle, Jesus, Buddha, Cassandra, Napoleon, Cleopatra, Batman, The Joker, Yoda, Tyler Durden, Rocky, Gandalf, Gollum, Steve Jobs, Muhammad Ali, Charlie Chaplin, Mr. Bean
-- **1 FORCE** — a raw, 1-word concept given a body: Fear, Silence, Death, Trust, Regret, Tomorrow, Permission, Debt, Time, Gravity, Stillness, Noise, Freedom, The Cost, The Exit
-- **1 FUNCTIONAL ROLE or second FORCE** — short, punchy: King, Judge, Mirror, Surgeon, Cook, Ferryman, Gardener, Conductor, The Fool, The Witness
+CHARACTER MIX (4-7 characters — the author is added on stage automatically, giving 5-8 total):
+- **1-2 ARCHETYPES/ICONS** — figures everyone recognizes: Judas, Death, Icarus, The Devil, Sherlock, King Midas, Sisyphus, Pinocchio, The Fool, Medusa, Prometheus, Hamlet, Don Quixote, The Oracle, Jesus, Buddha, Cassandra, Napoleon, Cleopatra, Batman, The Joker, Yoda, Tyler Durden, Rocky, Gandalf, Gollum, Steve Jobs, Muhammad Ali, Charlie Chaplin, Mr. Bean
+- **1-2 FORCES** — raw, 1-word concepts given a body: Fear, Silence, Death, Trust, Regret, Tomorrow, Permission, Debt, Time, Gravity, Stillness, Noise, Freedom, The Cost, The Exit
+- **1-3 FUNCTIONAL ROLES or additional FORCES** — short, punchy: King, Judge, Mirror, Surgeon, Cook, Ferryman, Gardener, Conductor, The Fool, The Witness
 
 RELEVANCE: Every character must connect to the question. But the connection can be SURPRISING. "Am I hiding behind being busy?" doesn't need "Busyness" as a character. It needs Sisyphus (eternal pointless labor), or Death (what you're avoiding), or The Mirror (what you refuse to look at).
 
@@ -205,7 +205,7 @@ Return a JSON array with play objects (the user prompt specifies how many):
   "mood": "2-3 words"
 }]
 
-Generate EXACTLY 3 characters per play. NEVER more than 3. The author is ALWAYS added as a 4th participant on stage, so do NOT include them in the characters array. If you generate 4 or more characters, your output is INVALID.
+Generate 4-7 characters per play. The author is ALWAYS added on stage automatically, so do NOT include them in the characters array. Aim for the number that serves the question: intimate questions need fewer (4-5), complex systemic questions can use more (6-7).
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 

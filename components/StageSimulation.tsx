@@ -285,7 +285,7 @@ function computeStepPositions(
  * Push characters apart so they never overlap.
  */
 function separatePositions(positions: Position[]) {
-  const MIN_DIST = 16;
+  const MIN_DIST = positions.length > 5 ? 12 : 16;
   const iterations = 8;
 
   for (let iter = 0; iter < iterations; iter++) {
