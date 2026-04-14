@@ -129,8 +129,13 @@ export default function HraSRealitouPage() {
 
       <div className="max-w-3xl mx-auto px-5 sm:px-10 py-8 sm:py-12">
 
-        {/* TITLE */}
+        {/* HERO — poster + headline */}
         <div className="mb-10 sm:mb-14">
+          <div className="-mx-5 sm:mx-0 mb-6 sm:mb-8">
+            <div className="sm:rounded-xl overflow-hidden">
+              <img src="/poster.png" alt="Is your reality shit? Come and play! — Reality Play with Milan Semelak" className="w-full h-auto" />
+            </div>
+          </div>
           <h1 className="text-[32px] sm:text-[48px] font-bold tracking-[-0.04em] leading-[1.05] mb-2">
             Hra s <span className="font-mercure italic text-mars">realitou</span>
           </h1>
@@ -326,10 +331,6 @@ export default function HraSRealitouPage() {
         <div className="mb-10 sm:mb-14">
           <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-4">Tone</p>
 
-          <div className="rounded-xl overflow-hidden mb-6">
-            <img src="/poster.png" alt="Is your reality shit? Come and play! — Reality Play with Milan Semelak" className="w-full h-auto" />
-          </div>
-
           <div className="space-y-4 text-[14px] sm:text-[15px] leading-[1.7] text-neutral-800">
             <p>
               Je to rýchle.<br />
@@ -405,6 +406,25 @@ export default function HraSRealitouPage() {
               Zahráme ju.
             </p>
           </div>
+        </div>
+
+        {/* TV VIDEO */}
+        <div className="mb-10 sm:mb-14">
+          <p className="text-mars text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mb-4">Seen on TV</p>
+          <div className="-mx-5 sm:mx-0 mb-3">
+            <div className="sm:rounded-xl overflow-hidden">
+              <video
+                src="/farma.mp4"
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+          <p className="text-[13px] sm:text-[14px] leading-[1.6] text-neutral-500">
+            Ukážka systémickej hry Stage on Mars v&nbsp;reality show Farma na TV Markíza.
+          </p>
         </div>
 
         {/* Footer */}
