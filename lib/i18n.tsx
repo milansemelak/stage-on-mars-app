@@ -270,6 +270,16 @@ const translations = {
     historyAllPlays: "All plays",
     threadQuestions: "questions",
     threadFollowUp: "follow-up",
+    // Continue thread
+    continueThread: "Go deeper",
+    // Play synthesis
+    playSynthesis: "What this play revealed",
+    // Stats
+    statsTitle: "Your journey",
+    statsPlays: "plays",
+    statsCharacters: "unique characters",
+    statsThreads: "threads",
+    statsTopCharacters: "Most frequent characters",
   },
   sk: {
     // Header
@@ -535,6 +545,16 @@ const translations = {
     historyAllPlays: "Všetky hry",
     threadQuestions: "otázok",
     threadFollowUp: "nadväzujúca",
+    // Continue thread
+    continueThread: "Ísť hlbšie",
+    // Play synthesis
+    playSynthesis: "Čo táto hra odhalila",
+    // Stats
+    statsTitle: "Tvoja cesta",
+    statsPlays: "hier",
+    statsCharacters: "unikátnych postáv",
+    statsThreads: "vlákien",
+    statsTopCharacters: "Najčastejšie postavy",
   },
   cs: {
     // Header
@@ -800,6 +820,16 @@ const translations = {
     historyAllPlays: "Všechny hry",
     threadQuestions: "otázek",
     threadFollowUp: "navazující",
+    // Continue thread
+    continueThread: "Jít hlouběji",
+    // Play synthesis
+    playSynthesis: "Co tato hra odhalila",
+    // Stats
+    statsTitle: "Tvoje cesta",
+    statsPlays: "her",
+    statsCharacters: "unikátních postav",
+    statsThreads: "vláken",
+    statsTopCharacters: "Nejčastější postavy",
   },
 } as const;
 

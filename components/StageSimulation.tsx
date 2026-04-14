@@ -606,6 +606,31 @@ export default function StageSimulation({ characters, simulation, simulationStep
     };
   }, [targets]);
 
+  // Idle breathing — gentle orbital drift when not playing
+  const breathingRafRef = useRef<number>(0);
+  useEffect(() => {
+    const isIdle = !hasStarted || hasEnded;
+    if (!isIdle || loading) {
+      if (breathingRafRef.current) cancelAnimationFrame(breathingRafRef.current);
+      return;
+    }
+
+    const basePositions = currentPositions.current.map(p => ({ ...p }));
+    const breathe = (time: number) => {
+      for (let i = 0; i < basePositions.length; i++) {
+        const el = groupRefs.current[i];
+        if (!el) continue;
+        const phase = time * 0.0004 + i * 1.8;
+        const dx = Math.sin(phase) * 1.2;
+        const dy = Math.cos(phase * 0.7) * 0.8;
+        el.setAttribute("transform", `translate(${basePositions[i].x + dx}, ${basePositions[i].y + dy})`);
+      }
+      breathingRafRef.current = requestAnimationFrame(breathe);
+    };
+    breathingRafRef.current = requestAnimationFrame(breathe);
+    return () => { if (breathingRafRef.current) cancelAnimationFrame(breathingRafRef.current); };
+  }, [hasStarted, hasEnded, loading]);
+
   // After every React render, re-apply RAF positions so React never overwrites
   // the smooth DOM state with stale renderPositions
   useLayoutEffect(() => {

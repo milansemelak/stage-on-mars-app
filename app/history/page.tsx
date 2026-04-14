@@ -1,15 +1,18 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Play } from "@/lib/types";
 import { PlayThread } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
 import { usePlayHistory } from "@/hooks/usePlayHistory";
+import { STORAGE_KEYS } from "@/lib/constants";
 import PlayCard from "@/components/PlayCard";
 import Link from "next/link";
 
 export default function HistoryPage() {
+  const router = useRouter();
   const { lang, t } = useI18n();
   const { user } = useAuth();
   const { history, loading, updatePlay, toggleFavorite, clearHistory: clearAll } = usePlayHistory(user?.id);
@@ -29,6 +32,11 @@ export default function HistoryPage() {
 
   function handleToggleFavorite(timestamp: number) {
     toggleFavorite(timestamp);
+  }
+
+  function handleContinueThread(question: string) {
+    localStorage.setItem(STORAGE_KEYS.pendingQuestion, question);
+    router.push("/play");
   }
 
   function toggleThread(threadId: string) {
@@ -78,6 +86,27 @@ export default function HistoryPage() {
   const displayed = filter === "favorites" ? history.filter((e) => e.favorite) : history;
 
   const hasThreads = threads.some((t) => t.entries.length > 1);
+  const multiThreadCount = threads.filter((t) => t.entries.length > 1).length;
+
+  // Stats: unique characters + top characters
+  const stats = useMemo(() => {
+    const charCount = new Map<string, number>();
+    for (const entry of history) {
+      for (const c of entry.play.characters) {
+        const name = c.name.toLowerCase();
+        charCount.set(name, (charCount.get(name) || 0) + 1);
+      }
+    }
+    const uniqueCount = charCount.size;
+    const topChars = [...charCount.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([name, count]) => ({
+        name: name.charAt(0).toUpperCase() + name.slice(1),
+        count,
+      }));
+    return { uniqueCount, topChars };
+  }, [history]);
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 space-y-8">
@@ -105,6 +134,46 @@ export default function HistoryPage() {
           )}
         </div>
       </div>
+
+      {/* Stats card */}
+      {history.length >= 3 && (
+        <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] px-6 py-5 space-y-4">
+          <h2 className="text-sm font-semibold text-white/50 uppercase tracking-wider">
+            {t.statsTitle}
+          </h2>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="space-y-1">
+              <p className="text-2xl font-bold text-white">{history.length}</p>
+              <p className="text-xs text-white/30">{t.statsPlays}</p>
+            </div>
+            <div className="space-y-1">
+              <p className="text-2xl font-bold text-white">{stats.uniqueCount}</p>
+              <p className="text-xs text-white/30">{t.statsCharacters}</p>
+            </div>
+            {multiThreadCount > 0 && (
+              <div className="space-y-1">
+                <p className="text-2xl font-bold text-white">{multiThreadCount}</p>
+                <p className="text-xs text-white/30">{t.statsThreads}</p>
+              </div>
+            )}
+          </div>
+          {stats.topChars.length > 0 && (
+            <div className="pt-2 border-t border-white/[0.06]">
+              <p className="text-xs text-white/25 mb-2">{t.statsTopCharacters}</p>
+              <div className="flex flex-wrap gap-2">
+                {stats.topChars.map((char) => (
+                  <span
+                    key={char.name}
+                    className="px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.06] text-xs text-white/50"
+                  >
+                    {char.name} <span className="text-white/20">×{char.count}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Filter + view tabs */}
       {history.length > 0 && (
@@ -221,6 +290,7 @@ export default function HistoryPage() {
                     onPlayUpdate={(p) => handlePlayUpdate(p, entry.timestamp)}
                     favorite={entry.favorite}
                     onToggleFavorite={() => handleToggleFavorite(entry.timestamp)}
+                    onContinueThread={() => handleContinueThread(entry.play.followUpQuestion || entry.question)}
                     rxNumber={entry.rxNumber}
                     clientName={entry.clientName}
                   />

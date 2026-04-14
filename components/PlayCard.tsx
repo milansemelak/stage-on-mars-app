@@ -14,13 +14,14 @@ type Props = {
   onPlayUpdate?: (play: Play) => void;
   onPlayCompleted?: () => void;
   onAskQuestion?: (question: string) => void;
+  onContinueThread?: () => void;
   favorite?: boolean;
   onToggleFavorite?: () => void;
   rxNumber?: string;
   clientName?: string;
 };
 
-export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted, onAskQuestion, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
+export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted, onAskQuestion, onContinueThread, favorite, onToggleFavorite, rxNumber, clientName }: Props) {
   const { lang, t } = useI18n();
   const { user } = useAuth();
   const [currentPlay, setCurrentPlay] = useState(play);
@@ -695,6 +696,28 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           )}
 
+          {/* ── Per-play synthesis — what the play revealed ── */}
+          {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (
+            <div className="animate-fade-in">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/10 to-transparent" />
+                <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-amber-400/40">{t.playSynthesis}</span>
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/10 to-transparent" />
+              </div>
+              <p className="text-center text-amber-200/60 text-sm italic leading-relaxed px-4">
+                {(() => {
+                  const persp = currentPlay.perspectives!
+                    .map((p) => typeof p === "object" ? (p as Perspective).insight : p)
+                    .filter(Boolean);
+                  if (persp.length === 0) return null;
+                  // Pick the most provocative perspective (shortest = punchiest)
+                  const sorted = [...persp].sort((a, b) => a.length - b.length);
+                  return sorted[0];
+                })()}
+              </p>
+            </div>
+          )}
+
           {/* ── Follow-up question — typewriter reveal ── */}
           {currentPlay.followUpQuestion && perspectivesRevealed && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (
             <div className="relative animate-fade-in">
@@ -728,6 +751,16 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 </div>
               </button>
             </div>
+          )}
+
+          {/* Continue thread — shown in history context */}
+          {onContinueThread && currentPlay.perspectives && currentPlay.perspectives.length > 0 && (
+            <button
+              onClick={onContinueThread}
+              className="w-full py-3.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-all text-center bg-white/[0.03] border border-white/[0.08] hover:border-mars/30 hover:bg-mars/[0.04] text-white/40 hover:text-mars animate-fade-in"
+            >
+              {t.continueThread} →
+            </button>
           )}
 
           {/* Actions — only after everything is revealed */}
