@@ -435,33 +435,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasStarted, setHasStarted] = useState(false);
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [fadeState, setFadeState] = useState<"visible" | "fading">("visible");
   const autoAdvanceRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-
-
-
-
-  // Fullscreen body lock
-  useEffect(() => {
-    if (isFullscreen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [isFullscreen]);
-
-  // Escape key exits fullscreen
-  useEffect(() => {
-    if (!isFullscreen) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsFullscreen(false);
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [isFullscreen]);
 
   // Auto-advance narration every 5 seconds
   const clearAutoAdvance = () => {
@@ -649,13 +625,11 @@ export default function StageSimulation({ characters, simulation, simulationStep
     }, 2000);
     setTimeout(() => {
       setEndingPhase(2);
-      setIsFullscreen(false);
     }, 4000);
   };
 
   const handleStart = () => {
     playBell();
-    setIsFullscreen(true);
     setHasStarted(true);
     setHasEnded(false);
     setEndingPhase(0);
@@ -663,12 +637,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
     setCurrentStep(0);
     setIsPlaying(true);
     setFadeState("visible");
-    // Start auto-advance after a brief delay for the first step
     setTimeout(() => startAutoAdvance(), 1000);
   };
 
   const handleReplay = () => {
-    setIsFullscreen(true);
     setHasEnded(false);
     setEndingPhase(0);
     endingTriggered.current = false;
@@ -696,25 +668,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
   }, [renderPositions, hasStarted]);
 
   return (
-    <div className={`overflow-hidden bg-[#080808] flex flex-col transition-all duration-300 ${
-      isFullscreen
-        ? "fixed inset-0 z-50 h-[100dvh] w-screen rounded-none"
-        : "rounded-2xl"
-    }`}>
-      {/* Close button — fullscreen only */}
-      {isFullscreen && (
-        <button
-          onClick={() => { clearAutoAdvance(); setIsFullscreen(false); }}
-          className="absolute top-4 right-4 z-[60] w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white/30 hover:text-white/60 transition-all"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      )}
-
+    <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col">
       {/* Stage — fills available space */}
-      <div className={`relative w-full flex-1 min-h-0 overflow-hidden ${isFullscreen ? "" : "aspect-square"}`}>
+      <div className="relative w-full flex-1 min-h-0 overflow-hidden aspect-square">
         <div
           className="absolute inset-0"
           style={{
