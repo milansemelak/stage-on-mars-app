@@ -289,10 +289,15 @@ function PlayPage() {
     }
 
     try {
+      // Collect recent character names so the AI avoids repeating them
+      const recentCharacters = playHistoryData
+        .slice(0, 8)
+        .flatMap((e) => e.play.characters.map((c) => c.name));
+
       const response = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, context, lang, clientName: clientName.trim() || undefined }),
+        body: JSON.stringify({ question, context, lang, clientName: clientName.trim() || undefined, recentCharacters: recentCharacters.length > 0 ? recentCharacters : undefined }),
       });
 
       if (!response.ok) {

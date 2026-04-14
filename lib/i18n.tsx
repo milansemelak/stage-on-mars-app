@@ -266,6 +266,7 @@ const translations = {
     journalAllThreads: "All threads",
     // Daily question
     dailyQuestionLabel: "Your question for today",
+    dailyQuestionRefresh: "New question",
     // Journal synthesis
     journalSynthesisLabel: "What the stage sees in you",
     journalSynthesisRegenerate: "Regenerate",
@@ -545,6 +546,7 @@ const translations = {
     journalAllThreads: "Všetky vlákna",
     // Daily question
     dailyQuestionLabel: "Tvoja dnešná otázka",
+    dailyQuestionRefresh: "Nová otázka",
     // Journal synthesis
     journalSynthesisLabel: "Čo v tebe vidí javisko",
     journalSynthesisRegenerate: "Obnoviť",
@@ -824,6 +826,7 @@ const translations = {
     journalAllThreads: "Všechna vlákna",
     // Daily question
     dailyQuestionLabel: "Tvoje dnešní otázka",
+    dailyQuestionRefresh: "Nová otázka",
     // Journal synthesis
     journalSynthesisLabel: "Co v tobě vidí jeviště",
     journalSynthesisRegenerate: "Obnovit",

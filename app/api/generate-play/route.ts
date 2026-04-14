@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
   if (rateLimitResponse) return rateLimitResponse;
 
   try {
-    const body: GenerateRequest = await request.json();
-    const { question, context, lang, clientName, count } = body;
+    const body: GenerateRequest & { recentCharacters?: string[] } = await request.json();
+    const { question, context, lang, clientName, count, recentCharacters } = body;
 
     if (!question || !question.trim()) {
       return NextResponse.json(
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: buildUserPrompt(question, context, lang, clientName, count),
+          content: buildUserPrompt(question, context, lang, clientName, count, recentCharacters),
         },
       ],
     });
@@ -108,10 +108,10 @@ export async function POST(request: NextRequest) {
     const sanitizedJson = sanitizeCyrillic(JSON.stringify(plays));
     plays = JSON.parse(sanitizedJson);
 
-    // Hard cap: max 4 characters per play
+    // Hard cap: max 8 characters per play (prompt says 5-7 + author is added separately)
     for (const play of plays) {
-      if (play.characters && play.characters.length > 4) {
-        play.characters = play.characters.slice(0, 4);
+      if (play.characters && play.characters.length > 8) {
+        play.characters = play.characters.slice(0, 8);
       }
     }
 

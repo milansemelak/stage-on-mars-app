@@ -164,9 +164,16 @@ CHARACTER NAMING RULES (READ CAREFULLY):
 4. **BANNED NAME PATTERNS**: "The [Noun] Who [Verbed]", "The [Adjective] [Noun]", "The Fear of [Noun]", "The Thing [Pronoun] [Verb]". These are essays, not characters.
 
 CHARACTER MIX (MINIMUM 5, up to 7 characters — the author is added on stage automatically, giving 6-8 total):
-- **1-2 ARCHETYPES/ICONS** — figures everyone recognizes: Judas, Death, Icarus, The Devil, Sherlock, King Midas, Sisyphus, Pinocchio, The Fool, Medusa, Prometheus, Hamlet, Don Quixote, The Oracle, Jesus, Buddha, Cassandra, Napoleon, Cleopatra, Batman, The Joker, Yoda, Tyler Durden, Rocky, Gandalf, Gollum, Steve Jobs, Muhammad Ali, Charlie Chaplin, Mr. Bean
-- **1-2 FORCES** — raw, 1-word concepts given a body: Fear, Silence, Death, Trust, Regret, Tomorrow, Permission, Debt, Time, Gravity, Stillness, Noise, Freedom, The Cost, The Exit
-- **1-3 FUNCTIONAL ROLES or additional FORCES** — short, punchy: King, Judge, Mirror, Surgeon, Cook, Ferryman, Gardener, Conductor, The Fool, The Witness
+- **1-2 ARCHETYPES/ICONS** — figures everyone recognizes. IMPORTANT: draw from the FULL breadth of human culture. Do NOT always pick the same ones. Examples across categories (use these as STARTING POINTS, not the full list):
+  - Mythology: Icarus, Prometheus, Medusa, Orpheus, Persephone, Cassandra, Narcissus, Ariadne, Minotaur, Pandora, Atlas, Hermes, Achilles, Penelope, Cerberus, Sphinx, Theseus, Daedalus, Charon
+  - Religion/Philosophy: Judas, Buddha, Jesus, Moses, Job, Solomon, Lucifer, Eve, Cain, Lazarus, Salome, Mary Magdalene, Socrates, Diogenes
+  - Literature/Theater: Hamlet, Don Quixote, Faust, Frankenstein, Odysseus, King Lear, Lady Macbeth, Antigone, Scheherazade, Sherlock, Cyrano, Robinson Crusoe, Alice, Captain Ahab, Dracula, Quasimodo
+  - Pop culture: Batman, The Joker, Yoda, Tyler Durden, Rocky, Neo, Forrest Gump, Willy Wonka, Jack Sparrow, Walter White, The Terminator, E.T., Darth Vader, James Bond, Indiana Jones, Frodo, Gollum
+  - Historical: Napoleon, Cleopatra, Marie Curie, Da Vinci, Galileo, Columbus, Tesla, Houdini, Charlie Chaplin, Frida Kahlo, Muhammad Ali, Alexander, Joan of Arc, Genghis Khan
+  - Archetypes: The Fool, The Trickster, The Orphan, The Sage, The Rebel, The Lover, The Creator, The Destroyer, The Shadow, The Healer, The Stranger, The Child
+  CRITICAL: NEVER default to the same 5-6 characters. Each play should surprise with at least one character the user has never seen.
+- **1-2 FORCES** — raw, 1-word concepts given a body. Go beyond the obvious: Fear, Silence, Death, Trust, Regret, Tomorrow, Permission, Debt, Time, Gravity, Stillness, Noise, Freedom, The Cost, The Exit, Hunger, Memory, Doubt, Belonging, Forgetting, The Unspoken, Velocity, Erosion, Tenderness, Ambition, Mercy, Shame, Desire, The Void, Rhythm, Entropy, Grace, Rage, Longing, The Border, Dawn, Decay
+- **1-3 FUNCTIONAL ROLES or additional FORCES** — short, punchy: King, Judge, Mirror, Surgeon, Cook, Ferryman, Gardener, Conductor, The Fool, The Witness, The Architect, The Cartographer, Lighthouse Keeper, Translator, Smuggler, The Clockmaker, Midwife, Gravedigger, The Navigator, The Arsonist, The Botanist, Puppeteer
 
 RELEVANCE: Every character must connect to the question. But the connection can be SURPRISING. "Am I hiding behind being busy?" doesn't need "Busyness" as a character. It needs Sisyphus (eternal pointless labor), or Death (what you're avoiding), or The Mirror (what you refuse to look at).
 
@@ -577,7 +584,8 @@ export function buildUserPrompt(
   context?: string,
   lang?: "en" | "sk" | "cs",
   clientName?: string,
-  count?: number
+  count?: number,
+  recentCharacters?: string[]
 ): string {
   const contextInstruction =
     context === "business"
@@ -680,6 +688,16 @@ PRAVIDLA:
     parts.push(
       "",
       `IMPORTANT: The person asking this question is named "${clientName}". In the authorRole field and anywhere the play references "the author", use their name "${clientName}" instead. For example, instead of "The author stands in the center" write "${clientName} stands in the center".`
+    );
+  }
+
+  // Anti-repetition: exclude characters from recent plays
+  if (recentCharacters && recentCharacters.length > 0) {
+    const unique = [...new Set(recentCharacters.map(c => c.trim()))].slice(0, 30);
+    parts.push(
+      "",
+      `ANTI-REPETITION — DO NOT USE any of these characters (they appeared in this user's recent plays): ${unique.join(", ")}`,
+      "Pick DIFFERENT archetypes, icons, forces, and roles. Go sideways. Surprise the user with characters they have never seen before. There are thousands of myths, figures, and forces in human culture — explore beyond the obvious."
     );
   }
 

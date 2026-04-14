@@ -11,23 +11,34 @@ export default function DailyQuestionCard({ onUseQuestion }: Props) {
   const { t } = useI18n();
   const [question, setQuestion] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+
+  async function fetchQuestion(refresh = false) {
+    try {
+      const url = refresh ? "/api/daily-question?refresh=1" : "/api/daily-question";
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        setQuestion(data.question);
+      }
+    } catch {
+      // silently fail
+    }
+  }
 
   useEffect(() => {
     (async () => {
-      try {
-        const res = await fetch("/api/daily-question");
-        if (res.ok) {
-          const data = await res.json();
-          setQuestion(data.question);
-        }
-      } catch {
-        // silently fail — curated questions remain as fallback in parent
-      } finally {
-        setLoading(false);
-      }
+      await fetchQuestion();
+      setLoading(false);
     })();
   }, []);
+
+  async function handleRefresh() {
+    setRefreshing(true);
+    await fetchQuestion(true);
+    setRefreshing(false);
+  }
 
   if (dismissed || (!loading && !question)) return null;
 
@@ -57,14 +68,34 @@ export default function DailyQuestionCard({ onUseQuestion }: Props) {
                 </p>
               </button>
             </div>
-            <button
-              onClick={() => setDismissed(true)}
-              className="text-white/15 hover:text-white/30 transition-colors mt-1 shrink-0"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-1.5 shrink-0 mt-1">
+              {/* Refresh button */}
+              <button
+                onClick={handleRefresh}
+                disabled={refreshing}
+                className="text-white/15 hover:text-amber-400/50 transition-colors disabled:opacity-30"
+                title={t.dailyQuestionRefresh}
+              >
+                <svg
+                  className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </button>
+              {/* Dismiss button */}
+              <button
+                onClick={() => setDismissed(true)}
+                className="text-white/15 hover:text-white/30 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         )}
       </div>

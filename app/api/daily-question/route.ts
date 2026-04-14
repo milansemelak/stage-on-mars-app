@@ -2,15 +2,30 @@ import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase-server";
 import { getAnthropicClient } from "@/lib/anthropic";
 
+// Mix of light, medium, and deep questions — not all existential
 const STARTER_QUESTIONS = [
+  // Light / playful
+  "What makes me laugh that I probably shouldn't?",
+  "What would I do today if nobody was watching?",
+  "What rule do I secretly enjoy breaking?",
+  "What would my 10-year-old self think of me right now?",
+  "What compliment would I never give myself?",
+  "What am I surprisingly good at that nobody knows?",
+  // Medium
+  "What conversation keeps replaying in my head?",
+  "What would change if I said no more often?",
+  "What do I keep saying I'll start tomorrow?",
+  "Where do I feel most free?",
+  "What am I protecting that doesn't need protection?",
+  "What would I do differently if I had 6 months?",
+  // Deep
   "What am I avoiding that keeps showing up anyway?",
   "What would change if I stopped trying to control this?",
-  "What conversation am I postponing?",
   "What would I do if I trusted myself more?",
-  "Where am I performing instead of being present?",
+  "What part of myself have I been negotiating away?",
 ];
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const supabase = await createServerSupabase();
     const {
@@ -21,18 +36,24 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Check if refresh is requested (bypass cache)
+    const url = new URL(request.url);
+    const refresh = url.searchParams.get("refresh") === "1";
+
     const today = new Date().toISOString().slice(0, 10);
 
-    // Check cache for today's question
-    const { data: cached } = await supabase
-      .from("daily_questions")
-      .select("generated_question")
-      .eq("user_id", user.id)
-      .eq("question_date", today)
-      .single();
+    // Check cache for today's question (skip if refresh)
+    if (!refresh) {
+      const { data: cached } = await supabase
+        .from("daily_questions")
+        .select("generated_question")
+        .eq("user_id", user.id)
+        .eq("question_date", today)
+        .single();
 
-    if (cached) {
-      return NextResponse.json({ question: cached.generated_question });
+      if (cached) {
+        return NextResponse.json({ question: cached.generated_question });
+      }
     }
 
     // Fetch recent perspectives and questions from plays
@@ -50,9 +71,18 @@ export async function GET() {
       return NextResponse.json({ question: q });
     }
 
+    // Fetch recent daily questions to avoid repeats
+    const { data: recentDailyQs } = await supabase
+      .from("daily_questions")
+      .select("generated_question")
+      .eq("user_id", user.id)
+      .order("question_date", { ascending: false })
+      .limit(5);
+
+    const recentDailyQuestions = recentDailyQs?.map((q) => q.generated_question) || [];
+
     // Build context from recent plays
     const recentQuestions = plays.map((p) => p.question);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const recentPerspectives: string[] = [];
     for (const p of plays) {
       const pd = p.play_data as { perspectives?: Array<string | { insight: string }> };
@@ -71,23 +101,26 @@ export async function GET() {
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 150,
-      temperature: 0.9,
+      temperature: 1.0,
       system:
-        "You generate one deeply personal, probing question for the Stage on Mars play simulator. The question should challenge the user's assumptions and reference patterns from their previous plays. Output ONLY the question, nothing else. Max 20 words.",
+        "You generate one question for the Stage on Mars play simulator. VARY THE TONE: sometimes playful, sometimes provocative, sometimes tender, sometimes absurd, sometimes practical. NOT always deep/philosophical. Alternate between light and heavy. The question should feel like it came from a curious friend, not a therapist. Output ONLY the question, nothing else. Max 15 words. No quotes around it.",
       messages: [
         {
           role: "user",
-          content: `Recent questions this person asked:\n${recentQuestions.join("\n")}\n\nRecent perspectives they received:\n${recentPerspectives.slice(0, 15).join("\n")}\n\nGenerate one new question that goes deeper. Don't repeat their previous questions. Reference patterns you notice.`,
+          content: `Recent questions this person asked:\n${recentQuestions.join("\n")}\n\nRecent perspectives they received:\n${recentPerspectives.slice(0, 10).join("\n")}\n\nRecent daily questions (DO NOT repeat or rephrase these):\n${recentDailyQuestions.join("\n")}\n\nGenerate one fresh question. Pick a DIFFERENT tone than their recent questions — if they've been heavy, go light; if practical, go existential. Don't repeat previous questions.`,
         },
       ],
     });
 
-    const generatedQuestion =
+    let generatedQuestion =
       response.content[0].type === "text"
-        ? response.content[0].text.trim()
+        ? response.content[0].text.trim().replace(/^["']|["']$/g, "")
         : STARTER_QUESTIONS[0];
 
-    // Cache for today
+    // Strip any leading/trailing quotes
+    generatedQuestion = generatedQuestion.replace(/^["'""]|["'""]$/g, "");
+
+    // Cache for today (upsert so refresh overwrites)
     await supabase.from("daily_questions").upsert(
       {
         user_id: user.id,
