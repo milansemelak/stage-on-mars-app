@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Play, Perspective } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { STORAGE_KEYS, MAX_HISTORY, userKey } from "@/lib/constants";
 import { useAuth } from "@/lib/auth-context";
 import Prescription from "./Prescription";
 import StageSimulation from "./StageSimulation";
+import ShareMenu from "./ShareMenu";
 
 type Props = {
   play: Play;
@@ -45,8 +46,6 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     authorRole: play.authorRole,
     endingPerspective: play.endingPerspective,
   });
-  const [copied, setCopied] = useState(false);
-  const [shareLoading, setShareLoading] = useState(false);
   // Perspectives are hidden until the user explicitly ends the play.
   // Exception: history reload (play already has perspectives AND simulationSteps) → show immediately.
   const [perspectivesRevealed, setPerspectivesRevealed] = useState(
@@ -178,32 +177,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     setShowPrescription(true);
   }
 
-  async function handleShareLink() {
-    if (shareLoading) return;
-    setShareLoading(true);
-    try {
-      const res = await fetch("/api/plays", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          play_data: currentPlay,
-          question: question || "",
-          lang,
-          client_name: clientName || "",
-        }),
-      });
-      if (!res.ok) throw new Error("Failed to share");
-      const data = await res.json();
-      const url = `https://playbook.stageonmars.com/p/${data.code}`;
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000);
-    } catch (err) {
-      console.error("Share link error:", err);
-    } finally {
-      setShareLoading(false);
-    }
-  }
+
 
   function startEditing() {
     setEditData({
@@ -238,43 +212,6 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
     setEditing(false);
   }
 
-  const copyAsText = useCallback(async () => {
-    const lines = [
-      currentPlay.name,
-      `${currentPlay.mood} · ${currentPlay.duration} · ${currentPlay.playerCount.min}-${currentPlay.playerCount.max} ${t.players}`,
-      "",
-      `${t.theImage}:`,
-      currentPlay.image,
-      "",
-      `${t.characters}:`,
-      ...currentPlay.characters.map((c) => `- ${c.name} (${c.description})`),
-      "",
-      `${t.authorsRole}:`,
-      currentPlay.authorRole,
-      "",
-      `${t.endingPerspective}:`,
-      currentPlay.endingPerspective,
-    ];
-
-    if (currentPlay.simulation) {
-      lines.push("", `${t.simulationTitle}:`, currentPlay.simulation);
-    }
-    if (currentPlay.perspectives?.length) {
-      lines.push("", `${t.perspectivesTitle}:`);
-      currentPlay.perspectives.forEach((p, i) => {
-        if (typeof p === "object" && p !== null) {
-          const sp = p as Perspective;
-          lines.push(`${i + 1}. [${sp.character}] ${sp.insight}`);
-        } else {
-          lines.push(`${i + 1}. ${p}`);
-        }
-      });
-    }
-
-    await navigator.clipboard.writeText(lines.join("\n"));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [currentPlay, t]);
 
   // Clear simulation when play content changes so it re-generates
   function clearSimulation(updated: Play): Play {
@@ -774,19 +711,12 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               >
                 {t.prescribe}
               </a>
-              <button
-                onClick={handleShareLink}
-                disabled={shareLoading}
-                className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all disabled:opacity-50"
-              >
-                {shareLoading ? t.sharing : copied ? t.linkCopied : t.shareLink}
-              </button>
-              <button
-                onClick={handlePrescribe}
-                className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
-              >
-                {t.sharePlay}
-              </button>
+              <ShareMenu
+                play={currentPlay}
+                question={question}
+                clientName={clientName}
+                onOpenPrescription={handlePrescribe}
+              />
             </div>
           )}
 
@@ -801,12 +731,12 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               >
                 {t.prescribe}
               </a>
-              <button
-                onClick={handlePrescribe}
-                className="py-3 px-4 rounded-xl border border-white/10 bg-white/[0.03] text-white/40 hover:text-white/70 hover:border-white/20 text-sm font-medium transition-all"
-              >
-                {t.sharePlay}
-              </button>
+              <ShareMenu
+                play={currentPlay}
+                question={question}
+                clientName={clientName}
+                onOpenPrescription={handlePrescribe}
+              />
             </div>
           )}
         </div>

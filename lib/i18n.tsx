@@ -147,6 +147,10 @@ const translations = {
     // Share
     sharePlay: "Share",
     shareLink: "Share link",
+    shareCopyLink: "Copy link",
+    shareCopyText: "Copy as text",
+    shareNative: "Share...",
+    textCopied: "Text copied!",
     linkCopied: "Link copied!",
     sharing: "Sharing...",
     sharedPlay: "Shared Play",
@@ -422,6 +426,10 @@ const translations = {
     // Share
     sharePlay: "Zdieľať",
     shareLink: "Zdieľať odkaz",
+    shareCopyLink: "Kopírovať odkaz",
+    shareCopyText: "Kopírovať text",
+    shareNative: "Zdieľať...",
+    textCopied: "Text skopírovaný!",
     linkCopied: "Odkaz skopírovaný!",
     sharing: "Zdieľam...",
     sharedPlay: "Zdieľaná hra",
@@ -697,6 +705,10 @@ const translations = {
     // Share
     sharePlay: "Sdílet",
     shareLink: "Sdílet odkaz",
+    shareCopyLink: "Kopírovat odkaz",
+    shareCopyText: "Kopírovat text",
+    shareNative: "Sdílet...",
+    textCopied: "Text zkopírován!",
     linkCopied: "Odkaz zkopírován!",
     sharing: "Sdílím...",
     sharedPlay: "Sdílená hra",
