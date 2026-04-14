@@ -163,10 +163,10 @@ CHARACTER NAMING RULES (READ CAREFULLY):
 3. **At least 1 character MUST be a known archetype, myth, or cultural figure.** Judas. Death. Icarus. Sherlock. The Devil. Cleopatra. Hamlet. Pinocchio. Rocky. Yoda. These characters hit INSTANTLY because everyone knows who they are.
 4. **BANNED NAME PATTERNS**: "The [Noun] Who [Verbed]", "The [Adjective] [Noun]", "The Fear of [Noun]", "The Thing [Pronoun] [Verb]". These are essays, not characters.
 
-CHARACTER MIX (3-4 characters total, NEVER more):
-- **1-2 ARCHETYPES/ICONS** — figures everyone recognizes: Judas, Death, Icarus, The Devil, Sherlock, King Midas, Sisyphus, Pinocchio, The Fool, Medusa, Prometheus, Hamlet, Don Quixote, The Oracle, Jesus, Buddha, Cassandra, Napoleon, Cleopatra, Batman, The Joker, Yoda, Tyler Durden, Rocky, Gandalf, Gollum, Steve Jobs, Muhammad Ali, Charlie Chaplin, Mr. Bean
-- **1-2 FORCES** — raw, 1-word concepts given a body: Fear, Silence, Death, Trust, Regret, Tomorrow, Permission, Debt, Time, Gravity, Stillness, Noise, Freedom, The Cost, The Exit
-- **0-1 FUNCTIONAL ROLES** — short, punchy: King, Judge, Mirror, Surgeon, Cook, Ferryman, Gardener, Conductor, The Fool, The Witness
+CHARACTER MIX (exactly 3 characters — the author is added as 4th on stage automatically):
+- **1 ARCHETYPE/ICON** — a figure everyone recognizes: Judas, Death, Icarus, The Devil, Sherlock, King Midas, Sisyphus, Pinocchio, The Fool, Medusa, Prometheus, Hamlet, Don Quixote, The Oracle, Jesus, Buddha, Cassandra, Napoleon, Cleopatra, Batman, The Joker, Yoda, Tyler Durden, Rocky, Gandalf, Gollum, Steve Jobs, Muhammad Ali, Charlie Chaplin, Mr. Bean
+- **1 FORCE** — a raw, 1-word concept given a body: Fear, Silence, Death, Trust, Regret, Tomorrow, Permission, Debt, Time, Gravity, Stillness, Noise, Freedom, The Cost, The Exit
+- **1 FUNCTIONAL ROLE or second FORCE** — short, punchy: King, Judge, Mirror, Surgeon, Cook, Ferryman, Gardener, Conductor, The Fool, The Witness
 
 RELEVANCE: Every character must connect to the question. But the connection can be SURPRISING. "Am I hiding behind being busy?" doesn't need "Busyness" as a character. It needs Sisyphus (eternal pointless labor), or Death (what you're avoiding), or The Mirror (what you refuse to look at).
 
@@ -205,7 +205,7 @@ Return a JSON array with play objects (the user prompt specifies how many):
   "mood": "2-3 words"
 }]
 
-Generate EXACTLY 3 or 4 characters per play. NEVER more than 4. If you generate 5 or more characters, your output is INVALID. Fewer characters = stronger dynamics, cleaner stage. 3 is ideal.
+Generate EXACTLY 3 characters per play. NEVER more than 3. The author is ALWAYS added as a 4th participant on stage, so do NOT include them in the characters array. If you generate 4 or more characters, your output is INVALID.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
@@ -282,7 +282,7 @@ All four perspectives must be so strong each could stand alone.
 
 **ACCUSATION** — it's uncomfortable. It names something the author already suspected but didn't want to admit. It feels like being caught.
 
-**BREVITY** — 1-2 sentences maximum. An aphorism, not an essay.
+**BREVITY** — 1 sentence. MAX 20 words. An aphorism, not an essay. If your insight is longer than 20 words, cut it in half.
 
 ### Study these GREAT perspectives from real sessions:
 - "We edited the author herself, not the result. To edit anything means to erase yourself."
@@ -325,15 +325,15 @@ Return ONLY valid JSON:
     {"narration": "Step 2 narration...", "positions": {"CharName": "close-to:OtherChar"}}
   ],
   "perspectives": [
-    {"character": "<author name or 'The Author'>", "insight": "What the author realized from inside the play. First-person felt truth."},
-    {"character": "CharName1", "insight": "One devastating sentence paired with this character's behavior."},
-    {"character": "CharName2", "insight": "Something that inverts the question, grounded in what this character did."},
-    {"character": "CharName3", "insight": "Something the author didn't want to hear, revealed by this character."}
+    {"character": "<author name or 'The Author'>", "insight": "MAX 20 words. First-person felt truth from inside the play."},
+    {"character": "CharName1", "insight": "MAX 20 words. One devastating sentence paired with this character."},
+    {"character": "CharName2", "insight": "MAX 20 words. Inverts the question."},
+    {"character": "CharName3", "insight": "MAX 20 words. What the author didn't want to hear."}
   ],
   "followUpQuestion": "The one question the play is now asking the author."
 }
 
-IMPORTANT: Use exact character names from the play. 4-5 simulation steps (NOT more). Each narration MAX 20 words. EXACTLY 4 perspectives (1 from the author + 3 from different characters). 1 follow-up question. Each step's positions must match what the narration describes.
+IMPORTANT: Use exact character names from the play. 4-5 simulation steps (NOT more). Each narration MAX 20 words. EXACTLY 4 perspectives (1 from the author + 3 from different characters). Each insight MAX 20 words, 1 sentence. 1 follow-up question. Each step's positions must match what the narration describes.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
@@ -463,7 +463,7 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
       `Perspective #1: From the author ("${authorLabel}"). A first-person shift in awareness — what THEY realized standing in their role. The most personal of the four. Write as if the author is saying it themselves about themselves.`,
       `Perspectives #2, #3, #4: Each paired with a DIFFERENT character from the play. Reference what THAT character actually did in the steps above. No character repeats. No generic wisdom.`,
       ``,
-      `Each perspective must be INVERSION + SPECIFICITY + ACCUSATION + BREVITY (1-2 sentences max). Reference the actual events above, not abstract ideas.`,
+      `Each perspective must be INVERSION + SPECIFICITY + ACCUSATION + BREVITY (1 sentence, MAX 20 words). Reference the actual events above, not abstract ideas.`,
       ``,
       `After the perspectives, generate ONE follow-up question the play is now asking the author. Goes deeper, not sideways. Emerges from the strongest perspective.`,
     );
