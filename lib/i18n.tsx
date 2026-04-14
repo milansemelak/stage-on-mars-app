@@ -270,6 +270,10 @@ const translations = {
     // Journal synthesis
     journalSynthesisLabel: "What the stage sees in you",
     journalSynthesisRegenerate: "Regenerate",
+    synthesisTheme: "Recurring theme",
+    synthesisBlindSpot: "Blind spot",
+    synthesisEdge: "Growth edge",
+    synthesisPlaysAnalyzed: "plays analyzed",
     // Threads
     historyThreads: "Threads",
     historyAllPlays: "All plays",
@@ -550,6 +554,10 @@ const translations = {
     // Journal synthesis
     journalSynthesisLabel: "Čo v tebe vidí javisko",
     journalSynthesisRegenerate: "Obnoviť",
+    synthesisTheme: "Opakujúca sa téma",
+    synthesisBlindSpot: "Slepý bod",
+    synthesisEdge: "Hrana rastu",
+    synthesisPlaysAnalyzed: "analyzovaných hier",
     // Threads
     historyThreads: "Vlákna",
     historyAllPlays: "Všetky hry",
@@ -830,6 +838,10 @@ const translations = {
     // Journal synthesis
     journalSynthesisLabel: "Co v tobě vidí jeviště",
     journalSynthesisRegenerate: "Obnovit",
+    synthesisTheme: "Opakující se téma",
+    synthesisBlindSpot: "Slepý bod",
+    synthesisEdge: "Hrana růstu",
+    synthesisPlaysAnalyzed: "analyzovaných her",
     // Threads
     historyThreads: "Vlákna",
     historyAllPlays: "Všechny hry",

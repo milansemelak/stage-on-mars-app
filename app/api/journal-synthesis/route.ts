@@ -4,6 +4,8 @@ import { getAnthropicClient } from "@/lib/anthropic";
 
 export async function GET(request: NextRequest) {
   const bustCache = request.nextUrl.searchParams.has("bust");
+  const lang = request.nextUrl.searchParams.get("lang") || "en";
+
   try {
     const supabase = await createServerSupabase();
     const {
@@ -34,10 +36,12 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (cached && cached.play_count === playCount && !bustCache) {
-      return NextResponse.json({
-        synthesis: cached.synthesis,
-        playCount: cached.play_count,
-      });
+      try {
+        const parsed = JSON.parse(cached.synthesis);
+        return NextResponse.json({ synthesis: parsed, playCount: cached.play_count });
+      } catch {
+        // Old format — force regeneration
+      }
     }
 
     // Fetch perspectives from recent plays
@@ -67,31 +71,63 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    const langInstruction = lang === "sk"
+      ? "Odpovedaj VÝLUČNE po slovensky. Žiadna angličtina."
+      : lang === "cs"
+      ? "Odpovídej VÝHRADNĚ česky. Žádná angličtina."
+      : "Respond in English.";
+
     const client = getAnthropicClient();
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 300,
+      max_tokens: 500,
       temperature: 0.7,
-      system:
-        "You are a perceptive systemic observer for Stage on Mars. Analyze the user's play history and identify: 1) recurring themes, 2) blind spots or avoidance patterns, 3) emerging growth edges. Write 2-3 sentences, direct and honest. Address the user as 'you'. No platitudes.",
+      system: `You are the systemic observer for Stage on Mars — a method that uses theatrical plays to reveal hidden patterns in how people ask questions and relate to their world.
+
+You analyze a user's play history using the Systemic Play diagnostic framework:
+
+1. RECURRING THEME — the central tension or question that keeps appearing across their plays, even when they think they're asking about different things. Name it in 1 sentence.
+
+2. BLIND SPOT — what the stage keeps showing them that they seem to avoid or not notice. The thing every play points to but they haven't directly confronted. 1 sentence.
+
+3. EDGE — the growth direction the patterns suggest. Where the plays are pushing them. Not advice — an observation. 1 sentence.
+
+${langInstruction}
+
+Return ONLY valid JSON in this exact format:
+{"theme":"...","blindSpot":"...","edge":"..."}
+
+No markdown. No explanation. No extra text. Each field is 1 sentence, max 25 words. Be direct, specific, and honest. Reference concrete patterns from their questions/perspectives. Address the user as "you".`,
       messages: [
         {
           role: "user",
-          content: `Questions asked (most recent first):\n${questions.join("\n")}\n\nPerspectives received:\n${perspectives.slice(0, 30).join("\n")}\n\nSynthesize the patterns.`,
+          content: `${playCount} plays analyzed.\n\nQuestions asked (most recent first):\n${questions.join("\n")}\n\nPerspectives received:\n${perspectives.slice(0, 30).join("\n")}`,
         },
       ],
     });
 
-    const synthesis =
+    const raw =
       response.content[0].type === "text"
         ? response.content[0].text.trim()
         : "";
 
-    if (synthesis) {
+    let synthesisObj: { theme: string; blindSpot: string; edge: string } | null = null;
+
+    try {
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        synthesisObj = JSON.parse(jsonMatch[0]);
+      }
+    } catch {
+      // Fallback: treat as plain text for backwards compat
+      synthesisObj = { theme: raw, blindSpot: "", edge: "" };
+    }
+
+    if (synthesisObj) {
       await supabase.from("journal_syntheses").upsert(
         {
           user_id: user.id,
-          synthesis,
+          synthesis: JSON.stringify(synthesisObj),
           play_count: playCount,
           updated_at: new Date().toISOString(),
         },
@@ -99,7 +135,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ synthesis, playCount });
+    return NextResponse.json({ synthesis: synthesisObj, playCount });
   } catch (error) {
     console.error("Journal synthesis error:", error);
     return NextResponse.json(
