@@ -172,10 +172,10 @@ export default function BusinessPage() {
           {/* Headline — sacred two lines */}
           <h1 className="text-center mb-5 sm:mb-6">
             <span className="block text-[clamp(28px,6vw,64px)] font-black tracking-[-0.04em] leading-[1.05] text-white">
-              Play with reality.
+              Play the future.
             </span>
             <span className="block text-[clamp(28px,6vw,64px)] font-black tracking-[-0.04em] leading-[1.05] text-mars">
-              Create what&apos;s next.
+              Then create it.
             </span>
           </h1>
 
