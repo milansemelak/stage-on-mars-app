@@ -960,9 +960,9 @@ export default function BusinessPage() {
               </div>
               <p className="text-mars/40 text-[10px] sm:text-[11px] uppercase tracking-[0.3em] mb-5 sm:mb-6">Reality Play Platform</p>
               <h1 className="text-[clamp(22px,5.5vw,72px)] font-bold leading-[1] tracking-[-0.04em] text-center whitespace-nowrap">
-                Play with reality.
+                Play the future.
                 <br />
-                <span className="text-mars">See what&apos;s possible.</span>
+                <span className="text-mars">Then decide it.</span>
               </h1>
             </div>
           )}

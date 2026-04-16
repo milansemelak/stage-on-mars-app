@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Play the Future | Stage on Mars",
-  description: "Play to see beyond current reality. Turn real questions into plays — live on stage or digitally. Stage on Mars.",
+  title: "Play the future. Then decide it. | Stage on Mars",
+  description: "Turn real questions into plays. Play to see beyond current reality — live on stage or digitally. Stage on Mars.",
 };
 
 export default function BusinessLayout({ children }: { children: React.ReactNode }) {

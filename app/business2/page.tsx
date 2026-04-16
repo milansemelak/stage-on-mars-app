@@ -175,7 +175,7 @@ export default function BusinessPage() {
               Play the future.
             </span>
             <span className="block text-[clamp(28px,6vw,64px)] font-black tracking-[-0.04em] leading-[1.05] text-mars">
-              Then create it.
+              Then decide it.
             </span>
           </h1>
 

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Stage on Mars — Play the future. Then create it.",
+  title: "Stage on Mars — Play the future. Then decide it.",
   description: "Your team's real question, played out on stage. In four hours, the room gets unstuck. 800+ plays with Forbes, Škoda, PwC, YPO, Oktagon, House of Lobkowicz.",
   openGraph: {
-    title: "Stage on Mars — Play the future. Then create it.",
+    title: "Stage on Mars — Play the future. Then decide it.",
     description: "Your team's real question, played out on stage. In four hours, the room gets unstuck.",
     url: "https://playbook.stageonmars.com/business2",
     siteName: "Stage on Mars",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Stage on Mars — Play the future. Then create it.",
+    title: "Stage on Mars — Play the future. Then decide it.",
     description: "Your team's real question, played out on stage. In four hours, the room gets unstuck.",
     images: ["/og-image.png"],
   },

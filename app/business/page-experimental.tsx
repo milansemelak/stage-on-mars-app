@@ -941,9 +941,9 @@ export default function BusinessPage() {
             <div className="text-center mb-8 sm:mb-12">
               <img src="/logo.png" alt="Stage On Mars" className="h-8 sm:h-11 w-auto invert mx-auto mb-8 sm:mb-10 opacity-80 drop-shadow-[0_0_20px_rgba(255,85,0,0.1)]" />
               <h1 className="text-[clamp(24px,4.5vw,52px)] font-bold leading-[1.1] tracking-[-0.03em]" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.8)" }}>
-                <span className="text-white">Play with reality.</span>
+                <span className="text-white">Play the future.</span>
                 <br />
-                <span className="text-mars">See what&apos;s possible.</span>
+                <span className="text-mars">Then decide it.</span>
               </h1>
             </div>
           )}
