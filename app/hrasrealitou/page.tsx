@@ -414,7 +414,7 @@ export default function HraSRealitouPage() {
           <div className="-mx-5 sm:mx-0 mb-3">
             <div className="sm:rounded-xl overflow-hidden">
               <video
-                src="/farma.mp4"
+                src="/farma-web.mp4"
                 controls
                 playsInline
                 preload="metadata"
