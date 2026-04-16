@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function DailyQuestionCard({ onUseQuestion }: Props) {
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
   const [question, setQuestion] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -16,8 +16,9 @@ export default function DailyQuestionCard({ onUseQuestion }: Props) {
 
   async function fetchQuestion(refresh = false) {
     try {
-      const url = refresh ? "/api/daily-question?refresh=1" : "/api/daily-question";
-      const res = await fetch(url);
+      const params = new URLSearchParams({ lang });
+      if (refresh) params.set("refresh", "1");
+      const res = await fetch(`/api/daily-question?${params}`);
       if (res.ok) {
         const data = await res.json();
         setQuestion(data.question);

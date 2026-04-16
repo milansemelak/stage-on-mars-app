@@ -2,28 +2,43 @@ import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase-server";
 import { getAnthropicClient } from "@/lib/anthropic";
 
-// Mix of light, medium, and deep questions — not all existential
-const STARTER_QUESTIONS = [
-  // Light / playful
-  "What makes me laugh that I probably shouldn't?",
-  "What would I do today if nobody was watching?",
-  "What rule do I secretly enjoy breaking?",
-  "What would my 10-year-old self think of me right now?",
-  "What compliment would I never give myself?",
-  "What am I surprisingly good at that nobody knows?",
-  // Medium
-  "What conversation keeps replaying in my head?",
-  "What would change if I said no more often?",
-  "What do I keep saying I'll start tomorrow?",
-  "Where do I feel most free?",
-  "What am I protecting that doesn't need protection?",
-  "What would I do differently if I had 6 months?",
-  // Deep
-  "What am I avoiding that keeps showing up anyway?",
-  "What would change if I stopped trying to control this?",
-  "What would I do if I trusted myself more?",
-  "What part of myself have I been negotiating away?",
-];
+const STARTER_QUESTIONS: Record<string, string[]> = {
+  en: [
+    "What am I avoiding at work?",
+    "What would I do today if nobody was watching?",
+    "What conversation keeps replaying in my head?",
+    "What would change if I said no more often?",
+    "What do I keep saying I'll start tomorrow?",
+    "What am I protecting that doesn't need protection?",
+    "Why do I keep saying yes when I mean no?",
+    "What would my team say about me if I wasn't in the room?",
+  ],
+  sk: [
+    "Čomu sa v práci vyhýbam?",
+    "Čo by som dnes robil, keby sa nikto nepozeral?",
+    "Aký rozhovor sa mi stále prehráva v hlave?",
+    "Čo by sa zmenilo, keby som častejšie povedal nie?",
+    "Čo stále hovorím, že začnem zajtra?",
+    "Čo chránim, čo ochranu nepotrebuje?",
+    "Prečo stále hovorím áno, keď myslím nie?",
+    "Čo by o mne povedal môj tím, keby som nebol v miestnosti?",
+  ],
+  cs: [
+    "Čemu se v práci vyhýbám?",
+    "Co bych dnes dělal, kdyby se nikdo nedíval?",
+    "Jaký rozhovor se mi pořád přehrává v hlavě?",
+    "Co by se změnilo, kdybych častěji řekl ne?",
+    "Co pořád říkám, že začnu zítra?",
+    "Co chráním, co ochranu nepotřebuje?",
+    "Proč pořád říkám ano, když myslím ne?",
+    "Co by o mně řekl můj tým, kdybych nebyl v místnosti?",
+  ],
+};
+
+function getStarterQuestion(lang: string): string {
+  const pool = STARTER_QUESTIONS[lang] || STARTER_QUESTIONS.en;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 
 export async function GET(request: Request) {
   try {
@@ -36,9 +51,9 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Check if refresh is requested (bypass cache)
     const url = new URL(request.url);
     const refresh = url.searchParams.get("refresh") === "1";
+    const lang = url.searchParams.get("lang") || "en";
 
     const today = new Date().toISOString().slice(0, 10);
 
@@ -66,9 +81,7 @@ export async function GET(request: Request) {
 
     // New user with no history → return a curated starter question
     if (!plays || plays.length === 0) {
-      const q =
-        STARTER_QUESTIONS[Math.floor(Math.random() * STARTER_QUESTIONS.length)];
-      return NextResponse.json({ question: q });
+      return NextResponse.json({ question: getStarterQuestion(lang) });
     }
 
     // Fetch recent daily questions to avoid repeats
@@ -97,17 +110,30 @@ export async function GET(request: Request) {
       }
     }
 
+    const langInstruction = lang === "sk"
+      ? "Odpovedaj VÝLUČNE po slovensky."
+      : lang === "cs"
+      ? "Odpovídej VÝHRADNĚ česky."
+      : "Respond in English.";
+
     const client = getAnthropicClient();
     const response = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 150,
-      temperature: 1.0,
-      system:
-        "You generate one question for the Stage on Mars play simulator. VARY THE TONE: sometimes playful, sometimes provocative, sometimes tender, sometimes absurd, sometimes practical. NOT always deep/philosophical. Alternate between light and heavy. The question should feel like it came from a curious friend, not a therapist. Output ONLY the question, nothing else. Max 15 words. No quotes around it.",
+      temperature: 0.8,
+      system: `You generate one question for the Stage on Mars play simulator — a tool where people turn real questions into systemic plays with characters and perspectives.
+
+The question MUST be something a real person would actually ask about their life, work, or relationships. It should be a question worth playing out on stage.
+
+GOOD examples: "What am I avoiding at work?", "Why do I keep saying yes when I mean no?", "What does my team actually need from me?", "Am I in the right place?"
+BAD examples: "What would your stage smell like?", "If you were a color what would you be?", "What does the universe whisper?" — these are meaningless nonsense. NEVER generate abstract/poetic/surreal questions.
+
+${langInstruction}
+Output ONLY the question. Max 12 words. No quotes.`,
       messages: [
         {
           role: "user",
-          content: `Recent questions this person asked:\n${recentQuestions.join("\n")}\n\nRecent perspectives they received:\n${recentPerspectives.slice(0, 10).join("\n")}\n\nRecent daily questions (DO NOT repeat or rephrase these):\n${recentDailyQuestions.join("\n")}\n\nGenerate one fresh question. Pick a DIFFERENT tone than their recent questions — if they've been heavy, go light; if practical, go existential. Don't repeat previous questions.`,
+          content: `Recent questions this person asked:\n${recentQuestions.join("\n")}\n\nRecent daily questions (DO NOT repeat these):\n${recentDailyQuestions.join("\n")}\n\nGenerate one new question that connects to their patterns but goes somewhere fresh. Must be a real, grounded question someone would genuinely want to explore.`,
         },
       ],
     });
@@ -115,7 +141,7 @@ export async function GET(request: Request) {
     let generatedQuestion =
       response.content[0].type === "text"
         ? response.content[0].text.trim().replace(/^["']|["']$/g, "")
-        : STARTER_QUESTIONS[0];
+        : getStarterQuestion(lang);
 
     // Strip any leading/trailing quotes
     generatedQuestion = generatedQuestion.replace(/^["'""]|["'""]$/g, "");
@@ -133,9 +159,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ question: generatedQuestion });
   } catch (error) {
     console.error("Daily question error:", error);
-    // Fallback to curated question on any error
-    const q =
-      STARTER_QUESTIONS[Math.floor(Math.random() * STARTER_QUESTIONS.length)];
-    return NextResponse.json({ question: q });
+    // Fallback to curated starter question on any error
+    const fallbackLang = (() => {
+      try { return new URL(request.url).searchParams.get("lang") || "en"; } catch { return "en"; }
+    })();
+    return NextResponse.json({ question: getStarterQuestion(fallbackLang) });
   }
 }
