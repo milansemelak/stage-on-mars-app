@@ -436,38 +436,40 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [hasEnded, setHasEnded] = useState(false);
   const [endingPhase, setEndingPhase] = useState(0);
   const [fadeState, setFadeState] = useState<"visible" | "fading">("visible");
-  const autoAdvanceRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
 
-  // Auto-advance narration every 5 seconds
-  const clearAutoAdvance = () => {
-    if (autoAdvanceRef.current) {
-      clearInterval(autoAdvanceRef.current);
-      autoAdvanceRef.current = null;
+  // Staggered reveal: narration appears after movement settles
+  const [narrationStep, setNarrationStep] = useState(0);
+  const narrationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearNarrationTimer = () => {
+    if (narrationTimerRef.current) {
+      clearTimeout(narrationTimerRef.current);
+      narrationTimerRef.current = null;
     }
   };
 
-  const startAutoAdvance = () => {
-    clearAutoAdvance();
-    autoAdvanceRef.current = setInterval(() => {
-      setFadeState("fading");
-      setTimeout(() => {
-        setCurrentStep((prev) => {
-          const next = prev + 1;
-          if (next >= sentences.length) {
-            clearAutoAdvance();
-            triggerEnding();
-            return prev;
-          }
-          return next;
-        });
-        setFadeState("visible");
-      }, 500);
-    }, 6000);
-  };
+  // When currentStep changes, delay narration reveal
+  useEffect(() => {
+    if (!hasStarted || hasEnded) return;
+    clearNarrationTimer();
+    if (currentStep === 0) {
+      // First step: show immediately
+      setNarrationStep(0);
+      setFadeState("visible");
+      return;
+    }
+    // Hide narration, wait for movement to settle, then reveal
+    setFadeState("fading");
+    narrationTimerRef.current = setTimeout(() => {
+      setNarrationStep(currentStep);
+      setFadeState("visible");
+    }, 1500);
+    return () => clearNarrationTimer();
+  }, [currentStep, hasStarted, hasEnded]);
 
-  // Cleanup auto-advance on unmount
-  useEffect(() => clearAutoAdvance, []);
+  // Cleanup on unmount
+  useEffect(() => clearNarrationTimer, []);
 
   // Final circle formation for ritual ending
   const finalCirclePositions = useMemo(() => {
@@ -641,16 +643,12 @@ export default function StageSimulation({ characters, simulation, simulationStep
     }
   });
 
-  // Author-controlled: advance to next step on tap
+  // Author-controlled: advance to next step on tap (no auto-advance)
   const advanceStep = () => {
     if (!hasStarted || hasEnded) return;
     if (currentStep < sentences.length - 1) {
-      setFadeState("visible");
       setCurrentStep((p) => p + 1);
-      // Reset auto-advance timer on manual tap
-      startAutoAdvance();
     } else {
-      clearAutoAdvance();
       triggerEnding();
     }
   };
@@ -660,7 +658,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const triggerEnding = () => {
     if (endingTriggered.current) return;
     endingTriggered.current = true;
-    clearAutoAdvance();
+    clearNarrationTimer();
     setIsPlaying(false);
     setTimeout(() => {
       setHasEnded(true);
@@ -678,9 +676,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
     setEndingPhase(0);
     endingTriggered.current = false;
     setCurrentStep(0);
+    setNarrationStep(0);
     setIsPlaying(true);
     setFadeState("visible");
-    setTimeout(() => startAutoAdvance(), 1000);
   };
 
   const handleReplay = () => {
@@ -688,9 +686,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
     setEndingPhase(0);
     endingTriggered.current = false;
     setCurrentStep(0);
+    setNarrationStep(0);
     setIsPlaying(true);
     setFadeState("visible");
-    setTimeout(() => startAutoAdvance(), 1000);
   };
 
   const progress = sentences.length > 1 ? currentStep / (sentences.length - 1) : 0;
@@ -997,30 +995,25 @@ export default function StageSimulation({ characters, simulation, simulationStep
           {!hasEnded ? (
             <button
               onClick={advanceStep}
-              className="w-full px-8 sm:px-10 py-5 cursor-pointer active:bg-white/[0.02] transition-colors"
+              className="w-full px-6 sm:px-10 py-5 sm:py-6 cursor-pointer active:bg-white/[0.02] transition-colors"
             >
               <p
-                className={`font-mercure italic text-white/60 text-sm sm:text-base leading-relaxed text-center transition-opacity duration-500 ${
+                className={`text-white/70 text-[15px] sm:text-[17px] leading-[1.6] text-center transition-opacity duration-500 ${
                   fadeState === "fading" ? "opacity-0" : "opacity-100"
                 }`}
-                key={currentStep}
+                key={narrationStep}
               >
-                {sentences[currentStep]}
+                {sentences[narrationStep]}
               </p>
               <div className="mt-4 flex items-center justify-center gap-3">
-                <span className="text-white/25 text-[10px]">
+                <span className="text-white/20 text-[10px] tabular-nums">
                   {currentStep + 1}/{sentences.length}
                 </span>
-                <span className={`text-xs font-bold uppercase tracking-[0.15em] transition-all ${
-                  currentStep === 0 ? "text-mars/70 animate-pulse" : currentStep >= sentences.length - 1 ? "text-mars/60" : "text-white/40"
+                <span className={`text-[10px] font-bold uppercase tracking-[0.15em] transition-all ${
+                  currentStep >= sentences.length - 1 ? "text-mars/60" : "text-white/30"
                 }`}>
                   {t.tapToContinue}
                 </span>
-                <svg viewBox="0 0 24 24" className={`w-3 h-3 transition-all ${
-                  currentStep === 0 ? "fill-mars/70 animate-pulse" : "fill-white/25"
-                }`}>
-                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
-                </svg>
               </div>
             </button>
           ) : (
