@@ -513,129 +513,200 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
   return parts.join("\n");
 };
 
-// Creative angles injected randomly into each request to force variety
-// Two angles are picked per request to combine mechanics + constraints
+// ══════════════════════════════════════════════════════════════════════════════
+// COMBINATORIAL PLAY SEED GENERATOR
+// Instead of a flat list of creative angles, we mix 5 independent dimensions.
+// Each request picks 1 from each dimension → thousands of unique combinations.
+// ══════════════════════════════════════════════════════════════════════════════
+
+// Dimension 1: METAPHOR DOMAIN — the world the play lives in
+const METAPHOR_DOMAINS = [
+  // Nature & biology
+  "beekeeping", "coral reef", "volcanic eruption", "seed dispersal", "mycelium network",
+  "tidal system", "bird migration", "metamorphosis", "hibernation", "pollination",
+  "root system", "murmuration", "erosion", "glacier movement", "forest fire renewal",
+  "whale song", "ant colony", "spider web", "tide pool", "storm system",
+  // Craft & making
+  "pottery", "blacksmithing", "weaving", "origami", "glassblowing",
+  "fermentation", "distillation", "bread baking", "tattooing", "woodcarving",
+  "calligraphy", "mosaic", "knot tying", "dyeing fabric", "stone masonry",
+  // Science & systems
+  "surgery", "DNA replication", "particle collision", "telescope observation", "fossil excavation",
+  "seismography", "radio transmission", "chemical reaction", "circuit board", "encryption",
+  "cartography", "astronomical navigation", "weather forecasting", "forensic investigation", "deep sea sonar",
+  // Music & performance
+  "jazz improvisation", "orchestra tuning", "choir rehearsal", "drum circle", "DJ mixing",
+  "opera staging", "street busking", "sound mixing", "instrument repair", "silent disco",
+  // Travel & movement
+  "submarine navigation", "mountain expedition", "train switching yard", "air traffic control", "river rapids",
+  "border crossing", "smuggling route", "pilgrimage", "space docking", "desert caravan",
+  "shipwreck survival", "airport terminal", "elevator mechanics", "parkour", "tightrope walking",
+  // Food & gathering
+  "wine tasting", "fishing", "foraging", "butchery", "tea ceremony",
+  "banquet seating", "food market", "recipe invention", "spice trading", "harvest ritual",
+  // Architecture & space
+  "demolition", "bridge building", "lighthouse keeping", "lock mechanism", "labyrinth",
+  "scaffolding", "foundation pouring", "room clearing", "window installation", "controlled burn",
+  // Social rituals
+  "wedding", "funeral", "baptism", "exile", "homecoming",
+  "coronation", "confession", "séance", "naming ceremony", "coming of age",
+  "last supper", "intervention", "wake", "initiation rite", "farewell party",
+  // Games & competition
+  "chess", "poker", "musical chairs", "tug of war", "relay race",
+  "hide and seek", "capture the flag", "jenga", "dominoes", "roulette",
+  "arm wrestling", "obstacle course", "scavenger hunt", "auction", "speed dating",
+  // Work & profession
+  "bomb disposal", "firefighting", "air traffic control", "emergency room triage", "courtroom",
+  "casting call", "job interview", "prison guard rotation", "switchboard operation", "customs inspection",
+  "lost and found office", "translation bureau", "puppet theater", "clockwork repair", "book restoration",
+];
+
+// Dimension 2: AUTHOR ROLE — what the author physically does
+const AUTHOR_ROLES = [
+  "chooses and eliminates (removes characters one by one, forced ranking)",
+  "builds (assembles characters into a structure, deciding who connects to whom)",
+  "judges (watches and gives verdicts, but every verdict has consequences)",
+  "navigates blind (eyes closed or back turned, guided only by sound/touch)",
+  "is judged (stands still while characters circle and evaluate them)",
+  "conducts (controls timing and intensity, but characters can ignore them)",
+  "guards something (protects a position while characters try to reach it)",
+  "trades (must give something up to receive something from each character)",
+  "follows (is led through the space by characters, must choose which to follow)",
+  "translates (receives a message from one side, must deliver it to the other, distortion is inevitable)",
+  "waits (is passive while the world happens around them, must decide when to act)",
+  "destroys (must tear something down that characters have built)",
+  "witnesses silently (watches everything, says one sentence at the end)",
+  "names things (gives each character their role by speaking it, but naming creates consequences)",
+  "carries weight (physically holds something, passes it, or drops it)",
+  "refuses (says no to each character, keeps saying no until they say yes once)",
+  "confesses (tells each character one truth, each character responds differently)",
+  "races against time (a countdown is happening, must finish before it ends)",
+  "mediates (stands between two opposing forces, must choose or find a third way)",
+  "leaves (must physically walk away from the stage, the play continues without them)",
+];
+
+// Dimension 3: CONSTRAINT — the rule that creates pressure
+const CONSTRAINTS = [
+  "characters can only say ONE word each, ever",
+  "all decisions must be YES or NO, nothing else",
+  "the available space shrinks every round",
+  "characters cannot move from their position, only the author moves",
+  "every time the author speaks, one character must leave",
+  "characters slowly walk toward the author, a decision must happen before they arrive",
+  "characters can only speak in questions, no statements",
+  "each character has only THREE words total for the entire play",
+  "characters swap roles halfway through, nobody stays who they were",
+  "the author cannot see one character but everyone else can",
+  "characters can only move when someone else is touching them",
+  "the play is completely silent, only movement and gesture",
+  "characters can only repeat what another character said, like echoes",
+  "one character lies in every statement, nobody knows which one",
+  "characters must freeze when the author looks at them",
+  "the play happens in near-darkness (characters crouch/hide), only one is visible at a time",
+  "characters are chained together in pairs, they cannot separate",
+  "the author must keep moving, stopping means the play ends",
+  "characters can only communicate through other characters, never directly",
+  "every action is irreversible, once done it cannot be undone",
+  "characters age/decay each round, becoming weaker/quieter",
+  "the author can only touch, not speak or gesture",
+  "one character mirrors everything the author does",
+  "characters gradually lose abilities (speech, then movement, then presence)",
+];
+
+// Dimension 4: ENDING TYPE — what the play produces
+const ENDING_TYPES = [
+  "the last character standing IS the answer",
+  "what the author built with their hands (the arrangement of bodies) IS the answer",
+  "the one word the author speaks after silence IS the answer",
+  "what burned and what survived the fire IS the answer",
+  "who the author chose to follow IS the answer",
+  "the shape the characters formed without instruction IS the answer",
+  "what the author refused to let go of IS the answer",
+  "the distance between the author and each character at the end IS the answer",
+  "the character who moved last IS the answer",
+  "what the author did when nobody was watching IS the answer",
+  "the thing the author dropped/released IS the answer",
+  "the direction the author is facing when the play stops IS the answer",
+  "what was whispered in the final silence IS the answer",
+  "who betrayed whom (and who forgave) IS the answer",
+  "the sound the group makes together at the end IS the answer",
+  "what the author named the structure they built IS the answer",
+  "which characters ended up together (and which alone) IS the answer",
+  "the one thing the author carried off the stage IS the answer",
+];
+
+// Dimension 5: CHARACTER SOURCE — where to draw characters from (beyond the defaults)
+const CHARACTER_SOURCES = [
+  "Draw characters from SCIENCE: The Neuron, Gravity, The Enzyme, Entropy, The Catalyst, The Mutation, The Antibody, The Parasite, Dark Matter, The Placebo, The Reflex, DNA, Static, The Half-Life, Dopamine",
+  "Draw characters from NATURE: The Salmon, The Mycelium, The Storm, Coral, The Seed, Wildfire, The Glacier, The Parasite Vine, The Tide, The Vulture, The Octopus, Lightning, The Root, The Drought, Moss",
+  "Draw characters from EVERYDAY OBJECTS personified: The Door, The Alarm Clock, The Mirror, The Key, The Receipt, The Suitcase, The Photograph, The Empty Chair, The Voicemail, The To-Do List, The Password, The Last Cigarette",
+  "Draw characters from UNNAMED EMOTIONS: The Almost, The Not-Yet, The Used-To-Be, The Should-Have, The Too-Late, The Nearly, The What-If, The Anyway, The Despite, The Before, The After, The Meanwhile",
+  "Draw characters from BODY PARTS/SENSES: The Gut, The Spine, The Throat, The Hands, The Third Eye, The Knees, The Skin, The Heartbeat, The Breath, The Voice, The Scar",
+  "Draw characters from TIME: Monday Morning, 3 AM, The Last Day, Deadline, The Pause, The Anniversary, Rush Hour, The Golden Hour, The Long Weekend, The Moment Before",
+  "Draw characters from RELATIONSHIPS: The Ex, The Mentor, The Rival, The Stranger on the Train, The Childhood Friend, The One Who Left, The One Who Stayed, The First Boss, The Neighbor, The Witness",
+  "Draw characters from PLACES: The Hometown, The Office, The Kitchen Table, The Border, The Hospital Room, The Empty Stage, The Crossroads, The Elevator, The Waiting Room, The Threshold",
+  "Draw characters from SOUNDS: The Echo, The Silence, The Whisper, The Alarm, The Applause, The Dial Tone, The Thunder, The Lullaby, The Knock, The Siren",
+  "Draw characters from WEATHER/SEASONS: Spring, The Fog, The First Snow, The Drought, Indian Summer, The Thaw, The Flood, Eclipse, The Wind, Dawn, Dusk",
+  "Draw characters from PROFESSIONS AS ARCHETYPES: The Arsonist, The Midwife, The Gravedigger, The Cartographer, The Smuggler, The Translator, The Clockmaker, The Forger, The Lighthouse Keeper, The Bouncer",
+  "Draw characters from FOOD/COOKING: The Raw Ingredient, The Recipe, The Knife, The Fire, The Salt, The Leftovers, The Secret Ingredient, The Burnt Toast, The Empty Plate, The Feast",
+  "Draw characters from CHILDHOOD: The Imaginary Friend, The Bully, The First Crush, The Report Card, The Empty Playground, The Lunchbox, The Night Light, The Hiding Spot, The Rule-Maker",
+  "Draw characters from TECHNOLOGY: The Algorithm, The Notification, The Delete Button, The Cache, The Firewall, The Glitch, The Update, The Loading Screen, The Dead Battery, The Screenshot",
+  "Draw characters from MONEY/ECONOMICS: The Debt, The Investment, The Tax, The Inheritance, The Price Tag, The Tip, The Loan, The Bankruptcy, The Golden Parachute, The Bottom Line",
+];
+
+// Pick one from each dimension, combine into a unique creative seed
+function generateCreativeSeed(recentPlayNames?: string[]): string {
+  const recentLower = (recentPlayNames || []).map(n => n.toLowerCase());
+  const usedKeywords = recentLower.flatMap(n => n.split(/\s+/).filter(w => w.length > 3));
+
+  function pickWeighted<T extends string>(arr: T[]): T {
+    // Score each option: penalize if it overlaps with recent play names
+    const scored = arr.map(item => {
+      const lower = item.toLowerCase();
+      const penalty = usedKeywords.filter(kw => lower.includes(kw)).length;
+      return { item, score: Math.random() - penalty * 0.4 };
+    });
+    scored.sort((a, b) => b.score - a.score);
+    return scored[0].item;
+  }
+
+  const domain = pickWeighted(METAPHOR_DOMAINS);
+  const role = pickWeighted(AUTHOR_ROLES);
+  const constraint = pickWeighted(CONSTRAINTS);
+  const ending = pickWeighted(ENDING_TYPES);
+  const charSource = pickWeighted(CHARACTER_SOURCES);
+
+  return [
+    `METAPHOR WORLD: Build this play in the world of "${domain}". Use this domain as the structural metaphor. Characters, rules, and space should feel like they belong to this world.`,
+    `AUTHOR'S TASK: The author ${role}.`,
+    `CONSTRAINT: ${constraint}.`,
+    `ENDING: ${ending}.`,
+    `${charSource}. Mix these with 1-2 classic archetypes/myths for contrast.`,
+  ].join("\n");
+}
+
+// Legacy flat list for business page (3-play generation) where we need multiple distinct seeds
 const CREATIVE_ANGLES = [
-  // ── Game mechanic angles ──────────────────────────────────
-  "The play is an EXPEDITION — the author leads a group into unknown territory. Characters are supplies, dangers, and companions. Some must be left behind.",
-  "The play is an ORCHESTRA — each character is an instrument. The author conducts. Some instruments refuse to play. Some play too loud. The music reveals the answer.",
-  "The play is a KITCHEN — the author is cooking something (their answer). Characters are ingredients. Some don't mix. Some are missing. The recipe keeps changing.",
-  "The play is a LIGHTHOUSE — the author is the keeper. Ships (characters) approach in the dark. The author must choose which ones to guide to shore and which to let pass.",
-  "The play is a GARDEN — the author plants seeds (characters). Some grow wild, some refuse to root, some strangle others. The author must decide what to prune.",
-  "The play is a MIGRATION — characters are birds flying in formation. The author is the navigator. The flock keeps splitting. Where do they land?",
-  "The play is a CARNIVAL — each character runs a booth or attraction. The author walks through and must choose which games to play. Each game costs something real.",
-  "The play is a LABORATORY — the author is the scientist. Characters are elements being combined. Some reactions are explosive. Some are inert. The experiment keeps failing until it doesn't.",
-  "The play is a SHIPWRECK — characters are survivors on a raft. Space is limited. The author decides who stays, who swims, who becomes the sail.",
-  "The play is a RADIO BROADCAST — the author speaks into silence. Characters are listeners who can only respond with static, applause, or walking away. The author never knows who's still listening.",
-  "The play is a TIME CAPSULE — each character places one thing inside (a word, a gesture). The author must choose what to bury and what to keep. What's buried is lost forever.",
-  "The play is a LOST AND FOUND OFFICE — characters arrive claiming they lost something. The author has a box of found things. Nothing matches. Or does it?",
-  "The play is an ARCHAEOLOGY DIG — the author uncovers characters layer by layer. The deeper they dig, the older and more uncomfortable the truth.",
-  "The play is a PUPPET SHOW — characters are puppets and the author pulls their strings. But one puppet starts moving on its own.",
-  "The play is a VOLCANO — characters circle the rim. The author is the pressure building underneath. When it erupts, everyone must choose: run or stay.",
-  "The play is a CONSTELLATION — characters are stars. The author draws lines between them, creating meaning. But the stars keep moving.",
-  "The play is a TRANSLATION BUREAU — a message must pass through translators (characters). Each one changes the meaning. The author hears only the final version.",
-  "The play is a DEMOLITION — something old must be torn down. Characters are parts of the structure. The author swings the wrecking ball. Some parts refuse to fall.",
-  "The play is a BONFIRE — characters feed the fire (with words, secrets, offerings). The author watches what burns and what refuses to catch flame.",
-  "The play is a TIDE POOL — characters are creatures trapped when the tide went out. The author is the tide deciding whether to return.",
-  "The play is a CIRCUS — each character performs an act. The author is the ringmaster who must decide the order. The last act reveals the truth.",
-  "The play is a CHESS GAME — characters are pieces with specific moves. The author plays against an invisible opponent. The board keeps shrinking.",
-  "The play is a SURGERY — something needs to be cut out. The author decides where to cut.",
-  "The play is a CORONATION — the author is being crowned. But they must earn it.",
-  "The play is an ELIMINATION GAME — the author removes characters one by one until truth remains.",
-  "The play is a CONSTRUCTION — the author builds something from human components.",
-  "The play is a BALL/DANCE — the author must dance with each possibility.",
-  "The play is a BORDER CROSSING — characters try to get past a checkpoint. The author is the border.",
-  "The play is a MARKETPLACE — traditional vendors vs a disruptive newcomer.",
-  "The play is a WEATHER SYSTEM — characters are forces of nature and the author is the creature navigating them.",
-  "The play is a SEED PLANTING — the author buries questions in the ground (characters kneel). Only some grow. The author doesn't choose which.",
-  "The play is a MAP-MAKING — characters are landmarks. The author draws the map by walking between them. The map is the answer.",
-  "The play is an AIRPORT — characters are departures and arrivals. The author has one ticket. Every gate leads somewhere different.",
-  "The play is a LIBRARY — characters are books that can only be opened once. The author picks three. The rest disappear.",
-  "The play is a BRIDGE — characters form the bridge with their bodies. The author must cross. The bridge sways, shifts, and some planks drop away.",
-  // ── Constraint angles ─────────────────────────────────────
-  "The key constraint: someone cannot speak. Only move.",
-  "The key constraint: all decisions must be binary — YES or NO. Nothing else.",
-  "The key constraint: characters can only say ONE word each.",
-  "The key constraint: the author cannot see one of the characters. Others can.",
-  "The key constraint: time is limited. Something happens automatically when it runs out.",
-  "The key constraint: characters cannot move from their position. Only the author moves.",
-  "The key constraint: characters must resist being eliminated — they fight to stay.",
-  "The key constraint: the author watches but cannot intervene. They observe from outside the circle.",
-  "The key constraint: characters can only whisper. The author must lean close to hear each one.",
-  "The key constraint: every time the author speaks, one character must leave the stage.",
-  "The key constraint: characters slowly walk toward the author. The author must decide before they arrive.",
-  "The key constraint: the author must keep their eyes closed. They navigate by sound only.",
-  "The key constraint: characters can only move when the author is not looking at them.",
-  // ── Emotional angles ──────────────────────────────────────
-  "The play's emotional center is grief, not hope.",
-  "Make it uncomfortably funny. The humor reveals the truth.",
-  "The play begins after the catastrophe, not before. Everything has already happened.",
-  "The question has already been answered. The play is about whether anyone will admit it.",
-  "One character represents something the question-asker has already lost.",
-  "The most important moment happens in complete silence.",
-  "The play is set at the exact moment before something becomes irreversible.",
-  "The play reveals that the question was never about what it seemed.",
-  "One character secretly supports the author while appearing to oppose them.",
-  "The play is nostalgic. Something beautiful is ending and everyone knows it.",
-  "The play is absurd. The logic is dream-logic. Characters behave strangely but it makes emotional sense.",
-  "The play is tender. Raw, quiet intimacy. No drama, just closeness and the discomfort of being seen.",
-  // ── Structural angles ─────────────────────────────────────
-  "The author enters last, after the play has already started without them.",
-  "Two characters are the same person at different points in time.",
-  "The play has 2 CONTRASTING ACTS — Act 1 shows one extreme, Act 2 shows the opposite.",
-  "The play has 3 short acts — each reveals a different layer.",
-  "One character has been in the room before anyone arrived. They are already tired.",
-  "The play's resolution requires the author to physically leave the stage.",
-  "Something in the play is broken. The characters disagree about whether to fix it.",
-  "One character refuses to stay in their assigned role. They keep becoming someone else.",
-  "Break the author's question into its component WORDS — each word becomes a character.",
-  "A character arrives late — an unexpected force the author didn't plan for. It changes everything.",
-  "The play runs BACKWARDS — it starts with the ending and rewinds to the beginning.",
-  "The characters vote. The author cannot vote. The result determines the ending.",
-  "Two characters are magnetically attracted. The author must keep them apart. Or let them collide.",
-  // ── New mechanic angles ───────────────────────────────────
-  "The play is MUSICAL CHAIRS — characters circle and when the music stops, one loses their place. The author is the music.",
-  "The play is a TUG OF WAR — two teams pull the author in opposite directions. The author must choose which side to join, or cut the rope.",
-  "The play is a RELAY RACE — a message (truth) must pass from character to character. Each one changes it slightly. What arrives at the end?",
-  "The play is a BLIND DATE — the author meets characters one by one, each behind a wall (another person). They choose based only on voice and movement.",
-  "The play is a PRISON BREAK — the author is trapped inside a circle of characters. They must convince one to step aside. But which one?",
-  "The play is a SÉANCE — characters are ghosts of past decisions. The author summons them one by one. Some refuse to leave once summoned.",
-  "The play is an ASSEMBLY LINE — the author feeds in a raw question and characters transform it step by step. What comes out the other end is the answer.",
-  "The play is a TALENT SHOW — each character performs their version of the answer. The author is the only judge. But judging reveals more about the judge.",
-  "The play is a CONFESSION BOOTH — characters line up to confess what they've been hiding from the author. The author can only respond: forgive or remember.",
-  "The play is SPEED DATING — the author has 30 seconds with each character. They must rank them. The ranking IS the answer.",
-  "The play is an ESCAPE ROOM — the author and characters are locked in together. Each character holds one key. But some keys open nothing.",
-  "The play is a HEIST — the characters plan to steal something the author is guarding. The author doesn't know what they're protecting until it's gone.",
-  "The play is a METAMORPHOSIS — one character slowly transforms into another throughout the play. The author must decide when to intervene.",
-  "The play is a COMPASS — four characters stand at four cardinal points. The author stands in the center and must walk toward one. But the ground tilts.",
-  "The play is an ECLIPSE — two characters slowly overlap/merge. The author must decide: let them combine or pull them apart?",
-  "The play is a MURMURATION — characters move as a flock, following invisible rules. The author tries to lead the flock. The flock has its own logic.",
-  "The play is a BOMB DISPOSAL — something is about to explode (a deadline, a decision, a truth). Characters are wires. The author must cut one.",
-  "The play is a CREATION MYTH — the author creates a world by naming things. Each character embodies what is named. But naming brings consequences.",
-  "The play is a LAST SUPPER — the author sits at the center. Characters are seated around them. Before the meal ends, one will betray. The author knows but doesn't know who.",
-  "The play is an IMMIGRATION CHECKPOINT — characters must prove they belong. The author is the border guard. Some have papers, some have stories, some have nothing.",
-  "The play is HUMAN DOMINOES — characters stand in a line. Push one and they all fall. The author chooses which one to push. The order of falling IS the answer.",
-  "The play is a SWITCHBOARD — the author connects characters to each other by physically moving between them. Some connections spark. Some go dead.",
-  "The play is a HAUNTING — the stage belongs to a ghost (a past version of the author). New characters arrive and try to live there. The ghost doesn't leave easily.",
-  // ── New constraint angles ─────────────────────────────────
-  "The key constraint: characters can only move when another character is touching them.",
-  "The key constraint: the author must face the wall. Everything happens behind their back.",
-  "The key constraint: characters can only speak in questions. No statements allowed.",
-  "The key constraint: each character can only say THREE words total for the entire play.",
-  "The key constraint: the play gets SMALLER. The available space shrinks each round.",
-  "The key constraint: characters swap roles halfway through. Nobody stays who they were.",
-  // ── New emotional angles ──────────────────────────────────
-  "The play is a celebration that slowly turns into something else.",
-  "The play is about abundance, not scarcity. There's too much of everything. The problem is choosing what to keep.",
-  "The play happens underwater — everything is slower, heavier, harder to see. Movements are deliberate.",
-  "The play is competitive. Characters genuinely want to win. The author must decide what winning means.",
-  "The play is about returning home after a long time. Everything is familiar but nothing fits.",
-  // ── New structural angles ─────────────────────────────────
-  "The author plays TWO characters simultaneously — switching between them by turning around.",
-  "The play is silent for the first half. No words. Only bodies. Words are earned in the second half.",
-  "Characters have a SECRET that only the audience (other watchers) know. The author discovers it through the play.",
-  "The play starts over THREE TIMES from the beginning, each time with one variable changed.",
-  "One character is invisible to the author but visible to everyone else. The author feels their presence but can't see them.",
+  "The play is an EXPEDITION into unknown territory.",
+  "The play is an ORCHESTRA where the author conducts.",
+  "The play is a KITCHEN where characters are ingredients.",
+  "The play is a LIGHTHOUSE in the dark.",
+  "The play is a GARDEN that grows wild.",
+  "The play is a CARNIVAL where every game costs something real.",
+  "The play is a LABORATORY with explosive experiments.",
+  "The play is a SHIPWRECK with limited space.",
+  "The play is a TIME CAPSULE where what's buried is lost forever.",
+  "The play is a VOLCANO about to erupt.",
+  "The play is a DEMOLITION of something old.",
+  "The play is a CHESS GAME on a shrinking board.",
+  "The play is a PRISON BREAK from the inside.",
+  "The play is a SÉANCE summoning past decisions.",
+  "The play is a HEIST where the author doesn't know what they're protecting.",
+  "The play is a CREATION MYTH where naming has consequences.",
+  "The play is a BOMB DISPOSAL under time pressure.",
+  "The play is a MURMURATION with its own flock logic.",
+  "The play is HUMAN DOMINOES where pushing one topples all.",
+  "The play is a HAUNTING by a past version of the author.",
 ];
 
 export function buildUserPrompt(
@@ -691,18 +762,8 @@ PRAVIDLA:
 7. Před odesláním si PŘEČTI každé slovo a ověř, že je to reálné české slovo.`
       : "LANGUAGE: ENGLISH. The entire output MUST be in English. Play name, image description, character names, author role, ending — everything in English. NEVER use Slovak, Czech, or any other language.";
 
-  // Inject two random creative angles — deprioritize mechanics that match recent play names
-  const recentNamesLower = (recentPlayNames || []).map(n => n.toLowerCase());
-  const usedKeywords = recentNamesLower.flatMap(n => n.split(/\s+/));
-
-  // Score each angle: penalize if it contains words from recent play names
-  const scored = CREATIVE_ANGLES.map(a => {
-    const aLower = a.toLowerCase();
-    const penalty = usedKeywords.filter(kw => kw.length > 3 && aLower.includes(kw)).length;
-    return { angle: a, score: Math.random() - penalty * 0.3 };
-  });
-  scored.sort((a, b) => b.score - a.score);
-  const angle = scored.slice(0, 2).map(s => s.angle).join("\n");
+  // Generate a unique combinatorial seed for this request
+  const creativeSeed = generateCreativeSeed(recentPlayNames);
 
   const parts: string[] = [];
 
@@ -712,9 +773,9 @@ PRAVIDLA:
   }
 
   if (count && count === 3) {
-    // Business page: generate 3 plays with different angles
-    const angle2 = scored.slice(2, 4).map(s => s.angle).join("\n");
-    const angle3 = scored.slice(4, 6).map(s => s.angle).join("\n");
+    // Business page: generate 3 plays — each gets its own unique seed
+    const seed2 = generateCreativeSeed(recentPlayNames);
+    const seed3 = generateCreativeSeed(recentPlayNames);
     parts.push(
       `Generate 3 DIFFERENT Systemic Plays for this question:`,
       "",
@@ -722,15 +783,15 @@ PRAVIDLA:
       "",
       `PLAY 1 — TEAM PLAY (for the whole team, business context):`,
       contextInstruction,
-      `Creative angle: ${angle}`,
+      `Creative DNA for this play:\n${creativeSeed}`,
       "",
       `PLAY 2 — TEAM PLAY (completely different game mechanic, different characters, different approach):`,
       contextInstruction,
-      `Creative angle: ${angle2}`,
+      `Creative DNA for this play:\n${seed2}`,
       "",
       `PLAY 3 — LEADERS ON MARS (personal leadership play for the person who asked the question, designed to confront them directly):`,
-      `Context: PERSONAL LEADERSHIP question. This play is for the leader alone, not the team. Go deep. The author is confronted by forces from WITHIN themselves: their blind spots, their fears, their shadows. Use game mechanics that force genuine vulnerability: mirrors, coronations, funerals, confessions, walks through their own past. Characters should represent inner forces, not organizational roles.`,
-      `Creative angle: ${angle3}`,
+      `Context: PERSONAL LEADERSHIP question. This play is for the leader alone, not the team. Go deep. The author is confronted by forces from WITHIN themselves: their blind spots, their fears, their shadows. Use game mechanics that force genuine vulnerability. Characters should represent inner forces, not organizational roles.`,
+      `Creative DNA for this play:\n${seed3}`,
       "",
       "CRITICAL: Each play MUST be radically different from the others. Different game mechanic. Different characters. Different mood. If two plays feel similar, delete one and start over.",
       "",
@@ -746,7 +807,10 @@ PRAVIDLA:
       "",
       contextInstruction,
       "",
-      `Creative angle for this play: ${angle}`,
+      `## Creative DNA for this play (use ALL of these as structural ingredients):`,
+      creativeSeed,
+      "",
+      "IMPORTANT: The Creative DNA above gives you structural ingredients. Combine them with the question to create something that feels both unexpected AND deeply relevant. Don't follow the DNA literally if it doesn't serve the question. Let the question reshape the metaphor.",
       "",
       "Remember: A play is a GAME WITH RULES, not a scene. EVERYTHING on stage is played by PEOPLE — no chairs, no props, no objects. Characters are defined by FUNCTION (what they DO). There must be a CONSTRAINT that creates pressure. The ending must produce a CONCRETE OUTPUT (a word, a choice, a placement). The author's task must be genuinely risky.",
       "",
