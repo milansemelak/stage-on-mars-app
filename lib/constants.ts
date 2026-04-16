@@ -10,6 +10,7 @@ export const STORAGE_KEYS = {
   dailyQuestion: "som-daily-question",
   dailyQuestionDate: "som-daily-q-date",
   migrationDone: "som-migration-done",
+  clientName: "som-client-name",
 } as const;
 
 export const LANDING_FREE_PLAY_LIMIT = 1;

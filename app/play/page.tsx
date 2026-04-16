@@ -103,7 +103,19 @@ function PlayPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const [question, setQuestion] = useState("");
-  const [clientName, setClientName] = useState("");
+  const [clientName, setClientName] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(STORAGE_KEYS.clientName) || "";
+    }
+    return "";
+  });
+
+  // Persist client name
+  useEffect(() => {
+    if (clientName.trim()) {
+      localStorage.setItem(STORAGE_KEYS.clientName, clientName.trim());
+    }
+  }, [clientName]);
   const [context, setContext] = useState<"personal" | "business">("personal");
   const [play, setPlay] = useState<Play | null>(null);
   const [loading, setLoading] = useState(false);
