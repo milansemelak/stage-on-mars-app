@@ -425,6 +425,21 @@ export default function HraSRealitouPage() {
           <p className="text-[13px] sm:text-[14px] leading-[1.6] text-neutral-500">
             Ukážka systémickej hry Stage on Mars v&nbsp;reality show Farma na TV Markíza.
           </p>
+
+          <div className="-mx-5 sm:mx-0 mb-3 mt-6">
+            <div className="sm:rounded-xl overflow-hidden">
+              <video
+                src="/farma2-web.mp4"
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+          <p className="text-[13px] sm:text-[14px] leading-[1.6] text-neutral-500">
+            Stage on Mars &mdash; Farma, TV Markíza.
+          </p>
         </div>
 
         {/* Footer */}
