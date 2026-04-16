@@ -301,15 +301,27 @@ function PlayPage() {
     }
 
     try {
-      // Collect recent character names so the AI avoids repeating them
-      const recentCharacters = playHistoryData
-        .slice(0, 8)
+      // Collect anti-repetition data from recent plays
+      const recentSlice = playHistoryData.slice(0, 15);
+      const recentCharacters = recentSlice
         .flatMap((e) => e.play.characters.map((c) => c.name));
+      const recentPlayNames = recentSlice
+        .map((e) => e.play.name);
+      const recentQuestions = recentSlice
+        .map((e) => e.question);
 
       const response = await fetch("/api/generate-play", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, context, lang, clientName: clientName.trim() || undefined, recentCharacters: recentCharacters.length > 0 ? recentCharacters : undefined }),
+        body: JSON.stringify({
+          question,
+          context,
+          lang,
+          clientName: clientName.trim() || undefined,
+          recentCharacters: recentCharacters.length > 0 ? recentCharacters : undefined,
+          recentPlayNames: recentPlayNames.length > 0 ? recentPlayNames : undefined,
+          recentQuestions: recentQuestions.length > 0 ? recentQuestions : undefined,
+        }),
       });
 
       if (!response.ok) {

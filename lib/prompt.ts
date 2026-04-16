@@ -189,12 +189,28 @@ Not a fantasy landscape. A physical space made of people. Where do they stand, w
 ## Mood
 2 words maximum. Raw emotional temperature: "ancient grief", "quiet fire", "bright vertigo". NOT random adjectives. Must feel like the FEELING of the play, not a genre tag.
 
-## PRIME DIRECTIVE: RADICAL VARIETY
-Every play must feel invented in a different universe. Reject the first idea. Go sideways.
+## PRIME DIRECTIVE: RADICAL VARIETY — THE MOST IMPORTANT RULE
+Every play must feel invented in a different universe. Reject your first idea. Reject your second idea. Go sideways. Then go sideways again.
 
-BANNED PATTERNS (overused, avoid these): courts, trials, judgments, verdicts, audits, tribunals, juries, prosecutors, defendants. These have been done to death. Instead reach for unexpected game mechanics: expedition, migration, orchestra, kitchen, laboratory, carnival, smuggling, gardening, cartography, archaeology, lighthouse, weather station, puppet show (where people ARE the puppets), chess game, radio broadcast, time capsule, recipe, surgery, postal service, dance, constellation mapping, circus, shipwreck, volcano, tide pool, bonfire, migration of birds, seed planting, demolition, translation bureau, lost and found office.
+THINK OF IT THIS WAY: If this user has played 30 times before, and every play felt like a different game invented by a different person in a different century — THAT is what we're aiming for.
+
+BANNED PATTERNS (overused, avoid these): courts, trials, judgments, verdicts, audits, tribunals, juries, prosecutors, defendants, mirrors (unless truly novel). These have been done to death.
+
+Instead, reach into the FULL breadth of human games and rituals:
+- Physical games: tug of war, relay race, musical chairs, hide and seek, tag, hopscotch, human chess, dominos (people falling), jenga (people removed)
+- Rituals: wedding, funeral, baptism, coronation, exile, homecoming, harvest, sacrifice, naming ceremony, rite of passage, confession booth
+- Professions as games: surgery, archaeology, cartography, smuggling, translation, postal delivery, weather forecasting, air traffic control, beekeeping, deep sea diving, bomb disposal, puppetry, conducting an orchestra, lighthouse keeping, firefighting
+- Nature as structure: migration, pollination, erosion, volcanic eruption, tide, eclipse, metamorphosis, hibernation, spawning, murmuration (flocking), root system, mycelium network
+- Machines/systems: radio broadcast, assembly line, clock mechanism, elevator, vending machine, switchboard, telescope, compass, time capsule, black box recorder
+- Social games: auction, speed dating, job interview, escape room, talent show, debate, confession, blind date, casting call, immigration checkpoint, customs inspection
+- Story structures: creation myth, heist, prison break, treasure hunt, rescue mission, last supper, exodus, siege, haunting, séance, dream sequence
 
 Consider using MULTIPLE ACTS (2-3 short acts showing contrasting scenarios) when the question contains a tension between two forces.
+
+STRUCTURAL VARIETY CHECKLIST (before outputting, verify):
+1. Is the game mechanic something this user likely hasn't seen? If in doubt, go more obscure.
+2. Does the ending produce a DIFFERENT type of output than "the author speaks/chooses"? Try: the author stays silent, the author is eliminated, the author builds something, the author is judged, the author discovers something hidden, the result is accidental.
+3. Is the author's risk DIFFERENT from their last few plays? If they've been choosing/eliminating, make them observe or be observed. If they've been active, make them passive. If they've been alone, put them in a group.
 
 ## Output Format
 Return a JSON array with play objects (the user prompt specifies how many):
@@ -577,6 +593,49 @@ const CREATIVE_ANGLES = [
   "The play runs BACKWARDS — it starts with the ending and rewinds to the beginning.",
   "The characters vote. The author cannot vote. The result determines the ending.",
   "Two characters are magnetically attracted. The author must keep them apart. Or let them collide.",
+  // ── New mechanic angles ───────────────────────────────────
+  "The play is MUSICAL CHAIRS — characters circle and when the music stops, one loses their place. The author is the music.",
+  "The play is a TUG OF WAR — two teams pull the author in opposite directions. The author must choose which side to join, or cut the rope.",
+  "The play is a RELAY RACE — a message (truth) must pass from character to character. Each one changes it slightly. What arrives at the end?",
+  "The play is a BLIND DATE — the author meets characters one by one, each behind a wall (another person). They choose based only on voice and movement.",
+  "The play is a PRISON BREAK — the author is trapped inside a circle of characters. They must convince one to step aside. But which one?",
+  "The play is a SÉANCE — characters are ghosts of past decisions. The author summons them one by one. Some refuse to leave once summoned.",
+  "The play is an ASSEMBLY LINE — the author feeds in a raw question and characters transform it step by step. What comes out the other end is the answer.",
+  "The play is a TALENT SHOW — each character performs their version of the answer. The author is the only judge. But judging reveals more about the judge.",
+  "The play is a CONFESSION BOOTH — characters line up to confess what they've been hiding from the author. The author can only respond: forgive or remember.",
+  "The play is SPEED DATING — the author has 30 seconds with each character. They must rank them. The ranking IS the answer.",
+  "The play is an ESCAPE ROOM — the author and characters are locked in together. Each character holds one key. But some keys open nothing.",
+  "The play is a HEIST — the characters plan to steal something the author is guarding. The author doesn't know what they're protecting until it's gone.",
+  "The play is a METAMORPHOSIS — one character slowly transforms into another throughout the play. The author must decide when to intervene.",
+  "The play is a COMPASS — four characters stand at four cardinal points. The author stands in the center and must walk toward one. But the ground tilts.",
+  "The play is an ECLIPSE — two characters slowly overlap/merge. The author must decide: let them combine or pull them apart?",
+  "The play is a MURMURATION — characters move as a flock, following invisible rules. The author tries to lead the flock. The flock has its own logic.",
+  "The play is a BOMB DISPOSAL — something is about to explode (a deadline, a decision, a truth). Characters are wires. The author must cut one.",
+  "The play is a CREATION MYTH — the author creates a world by naming things. Each character embodies what is named. But naming brings consequences.",
+  "The play is a LAST SUPPER — the author sits at the center. Characters are seated around them. Before the meal ends, one will betray. The author knows but doesn't know who.",
+  "The play is an IMMIGRATION CHECKPOINT — characters must prove they belong. The author is the border guard. Some have papers, some have stories, some have nothing.",
+  "The play is HUMAN DOMINOES — characters stand in a line. Push one and they all fall. The author chooses which one to push. The order of falling IS the answer.",
+  "The play is a SWITCHBOARD — the author connects characters to each other by physically moving between them. Some connections spark. Some go dead.",
+  "The play is a HAUNTING — the stage belongs to a ghost (a past version of the author). New characters arrive and try to live there. The ghost doesn't leave easily.",
+  // ── New constraint angles ─────────────────────────────────
+  "The key constraint: characters can only move when another character is touching them.",
+  "The key constraint: the author must face the wall. Everything happens behind their back.",
+  "The key constraint: characters can only speak in questions. No statements allowed.",
+  "The key constraint: each character can only say THREE words total for the entire play.",
+  "The key constraint: the play gets SMALLER. The available space shrinks each round.",
+  "The key constraint: characters swap roles halfway through. Nobody stays who they were.",
+  // ── New emotional angles ──────────────────────────────────
+  "The play is a celebration that slowly turns into something else.",
+  "The play is about abundance, not scarcity. There's too much of everything. The problem is choosing what to keep.",
+  "The play happens underwater — everything is slower, heavier, harder to see. Movements are deliberate.",
+  "The play is competitive. Characters genuinely want to win. The author must decide what winning means.",
+  "The play is about returning home after a long time. Everything is familiar but nothing fits.",
+  // ── New structural angles ─────────────────────────────────
+  "The author plays TWO characters simultaneously — switching between them by turning around.",
+  "The play is silent for the first half. No words. Only bodies. Words are earned in the second half.",
+  "Characters have a SECRET that only the audience (other watchers) know. The author discovers it through the play.",
+  "The play starts over THREE TIMES from the beginning, each time with one variable changed.",
+  "One character is invisible to the author but visible to everyone else. The author feels their presence but can't see them.",
 ];
 
 export function buildUserPrompt(
@@ -585,7 +644,9 @@ export function buildUserPrompt(
   lang?: "en" | "sk" | "cs",
   clientName?: string,
   count?: number,
-  recentCharacters?: string[]
+  recentCharacters?: string[],
+  recentPlayNames?: string[],
+  recentQuestions?: string[]
 ): string {
   const contextInstruction =
     context === "business"
@@ -630,9 +691,18 @@ PRAVIDLA:
 7. Před odesláním si PŘEČTI každé slovo a ověř, že je to reálné české slovo.`
       : "LANGUAGE: ENGLISH. The entire output MUST be in English. Play name, image description, character names, author role, ending — everything in English. NEVER use Slovak, Czech, or any other language.";
 
-  // Inject two random creative angles to force variety across calls
-  const shuffled = [...CREATIVE_ANGLES].sort(() => Math.random() - 0.5);
-  const angle = shuffled.slice(0, 2).join("\n");
+  // Inject two random creative angles — deprioritize mechanics that match recent play names
+  const recentNamesLower = (recentPlayNames || []).map(n => n.toLowerCase());
+  const usedKeywords = recentNamesLower.flatMap(n => n.split(/\s+/));
+
+  // Score each angle: penalize if it contains words from recent play names
+  const scored = CREATIVE_ANGLES.map(a => {
+    const aLower = a.toLowerCase();
+    const penalty = usedKeywords.filter(kw => kw.length > 3 && aLower.includes(kw)).length;
+    return { angle: a, score: Math.random() - penalty * 0.3 };
+  });
+  scored.sort((a, b) => b.score - a.score);
+  const angle = scored.slice(0, 2).map(s => s.angle).join("\n");
 
   const parts: string[] = [];
 
@@ -643,8 +713,8 @@ PRAVIDLA:
 
   if (count && count === 3) {
     // Business page: generate 3 plays with different angles
-    const angle2 = shuffled.slice(2, 4).join("\n");
-    const angle3 = shuffled.slice(4, 6).join("\n");
+    const angle2 = scored.slice(2, 4).map(s => s.angle).join("\n");
+    const angle3 = scored.slice(4, 6).map(s => s.angle).join("\n");
     parts.push(
       `Generate 3 DIFFERENT Systemic Plays for this question:`,
       "",
@@ -691,14 +761,38 @@ PRAVIDLA:
     );
   }
 
-  // Anti-repetition: exclude characters from recent plays
+  // ── Anti-repetition block ─────────────────────────────────────────────────
+  const antiRepParts: string[] = [];
+
+  // 1. Exclude recent characters
   if (recentCharacters && recentCharacters.length > 0) {
-    const unique = [...new Set(recentCharacters.map(c => c.trim()))].slice(0, 30);
-    parts.push(
-      "",
-      `ANTI-REPETITION — DO NOT USE any of these characters (they appeared in this user's recent plays): ${unique.join(", ")}`,
-      "Pick DIFFERENT archetypes, icons, forces, and roles. Go sideways. Surprise the user with characters they have never seen before. There are thousands of myths, figures, and forces in human culture — explore beyond the obvious."
+    const unique = [...new Set(recentCharacters.map(c => c.trim()))].slice(0, 40);
+    antiRepParts.push(
+      `BANNED CHARACTERS (appeared in this user's recent plays, DO NOT reuse): ${unique.join(", ")}`,
+      "Pick DIFFERENT archetypes, icons, forces, and roles. There are thousands of myths, figures, and forces in human culture. Explore beyond the obvious."
     );
+  }
+
+  // 2. Exclude recent play structures/names
+  if (recentPlayNames && recentPlayNames.length > 0) {
+    const uniqueNames = [...new Set(recentPlayNames.map(n => n.trim()))].slice(0, 15);
+    antiRepParts.push(
+      `BANNED PLAY STRUCTURES (this user already played these, DO NOT repeat the same game mechanic or theme): ${uniqueNames.join(", ")}`,
+      "Invent a COMPLETELY DIFFERENT game mechanic. Not a variation. Not a remix. A new game the user has never seen."
+    );
+  }
+
+  // 3. Show recent questions for context + differentiation
+  if (recentQuestions && recentQuestions.length > 0) {
+    const uniqueQs = [...new Set(recentQuestions)].slice(0, 10);
+    antiRepParts.push(
+      `This user's recent questions (for context, NOT to repeat): ${uniqueQs.join(" | ")}`,
+      "The user is exploring these themes repeatedly. Design a play that approaches their pattern from a COMPLETELY UNEXPECTED angle. If their questions circle around fear, don't make a play about fear. Make a play about what fear is protecting."
+    );
+  }
+
+  if (antiRepParts.length > 0) {
+    parts.push("", "## ANTI-REPETITION (CRITICAL)", ...antiRepParts);
   }
 
   parts.push("", `Return ONLY a JSON array with ${count === 3 ? "3 play objects" : "1 play object"}. No other text.`);

@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
   if (rateLimitResponse) return rateLimitResponse;
 
   try {
-    const body: GenerateRequest & { recentCharacters?: string[] } = await request.json();
-    const { question, context, lang, clientName, count, recentCharacters } = body;
+    const body: GenerateRequest & { recentCharacters?: string[]; recentPlayNames?: string[]; recentQuestions?: string[] } = await request.json();
+    const { question, context, lang, clientName, count, recentCharacters, recentPlayNames, recentQuestions } = body;
 
     if (!question || !question.trim()) {
       return NextResponse.json(
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: buildUserPrompt(question, context, lang, clientName, count, recentCharacters),
+          content: buildUserPrompt(question, context, lang, clientName, count, recentCharacters, recentPlayNames, recentQuestions),
         },
       ],
     });
