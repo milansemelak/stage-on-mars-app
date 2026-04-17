@@ -316,6 +316,13 @@ All four perspectives must be so strong each could stand alone.
 - "The corpse was the only one breathing. Everyone else was performing life."
 - "He buried things that were still alive. And called it responsibility."
 
+### PRONOUN RULE (CRITICAL):
+NEVER assign gender to characters with "he" or "she". They are forces, abstractions, archetypes — they have no gender.
+- Always reference characters by NAME: "The Mirror reflected..." not "She reflected..."
+- Use "it" for abstract/object characters: "The Seed waited..." not "He waited..."
+- For the author: use their name (if provided) or "you" (second person). The second-person voice is powerful: "You turned away from it" hits harder and avoids false gendering.
+- Only use "he/she" if a character is unmistakably gendered by name (Cleopatra, Judas, Indiana Jones) AND only for that character specifically.
+
 ### What is FORBIDDEN (fortune cookie garbage):
 NEVER write perspectives like these:
 - "Sometimes we need to let go to find what truly matters" — GENERIC, fits any question
@@ -486,7 +493,14 @@ PRAVIDLA: Používej JEN reálná česká slova. Vždy diakritika. Nikdy slovens
       `Perspective #1: From the author ("${authorLabel}"). A first-person shift in awareness — what THEY realized standing in their role. The most personal of the four. Write as if the author is saying it themselves about themselves.`,
       `Perspectives #2, #3, #4: Each paired with a DIFFERENT character from the play. Reference what THAT character actually did in the steps above. No character repeats. No generic wisdom.`,
       ``,
-      `Each perspective must be INVERSION + SPECIFICITY + ACCUSATION + BREVITY (1 sentence, MAX 20 words). Reference the actual events above, not abstract ideas.`,
+      `Each perspective must be INVERSION + SPECIFICITY + ACCUSATION + BREVITY (1 sentence, MAX 20 words). Reference the actual events above, not abstract ideas.
+
+## PRONOUN RULE (CRITICAL)
+NEVER use "he" or "she" for characters. They are forces, archetypes, or abstractions — they have no gender. Instead:
+- Use the character's NAME directly: "The Parasite Vine turned away" NOT "She turned away"
+- Or use "it" for abstract/object characters: "The Seed waited" NOT "He waited"
+- For the author: use their actual name if provided (clientName), or "you" (second person, addressing them directly), or "the author" — never assign a gender to them unless their name makes it obvious.
+Second person ("you") is often the strongest voice for the author's perspective and for accusations: "You saved The Seed for last because..." hits harder than "He saved The Seed for last..."`,
       ``,
       `After the perspectives, generate ONE follow-up question the play is now asking the author. Goes deeper, not sideways. Emerges from the strongest perspective.`,
     );
@@ -825,38 +839,41 @@ PRAVIDLA:
     );
   }
 
-  // ── Anti-repetition block ─────────────────────────────────────────────────
-  const antiRepParts: string[] = [];
+  // ── Variety block ─────────────────────────────────────────────────────────
+  // Note: we DO NOT ban characters or mechanics. Classic figures (Sisyphus, Fear,
+  // Silence, The Fool, The Mirror) are powerful and should be used WHEN RIGHT —
+  // just not every time. Same for structures like Mirror Walk, Garden, Funeral.
+  const varietyParts: string[] = [];
 
-  // 1. Exclude recent characters
+  // 1. Recent characters — prefer NEW unless truly the perfect fit
   if (recentCharacters && recentCharacters.length > 0) {
     const unique = [...new Set(recentCharacters.map(c => c.trim()))].slice(0, 40);
-    antiRepParts.push(
-      `BANNED CHARACTERS (appeared in this user's recent plays, DO NOT reuse): ${unique.join(", ")}`,
-      "Pick DIFFERENT archetypes, icons, forces, and roles. There are thousands of myths, figures, and forces in human culture. Explore beyond the obvious."
+    varietyParts.push(
+      `Characters used in this user's recent plays: ${unique.join(", ")}`,
+      "These are GOOD characters — don't avoid them entirely. But this user has seen them recently, so DEFAULT to fresh ones. Only reuse a recent character if it is genuinely the single best fit for this specific question. Otherwise, reach for an archetype, force, or figure the user hasn't seen lately. Variety is the goal, not exclusion."
     );
   }
 
-  // 2. Exclude recent play structures/names
+  // 2. Recent play structures — prefer NEW mechanics
   if (recentPlayNames && recentPlayNames.length > 0) {
     const uniqueNames = [...new Set(recentPlayNames.map(n => n.trim()))].slice(0, 15);
-    antiRepParts.push(
-      `BANNED PLAY STRUCTURES (this user already played these, DO NOT repeat the same game mechanic or theme): ${uniqueNames.join(", ")}`,
-      "Invent a COMPLETELY DIFFERENT game mechanic. Not a variation. Not a remix. A new game the user has never seen."
+    varietyParts.push(
+      `Play structures this user has seen recently: ${uniqueNames.join(", ")}`,
+      "These structures are fine — but reaching for the same mechanic (funeral, mirror walk, garden, court) repeatedly makes the tool feel shallow. Pick a DIFFERENT game mechanic for this play. If the same mechanic truly is the right answer, push it in an unexpected direction so it doesn't feel like a repeat."
     );
   }
 
-  // 3. Show recent questions for context + differentiation
+  // 3. Recent questions — show pattern, push for fresh angle
   if (recentQuestions && recentQuestions.length > 0) {
     const uniqueQs = [...new Set(recentQuestions)].slice(0, 10);
-    antiRepParts.push(
-      `This user's recent questions (for context, NOT to repeat): ${uniqueQs.join(" | ")}`,
-      "The user is exploring these themes repeatedly. Design a play that approaches their pattern from a COMPLETELY UNEXPECTED angle. If their questions circle around fear, don't make a play about fear. Make a play about what fear is protecting."
+    varietyParts.push(
+      `This user's recent questions (for context): ${uniqueQs.join(" | ")}`,
+      "The user is circling related themes. Design a play that approaches their pattern from an angle they haven't explored yet. If their questions circle fear, don't just make another play about fear — make a play about what fear is protecting, or what would happen if fear disappeared."
     );
   }
 
-  if (antiRepParts.length > 0) {
-    parts.push("", "## ANTI-REPETITION (CRITICAL)", ...antiRepParts);
+  if (varietyParts.length > 0) {
+    parts.push("", "## VARIETY (important, not absolute)", ...varietyParts);
   }
 
   parts.push("", `Return ONLY a JSON array with ${count === 3 ? "3 play objects" : "1 play object"}. No other text.`);
