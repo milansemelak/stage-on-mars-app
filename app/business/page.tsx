@@ -462,7 +462,7 @@ export default function BusinessPage() {
             <div className="h-[1px] bg-gradient-to-r from-transparent via-mars/30 to-transparent" />
             {/* Photo */}
             <div className="relative h-[35vh] sm:h-[50vh]">
-              <img src="/space1.png" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
+              <img src="/space1.jpg" alt="Stage on Mars — flagship space" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/20" />
             </div>
             {/* Info bar below photo */}
