@@ -6,6 +6,11 @@ export const metadata = {
 
 const links = [
   {
+    title: "Decisions on Mars",
+    description: "Four hours. One decision. A circular stage in Prague.",
+    href: "/decisions-on-mars",
+  },
+  {
     title: "The Play Simulator",
     description: "Experience systemic play online.",
     href: "/play",
