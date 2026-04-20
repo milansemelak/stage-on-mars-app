@@ -24,7 +24,7 @@ declare global {
 
 type Locale = "en" | "cs" | "sk";
 
-const LOCALES: Locale[] = ["en", "cs", "sk"];
+const LOCALES: Locale[] = ["en"];
 
 const CLIENTS = [
   "Forbes",
