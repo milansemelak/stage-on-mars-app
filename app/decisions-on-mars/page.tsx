@@ -134,7 +134,7 @@ const CONTENT: Record<Locale, PageCopy> = {
     heroHeadlineL1: "Play the decision.",
     heroHeadlineL2: "Then make it.",
     heroSub:
-      "A four-hour live play of the one decision your team can't make in a meeting. On a circular stage in Prague.",
+      "Stage on Mars is a 4-hour decision environment that turns weeks of thinking into one lived experience.",
     specLabels: {
       duration: "Duration",
       team: "Team size",
@@ -837,13 +837,6 @@ export default function DecisionsOnMarsPage() {
       </section>
 
       <main className="max-w-5xl mx-auto px-5 sm:px-10 py-14 sm:py-20">
-        {/* ─── What it is + method formula ──────────────────── */}
-        <section className="mb-14 sm:mb-20 max-w-3xl">
-          <p className="font-mercure text-[32px] sm:text-[48px] leading-[1.1] tracking-[-0.02em] text-black max-w-[22ch]">
-            {t.whatItIsDeck}
-          </p>
-        </section>
-
         {/* ─── The 5% hook: evidence anchor ─────────────────── */}
         <section className="mb-14 sm:mb-20">
           <div className="bg-black text-white rounded-2xl p-8 sm:p-12 grid sm:grid-cols-[auto_1fr] gap-8 sm:gap-12 items-center">
