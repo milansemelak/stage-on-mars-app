@@ -884,12 +884,9 @@ export default function DecisionsOnMarsPage() {
                 key={i}
                 className="bg-white border border-neutral-200 rounded-xl p-6 sm:p-7 hover:border-neutral-300 transition-colors"
               >
-                <div className="flex items-baseline justify-between mb-4">
+                <div className="mb-4">
                   <span className="text-[14px] font-semibold text-mars">
                     {step.num}
-                  </span>
-                  <span className="text-[12px] text-neutral-500 font-medium">
-                    {step.time}
                   </span>
                 </div>
                 <p className="text-[17px] sm:text-[18px] font-semibold mb-2 tracking-[-0.01em]">
