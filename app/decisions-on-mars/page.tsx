@@ -69,6 +69,11 @@ const QUOTES = [
     name: "Ondřej Novotný",
     org: "Oktagon MMA",
   },
+  {
+    quote: "Also thanks to dreaming on Mars, Direct Group is now flying forward.",
+    name: "Pavel Řehák",
+    org: "Direct Group",
+  },
 ];
 
 type PageCopy = {
@@ -115,6 +120,10 @@ type PageCopy = {
   faq: Array<{ q: string; a: string }>;
   nextSlotFallback: string;
   nextSlotPrefix: string;
+  deckLabel: string;
+  deckTitle: string;
+  deckSub: string;
+  deckCta: string;
 };
 
 const CONTENT: Record<Locale, PageCopy> = {
@@ -149,7 +158,7 @@ const CONTENT: Record<Locale, PageCopy> = {
     fiveStat: "Only 5% of people see what you see.",
     fiveSource: "Harvard Business Review · Amy Gallo",
     fiveBody:
-      "If your people don't see it, they'll never build it with you. On Mars, they play it, feel it, and start believing in the same thing.",
+      "People don't build what they don't believe. Believe → Understand → Build. On Mars, they play it, feel it, and start believing in the same thing.",
     bookWhenLabel: "Book this when",
     bookWhen: [
       "Your strategy is clear but people don't believe in it.",
@@ -162,26 +171,26 @@ const CONTENT: Record<Locale, PageCopy> = {
       {
         num: "01",
         time: "30 min",
-        title: "The question.",
-        body: "We find the real one. Not the presenting problem. The one underneath.",
+        title: "Ask.",
+        body: "Define the core intent. The team brings the questions around it.",
       },
       {
         num: "02",
         time: "45 min",
-        title: "The setup.",
-        body: "Your team steps into roles inside the system. No script. No right answers.",
+        title: "Play.",
+        body: "People take roles in the situation. You play the decision out together.",
       },
       {
         num: "03",
         time: "2 h",
-        title: "The play.",
-        body: "We run it live. Something that never surfaces in meetings becomes visible.",
+        title: "See.",
+        body: "You see how it actually unfolds. What works. What doesn't.",
       },
       {
         num: "04",
         time: "45 min",
-        title: "The shift.",
-        body: "You leave with a different relationship to the decision, and often with the decision itself.",
+        title: "Decide.",
+        body: "You leave aligned. Clear on what happens next.",
       },
     ],
     outcomesLabel: "What you leave with",
@@ -267,6 +276,10 @@ const CONTENT: Record<Locale, PageCopy> = {
     ],
     nextSlotFallback: "3 weeks",
     nextSlotPrefix: "",
+    deckLabel: "Intro Deck to Mars",
+    deckTitle: "Take Mars with you.",
+    deckSub: "The full Stage on Mars deck — method, cases, and what it looks like on stage. 7 MB PDF.",
+    deckCta: "Download the deck",
   },
   cs: {
     crumb: "Stage",
@@ -299,7 +312,7 @@ const CONTENT: Record<Locale, PageCopy> = {
     fiveStat: "Jen 5 % lidí vidí to, co vy.",
     fiveSource: "Harvard Business Review · Amy Gallo",
     fiveBody:
-      "Když to vaši lidé nevidí, nikdy to s vámi nepostaví. Na Marsu si to zahrají, ucítí to a začnou věřit tomu samému.",
+      "Lidé nestaví to, čemu nevěří. Believe → Understand → Build. Na Marsu si to zahrají, ucítí to a začnou věřit tomu samému.",
     bookWhenLabel: "Přijďte, když",
     bookWhen: [
       "Strategie je jasná, ale lidé jí nevěří.",
@@ -312,26 +325,26 @@ const CONTENT: Record<Locale, PageCopy> = {
       {
         num: "01",
         time: "30 min",
-        title: "Otázka.",
-        body: "Najdeme tu pravou. Ne tu, kterou přinesete. Tu, která je pod ní.",
+        title: "Ask.",
+        body: "Definujeme záměr. Tým přinese otázky, které se kolem něj točí.",
       },
       {
         num: "02",
         time: "45 min",
-        title: "Nastavení.",
-        body: "Váš tým vstoupí do rolí uvnitř systému. Bez scénáře. Bez správných odpovědí.",
+        title: "Play.",
+        body: "Lidé vstoupí do rolí v situaci. Rozhodnutí si zahrajete společně.",
       },
       {
         num: "03",
         time: "2 h",
-        title: "Hra.",
-        body: "Zahrajeme ji naživo. Objeví se to, co v meetingu nikdy nevyplyne.",
+        title: "See.",
+        body: "Uvidíte, jak se to reálně odehraje. Co funguje. Co ne.",
       },
       {
         num: "04",
         time: "45 min",
-        title: "Posun.",
-        body: "Odcházíte s jiným vztahem k rozhodnutí, často se samotným rozhodnutím.",
+        title: "Decide.",
+        body: "Odcházíte sjednocení. Jasno v tom, co bude dál.",
       },
     ],
     outcomesLabel: "S čím odcházíte",
@@ -391,7 +404,7 @@ const CONTENT: Record<Locale, PageCopy> = {
     ctaPrimary: "Rezervovat Rozhodnutí na Marsu",
     ctaSecondary: "Mluvit s naším týmem",
     milanLabel: "Člověk, se kterým budete v sále",
-    milanName: "Milan Semelak",
+    milanName: "Milan Šemelák",
     milanRole: "Tvůrce Stage on Mars",
     milanLine:
       "Provedl bankovní boardy, zakladatele impérií a rodiny, které střeží staletí dědictví. Bude vás provokovat. Neúprosně.",
@@ -416,6 +429,10 @@ const CONTENT: Record<Locale, PageCopy> = {
     ],
     nextSlotFallback: "3 týdny",
     nextSlotPrefix: "",
+    deckLabel: "Intro Deck to Mars",
+    deckTitle: "Vezměte si Mars s sebou.",
+    deckSub: "Kompletní Stage on Mars deck — metoda, případy a jak to vypadá na stage. 7 MB PDF.",
+    deckCta: "Stáhnout deck",
   },
   sk: {
     crumb: "Stage",
@@ -448,7 +465,7 @@ const CONTENT: Record<Locale, PageCopy> = {
     fiveStat: "Iba 5 % ľudí vidí to, čo vy.",
     fiveSource: "Harvard Business Review · Amy Gallo",
     fiveBody:
-      "Keď to vaši ľudia nevidia, nikdy to s vami nepostavia. Na Marse si to zahrajú, ucítia to a začnú veriť tomu istému.",
+      "Ľudia nestavajú to, čomu neveria. Believe → Understand → Build. Na Marse si to zahrajú, ucítia to a začnú veriť tomu istému.",
     bookWhenLabel: "Príďte, keď",
     bookWhen: [
       "Stratégia je jasná, ale ľudia jej neveria.",
@@ -461,26 +478,26 @@ const CONTENT: Record<Locale, PageCopy> = {
       {
         num: "01",
         time: "30 min",
-        title: "Otázka.",
-        body: "Nájdeme tú pravú. Nie tú, ktorú prinesiete. Tú, ktorá je pod ňou.",
+        title: "Ask.",
+        body: "Definujeme zámer. Tím prinesie otázky, ktoré sa okolo neho točia.",
       },
       {
         num: "02",
         time: "45 min",
-        title: "Nastavenie.",
-        body: "Váš tím vstúpi do rolí vnútri systému. Bez scenára. Bez správnych odpovedí.",
+        title: "Play.",
+        body: "Ľudia vstúpia do rolí v situácii. Rozhodnutie si zahráte spoločne.",
       },
       {
         num: "03",
         time: "2 h",
-        title: "Hra.",
-        body: "Zahráme ju naživo. Objaví sa to, čo v meetingu nikdy nevypláva.",
+        title: "See.",
+        body: "Uvidíte, ako sa to reálne odohrá. Čo funguje. Čo nie.",
       },
       {
         num: "04",
         time: "45 min",
-        title: "Posun.",
-        body: "Odchádzate s iným vzťahom k rozhodnutiu, často so samotným rozhodnutím.",
+        title: "Decide.",
+        body: "Odchádzate zjednotení. Jasno v tom, čo bude ďalej.",
       },
     ],
     outcomesLabel: "S čím odchádzate",
@@ -540,7 +557,7 @@ const CONTENT: Record<Locale, PageCopy> = {
     ctaPrimary: "Rezervovať Rozhodnutia na Marse",
     ctaSecondary: "Hovoriť s naším tímom",
     milanLabel: "Človek, s ktorým budete v sále",
-    milanName: "Milan Semelak",
+    milanName: "Milan Šemelák",
     milanRole: "Tvorca Stage on Mars",
     milanLine:
       "Previedol bankové boardy, zakladateľov impérií a rodiny, ktoré strážia stáročia dedičstva. Bude vás provokovať. Neúprosne.",
@@ -565,6 +582,10 @@ const CONTENT: Record<Locale, PageCopy> = {
     ],
     nextSlotFallback: "3 týždne",
     nextSlotPrefix: "",
+    deckLabel: "Intro Deck to Mars",
+    deckTitle: "Vezmite si Mars so sebou.",
+    deckSub: "Kompletný Stage on Mars deck — metóda, prípady a ako to vyzerá na stage. 7 MB PDF.",
+    deckCta: "Stiahnuť deck",
   },
 };
 
@@ -844,8 +865,11 @@ export default function DecisionsOnMarsPage() {
               <p className="text-[11px] sm:text-[12px] font-semibold text-white/50 tracking-wide uppercase mb-6">
                 {t.fiveSource}
               </p>
-              <p className="text-[15px] sm:text-[17px] leading-[1.55] text-white/80 max-w-[38rem]">
+              <p className="text-[15px] sm:text-[17px] leading-[1.55] text-white/80 max-w-[38rem] mb-6">
                 {t.fiveBody}
+              </p>
+              <p className="text-[11px] sm:text-[12px] font-semibold text-mars tracking-[0.22em] uppercase">
+                In hours, not months.
               </p>
             </div>
           </div>
@@ -917,21 +941,16 @@ export default function DecisionsOnMarsPage() {
           </div>
         </section>
 
-        {/* ─── Full-bleed people photo (visual break) ───────── */}
-        <section className="mb-14 sm:mb-20 -mx-5 sm:-mx-10">
-          <figure className="relative">
-            <img
-              src="/fotka4.jpg"
-              alt="A session on Mars — inside a play"
-              className="w-full h-[360px] sm:h-[520px] object-cover"
-            />
-            <figcaption className="absolute bottom-4 sm:bottom-6 left-5 sm:left-10 right-5 sm:right-10 flex items-end justify-between gap-4">
-              <p className="font-mercure italic text-white text-[14px] sm:text-[17px] drop-shadow-lg">
-                Inside a play. Stage on Mars.
-              </p>
-              <p className="text-[10px] sm:text-[11px] font-semibold text-white/80 tracking-wide uppercase drop-shadow-lg">
-                Stage on Mars
-              </p>
+        {/* ─── Editorial pull quote (visual break) ──────────── */}
+        <section className="mb-14 sm:mb-20">
+          <figure className="max-w-3xl mx-auto text-center">
+            <blockquote className="font-mercure italic text-black text-[32px] sm:text-[56px] leading-[1.05] tracking-[-0.025em]">
+              &ldquo;It either confirms what you believe, or shows you a different reality.&rdquo;
+            </blockquote>
+            <figcaption className="mt-6 text-[11px] sm:text-[12px] font-semibold text-mars tracking-[0.18em] uppercase">
+              Alexandra Lobkowicz
+              <span className="text-neutral-300 mx-2">·</span>
+              <span className="text-neutral-500">House of Lobkowicz</span>
             </figcaption>
           </figure>
         </section>
@@ -1035,23 +1054,40 @@ export default function DecisionsOnMarsPage() {
               </p>
             </div>
 
-            <div className="mt-12 pt-8 border-t border-neutral-200 flex items-center gap-4 sm:gap-5">
+            <div className="mt-12 pt-8 border-t border-neutral-200 flex items-start gap-5 sm:gap-6">
               <img
-                src="/milan.jpg"
+                src="/milan3.jpg"
                 alt={t.milanName}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shrink-0"
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover shrink-0"
               />
               <div className="min-w-0">
-                <p className="text-[14px] sm:text-[15px] leading-[1.45] text-neutral-600 mb-1">
+                <p className="text-[15px] sm:text-[17px] font-semibold tracking-[-0.01em] text-black">
+                  {t.milanName}
+                </p>
+                <p className="text-[12px] sm:text-[13px] text-mars font-semibold tracking-wide uppercase mb-3">
+                  {t.milanRole}
+                </p>
+                <p className="text-[14px] sm:text-[15px] leading-[1.45] text-neutral-600 mb-3">
                   {t.milanLine}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => openCalendly(CALENDLY_URL_INTRO)}
-                  className="text-[13px] sm:text-[14px] font-semibold text-black hover:text-mars transition-colors"
-                >
-                  {t.ctaSecondary} →
-                </button>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <button
+                    type="button"
+                    onClick={() => openCalendly(CALENDLY_URL_INTRO)}
+                    className="text-[13px] sm:text-[14px] font-semibold text-black hover:text-mars transition-colors text-left"
+                  >
+                    {t.ctaSecondary} →
+                  </button>
+                  <span className="hidden sm:inline text-neutral-300">·</span>
+                  <a
+                    href="https://www.linkedin.com/in/milansemelak/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[13px] sm:text-[14px] font-semibold text-neutral-500 hover:text-black transition-colors text-left"
+                  >
+                    LinkedIn →
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -1081,6 +1117,31 @@ export default function DecisionsOnMarsPage() {
                 </p>
               </details>
             ))}
+          </div>
+        </section>
+
+        {/* ─── Deck download ────────────────────────────────── */}
+        <section className="mt-20 sm:mt-28">
+          <div className="bg-black text-white rounded-2xl p-8 sm:p-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
+            <div className="max-w-xl">
+              <p className="text-[11px] sm:text-[12px] font-semibold text-mars tracking-[0.22em] uppercase mb-4">
+                {t.deckLabel}
+              </p>
+              <h2 className="font-mercure text-[28px] sm:text-[40px] leading-[1.05] tracking-[-0.02em] mb-3">
+                {t.deckTitle}
+              </h2>
+              <p className="text-[14px] sm:text-[16px] leading-[1.55] text-white/70">
+                {t.deckSub}
+              </p>
+            </div>
+            <a
+              href="/stage-on-mars-deck.pdf"
+              download
+              className="inline-flex items-center justify-center gap-2 bg-mars text-white text-[14px] sm:text-[15px] font-semibold tracking-[-0.01em] px-6 py-4 rounded-full hover:bg-white hover:text-black transition-colors whitespace-nowrap self-start sm:self-auto"
+            >
+              {t.deckCta}
+              <span aria-hidden>↓</span>
+            </a>
           </div>
         </section>
 
