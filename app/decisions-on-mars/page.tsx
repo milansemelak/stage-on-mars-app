@@ -247,8 +247,8 @@ const CONTENT: Record<Locale, PageCopy> = {
     testimonialLabel: "What they said",
     ctaHeadline: "Ready to bring your decision to Mars?",
     ctaSub:
-      "Book the call. We confirm two available dates within 24 hours.",
-    ctaPrimary: "Book Decisions on Mars",
+      "Start with a 30-minute intro call. We'll see if Mars is the right room for your decision.",
+    ctaPrimary: "Book a 30-min intro call",
     ctaSecondary: "Talk to our team",
     milanLabel: "The person in the room with you",
     milanName: "Milan Semelak",
@@ -400,8 +400,8 @@ const CONTENT: Record<Locale, PageCopy> = {
     rosterLabel: "Také hráli na Marsu",
     testimonialLabel: "Co o tom říkají",
     ctaHeadline: "Připraveni přivést své rozhodnutí na Mars?",
-    ctaSub: "Zarezervujte si hovor. Do 24 hodin potvrdíme dva volné termíny.",
-    ctaPrimary: "Rezervovat Rozhodnutí na Marsu",
+    ctaSub: "Začněte 30minutovým úvodním hovorem. Uvidíme, jestli je Mars pro vaše rozhodnutí ten pravý prostor.",
+    ctaPrimary: "Rezervovat 30min úvodní hovor",
     ctaSecondary: "Mluvit s naším týmem",
     milanLabel: "Člověk, se kterým budete v sále",
     milanName: "Milan Šemelák",
@@ -553,8 +553,8 @@ const CONTENT: Record<Locale, PageCopy> = {
     rosterLabel: "Tiež hrali na Marse",
     testimonialLabel: "Čo o tom hovoria",
     ctaHeadline: "Pripravení priviesť svoje rozhodnutie na Mars?",
-    ctaSub: "Zarezervujte si hovor. Do 24 hodín potvrdíme dva voľné termíny.",
-    ctaPrimary: "Rezervovať Rozhodnutia na Marse",
+    ctaSub: "Začnite 30-minútovým úvodným hovorom. Uvidíme, či je Mars pre vaše rozhodnutie ten správny priestor.",
+    ctaPrimary: "Rezervovať 30min úvodný hovor",
     ctaSecondary: "Hovoriť s naším tímom",
     milanLabel: "Človek, s ktorým budete v sále",
     milanName: "Milan Šemelák",
@@ -623,16 +623,16 @@ function CyclingQuote() {
   }, [all.length]);
   const q = all[idx];
   return (
-    <div className="min-h-[180px] sm:min-h-[200px] flex flex-col justify-center">
+    <div className="min-h-[180px] sm:min-h-[200px] flex flex-col items-center justify-center text-center">
       <blockquote
-        className={`font-mercure italic text-white text-[22px] sm:text-[32px] leading-[1.2] tracking-[-0.015em] max-w-[30ch] transition-all duration-700 ${
+        className={`font-mercure italic text-white text-[24px] sm:text-[36px] leading-[1.2] tracking-[-0.015em] max-w-[32ch] mx-auto transition-all duration-700 ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
         }`}
       >
         &ldquo;{q.quote}&rdquo;
       </blockquote>
       <p
-        className={`mt-4 text-[11px] sm:text-[12px] font-semibold text-mars tracking-wide uppercase transition-all duration-700 delay-100 ${
+        className={`mt-5 text-[11px] sm:text-[12px] font-semibold text-mars tracking-wide uppercase transition-all duration-700 delay-100 ${
           visible ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -783,17 +783,13 @@ export default function DecisionsOnMarsPage() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
             <button
               type="button"
-              onClick={() => openCalendly(CALENDLY_URL_BOOK)}
+              onClick={() => openCalendly(CALENDLY_URL_INTRO)}
               className="inline-flex items-center justify-center gap-2 bg-mars text-white text-[14px] sm:text-[15px] font-semibold tracking-[-0.01em] px-6 py-4 rounded-full hover:bg-white hover:text-black transition-colors"
             >
               {t.ctaPrimary}
               <span aria-hidden>→</span>
             </button>
             <p className="text-[13px] sm:text-[14px] text-white/60">
-              {t.specValues.price}
-              <span className="text-white/30 mx-2">·</span>
-              {t.specValues.duration}
-              <span className="text-white/30 mx-2">·</span>
               Národní 10, Prague
             </p>
           </div>
@@ -1002,32 +998,32 @@ export default function DecisionsOnMarsPage() {
           </div>
         </section>
 
-        {/* ─── Proof: cycling review pill + case studies ────── */}
+        {/* ─── Proof: cycling quote → logos → case studies ──── */}
         <section className="mb-14 sm:mb-20 bg-black text-white rounded-2xl p-8 sm:p-12">
           <CyclingQuote />
 
-          <div className="mt-10 pt-8 border-t border-white/10">
-            <div className="grid sm:grid-cols-2 gap-5 sm:gap-6 mb-10">
-              {t.cases.map((c, i) => (
-                <div
-                  key={i}
-                  className="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6"
-                >
-                  <p className="text-[13px] sm:text-[14px] font-semibold text-white mb-2">
-                    {c.client}
-                  </p>
-                  <p className="text-[14px] sm:text-[15px] leading-[1.55] text-white/75">
-                    {c.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-
+          <div className="mt-10 pt-8 border-t border-white/10 flex justify-center">
             <img
               src="/clients.png"
               alt="Forbes · Škoda · YPO · PwC · O₂ · UniCredit · Oktagon MMA · House of Lobkowicz · London Business School · Česká spořitelna · Lasvit · Ipsen · MSD · Direct Group · Raiffeisenbank"
               className="w-full max-w-3xl opacity-70 invert"
             />
+          </div>
+
+          <div className="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-5 sm:gap-6">
+            {t.cases.map((c, i) => (
+              <div
+                key={i}
+                className="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6"
+              >
+                <p className="text-[13px] sm:text-[14px] font-semibold text-white mb-2">
+                  {c.client}
+                </p>
+                <p className="text-[14px] sm:text-[15px] leading-[1.55] text-white/75">
+                  {c.body}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -1043,14 +1039,14 @@ export default function DecisionsOnMarsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
               <button
                 type="button"
-                onClick={() => openCalendly(CALENDLY_URL_BOOK)}
+                onClick={() => openCalendly(CALENDLY_URL_INTRO)}
                 className="inline-flex items-center justify-center gap-2 bg-black text-white text-[14px] sm:text-[15px] font-semibold px-6 py-4 rounded-full hover:bg-mars transition-colors"
               >
                 {t.ctaPrimary}
                 <span aria-hidden>→</span>
               </button>
               <p className="text-[13px] sm:text-[14px] text-neutral-500">
-                {t.specValues.price} · Next opening: {nextSlotValue}
+                Free · 30 minutes · online or in person
               </p>
             </div>
 
