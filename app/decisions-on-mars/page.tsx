@@ -925,8 +925,8 @@ export default function DecisionsOnMarsPage() {
 
         {/* ─── Editorial pull quote (visual break) ──────────── */}
         <section className="mb-14 sm:mb-20">
-          <figure className="max-w-3xl mx-auto text-center">
-            <blockquote className="font-mercure italic text-black text-[32px] sm:text-[56px] leading-[1.05] tracking-[-0.025em]">
+          <figure className="bg-white border border-neutral-200 rounded-2xl p-8 sm:p-14 max-w-4xl mx-auto text-center">
+            <blockquote className="font-mercure italic text-black text-[28px] sm:text-[44px] leading-[1.1] tracking-[-0.02em]">
               &ldquo;It either confirms what you believe, or shows you a different reality.&rdquo;
             </blockquote>
             <figcaption className="mt-6 text-[11px] sm:text-[12px] font-semibold text-mars tracking-[0.18em] uppercase">
