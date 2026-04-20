@@ -839,14 +839,8 @@ export default function DecisionsOnMarsPage() {
       <main className="max-w-5xl mx-auto px-5 sm:px-10 py-14 sm:py-20">
         {/* ─── What it is + method formula ──────────────────── */}
         <section className="mb-14 sm:mb-20 max-w-3xl">
-          <h2 className="font-mercure text-[40px] sm:text-[64px] leading-[1.02] tracking-[-0.025em] mb-5 text-black">
-            {t.whatItIsHeadline}
-          </h2>
-          <p className="text-[18px] sm:text-[22px] leading-[1.4] text-black/80 mb-8 max-w-[38ch]">
+          <p className="font-mercure text-[32px] sm:text-[48px] leading-[1.1] tracking-[-0.02em] text-black max-w-[22ch]">
             {t.whatItIsDeck}
-          </p>
-          <p className="text-[15px] sm:text-[17px] leading-[1.6] text-neutral-600">
-            {t.bridgeParagraph}
           </p>
         </section>
 
