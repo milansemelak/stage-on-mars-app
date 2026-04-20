@@ -792,7 +792,7 @@ export default function DecisionsOnMarsPage() {
             <p className="text-[13px] sm:text-[14px] text-white/60">
               or visit our{" "}
               <a
-                href="https://www.google.com/maps/search/?api=1&query=N%C3%A1rodn%C3%AD+10%2C+Prague"
+                href="https://maps.app.goo.gl/D7oSvpGWYkhuLaFh9"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline decoration-white/30 hover:decoration-white hover:text-white transition-colors"
@@ -839,21 +839,12 @@ export default function DecisionsOnMarsPage() {
       <main className="max-w-5xl mx-auto px-5 sm:px-10 py-14 sm:py-20">
         {/* ─── What it is + method formula ──────────────────── */}
         <section className="mb-14 sm:mb-20 max-w-3xl">
-          <h2 className="font-mercure text-[40px] sm:text-[64px] leading-[1.02] tracking-[-0.025em] mb-5 text-black">
+          <h2 className="font-mercure text-[40px] sm:text-[64px] leading-[1.02] tracking-[-0.025em] mb-8 text-black">
             {t.whatItIsHeadline}
           </h2>
-          <p className="text-[18px] sm:text-[22px] leading-[1.4] text-black/80 mb-8 max-w-[38ch]">
-            {t.whatItIsDeck}
-          </p>
-          <p className="text-[15px] sm:text-[17px] leading-[1.6] text-neutral-600 mb-8">
+          <p className="text-[18px] sm:text-[22px] leading-[1.45] text-black/80 max-w-[44ch]">
             {t.bridgeParagraph}
           </p>
-          <div className="inline-flex items-center gap-3 px-4 py-2.5 border border-neutral-200 rounded-full bg-neutral-50">
-            <span className="font-mercure text-[15px] sm:text-[17px] text-black">
-              Question <span className="text-mars">×</span> Play ={" "}
-              <span className="italic">Perspective</span>
-            </span>
-          </div>
         </section>
 
         {/* ─── The 5% hook: evidence anchor ─────────────────── */}
