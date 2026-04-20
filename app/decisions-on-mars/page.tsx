@@ -790,7 +790,15 @@ export default function DecisionsOnMarsPage() {
               <span aria-hidden>→</span>
             </button>
             <p className="text-[13px] sm:text-[14px] text-white/60">
-              Národní 10, Prague
+              or visit our{" "}
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=N%C3%A1rodn%C3%AD+10%2C+Prague"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-white/30 hover:decoration-white hover:text-white transition-colors"
+              >
+                Flagship Stage in Prague
+              </a>
             </p>
           </div>
         </div>
