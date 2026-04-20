@@ -158,7 +158,7 @@ const CONTENT: Record<Locale, PageCopy> = {
     fiveStat: "Only 5% of people see what you see.",
     fiveSource: "Harvard Business Review · Amy Gallo",
     fiveBody:
-      "People don't build what they don't believe. Believe → Understand → Build. On Mars, they play it, feel it, and start believing in the same thing.",
+      "If your people don't see it, they won't build it with you. On Mars, they don't just hear it. They play it. They feel it. And start building the same future.",
     bookWhenLabel: "Book this when",
     bookWhen: [
       "Your strategy is clear but people don't believe in it.",
@@ -888,7 +888,7 @@ export default function DecisionsOnMarsPage() {
         </section>
 
         {/* ─── Book this when / Not for ─────────────────────── */}
-        <section className="mb-14 sm:mb-20 grid sm:grid-cols-2 gap-10 sm:gap-14">
+        <section className="mb-14 sm:mb-20 bg-white border border-neutral-200 rounded-2xl p-8 sm:p-12 grid sm:grid-cols-2 gap-10 sm:gap-14">
           <div>
             <p className="text-[11px] sm:text-[12px] font-semibold text-mars tracking-wide uppercase mb-4">
               {t.bookWhenLabel}
@@ -923,19 +923,6 @@ export default function DecisionsOnMarsPage() {
           </div>
         </section>
 
-        {/* ─── Editorial pull quote (visual break) ──────────── */}
-        <section className="mb-14 sm:mb-20">
-          <figure className="bg-white border border-neutral-200 rounded-2xl p-8 sm:p-14 max-w-4xl mx-auto text-center">
-            <blockquote className="font-mercure italic text-black text-[28px] sm:text-[44px] leading-[1.1] tracking-[-0.02em]">
-              &ldquo;It either confirms what you believe, or shows you a different reality.&rdquo;
-            </blockquote>
-            <figcaption className="mt-6 text-[11px] sm:text-[12px] font-semibold text-mars tracking-[0.18em] uppercase">
-              Alexandra Lobkowicz
-              <span className="text-neutral-300 mx-2">·</span>
-              <span className="text-neutral-500">House of Lobkowicz</span>
-            </figcaption>
-          </figure>
-        </section>
 
         {/* ─── Outcomes: Sight / Trust / Momentum (dark, editorial) ── */}
         <section className="mb-14 sm:mb-20 bg-neutral-950 text-white rounded-2xl p-8 sm:p-12">
@@ -965,23 +952,6 @@ export default function DecisionsOnMarsPage() {
             ))}
           </div>
 
-          {/* What's included (quiet footer) */}
-          <div className="mt-8 pt-6 border-t border-white/10">
-            <p className="text-[11px] sm:text-[12px] font-semibold text-white/60 tracking-wide uppercase mb-4">
-              {t.includedLabel}
-            </p>
-            <ul className="grid sm:grid-cols-2 gap-x-10 gap-y-3 max-w-3xl">
-              {t.included.map((line, i) => (
-                <li
-                  key={i}
-                  className="flex gap-3 text-[14px] sm:text-[15px] leading-[1.5] text-white/70"
-                >
-                  <span className="text-white/30 shrink-0 mt-0.5">·</span>
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
         </section>
 
         {/* ─── Proof: cycling quote → logos → case studies ──── */}
