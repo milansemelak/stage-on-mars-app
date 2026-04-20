@@ -166,7 +166,7 @@ const CONTENT: Record<Locale, PageCopy> = {
       "Two teams just merged and the new one hasn't formed yet.",
       "You sense something is off but nobody can name it.",
     ],
-    fourHoursLabel: "How the four hours go",
+    fourHoursLabel: "How it works",
     fourHours: [
       {
         num: "01",
