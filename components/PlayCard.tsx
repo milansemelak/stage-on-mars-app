@@ -271,19 +271,21 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
   return (
     <>
       <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
-        <div className="p-5 sm:p-8 lg:p-12 space-y-6 sm:space-y-8 lg:space-y-10">
-          {/* Play name — hero element */}
-          <div className="animate-fade-slide-up stagger-1">
+        <div className="p-5 sm:p-8 lg:p-8 xl:p-10 space-y-6 sm:space-y-8 lg:space-y-7">
+          {/* DASHBOARD GRID — only static play info; post-play sections stay linear below */}
+          <div className="space-y-6 sm:space-y-8 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-x-7 lg:gap-y-7">
+          {/* Play name — hero element, full width */}
+          <div className="animate-fade-slide-up stagger-1 lg:col-span-12">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1">
                 {editing ? (
                   <input
                     value={editData.name}
                     onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                    className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white leading-tight bg-transparent border-b border-mars/40 focus:outline-none focus:border-mars w-full"
+                    className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight bg-transparent border-b border-mars/40 focus:outline-none focus:border-mars w-full"
                   />
                 ) : (
-                  <h3 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white leading-[1.1] tracking-[-0.02em]">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-[-0.02em]">
                     {currentPlay.name}
                   </h3>
                 )}
@@ -335,7 +337,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* The Image / Stage Directions */}
-          <div className="animate-fade-slide-up stagger-2">
+          <div className="animate-fade-slide-up stagger-2 lg:col-span-7">
             <SectionLabel color="mars">{t.theImage}</SectionLabel>
             {editing ? (
               <textarea
@@ -345,22 +347,57 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
               />
             ) : (
-              <p className="text-white/85 text-sm sm:text-base lg:text-xl leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3 font-mercure italic">
+              <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3 font-mercure italic">
                 {currentPlay.image}
               </p>
             )}
           </div>
 
+          {/* Music for the play — sits next to Image on lg+ */}
+          {currentPlay.music?.track && currentPlay.music?.artist && (
+            <a
+              href={`https://open.spotify.com/search/${encodeURIComponent(`${currentPlay.music.track} ${currentPlay.music.artist}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block animate-fade-slide-up stagger-5 lg:col-span-5 lg:self-start rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 transition-all group"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <svg className="w-4 h-4 text-mars shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                </svg>
+                <span className="text-mars/80 text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.18em]">{t.musicLabel}</span>
+              </div>
+              <div className="flex items-baseline justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-white text-base lg:text-lg font-bold truncate">
+                    {currentPlay.music.track}
+                  </p>
+                  <p className="text-mars-light/85 text-sm truncate font-mercure italic mt-0.5">
+                    {currentPlay.music.artist}
+                  </p>
+                </div>
+                <span className="text-mars/50 group-hover:text-mars-light text-[10px] font-bold uppercase tracking-[0.15em] shrink-0 transition-colors">
+                  {t.openOnSpotify} →
+                </span>
+              </div>
+              {currentPlay.music.reason && (
+                <p className="text-white/55 text-xs sm:text-sm mt-2 lg:mt-3 leading-relaxed font-mercure italic">
+                  {currentPlay.music.reason}
+                </p>
+              )}
+            </a>
+          )}
+
           {/* Characters — author + concrete vs abstract */}
-          <div className="animate-fade-slide-up stagger-3">
+          <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
-            <div className="mt-3 lg:mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+            <div className="mt-3 lg:mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-3">
               {/* Author card — always first */}
-              <div className="char-reveal char-delay-0 rounded-2xl border px-5 py-4 lg:px-7 lg:py-6 transition-all hover:scale-[1.01] bg-amber-500/[0.08] border-amber-500/30 hover:border-amber-500/50">
-                <div className="font-bold text-sm sm:text-base lg:text-2xl text-amber-300">
+              <div className="char-reveal char-delay-0 rounded-xl lg:rounded-2xl border px-5 py-4 lg:px-5 lg:py-4 transition-all hover:scale-[1.01] bg-amber-500/[0.08] border-amber-500/30 hover:border-amber-500/50">
+                <div className="font-bold text-sm sm:text-base lg:text-lg text-amber-300">
                   {clientName || t.author}
                 </div>
-                <div className="text-[10px] lg:text-[11px] uppercase tracking-widest mt-1 lg:mt-2 text-amber-400/50">
+                <div className="text-[10px] uppercase tracking-widest mt-1 text-amber-400/50">
                   {t.landingYouBadge}
                 </div>
               </div>
@@ -370,7 +407,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 return (
                   <div
                     key={i}
-                    className={`char-reveal char-delay-${Math.min(i, 5)} rounded-2xl border px-5 py-4 lg:px-7 lg:py-6 transition-all hover:scale-[1.01] relative ${
+                    className={`char-reveal char-delay-${Math.min(i, 5)} rounded-xl lg:rounded-2xl border px-5 py-4 lg:px-5 lg:py-4 transition-all hover:scale-[1.01] relative ${
                       isAbstract
                         ? "bg-white/[0.03] border-white/15 hover:border-white/30"
                         : "bg-mars/[0.10] border-mars/30 hover:border-mars/50"
@@ -382,7 +419,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                           <input
                             value={char.name}
                             onChange={(e) => updateCharacterName(i, e.target.value)}
-                            className={`font-bold text-sm sm:text-base lg:text-2xl bg-transparent border-b focus:outline-none flex-1 ${
+                            className={`font-bold text-sm sm:text-base lg:text-lg bg-transparent border-b focus:outline-none flex-1 ${
                               isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
                             }`}
                           />
@@ -408,7 +445,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                     ) : (
                       <>
                         <div
-                          className={`font-bold text-sm sm:text-base lg:text-2xl ${
+                          className={`font-bold text-sm sm:text-base lg:text-lg ${
                             isAbstract ? "text-white/85 font-mercure italic" : "text-[#ffb380]"
                           }`}
                         >
@@ -438,7 +475,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* Author's Role */}
-          <div className="animate-fade-slide-up stagger-4">
+          <div className="animate-fade-slide-up stagger-4 lg:col-span-7">
             <SectionLabel color="green">{t.authorsRole}</SectionLabel>
             {editing ? (
               <textarea
@@ -448,14 +485,14 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
               />
             ) : (
-              <p className="text-white/85 text-sm sm:text-base lg:text-xl leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3">
+              <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3">
                 {currentPlay.authorRole}
               </p>
             )}
           </div>
 
           {/* Ending Perspective — always visible, it's an instruction for live play */}
-          <div className="animate-fade-slide-up stagger-5">
+          <div className="animate-fade-slide-up stagger-5 lg:col-span-5">
             <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
             {editing ? (
               <textarea
@@ -465,46 +502,12 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
               />
             ) : (
-              <p className="text-white/85 text-sm sm:text-base lg:text-xl leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3">
+              <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3">
                 {currentPlay.endingPerspective}
               </p>
             )}
           </div>
-
-          {/* ── Music for the play ── */}
-          {currentPlay.music?.track && currentPlay.music?.artist && (
-            <a
-              href={`https://open.spotify.com/search/${encodeURIComponent(`${currentPlay.music.track} ${currentPlay.music.artist}`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block animate-fade-slide-up stagger-5 rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-7 transition-all group"
-            >
-              <div className="flex items-center gap-3 mb-2 lg:mb-3">
-                <svg className="w-4 h-4 lg:w-5 lg:h-5 text-mars shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-                </svg>
-                <span className="text-mars/80 text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.18em]">{t.musicLabel}</span>
-              </div>
-              <div className="flex items-baseline justify-between gap-3 lg:gap-6">
-                <div className="min-w-0">
-                  <p className="text-white text-base sm:text-lg lg:text-2xl font-bold truncate">
-                    {currentPlay.music.track}
-                  </p>
-                  <p className="text-mars-light/85 text-sm lg:text-lg truncate font-mercure italic mt-0.5 lg:mt-1">
-                    {currentPlay.music.artist}
-                  </p>
-                </div>
-                <span className="text-mars/50 group-hover:text-mars-light text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.15em] shrink-0 transition-colors">
-                  {t.openOnSpotify} →
-                </span>
-              </div>
-              {currentPlay.music.reason && (
-                <p className="text-white/55 text-xs sm:text-sm lg:text-base mt-3 lg:mt-4 leading-relaxed font-mercure italic">
-                  {currentPlay.music.reason}
-                </p>
-              )}
-            </a>
-          )}
+          </div>{/* end DASHBOARD GRID */}
 
           {/* ── Step 2: See what happens ── */}
           {!currentPlay.simulation && !marsLoading && (
