@@ -176,6 +176,15 @@ function PlayPage() {
   const currentTimestampRef = useRef(0);
   const currentThreadIdRef = useRef<string | null>(null);
 
+  // Journal tab is meaningful only after a few completed plays.
+  // Tab bar itself is hidden for fresh accounts so the empty state stays uncluttered.
+  // NOTE: must live above the early-return gates below — Rules of Hooks.
+  const showJournalTab = playHistoryData.length >= 3;
+  const showTabBar = playHistoryData.length > 0 && showJournalTab;
+  useEffect(() => {
+    if (!showJournalTab && activeTab === "journal") setActiveTab("play");
+  }, [showJournalTab, activeTab]);
+
   // Determine access status
   useEffect(() => {
     if (authLoading) return;
@@ -482,16 +491,6 @@ function PlayPage() {
       </div>
     );
   }
-
-  // Journal tab is meaningful only after a few completed plays.
-  // Tab bar itself is hidden for fresh accounts so the empty state stays uncluttered.
-  const showJournalTab = playHistoryData.length >= 3;
-  const showTabBar = playHistoryData.length > 0 && showJournalTab;
-
-  // Force-back to play tab if journal is hidden
-  useEffect(() => {
-    if (!showJournalTab && activeTab === "journal") setActiveTab("play");
-  }, [showJournalTab, activeTab]);
 
   return (
     <div className="min-h-[calc(100vh-72px)]">
