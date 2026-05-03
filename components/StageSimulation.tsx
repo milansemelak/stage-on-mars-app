@@ -738,8 +738,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
   }, [renderPositions, hasStarted]);
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col">
-      {/* Stage — fills available space */}
+    <div className="rounded-2xl overflow-hidden bg-[#080808] flex flex-col mx-auto w-full max-w-[640px] lg:max-w-[680px]">
+      {/* Stage — capped size so the whole experience fits one screen */}
       <div className="relative w-full flex-1 min-h-0 overflow-hidden aspect-square">
         <div
           className="absolute inset-0"
@@ -910,7 +910,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
             // Pre-compute label positions with collision avoidance (vertical only — stable)
             const labelOffsets = renderPositions.map((pos) => {
               const above = pos.y < CY;
-              return { x: 0, y: above ? -4.5 : 5.5, above };
+              // Bigger dots need more clearance so the name doesn't overlap.
+              return { x: 0, y: above ? -6.2 : 7.2, above };
             });
 
             // Resolve overlaps: push labels apart vertically when horizontally close
@@ -951,7 +952,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
               const isAuthor = char.description === "author";
               const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
               const isActive = hasStarted && movedCharacters.has(i);
-              const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
+              const dotR = isAuthor ? 3.4 : (isActive ? 4.2 : 3);
 
               const colors = isAuthor
                 ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)" }
@@ -998,7 +999,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
                     x={0} y={labelY}
                     textAnchor={anchor}
                     fill={colors.text}
-                    fontSize={isAuthor ? 2.4 : (isActive ? 2.6 : 2.2)}
+                    fontSize={isAuthor ? 1.9 : (isActive ? 2 : 1.7)}
                     fontWeight={isAuthor ? 600 : (isActive ? 700 : 500)}
                     fontStyle={isAbstract || isAuthor ? "italic" : "normal"}
                     letterSpacing="0.03"
