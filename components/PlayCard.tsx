@@ -386,84 +386,94 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </a>
           )}
 
-          {/* Characters — chips */}
+          {/* Characters — HERO casting tiles. Each character is the role someone will step into. */}
           <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
-            <div className="mt-3 lg:mt-4">
-              {/* Chips — wrap, take whatever space they need */}
-              <div className="flex flex-wrap gap-2 sm:gap-2.5">
-                {/* Author chip — always first, gold */}
-                <div className="char-reveal char-delay-0 inline-flex items-center gap-2.5 px-4 py-2 lg:px-5 lg:py-2.5 rounded-full border bg-amber-500/[0.10] border-amber-500/40 hover:border-amber-500/60 transition-all">
-                  <span className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(255,200,80,0.7)] shrink-0" />
-                  <span className="font-bold text-sm lg:text-base text-amber-300 whitespace-nowrap">
-                    {clientName || t.author}
-                  </span>
-                </div>
-                {currentPlay.characters.map((char, i) => {
-                  const isAbstract =
-                    char.description?.toLowerCase() === "abstract";
-                  return (
-                    <div
-                      key={i}
-                      className={`char-reveal char-delay-${Math.min(i, 5)} inline-flex items-center gap-2.5 px-4 py-2 lg:px-5 lg:py-2.5 rounded-full border transition-all ${
-                        isAbstract
-                          ? "bg-white/[0.025] border-white/15 hover:border-white/30"
-                          : "bg-mars/[0.10] border-mars/35 hover:border-mars/55"
-                      }`}
-                    >
-                      {editing ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => toggleCharacterType(i)}
-                            aria-label={isAbstract ? t.abstract : t.concrete}
-                            title={isAbstract ? t.abstract : t.concrete}
-                            className={`shrink-0 w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full cursor-pointer hover:scale-125 transition-transform ${
-                              isAbstract
-                                ? "border border-white/60"
-                                : "bg-mars shadow-[0_0_8px_rgba(255,85,0,0.6)]"
-                            }`}
-                          />
-                          <input
-                            value={char.name}
-                            onChange={(e) => updateCharacterName(i, e.target.value)}
-                            size={Math.max(6, char.name.length + 1)}
-                            className={`font-bold text-sm lg:text-base bg-transparent border-b focus:outline-none min-w-0 ${
-                              isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
-                            }`}
-                          />
-                          {currentPlay.characters.length > 2 && (
-                            <button
-                              onClick={() => removeCharacter(i)}
-                              className="text-white/20 hover:text-red-400/70 transition-colors text-base leading-none shrink-0"
-                              title="Remove"
-                            >
-                              ×
-                            </button>
-                          )}
-                        </>
-                      ) : (
-                        <>
-                          <span
-                            className={`shrink-0 w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full ${
-                              isAbstract
-                                ? "border border-white/60"
-                                : "bg-mars shadow-[0_0_8px_rgba(255,85,0,0.6)]"
-                            }`}
-                          />
-                          <span
-                            className={`font-bold text-sm lg:text-base whitespace-nowrap ${
-                              isAbstract ? "text-white/85 font-mercure italic" : "text-[#ffb380]"
-                            }`}
-                          >
-                            {char.name}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
+            <div className="mt-3 lg:mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+              {/* Author tile — always first, distinct gold treatment */}
+              <div className="char-reveal char-delay-0 group relative rounded-2xl border-2 border-amber-500/40 bg-gradient-to-b from-amber-500/[0.12] to-amber-500/[0.04] hover:border-amber-500/70 hover:from-amber-500/[0.18] hover:to-amber-500/[0.06] transition-all duration-300 hover:-translate-y-0.5 px-4 py-5 sm:px-5 sm:py-7 lg:px-5 lg:py-8 flex flex-col items-center text-center overflow-hidden">
+                {/* Aura behind the dot */}
+                <div className="absolute top-3 sm:top-5 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-amber-400/20 blur-xl pointer-events-none group-hover:bg-amber-400/30 transition-colors" />
+                <span className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-amber-300 shadow-[0_0_18px_rgba(255,200,80,0.85)] mb-3 sm:mb-4 animate-pulse-glow" />
+                <span className="font-black text-base sm:text-lg lg:text-xl text-amber-200 leading-tight tracking-tight break-words">
+                  {clientName || t.author}
+                </span>
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-amber-400/60 font-bold mt-1.5 sm:mt-2">
+                  {t.landingYouBadge}
+                </span>
               </div>
+              {currentPlay.characters.map((char, i) => {
+                const isAbstract =
+                  char.description?.toLowerCase() === "abstract";
+                return (
+                  <div
+                    key={i}
+                    className={`char-reveal char-delay-${Math.min(i, 5)} group relative rounded-2xl border transition-all duration-300 hover:-translate-y-0.5 px-4 py-5 sm:px-5 sm:py-7 lg:px-5 lg:py-8 flex flex-col items-center text-center overflow-hidden ${
+                      isAbstract
+                        ? "bg-gradient-to-b from-white/[0.04] to-white/[0.01] border-white/15 hover:border-white/40 hover:from-white/[0.06]"
+                        : "bg-gradient-to-b from-mars/[0.14] to-mars/[0.04] border-mars/40 hover:border-mars/70 hover:from-mars/[0.20]"
+                    }`}
+                  >
+                    {/* Aura behind the dot */}
+                    <div className={`absolute top-3 sm:top-5 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full blur-xl pointer-events-none transition-colors ${
+                      isAbstract ? "bg-white/[0.06] group-hover:bg-white/[0.12]" : "bg-mars/30 group-hover:bg-mars/45"
+                    }`} />
+                    {editing ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => toggleCharacterType(i)}
+                          aria-label={isAbstract ? t.abstract : t.concrete}
+                          title={isAbstract ? t.abstract : t.concrete}
+                          className={`relative shrink-0 mb-3 sm:mb-4 rounded-full cursor-pointer hover:scale-110 transition-transform w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                            isAbstract
+                              ? "border-2 border-white/55"
+                              : "bg-mars shadow-[0_0_18px_rgba(255,85,0,0.85)] animate-pulse-glow"
+                          }`}
+                        />
+                        <input
+                          value={char.name}
+                          onChange={(e) => updateCharacterName(i, e.target.value)}
+                          className={`relative w-full text-center font-black text-base sm:text-lg lg:text-xl bg-transparent border-b focus:outline-none ${
+                            isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
+                          }`}
+                        />
+                        {currentPlay.characters.length > 2 && (
+                          <button
+                            onClick={() => removeCharacter(i)}
+                            className="absolute top-2 right-2 text-white/25 hover:text-red-400/80 transition-colors text-lg leading-none"
+                            title="Remove"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span
+                          className={`relative shrink-0 mb-3 sm:mb-4 rounded-full w-3.5 h-3.5 sm:w-4 sm:h-4 ${
+                            isAbstract
+                              ? "border-2 border-white/55"
+                              : "bg-mars shadow-[0_0_18px_rgba(255,85,0,0.85)] animate-pulse-glow"
+                          }`}
+                        />
+                        <span
+                          className={`relative font-black text-base sm:text-lg lg:text-xl leading-tight tracking-tight break-words ${
+                            isAbstract ? "text-white/90 font-mercure italic" : "text-[#ffb380]"
+                          }`}
+                        >
+                          {char.name}
+                        </span>
+                        <span className={`relative text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mt-1.5 sm:mt-2 ${
+                          isAbstract ? "text-white/30" : "text-mars/60"
+                        }`}>
+                          {isAbstract ? t.abstract : t.concrete}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
             </div>
             {editing && (
               <button
