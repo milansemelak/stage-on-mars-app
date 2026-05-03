@@ -113,6 +113,19 @@ export async function POST(request: NextRequest) {
       if (play.characters && play.characters.length > 8) {
         play.characters = play.characters.slice(0, 8);
       }
+      // Defensive: even with the prompt rule, the model occasionally returns
+      // hyphenated/dashed compound names like "Ešte-Nie" or "Mal-By-Som".
+      // A body cannot embody a hyphen. Strip them and collapse the result.
+      if (play.characters) {
+        for (const c of play.characters) {
+          if (typeof c.name === "string") {
+            c.name = c.name
+              .replace(/[-‐-―−]/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
+          }
+        }
+      }
     }
 
     return NextResponse.json({ plays });

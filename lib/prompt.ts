@@ -179,7 +179,14 @@ CHARACTER NAMING RULES (READ CAREFULLY):
 2. **NEVER use "The [Adjective] [Noun]" pattern.** Not "The Comfortable Lie". Just "The Lie". Not "The Buried Truth". Just "Truth". Not "The Surface Excuse". Just "The Excuse" or better: "Pinocchio".
 3. **At least 1 character MUST be a known archetype, myth, or cultural figure.** Judas. Death. Icarus. Sherlock. The Devil. Cleopatra. Hamlet. Pinocchio. Rocky. Yoda. These characters hit INSTANTLY because everyone knows who they are.
 4. **BANNED NAME PATTERNS**: "The [Noun] Who [Verbed]", "The [Adjective] [Noun]", "The Fear of [Noun]", "The Thing [Pronoun] [Verb]". These are essays, not characters.
-5. **NO HYPHENS, EM-DASHES, OR EN-DASHES INSIDE NAMES.** A name must be a real word or two real words separated by a space. BANNED: "Čo-Keď", "Už-Nie", "Hoci-Tak", "Nevedel-Som", "What-If", "Already-Not", "No-Longer", "Once-Was". A body cannot embody a hyphen. Find ONE real word for the concept: "Čo keď" → "Pochybnosť" (Doubt) or "Otázka". "Už-Nie" → "Koniec" or "Stop". "Nevedel-Som" → "Nevedomie" or "Slepota". "What-If" → "Doubt", "The Maybe", or just "If". If you cannot name the concept with a single real word, the concept is not yet a character.
+5. **NO HYPHENS, EM-DASHES, OR EN-DASHES INSIDE NAMES — EVER.** A name must be a real word or two real words separated by a space. This rule has NO exceptions, EVEN IF the language naturally uses multi-word phrases for the concept. BANNED: "Čo-Keď", "Už-Nie", "Hoci-Tak", "Nevedel-Som", "Ešte-Nie", "Mal-By-Som", "Skoro-Vždy", "Už-Nikdy", "What-If", "Already-Not", "No-Longer", "Once-Was", "Should-Have", "Never-Again". The hyphen is a sign you are FAILING to find the real word. A body cannot embody a hyphen. Forced rewrites:
+   - "Ešte nie" / "Ešte-Nie" → "Odklad", "Čakanie", "Neskôr", or "Ešte"
+   - "Mal by som" / "Mal-By-Som" → "Povinnosť", "Vina", "Mal som", or "Dlh"
+   - "Čo keď" / "Čo-Keď" → "Pochybnosť", "Otázka", or "Strach"
+   - "Už nie" / "Už-Nie" → "Koniec", "Stop", or "Stačilo"
+   - "Nevedel som" / "Nevedel-Som" → "Nevedomie", "Slepota", "Nevedomosť"
+   - "Skoro" can stand alone as a name. So can "Hocijako", "Možno", "Snáď".
+If you cannot name the concept with a single real word in the target language, the concept is NOT a character yet — pick a different angle.
 
 CHARACTER MIX (MINIMUM 5, up to 7 characters — the author is added on stage automatically, giving 6-8 total):
 - **1-2 ARCHETYPES/ICONS** — figures everyone recognizes. IMPORTANT: draw from the FULL breadth of human culture. Do NOT always pick the same ones. Examples across categories (use these as STARTING POINTS, not the full list):
