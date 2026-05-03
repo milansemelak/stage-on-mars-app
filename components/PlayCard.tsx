@@ -335,7 +335,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* The Image / Stage Directions */}
-          <div className="animate-fade-slide-up stagger-2 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-6 xl:p-7 lg:h-full">
+          <div className="animate-fade-slide-up stagger-2 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.theImage}</SectionLabel>
             {editing ? (
               <textarea
@@ -345,7 +345,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
               />
             ) : (
-              <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3 font-mercure italic">
+              <p className="text-white/85 text-sm sm:text-[15px] lg:text-[15px] leading-[1.6] mt-2 font-mercure italic">
                 {currentPlay.image}
               </p>
             )}
@@ -357,20 +357,20 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               href={`https://open.spotify.com/search/${encodeURIComponent(`${currentPlay.music.track} ${currentPlay.music.artist}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="block animate-fade-slide-up stagger-5 lg:col-span-5 lg:h-full rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-6 xl:p-7 transition-all group"
+              className="block animate-fade-slide-up stagger-5 lg:col-span-5 lg:h-full rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-5 xl:p-6 transition-all group"
             >
-              <div className="flex items-center gap-3 mb-2">
-                <svg className="w-4 h-4 text-mars shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <div className="flex items-center gap-2.5 mb-2">
+                <svg className="w-3.5 h-3.5 text-mars shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
                 </svg>
-                <span className="text-mars/80 text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.18em]">{t.musicLabel}</span>
+                <span className="text-mars/80 text-[10px] font-bold uppercase tracking-[0.18em]">{t.musicLabel}</span>
               </div>
               <div className="flex items-baseline justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-white text-base lg:text-lg font-bold truncate">
+                  <p className="text-white text-[15px] lg:text-base font-bold truncate">
                     {currentPlay.music.track}
                   </p>
-                  <p className="text-mars-light/85 text-sm truncate font-mercure italic mt-0.5">
+                  <p className="text-mars-light/85 text-[13px] lg:text-sm truncate font-mercure italic mt-0.5">
                     {currentPlay.music.artist}
                   </p>
                 </div>
@@ -379,7 +379,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 </span>
               </div>
               {currentPlay.music.reason && (
-                <p className="text-white/55 text-xs sm:text-sm mt-2 lg:mt-3 leading-relaxed font-mercure italic">
+                <p className="text-white/55 text-[13px] mt-2 leading-[1.55] font-mercure italic">
                   {currentPlay.music.reason}
                 </p>
               )}
@@ -486,7 +486,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* Author's Role */}
-          <div className="animate-fade-slide-up stagger-4 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-6 xl:p-7 lg:h-full">
+          <div className="animate-fade-slide-up stagger-4 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.authorsRole}</SectionLabel>
             {editing ? (
               <textarea
@@ -496,14 +496,14 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
               />
             ) : (
-              <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3">
+              <p className="text-white/85 text-sm sm:text-[15px] lg:text-[15px] leading-[1.6] mt-2">
                 {currentPlay.authorRole}
               </p>
             )}
           </div>
 
           {/* Ending Perspective — always visible, it's an instruction for live play */}
-          <div className="animate-fade-slide-up stagger-5 lg:col-span-5 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-6 xl:p-7 lg:h-full">
+          <div className="animate-fade-slide-up stagger-5 lg:col-span-5 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.endingPerspective}</SectionLabel>
             {editing ? (
               <textarea
@@ -513,7 +513,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 className="w-full text-white/70 text-sm sm:text-base leading-relaxed mt-2 bg-transparent border border-white/10 rounded-lg p-3 focus:outline-none focus:border-mars/40 resize-none"
               />
             ) : (
-              <p className="text-white/90 text-sm sm:text-base lg:text-lg leading-relaxed lg:leading-[1.55] mt-2 lg:mt-3">
+              <p className="text-white/85 text-sm sm:text-[15px] lg:text-[15px] leading-[1.6] mt-2">
                 {currentPlay.endingPerspective}
               </p>
             )}
@@ -849,7 +849,7 @@ function SectionLabel({
 
   return (
     <span
-      className={`text-[11px] lg:text-[13px] font-bold uppercase tracking-widest lg:tracking-[0.22em] ${colors[color]}`}
+      className={`text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.22em] lg:tracking-[0.26em] ${colors[color]}`}
     >
       {children}
     </span>
