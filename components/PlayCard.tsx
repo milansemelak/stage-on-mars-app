@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Play, Perspective } from "@/lib/types";
+import { Play, Perspective, Character } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { STORAGE_KEYS, MAX_HISTORY, userKey } from "@/lib/constants";
 import { useAuth } from "@/lib/auth-context";
@@ -386,80 +386,94 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </a>
           )}
 
-          {/* Characters — author + concrete vs abstract */}
+          {/* Characters — chips + mini-stage preview */}
           <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
-            <div className="mt-3 lg:mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-3">
-              {/* Author card — always first, gold dot */}
-              <div className="char-reveal char-delay-0 rounded-xl lg:rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] bg-amber-500/[0.08] border-amber-500/30 hover:border-amber-500/50 flex items-center gap-3">
-                <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(255,200,80,0.7)] shrink-0" />
-                <span className="font-bold text-sm sm:text-base lg:text-lg text-amber-300 truncate">
-                  {clientName || t.author}
-                </span>
-              </div>
-              {currentPlay.characters.map((char, i) => {
-                const isAbstract =
-                  char.description?.toLowerCase() === "abstract";
-                return (
-                  <div
-                    key={i}
-                    className={`char-reveal char-delay-${Math.min(i, 5)} rounded-xl lg:rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] relative ${
-                      isAbstract
-                        ? "bg-white/[0.03] border-white/15 hover:border-white/30"
-                        : "bg-mars/[0.10] border-mars/30 hover:border-mars/50"
-                    }`}
-                  >
-                    {editing ? (
-                      <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={() => toggleCharacterType(i)}
-                          aria-label={isAbstract ? t.abstract : t.concrete}
-                          title={isAbstract ? t.abstract : t.concrete}
-                          className={`shrink-0 w-2 h-2 rounded-full cursor-pointer hover:scale-125 transition-transform ${
-                            isAbstract
-                              ? "border border-white/60"
-                              : "bg-mars shadow-[0_0_10px_rgba(255,85,0,0.6)]"
-                          }`}
-                        />
-                        <input
-                          value={char.name}
-                          onChange={(e) => updateCharacterName(i, e.target.value)}
-                          className={`font-bold text-sm sm:text-base lg:text-lg bg-transparent border-b focus:outline-none flex-1 min-w-0 ${
-                            isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
-                          }`}
-                        />
-                        {currentPlay.characters.length > 2 && (
+            <div className="mt-3 lg:mt-4 flex flex-col lg:flex-row gap-4 lg:gap-6">
+              {/* Chips — wrap, take whatever space they need */}
+              <div className="flex flex-wrap gap-2 sm:gap-2.5 lg:flex-1 lg:content-start">
+                {/* Author chip — always first, gold */}
+                <div className="char-reveal char-delay-0 inline-flex items-center gap-2.5 px-4 py-2 lg:px-5 lg:py-2.5 rounded-full border bg-amber-500/[0.10] border-amber-500/40 hover:border-amber-500/60 transition-all">
+                  <span className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(255,200,80,0.7)] shrink-0" />
+                  <span className="font-bold text-sm lg:text-base text-amber-300 whitespace-nowrap">
+                    {clientName || t.author}
+                  </span>
+                </div>
+                {currentPlay.characters.map((char, i) => {
+                  const isAbstract =
+                    char.description?.toLowerCase() === "abstract";
+                  return (
+                    <div
+                      key={i}
+                      className={`char-reveal char-delay-${Math.min(i, 5)} inline-flex items-center gap-2.5 px-4 py-2 lg:px-5 lg:py-2.5 rounded-full border transition-all ${
+                        isAbstract
+                          ? "bg-white/[0.025] border-white/15 hover:border-white/30"
+                          : "bg-mars/[0.10] border-mars/35 hover:border-mars/55"
+                      }`}
+                    >
+                      {editing ? (
+                        <>
                           <button
-                            onClick={() => removeCharacter(i)}
-                            className="text-white/20 hover:text-red-400/70 transition-colors text-lg leading-none shrink-0"
-                            title="Remove"
+                            type="button"
+                            onClick={() => toggleCharacterType(i)}
+                            aria-label={isAbstract ? t.abstract : t.concrete}
+                            title={isAbstract ? t.abstract : t.concrete}
+                            className={`shrink-0 w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full cursor-pointer hover:scale-125 transition-transform ${
+                              isAbstract
+                                ? "border border-white/60"
+                                : "bg-mars shadow-[0_0_8px_rgba(255,85,0,0.6)]"
+                            }`}
+                          />
+                          <input
+                            value={char.name}
+                            onChange={(e) => updateCharacterName(i, e.target.value)}
+                            size={Math.max(6, char.name.length + 1)}
+                            className={`font-bold text-sm lg:text-base bg-transparent border-b focus:outline-none min-w-0 ${
+                              isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
+                            }`}
+                          />
+                          {currentPlay.characters.length > 2 && (
+                            <button
+                              onClick={() => removeCharacter(i)}
+                              className="text-white/20 hover:text-red-400/70 transition-colors text-base leading-none shrink-0"
+                              title="Remove"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <span
+                            className={`shrink-0 w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full ${
+                              isAbstract
+                                ? "border border-white/60"
+                                : "bg-mars shadow-[0_0_8px_rgba(255,85,0,0.6)]"
+                            }`}
+                          />
+                          <span
+                            className={`font-bold text-sm lg:text-base whitespace-nowrap ${
+                              isAbstract ? "text-white/85 font-mercure italic" : "text-[#ffb380]"
+                            }`}
                           >
-                            ×
-                          </button>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-3">
-                        <span
-                          className={`shrink-0 w-2 h-2 rounded-full ${
-                            isAbstract
-                              ? "border border-white/60"
-                              : "bg-mars shadow-[0_0_10px_rgba(255,85,0,0.6)]"
-                          }`}
-                        />
-                        <span
-                          className={`font-bold text-sm sm:text-base lg:text-lg truncate ${
-                            isAbstract ? "text-white/85 font-mercure italic" : "text-[#ffb380]"
-                          }`}
-                        >
-                          {char.name}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                            {char.name}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Mini-stage preview — desktop only, shows the cast in starting circle formation */}
+              {!editing && (
+                <div className="hidden lg:block lg:w-[200px] xl:w-[220px] lg:shrink-0 self-start">
+                  <MiniStage
+                    characters={currentPlay.characters}
+                    authorLabel={clientName || t.author}
+                  />
+                </div>
+              )}
             </div>
             {editing && (
               <button
@@ -815,6 +829,77 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
         />
       )}
     </>
+  );
+}
+
+/**
+ * Mini-stage preview — small SVG showing the cast in their starting
+ * circle formation. Author at center (gold), characters around them.
+ * No labels — this is a teaser of the simulation, not an info display.
+ */
+function MiniStage({
+  characters,
+  authorLabel,
+}: {
+  characters: Character[];
+  authorLabel: string;
+}) {
+  // Filter author out if a character shares the name (defensive — same
+  // logic StageSimulation uses).
+  const cast = characters.filter(
+    (c) => c.name.toLowerCase() !== authorLabel.toLowerCase()
+  );
+  const count = cast.length || 1;
+  const CX = 50;
+  const CY = 50;
+  const R = 30;
+
+  return (
+    <div className="relative aspect-square rounded-full border border-mars/15 overflow-hidden"
+      style={{
+        boxShadow: "inset 0 0 30px rgba(255,85,0,0.08), 0 0 16px rgba(255,85,0,0.06)",
+        background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,85,0,0.06) 0%, transparent 100%)",
+      }}
+    >
+      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
+        {/* LED ring */}
+        <circle cx={CX} cy={CY} r="42" fill="none" stroke="rgba(255,85,0,0.2)" strokeWidth="0.5" />
+        <circle cx={CX} cy={CY} r="38" fill="rgba(255,85,0,0.015)" />
+
+        {/* Author at center — gold, gentle breath */}
+        <g style={{ animation: "miniStageBreath 4s ease-in-out infinite" }}>
+          <circle cx={CX} cy={CY} r="4" fill="rgba(255,215,0,0.9)" />
+          <circle cx={CX} cy={CY} r="6" fill="none" stroke="rgba(255,215,0,0.3)" strokeWidth="0.4" />
+        </g>
+
+        {/* Cast around the author */}
+        {cast.map((c, i) => {
+          const angle = -Math.PI / 2 + (2 * Math.PI * i) / count;
+          const x = CX + Math.cos(angle) * R;
+          const y = CY + Math.sin(angle) * R;
+          const isAbstract = c.description?.toLowerCase() === "abstract";
+          const delay = (i * 0.4) % 2;
+          return (
+            <g key={i} style={{ animation: `miniStageBreath 4s ease-in-out infinite ${delay}s` }}>
+              {isAbstract ? (
+                <circle cx={x} cy={y} r="2.6" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="0.6" />
+              ) : (
+                <>
+                  <circle cx={x} cy={y} r="3" fill="rgba(255,85,0,0.95)" />
+                  <circle cx={x} cy={y} r="4.5" fill="none" stroke="rgba(255,85,0,0.3)" strokeWidth="0.4" />
+                </>
+              )}
+            </g>
+          );
+        })}
+      </svg>
+      <style jsx>{`
+        @keyframes miniStageBreath {
+          0%, 100% { opacity: 0.85; transform: scale(1); transform-origin: center; }
+          50%      { opacity: 1; transform: scale(1.04); }
+        }
+      `}</style>
+    </div>
   );
 }
 

@@ -71,15 +71,22 @@ CRITICAL — NO EXCHANGES OF OBJECTS: Characters CANNOT hold, carry, pass, hand 
 
 ANTI-LOOPHOLE — "INVISIBLE" THINGS ARE STILL THINGS: An invisible object is still an object. The author's body still mimes possession. BANNED phrasings: "holds an invisible rope", "an invisible thread connects them", "passes an imaginary cup", "the unseen weight in their hands", "tugging on something we can't see". If you write "invisible [noun]" or "imaginary [noun]" or "unseen [noun]" anywhere in the image or narration, it is a violation. Replace with body-only equivalents: tension between bodies (back-to-back, leaning), breath (held, released), gaze (locked, broken), distance (closing, opening), silence. A tug-of-war becomes "two groups lean away from each other, breath held." A held thread becomes "their gazes are locked, neither blinks."
 
-BANNED VERBS — DO NOT USE THESE ANYWHERE in image text or narration steps, in ANY language:
+BANNED — only when paired with a PHYSICAL OBJECT IN THE HANDS. Mental/abstract metaphors are FINE. The rule is about hands, not language.
 
-EN: hold, holds, holding, held, carry, carries, carrying, carried, pass (an object), passes, passed, passing, hand over, hands over, give, gives, gave, take, takes, took, pick up, picks up, drop, drops, dropped, offer (an object), offers, receive, receives, accept (an object), tugs, pulls (a rope/string), grasps, grips, clutches, releases (an object).
+VIOLATION (rewrite): hold/drží/nesie/podáva/dáva/berie/odovzdáva/púšťa + a thing characters' hands could grip — bottle, rope, paper, key, instrument, sword, cup, letter, anything.
+- "Hostia držia prázdne fľaše" → REWRITE: "Hostia stoja v kruhu, ruky pri tele, čakajú."
+- "She holds the letter" → REWRITE: "She speaks one word, then steps back."
+- "Each carries an invisible thread" → REWRITE: "Their gazes are locked, neither blinks."
 
-SK: drží, držia, držal, držala, držali, nesie, nesú, niesol, niesla, niesli, podáva, podáva, podal, podala, podali, dáva, dal, dala, dali, berie, vezme, zoberie, vzal, vzala, vzali, odovzdáva, odovzdá, odovzdal, púšťa, pustí, pustil, drží v rukách, má v rukách.
+ALLOWED (do not rewrite these — they are body/mind/feeling, not possession):
+- "drží v hlave / v mysli / v sebe / v srdci jeden dôvod / jednu spomienku / jedno slovo" (mental holding)
+- "holds in mind / in heart / in their head / inside them" (mental metaphor)
+- "drží sa pri zemi", "drží rovnováhu", "drží tempo", "drží napätie", "drží priestor" (idioms about body, balance, tension, space)
+- "holds their breath", "holds eye contact", "holds the silence", "holds their ground", "holds the space" (body/presence)
+- "podá ruku" (offers handshake — body gesture, not object)
+- "berie sa za ruky" (holds hands — body contact, not object)
 
-CZ: drží, drží, držel, držela, drželi, nese, nesou, nesl, nesla, nesli, podává, podá, podal, podala, dává, dal, dala, dali, bere, vezme, vzal, vzala, vzali, předává, předá, předal, pouští, pustí, pustil, drží v rukou, má v rukou.
-
-If your sentence contains any of these verbs paired with a noun-as-object, REWRITE THE WHOLE SENTENCE around bodies and gestures. "Hostia držia prázdne fľaše" is a violation. Rewrite: "Hostia stoja v kruhu, ruky pri tele, čakajú." or "Hostia stoja každý sám." Pure embodiment. Empty hands.
+THE TEST: Can the action exist with EMPTY HANDS? If yes, allowed. If a physical noun would have to materialize between the fingers, banned.
 
 ## HOW A REAL SESSION WORKS (studied from 10+ live sessions)
 1. Someone sends a question "from Earth"
@@ -307,11 +314,16 @@ Now report what you witnessed.
 
 ## CRITICAL — EMPTY HANDS RULE (READ FIRST, APPLIES TO EVERY NARRATION SENTENCE)
 
-Bodies on stage hold NOTHING. No bottles, no labels, no ropes, no instruments, no papers, no anything — visible or invisible. The ONLY things characters exchange are: words, looks, gestures, movements, breath, silence, body position.
+Bodies on stage hold NOTHING in their hands. No bottles, no labels, no ropes, no instruments, no papers, no anything — visible or invisible.
 
-BANNED VERBS in any narration step (EN/SK/CZ): hold/holds/holding/drží/držia/držal/držal/držala/držali/nesie/nesú/podáva/podal/dáva/dal/berie/vezme/predáva/odovzdáva/púšťa/pustí + the same family in any tense or person.
+VIOLATION = a verb of possession (hold/drží/nesie/podáva/dáva/berie/odovzdáva/púšťa or English equivalents) paired with a physical noun-as-object that would have to materialize between fingers. Rewrite to bodies and gestures.
 
-If a sentence makes hands do anything except gesture (open palm, point, turn away, reach, touch briefly, place a hand on chest), REWRITE the sentence. "Hostia držia fľaše" → "Hostia stoja v kruhu, ruky pri tele." "She holds the letter" → "She speaks one word, then steps back." Never make a body possess anything. Hands. Are. Empty.
+NOT a violation:
+- Mental holding: "drží v hlave / v mysli / v srdci / v sebe", "holds in mind", "holds the silence", "holds their breath", "holds eye contact"
+- Body idioms: "drží rovnováhu", "drží sa pri zemi", "holds their ground"
+- Body contact: "podá ruku", "berie sa za ruky"
+
+THE TEST: Can the action exist with EMPTY HANDS? If yes, allowed. "Hostia držia fľaše" fails (hands gripping bottles). "Hostia držia v hlave jedno slovo" passes (mental). "She holds the letter" fails. "She holds her breath" passes.
 
 ## The Simulation — what unfolded on stage (WITH CHOREOGRAPHY)
 Describe what actually happened with THESE specific characters, in THIS specific space. Reference them by name. Show the game mechanic playing out — how the rules created pressure, where someone broke a constraint, what the author's physical task revealed.
