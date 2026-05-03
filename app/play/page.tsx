@@ -530,14 +530,14 @@ function PlayPage() {
       ) : (
         <>
           {/* Input section */}
-          <div className={`${!play && !loading ? "pt-6 sm:pt-10" : "pt-4 sm:pt-6"} transition-all`}>
-            <div className="mx-auto w-full max-w-2xl px-5 sm:px-8">
+          <div className={`${!play && !loading ? "pt-6 sm:pt-10 lg:pt-16" : "pt-4 sm:pt-6"} transition-all`}>
+            <div className="mx-auto w-full max-w-2xl lg:max-w-4xl px-5 sm:px-8 lg:px-10">
               {!play && !loading && (
-                <div className="mb-6 sm:mb-10">
-                  <h1 className="text-[24px] sm:text-[36px] font-black tracking-[-0.03em] leading-[1.15]">
+                <div className="mb-6 sm:mb-10 lg:mb-12">
+                  <h1 className="text-[24px] sm:text-[36px] lg:text-[52px] font-black tracking-[-0.03em] leading-[1.15]">
                     {t.headline}
                   </h1>
-                  <p className="text-white/30 text-[12px] sm:text-[14px] mt-2 tracking-wide leading-relaxed">
+                  <p className="text-white/45 text-[12px] sm:text-[14px] lg:text-[16px] mt-2 lg:mt-3 tracking-wide leading-relaxed">
                     {t.subheadline}
                   </p>
                 </div>

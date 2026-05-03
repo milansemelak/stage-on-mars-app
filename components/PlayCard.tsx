@@ -270,74 +270,72 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
 
   return (
     <>
-      <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
+      <div className="relative rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
+        {/* Top-right utility cluster — Edit, Favorite, Save/Cancel */}
+        <div className="absolute top-4 right-4 lg:top-5 lg:right-5 z-10 flex items-center gap-2">
+          {onToggleFavorite && (
+            <button
+              onClick={onToggleFavorite}
+              className={`text-lg lg:text-xl transition-all ${favorite ? "text-mars scale-110" : "text-white/25 hover:text-white/55"}`}
+              title={favorite ? t.unfavorite : t.favorite}
+            >
+              {favorite ? "★" : "☆"}
+            </button>
+          )}
+          {!editing ? (
+            <button
+              onClick={startEditing}
+              className="text-white/30 hover:text-white/60 text-xs lg:text-sm border border-white/10 hover:border-white/25 rounded-lg px-2.5 py-1 lg:px-3 lg:py-1.5 transition-colors"
+            >
+              Edit
+            </button>
+          ) : (
+            <div className="flex gap-1">
+              <button
+                onClick={saveEdits}
+                className="text-green-400/80 hover:text-green-400 text-xs lg:text-sm border border-green-500/30 hover:border-green-500/50 rounded-lg px-2.5 py-1 lg:px-3 lg:py-1.5 transition-colors"
+              >
+                Save
+              </button>
+              <button
+                onClick={cancelEdits}
+                className="text-white/40 hover:text-white/60 text-xs lg:text-sm border border-white/10 hover:border-white/25 rounded-lg px-2.5 py-1 lg:px-3 lg:py-1.5 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+        </div>
+
         <div className="p-5 sm:p-8 lg:p-8 xl:p-10 space-y-6 sm:space-y-8 lg:space-y-7">
           {/* DASHBOARD GRID — only static play info; post-play sections stay linear below */}
           <div className="space-y-6 sm:space-y-8 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-x-7 lg:gap-y-7">
           {/* Play name — hero element, full width */}
-          <div className="animate-fade-slide-up stagger-1 lg:col-span-12">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1">
-                {editing ? (
-                  <input
-                    value={editData.name}
-                    onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                    className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight bg-transparent border-b border-mars/40 focus:outline-none focus:border-mars w-full"
-                  />
-                ) : (
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-[-0.02em]">
-                    {currentPlay.name}
-                  </h3>
-                )}
-                <div className="flex items-center gap-3 lg:gap-4 mt-2 lg:mt-4 text-xs lg:text-sm text-white/45">
-                  <span className="font-mercure italic text-mars/70">{currentPlay.mood}</span>
-                  <span className="text-white/15">|</span>
-                  <span>{currentPlay.duration}</span>
-                  <span className="text-white/15">|</span>
-                  <span>
-                    {currentPlay.playerCount.min}-{currentPlay.playerCount.max} {t.players}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {onToggleFavorite && (
-                  <button
-                    onClick={onToggleFavorite}
-                    className={`text-lg transition-all ${favorite ? "text-mars scale-110" : "text-white/20 hover:text-white/40"}`}
-                    title={favorite ? t.unfavorite : t.favorite}
-                  >
-                    {favorite ? "★" : "☆"}
-                  </button>
-                )}
-                {!editing ? (
-                  <button
-                    onClick={startEditing}
-                    className="text-white/20 hover:text-white/50 text-xs border border-white/10 hover:border-white/20 rounded-lg px-2 py-1 transition-colors"
-                  >
-                    Edit
-                  </button>
-                ) : (
-                  <div className="flex gap-1">
-                    <button
-                      onClick={saveEdits}
-                      className="text-green-400/70 hover:text-green-400 text-xs border border-green-500/20 hover:border-green-500/40 rounded-lg px-2 py-1 transition-colors"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={cancelEdits}
-                      className="text-white/30 hover:text-white/50 text-xs border border-white/10 hover:border-white/20 rounded-lg px-2 py-1 transition-colors"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                )}
-              </div>
+          <div className="animate-fade-slide-up stagger-1 lg:col-span-12 pr-24 lg:pr-28">
+            {editing ? (
+              <input
+                value={editData.name}
+                onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight bg-transparent border-b border-mars/40 focus:outline-none focus:border-mars w-full"
+              />
+            ) : (
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-[-0.02em]">
+                {currentPlay.name}
+              </h3>
+            )}
+            <div className="flex items-center gap-3 lg:gap-4 mt-2 lg:mt-4 text-xs lg:text-sm text-white/55">
+              <span className="font-mercure italic text-mars/80">{currentPlay.mood}</span>
+              <span className="text-white/15">|</span>
+              <span>{currentPlay.duration}</span>
+              <span className="text-white/15">|</span>
+              <span>
+                {currentPlay.playerCount.min}-{currentPlay.playerCount.max} {t.players}
+              </span>
             </div>
           </div>
 
           {/* The Image / Stage Directions */}
-          <div className="animate-fade-slide-up stagger-2 lg:col-span-7">
+          <div className="animate-fade-slide-up stagger-2 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-6 xl:p-7 lg:h-full">
             <SectionLabel color="mars">{t.theImage}</SectionLabel>
             {editing ? (
               <textarea
@@ -359,7 +357,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               href={`https://open.spotify.com/search/${encodeURIComponent(`${currentPlay.music.track} ${currentPlay.music.artist}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="block animate-fade-slide-up stagger-5 lg:col-span-5 lg:self-start rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 transition-all group"
+              className="block animate-fade-slide-up stagger-5 lg:col-span-5 lg:h-full rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-6 xl:p-7 transition-all group"
             >
               <div className="flex items-center gap-3 mb-2">
                 <svg className="w-4 h-4 text-mars shrink-0" viewBox="0 0 24 24" fill="currentColor">
@@ -392,14 +390,12 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
             <div className="mt-3 lg:mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-3">
-              {/* Author card — always first */}
-              <div className="char-reveal char-delay-0 rounded-xl lg:rounded-2xl border px-5 py-4 lg:px-5 lg:py-4 transition-all hover:scale-[1.01] bg-amber-500/[0.08] border-amber-500/30 hover:border-amber-500/50">
-                <div className="font-bold text-sm sm:text-base lg:text-lg text-amber-300">
+              {/* Author card — always first, gold dot */}
+              <div className="char-reveal char-delay-0 rounded-xl lg:rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] bg-amber-500/[0.08] border-amber-500/30 hover:border-amber-500/50 flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(255,200,80,0.7)] shrink-0" />
+                <span className="font-bold text-sm sm:text-base lg:text-lg text-amber-300 truncate">
                   {clientName || t.author}
-                </div>
-                <div className="text-[10px] uppercase tracking-widest mt-1 text-amber-400/50">
-                  {t.landingYouBadge}
-                </div>
+                </span>
               </div>
               {currentPlay.characters.map((char, i) => {
                 const isAbstract =
@@ -407,58 +403,59 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 return (
                   <div
                     key={i}
-                    className={`char-reveal char-delay-${Math.min(i, 5)} rounded-xl lg:rounded-2xl border px-5 py-4 lg:px-5 lg:py-4 transition-all hover:scale-[1.01] relative ${
+                    className={`char-reveal char-delay-${Math.min(i, 5)} rounded-xl lg:rounded-2xl border px-5 py-4 transition-all hover:scale-[1.01] relative ${
                       isAbstract
                         ? "bg-white/[0.03] border-white/15 hover:border-white/30"
                         : "bg-mars/[0.10] border-mars/30 hover:border-mars/50"
                     }`}
                   >
                     {editing ? (
-                      <>
-                        <div className="flex items-center gap-2">
-                          <input
-                            value={char.name}
-                            onChange={(e) => updateCharacterName(i, e.target.value)}
-                            className={`font-bold text-sm sm:text-base lg:text-lg bg-transparent border-b focus:outline-none flex-1 ${
-                              isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
-                            }`}
-                          />
-                          {currentPlay.characters.length > 2 && (
-                            <button
-                              onClick={() => removeCharacter(i)}
-                              className="text-white/20 hover:text-red-400/70 transition-colors text-lg lg:text-xl leading-none"
-                              title="Remove"
-                            >
-                              ×
-                            </button>
-                          )}
-                        </div>
+                      <div className="flex items-center gap-3">
                         <button
+                          type="button"
                           onClick={() => toggleCharacterType(i)}
-                          className={`text-[10px] lg:text-[11px] uppercase tracking-widest mt-1 lg:mt-2 cursor-pointer hover:opacity-70 transition-opacity ${
-                            isAbstract ? "text-white/35" : "text-mars/50"
+                          aria-label={isAbstract ? t.abstract : t.concrete}
+                          title={isAbstract ? t.abstract : t.concrete}
+                          className={`shrink-0 w-2 h-2 rounded-full cursor-pointer hover:scale-125 transition-transform ${
+                            isAbstract
+                              ? "border border-white/60"
+                              : "bg-mars shadow-[0_0_10px_rgba(255,85,0,0.6)]"
                           }`}
-                        >
-                          {isAbstract ? t.abstract : t.concrete} ↔
-                        </button>
-                      </>
+                        />
+                        <input
+                          value={char.name}
+                          onChange={(e) => updateCharacterName(i, e.target.value)}
+                          className={`font-bold text-sm sm:text-base lg:text-lg bg-transparent border-b focus:outline-none flex-1 min-w-0 ${
+                            isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
+                          }`}
+                        />
+                        {currentPlay.characters.length > 2 && (
+                          <button
+                            onClick={() => removeCharacter(i)}
+                            className="text-white/20 hover:text-red-400/70 transition-colors text-lg leading-none shrink-0"
+                            title="Remove"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
                     ) : (
-                      <>
-                        <div
-                          className={`font-bold text-sm sm:text-base lg:text-lg ${
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`shrink-0 w-2 h-2 rounded-full ${
+                            isAbstract
+                              ? "border border-white/60"
+                              : "bg-mars shadow-[0_0_10px_rgba(255,85,0,0.6)]"
+                          }`}
+                        />
+                        <span
+                          className={`font-bold text-sm sm:text-base lg:text-lg truncate ${
                             isAbstract ? "text-white/85 font-mercure italic" : "text-[#ffb380]"
                           }`}
                         >
                           {char.name}
-                        </div>
-                        <div
-                          className={`text-[10px] lg:text-[11px] uppercase tracking-widest mt-1 lg:mt-2 ${
-                            isAbstract ? "text-white/35" : "text-mars/50"
-                          }`}
-                        >
-                          {isAbstract ? t.abstract : t.concrete}
-                        </div>
-                      </>
+                        </span>
+                      </div>
                     )}
                   </div>
                 );
@@ -475,8 +472,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* Author's Role */}
-          <div className="animate-fade-slide-up stagger-4 lg:col-span-7">
-            <SectionLabel color="green">{t.authorsRole}</SectionLabel>
+          <div className="animate-fade-slide-up stagger-4 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-6 xl:p-7 lg:h-full">
+            <SectionLabel color="mars">{t.authorsRole}</SectionLabel>
             {editing ? (
               <textarea
                 value={editData.authorRole}
@@ -492,8 +489,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* Ending Perspective — always visible, it's an instruction for live play */}
-          <div className="animate-fade-slide-up stagger-5 lg:col-span-5">
-            <SectionLabel color="purple">{t.endingPerspective}</SectionLabel>
+          <div className="animate-fade-slide-up stagger-5 lg:col-span-5 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-6 xl:p-7 lg:h-full">
+            <SectionLabel color="mars">{t.endingPerspective}</SectionLabel>
             {editing ? (
               <textarea
                 value={editData.endingPerspective}
@@ -517,9 +514,13 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               )}
               <button
                 onClick={fetchFromMars}
-                className="w-full py-5 rounded-2xl bg-mars hover:bg-mars-light text-white font-black text-lg sm:text-xl tracking-widest uppercase transition-all shadow-lg shadow-mars/20 hover:shadow-mars/40"
+                className="group relative w-full py-5 lg:py-7 rounded-2xl text-white font-black text-lg sm:text-xl lg:text-2xl tracking-widest uppercase transition-all overflow-hidden bg-gradient-to-b from-mars-light to-mars hover:from-mars-light hover:to-mars-light shadow-[0_0_60px_-12px_rgba(255,85,0,0.55)] hover:shadow-[0_0_80px_-8px_rgba(255,85,0,0.75)] active:scale-[0.99]"
               >
-                {t.fromMars}
+                <span className="relative z-10 inline-flex items-center justify-center gap-3">
+                  <svg className="w-4 h-4 lg:w-5 lg:h-5 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                  {t.fromMars}
+                </span>
+                <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               </button>
             </div>
           )}
