@@ -13,6 +13,12 @@ export type Perspective = {
   insight: string;
 };
 
+export type Music = {
+  track: string;
+  artist: string;
+  reason: string;
+};
+
 export type Play = {
   name: string;
   image: string;
@@ -22,6 +28,7 @@ export type Play = {
   playerCount: { min: number; max: number };
   duration: string;
   mood: string;
+  music?: Music;
   simulation?: string;
   simulationSteps?: SimulationStep[];
   perspectives?: (string | Perspective)[];

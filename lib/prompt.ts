@@ -216,6 +216,29 @@ THE PHOTOGRAPHER TEST: Could a single photograph capture this? If you'd need a w
 ## Mood
 2 words maximum. Raw emotional temperature: "ancient grief", "quiet fire", "bright vertigo". NOT random adjectives. Must feel like the FEELING of the play, not a genre tag.
 
+## Music — ONE TRACK THAT CARRIES THE PLAY
+
+Every play needs ONE specific piece of music that holds the room while bodies move. Not a playlist. Not a genre. ONE track that an author could put on, press play, and feel the temperature land.
+
+THE MUSIC MUST MATCH THE FEELING, NOT THE TOPIC. A play about quitting a job is NOT about office music. It's about whatever the body needs: gravity, release, lift, grief, attention. Pick on emotional fit.
+
+DRAW FROM THIS CANON (use these as STARTING POINTS, not the only options):
+- **Slow ritual / grief / weight**: Arvo Pärt "Spiegel im Spiegel", Max Richter "On the Nature of Daylight", Henryk Górecki "Symphony of Sorrowful Songs III", Olafur Arnalds "Near Light", Ludovico Einaudi "Nuvole Bianche"
+- **Tender intimacy / breath**: Nils Frahm "Says", Olafur Arnalds "Tomorrow's Song", Hauschka "Radar", Dustin O'Halloran "Opus 23"
+- **Tension / decision under pressure**: Jon Hopkins "Light Through the Veins", Kiasmos "Looped", Jóhann Jóhannsson "The Sun's Gone Dim", Hans Zimmer "Time"
+- **Sacred / ceremonial / arrival**: Arvo Pärt "Fratres", Hildegard von Bingen "O Vis Aeternitatis", Tigran Hamasyan "Vardavar", Lisa Gerrard "Now We Are Free"
+- **Cosmic / vast / threshold**: Brian Eno "An Ending (Ascent)", Vangelis "Memories of Green", Stars of the Lid "Articulate Silences", Tim Hecker "Black Refraction"
+- **Folk gravitas / earth / inheritance**: Bon Iver "Holocene", Sufjan Stevens "Death With Dignity", Damien Rice "9 Crimes", Iron & Wine "Naked As We Came"
+- **Rage / break / undoing**: Mogwai "Take Me Somewhere Nice", Godspeed You! Black Emperor "East Hastings", Sigur Rós "Hoppípolla", Nick Cave "Ghosteen"
+- **Eastern / suspended time**: Tigran Hamasyan "The Apple Orchard in Saghmosavank", Ezio Bosso "Following A Bird", Sevdaliza "Shabrang"
+
+RULES:
+1. Return EXACT track + EXACT artist as known to Spotify. Do NOT invent. If you're not sure, pick something from the canon above — they all exist.
+2. **Reason** = ONE short sentence (max 12 words) on WHY this track for THIS play. Not "this is sad music." Tell the body what to do: "Slow piano builds patience for the choosing." "Drone holds the room while characters wait." "Arvo Pärt's bells turn elimination into ritual."
+3. Match the play's MOOD, not its subject. A funeral play isn't necessarily literal grief — it might need release.
+4. Avoid the most overplayed picks (Time-Hans Zimmer, Comptine d'un autre été) UNLESS the play truly demands them. Reach into the canon.
+5. Same language constraints apply to the reason line — if the play is in Slovak, the reason is in Slovak. Track and artist names stay in their original.
+
 ## PRIME DIRECTIVE: RADICAL VARIETY — THE MOST IMPORTANT RULE
 Every play must feel invented in a different universe. Reject your first idea. Reject your second idea. Go sideways. Then go sideways again.
 
@@ -252,7 +275,12 @@ Return a JSON array with play objects (the user prompt specifies how many):
   "endingPerspective": "The specific moment/action that ends the play and what it produces (1 sentence)",
   "playerCount": { "min": 3, "max": 8 },
   "duration": "10-15 min",
-  "mood": "2-3 words"
+  "mood": "2-3 words",
+  "music": {
+    "track": "Exact track name as on Spotify",
+    "artist": "Exact artist name as on Spotify",
+    "reason": "ONE short sentence (max 12 words) on why this carries the play. Same language as rest."
+  }
 }]
 
 Generate 5-7 characters per play. MINIMUM 5, no exceptions. The author is ALWAYS added on stage automatically, so do NOT include them in the characters array. Aim for 5-6 for most questions, 7 for complex systemic ones.

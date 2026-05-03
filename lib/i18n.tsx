@@ -130,6 +130,8 @@ const translations = {
     // From Mars (step 2)
     fromMars: "Play it",
     loadingMars: "Play begins shortly.",
+    musicLabel: "Music for the play",
+    openOnSpotify: "Open on Spotify",
     marsError: "Mars couldn't see this one. Try again.",
     stageHasSpoken: "The stage has spoken.",
     startThePlay: "Start the play",
@@ -417,6 +419,8 @@ const translations = {
     // From Mars (step 2)
     fromMars: "Play it",
     loadingMars: "Hra čoskoro začne.",
+    musicLabel: "Hudba pre hru",
+    openOnSpotify: "Otvoriť na Spotify",
     marsError: "Mars to nevidel. Skús znova.",
     stageHasSpoken: "Javisko prehovorilo.",
     startThePlay: "Spusti hru",
@@ -704,6 +708,8 @@ const translations = {
     // From Mars (step 2)
     fromMars: "Play it",
     loadingMars: "Hra brzy začne.",
+    musicLabel: "Hudba pro hru",
+    openOnSpotify: "Otevřít na Spotify",
     marsError: "Mars to neviděl. Zkus znovu.",
     stageHasSpoken: "Jeviště promluvilo.",
     startThePlay: "Spusť hru",

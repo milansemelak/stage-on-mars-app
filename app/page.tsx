@@ -478,6 +478,32 @@ export default function Home() {
                       </div>
                     </div>
                   )}
+
+                  {/* Music for the play */}
+                  {play.music?.track && play.music?.artist && (
+                    <a
+                      href={`https://open.spotify.com/search/${encodeURIComponent(`${play.music.track} ${play.music.artist}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 pt-6 border-t border-white/[0.06] flex items-baseline gap-4 group cursor-pointer"
+                    >
+                      <svg className="w-4 h-4 text-mars shrink-0 self-center" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                      </svg>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-mars/60 text-[9px] uppercase tracking-[0.25em] font-bold mb-1">{t.musicLabel}</p>
+                        <p className="text-white text-[14px] sm:text-[15px] font-bold truncate group-hover:text-mars-light transition-colors">
+                          {play.music.track} <span className="font-mercure italic font-normal text-mars-light/70">· {play.music.artist}</span>
+                        </p>
+                        {play.music.reason && (
+                          <p className="text-white/35 text-[12px] mt-1 font-mercure italic leading-relaxed">{play.music.reason}</p>
+                        )}
+                      </div>
+                      <span className="text-mars/40 group-hover:text-mars-light text-[10px] font-bold uppercase tracking-[0.15em] shrink-0 transition-colors self-center">
+                        {t.openOnSpotify} →
+                      </span>
+                    </a>
+                  )}
                 </div>
               </div>
             )}
