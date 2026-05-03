@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Play, Perspective, Character } from "@/lib/types";
+import { Play, Perspective } from "@/lib/types";
 import { useI18n } from "@/lib/i18n";
 import { STORAGE_KEYS, MAX_HISTORY, userKey } from "@/lib/constants";
 import { useAuth } from "@/lib/auth-context";
@@ -386,12 +386,12 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </a>
           )}
 
-          {/* Characters — chips + mini-stage preview */}
+          {/* Characters — chips */}
           <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
-            <div className="mt-3 lg:mt-4 flex flex-col lg:flex-row gap-4 lg:gap-6">
+            <div className="mt-3 lg:mt-4">
               {/* Chips — wrap, take whatever space they need */}
-              <div className="flex flex-wrap gap-2 sm:gap-2.5 lg:flex-1 lg:content-start">
+              <div className="flex flex-wrap gap-2 sm:gap-2.5">
                 {/* Author chip — always first, gold */}
                 <div className="char-reveal char-delay-0 inline-flex items-center gap-2.5 px-4 py-2 lg:px-5 lg:py-2.5 rounded-full border bg-amber-500/[0.10] border-amber-500/40 hover:border-amber-500/60 transition-all">
                   <span className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(255,200,80,0.7)] shrink-0" />
@@ -464,16 +464,6 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                   );
                 })}
               </div>
-
-              {/* Mini-stage preview — desktop only, shows the cast in starting circle formation */}
-              {!editing && (
-                <div className="hidden lg:block lg:w-[200px] xl:w-[220px] lg:shrink-0 self-start">
-                  <MiniStage
-                    characters={currentPlay.characters}
-                    authorLabel={clientName || t.author}
-                  />
-                </div>
-              )}
             </div>
             {editing && (
               <button
@@ -829,77 +819,6 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
         />
       )}
     </>
-  );
-}
-
-/**
- * Mini-stage preview — small SVG showing the cast in their starting
- * circle formation. Author at center (gold), characters around them.
- * No labels — this is a teaser of the simulation, not an info display.
- */
-function MiniStage({
-  characters,
-  authorLabel,
-}: {
-  characters: Character[];
-  authorLabel: string;
-}) {
-  // Filter author out if a character shares the name (defensive — same
-  // logic StageSimulation uses).
-  const cast = characters.filter(
-    (c) => c.name.toLowerCase() !== authorLabel.toLowerCase()
-  );
-  const count = cast.length || 1;
-  const CX = 50;
-  const CY = 50;
-  const R = 30;
-
-  return (
-    <div className="relative aspect-square rounded-full border border-mars/15 overflow-hidden"
-      style={{
-        boxShadow: "inset 0 0 30px rgba(255,85,0,0.08), 0 0 16px rgba(255,85,0,0.06)",
-        background: "radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,85,0,0.06) 0%, transparent 100%)",
-      }}
-    >
-      <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
-        {/* LED ring */}
-        <circle cx={CX} cy={CY} r="42" fill="none" stroke="rgba(255,85,0,0.2)" strokeWidth="0.5" />
-        <circle cx={CX} cy={CY} r="38" fill="rgba(255,85,0,0.015)" />
-
-        {/* Author at center — gold, gentle breath */}
-        <g style={{ animation: "miniStageBreath 4s ease-in-out infinite" }}>
-          <circle cx={CX} cy={CY} r="4" fill="rgba(255,215,0,0.9)" />
-          <circle cx={CX} cy={CY} r="6" fill="none" stroke="rgba(255,215,0,0.3)" strokeWidth="0.4" />
-        </g>
-
-        {/* Cast around the author */}
-        {cast.map((c, i) => {
-          const angle = -Math.PI / 2 + (2 * Math.PI * i) / count;
-          const x = CX + Math.cos(angle) * R;
-          const y = CY + Math.sin(angle) * R;
-          const isAbstract = c.description?.toLowerCase() === "abstract";
-          const delay = (i * 0.4) % 2;
-          return (
-            <g key={i} style={{ animation: `miniStageBreath 4s ease-in-out infinite ${delay}s` }}>
-              {isAbstract ? (
-                <circle cx={x} cy={y} r="2.6" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="0.6" />
-              ) : (
-                <>
-                  <circle cx={x} cy={y} r="3" fill="rgba(255,85,0,0.95)" />
-                  <circle cx={x} cy={y} r="4.5" fill="none" stroke="rgba(255,85,0,0.3)" strokeWidth="0.4" />
-                </>
-              )}
-            </g>
-          );
-        })}
-      </svg>
-      <style jsx>{`
-        @keyframes miniStageBreath {
-          0%, 100% { opacity: 0.85; transform: scale(1); transform-origin: center; }
-          50%      { opacity: 1; transform: scale(1.04); }
-        }
-      `}</style>
-    </div>
   );
 }
 
