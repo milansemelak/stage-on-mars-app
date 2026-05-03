@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
           messages: [
             {
               role: "user",
-              content: `Here is a play response that is missing the author perspective or has fewer than 4 perspectives. Return a FIXED JSON that preserves simulationSteps and followUpQuestion unchanged, but has EXACTLY 4 perspectives in this exact order: [author, character, character, character]. The author perspective MUST have "character": "${authorLabel}" and be a first-person realization from inside the play. The other 3 must each be paired with a DIFFERENT character from this list: ${(play.characters || []).map(c => c.name).join(", ")}. Language: ${lang || "en"}. Return ONLY JSON, no markdown.\n\nOriginal play context:\nQuestion: "${question}"\nPlay: ${play.name}\nAuthor's Role: ${play.authorRole}\n\nOriginal response:\n${JSON.stringify(parsed)}`,
+              content: `Here is a play response that is missing the author perspective or has fewer than 4 perspectives. Return a FIXED JSON that preserves simulationSteps, takeawayWord, and followUpQuestion unchanged, but has EXACTLY 4 perspectives in this exact order: [author, character, character, character]. The author perspective MUST have "character": "${authorLabel}" and be a first-person realization from inside the play. The other 3 must each be paired with a DIFFERENT character from this list: ${(play.characters || []).map(c => c.name).join(", ")}. Language: ${lang || "en"}. Return ONLY JSON, no markdown.\n\nOriginal play context:\nQuestion: "${question}"\nPlay: ${play.name}\nAuthor's Role: ${play.authorRole}\n\nOriginal response:\n${JSON.stringify(parsed)}`,
             },
           ],
         });
@@ -169,6 +169,7 @@ export async function POST(request: NextRequest) {
       }
     } else {
       result.perspectives = parsed.perspectives;
+      result.takeawayWord = parsed.takeawayWord || null;
       result.followUpQuestion = parsed.followUpQuestion || null;
     }
 

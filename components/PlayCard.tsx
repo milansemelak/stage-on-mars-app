@@ -145,6 +145,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
       const updated = {
         ...cp,
         perspectives: data.perspectives,
+        takeawayWord: data.takeawayWord || undefined,
         followUpQuestion: data.followUpQuestion || undefined,
       };
       setCurrentPlay(updated);
@@ -633,27 +634,34 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           )}
 
-          {/* ── Per-play synthesis — what the play revealed ── */}
-          {currentPlay.perspectives && currentPlay.perspectives.length > 0 && (perspectivesRevealed || !currentPlay.simulation) && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (
-            <div className="animate-fade-in">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/10 to-transparent" />
-                <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-amber-400/40">{t.playSynthesis}</span>
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/10 to-transparent" />
+          {/* ── Takeaway word — the souvenir the author leaves with ── */}
+          {(perspectivesRevealed || !currentPlay.simulation) && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (() => {
+            // Prefer model-generated takeawayWord; fall back to shortest perspective for legacy plays
+            const word = currentPlay.takeawayWord?.trim();
+            let fallback: string | null = null;
+            if (!word && currentPlay.perspectives?.length) {
+              const persp = currentPlay.perspectives
+                .map((p) => typeof p === "object" ? (p as Perspective).insight : p)
+                .filter(Boolean);
+              if (persp.length > 0) {
+                fallback = [...persp].sort((a, b) => a.length - b.length)[0];
+              }
+            }
+            const display = word || fallback;
+            if (!display) return null;
+            return (
+              <div className="animate-fade-in">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/15 to-transparent" />
+                  <span className="text-[9px] font-bold uppercase tracking-[0.25em] text-amber-400/50">{t.playSynthesis}</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/15 to-transparent" />
+                </div>
+                <p className="text-center font-mercure italic text-amber-200/85 text-xl sm:text-2xl leading-[1.3] px-4 tracking-tight">
+                  &ldquo;{display}&rdquo;
+                </p>
               </div>
-              <p className="text-center text-amber-200/60 text-sm italic leading-relaxed px-4">
-                {(() => {
-                  const persp = currentPlay.perspectives!
-                    .map((p) => typeof p === "object" ? (p as Perspective).insight : p)
-                    .filter(Boolean);
-                  if (persp.length === 0) return null;
-                  // Pick the most provocative perspective (shortest = punchiest)
-                  const sorted = [...persp].sort((a, b) => a.length - b.length);
-                  return sorted[0];
-                })()}
-              </p>
-            </div>
-          )}
+            );
+          })()}
 
           {/* ── Follow-up question — typewriter reveal ── */}
           {currentPlay.followUpQuestion && perspectivesRevealed && visiblePerspectives >= (currentPlay.perspectives?.length || 0) && (

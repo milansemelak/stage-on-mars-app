@@ -150,6 +150,7 @@ export default function Home() {
       setPlay((prev) => prev ? {
         ...prev,
         perspectives: data.perspectives,
+        takeawayWord: data.takeawayWord || undefined,
         followUpQuestion: data.followUpQuestion || undefined,
       } : prev);
     } catch {
@@ -623,6 +624,20 @@ export default function Home() {
                     </>
                   );
                 })()}
+              </div>
+            )}
+
+            {/* ── TAKEAWAY WORD — souvenir the author leaves with ── */}
+            {simEnded && play && play.takeawayWord && (
+              <div className="mt-8 sm:mt-12 animate-fade-in">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/15 to-transparent" />
+                  <span className="text-amber-400/50 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em]">{t.playSynthesis}</span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-400/15 to-transparent" />
+                </div>
+                <p className="text-center font-mercure italic text-amber-200/85 text-[20px] sm:text-[28px] leading-[1.3] px-4 tracking-tight">
+                  &ldquo;{play.takeawayWord}&rdquo;
+                </p>
               </div>
             )}
 

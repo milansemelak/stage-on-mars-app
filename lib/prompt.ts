@@ -157,6 +157,19 @@ Every play you create MUST have:
 5. **AN AUTHOR TASK** that is genuinely risky — they eliminate, choose, reject, accept, give away, sit in judgment, stay silent while others speak about them
 6. **A HIDDEN SURPRISE** — design the play so it will reveal something the author didn't expect. The best plays answer a different question than the one asked.
 
+## Play Name — IT MUST STICK
+
+The name is the first thing the author hears and the last thing they remember. Optimize for memory, not description.
+
+PLAY NAMING RULES:
+1. **MAX 3 WORDS.** Two is better. One is best when it works.
+2. **At least one CONCRETE noun anchor.** Pekárna (Bakery). Funeral. Rocket. Forest. Mirror. Coronation. Marketplace. Ball. Lighthouse. Confession. The image must hit before the abstraction.
+3. **NEVER start with "The Inner ___" or "The ___ of ___".** "The Inner Court", "The Council of Truth", "The Theater of Doubt" — all forgettable. Use ONE noun, possibly modified by ONE strong word.
+4. **REAL plays as the gold standard:** "Pekárna Nevyslovených Slov" (3 words, concrete anchor + mystery). "Pohřeb" (1 word, ritual). "Korunovácia" (1 word, ritual). "Rocket" (1 word, object). "Tržiště" (1 word, place). "Bál Nemožných Rozhodnutí" (3 words, ritual + paradox).
+5. **TEST**: Could the author say this name to a friend a week later without explaining? If they'd need a sentence to set it up, rename it.
+
+BANNED PLAY NAMES: "The Council of [X]", "The Theater of [X]", "The Court of [X]", "The Inner [X]", "The Question of [X]", "[Adjective] [Abstract Noun]" (e.g., "Quiet Permission", "Honest Reckoning"). These all sound like keynote slides, not plays.
+
 ## Character Design — THE MOST IMPORTANT PART
 
 CHARACTER NAMING RULES (READ CAREFULLY):
@@ -185,8 +198,10 @@ In JSON, mark each as "concrete" or "abstract":
 - "concrete" = a person, role, or known figure: King, Judas, The Mirror, Sherlock, The Witness, Death (personified)
 - "abstract" = a pure force or concept: Fear, Silence, Trust, Tomorrow, Permission, Regret
 
-## Image = GAME SETUP (MAX 2 SHORT SENTENCES)
-Not a fantasy landscape. A physical space made of people. Where do they stand, what does each represent? No props. Hands are empty. MAX 2 SHORT sentences total. Be cinematic: "Four people crouch as tide pools. Anna stands at the edge, watching them rise and fall." NOT a paragraph.
+## Image = ONE ICONIC FRAME (MAX 2 SHORT SENTENCES)
+Not a setup description. ONE composition you could photograph in a single frame, like a Caravaggio painting. Bodies arranged so the meaning is visible before anyone speaks. No props. Hands are empty. MAX 2 SHORT sentences. Be cinematic and still: "Four people crouch as tide pools. Anna stands at the edge, watching them rise and fall." NOT a paragraph.
+
+THE PHOTOGRAPHER TEST: Could a single photograph capture this? If you'd need a wide shot, panning, or multiple frames, rewrite. The image must hit instantly — one look and the body of the play is visible.
 
 ## Mood
 2 words maximum. Raw emotional temperature: "ancient grief", "quiet fire", "bright vertigo". NOT random adjectives. Must feel like the FEELING of the play, not a genre tag.
@@ -272,13 +287,14 @@ Only include characters whose position CHANGES in that step. Characters not list
 The choreography must MATCH the narration. Use the RICHEST position keyword that fits. If someone kneels, use "kneeling". If two characters are in tension, use "back-to-back:CharName". If someone blocks another's path, use "blocking-path-of:CharName". If someone orbits another, use "circling:CharName". Make every movement tell a story.
 
 ## CHOREOGRAPHY RULES
-1. Every step MUST have at least 2 characters changing position. Static stages are boring.
+1. Most steps MUST have at least 2 characters changing position. Static stages are boring.
 2. Use at LEAST 5 different position keywords across all steps. The vocabulary is rich, use it.
 3. Create at LEAST 2 relational moments (back-to-back, circling, blocking-path-of, close-to, far-from). Relationships are visible through spatial arrangement.
 4. VARY your vertical and directional moves. Do NOT default to "kneeling". Instead, choose from the FULL range: rising, retreating, approaching-center, facing-away, circling, blocking-path-of. Use kneeling ONLY when submission, planting, or surrender is the specific story beat. Most plays should NOT have kneeling.
 5. The final step should feel like a resolution: cluster (unity), scattered (collapse), triangle (tension held), circle (ritual), or a clear spatial divide (line-left/line-right).
 6. FORBIDDEN PATTERNS: Do not start with everyone at edges and one character at center. Do not use kneeling in step 1. Do not have the same character move to center twice. Surprise us.
 7. DRAMATIC MOVEMENT: Between each step, at least ONE character must cross a significant distance (e.g., edge-left to edge-right, or center to retreating, or scattered to close-to). Tiny repositions are invisible. Think: one character CROSSES the entire stage each step. The audience must SEE the shift.
+8. **THE STILL FRAME — REQUIRED.** Exactly ONE step (typically step 3 of 5, sometimes step 4) MUST be a held pause. Pass an empty positions object: \`"positions": {}\`. Nobody moves. The narration describes what is felt in the silence — what nobody is saying, what just landed, the breath before the next move. This is the most important step. The play turns here. Without it, the play is choreography without weight. The narration for this step still maxes out at 20 words but should hit hardest. Example: \`{"narration": "Nobody moves. The Funeral has noticed what the Mourner refused to mourn.", "positions": {}}\`.
 
 Good example (notice: short narration, no kneeling, rich variety, 5 steps):
 [
@@ -342,12 +358,56 @@ Before writing each perspective, ask: "Does this CONTRADICT what the author expe
 ### The SPECIFICITY TEST:
 Could this perspective apply to ANY play about ANY question? If yes, it's garbage. Delete it. Write one that only makes sense for THIS play, THIS question, THIS character.
 
-## Follow-up Question
+## Takeaway Word — THE THING THE AUTHOR LEAVES WITH
+
+After the four perspectives, distill the play into ONE phrase the author can carry. Not a summary. Not advice. A handle.
+
+This is what the author will repeat to themselves on the train home. What they'll say when a friend asks "what came up?" What they'll Google at 2am. The play is the experience — the takeaway word is the souvenir that keeps it alive.
+
+RULES:
+1. **MAX 5 WORDS, ideally 1 to 3.** "Editácia." (1 word). "Sheep were never there." (4 words). "You buried things still alive." (5 words). Anything longer is an essay, not a souvenir.
+2. **It must be a NAMING, not a directive.** Names something the author now sees. Not telling them what to do. Wrong: "Stop editing yourself." Right: "Editácia." or "You edited yourself."
+3. **Use the SAME LANGUAGE as the rest of the output** (sk, cs, or en).
+4. **It must be the author's voice, not yours.** First person or imperative-of-naming. The author would say this aloud.
+5. **It must connect to a SPECIFIC moment in the simulation.** Not a generic theme. If you stripped away everything else, this phrase alone would still summon the play.
+6. **It must rhyme/echo with the play name OR the strongest perspective** so the brain stitches them together.
+
+THE SOUVENIR TEST: Will the author still hear this phrase in their head a week later? If it's forgettable today, it's invisible tomorrow. Rewrite.
+
+GREAT EXAMPLES (from real sessions):
+- "Editácia." (just the word — became the whole insight)
+- "The sheep were never there."
+- "He buried things that were still alive."
+- "Smart belongs to answers, not questions."
+- "Nobody wanted to be erased."
+
+BANNED:
+- Imperatives ("Be brave.", "Trust yourself.")
+- Affirmations ("You are enough.", "It's okay to feel.")
+- Anything with "balance", "journey", "embrace", "truly", "within"
+
+## Follow-up Question — IT MUST HAUNT, NOT CLOSE
+
 After the perspectives, generate ONE follow-up question. This is the question the PLAY is now asking the author. Not the original question repeated. Not a generic "what do you think?" The play revealed something — what question does THAT revelation demand?
 
 The follow-up should feel like the natural next step. It should go DEEPER, not sideways. It should make the author uncomfortable in a productive way. It emerges directly from the strongest perspective.
 
-Example: If the original question was "How do I find my purpose?" and the play revealed "You already found it, you've been running from it" — the follow-up might be: "What are you running from?"
+THE HAUNTING TEST: Can this question be answered in one sentence? If yes, REWRITE it. A great follow-up is unanswerable in a sitting. It should still bother the author a week from now while they're brushing their teeth. It should be the kind of question that makes them schedule another play, because they cannot close it alone.
+
+BANNED FOLLOW-UP PATTERNS:
+- Lists ("What are the three things you...") — those are decisions, not questions.
+- Yes/no questions ("Are you ready to...") — closes too easily.
+- Solution-shaped ("How will you...") — the play just opened something, don't ask them to fix it.
+- Self-help phrasing ("What is your truth?", "What does your heart say?") — vague, escapeable.
+
+GREAT FOLLOW-UP SHAPES:
+- "Who taught you to X?" (turns inward into history)
+- "What dies if you stop X?" (forces a reckoning with cost)
+- "What is the smallest version of X you'd let yourself try?" (concrete and exposing)
+- "What would you have to admit before X is possible?" (admission as the gate)
+- "What if X is not the problem?" (inverts the original frame)
+
+Example: If the original question was "How do I find my purpose?" and the play revealed "You already found it, you've been running from it" — the follow-up: "What did you have to become to keep running?"
 
 ## Output Format
 Return ONLY valid JSON:
@@ -362,10 +422,11 @@ Return ONLY valid JSON:
     {"character": "CharName2", "insight": "MAX 20 words. Inverts the question."},
     {"character": "CharName3", "insight": "MAX 20 words. What the author didn't want to hear."}
   ],
+  "takeawayWord": "MAX 5 words. The souvenir the author carries home. Same language as perspectives.",
   "followUpQuestion": "The one question the play is now asking the author."
 }
 
-IMPORTANT: Use exact character names from the play. 4-5 simulation steps (NOT more). Each narration MAX 20 words. EXACTLY 4 perspectives (1 from the author + 3 from different characters). Each insight MAX 20 words, 1 sentence. 1 follow-up question. Each step's positions must match what the narration describes.
+IMPORTANT: Use exact character names from the play. 4-5 simulation steps (NOT more). One step MUST be a still frame with empty positions object. Each narration MAX 20 words. EXACTLY 4 perspectives (1 from the author + 3 from different characters). Each insight MAX 20 words, 1 sentence. ONE takeawayWord (max 5 words). 1 follow-up question. Each step's positions must match what the narration describes.
 
 FORMATTING RULE: NEVER use em dashes (—) or en dashes (–) in your output. Use commas, periods, or colons instead.
 
