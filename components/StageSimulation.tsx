@@ -439,13 +439,10 @@ export default function StageSimulation({ characters, simulation, simulationStep
   const [fadeState, setFadeState] = useState<"visible" | "fading">("visible");
 
 
-  // Step-change choreography:
-  //   1. STAGE BLACKOUT (250ms fade out) — hard cut, no glide
-  //   2. positions teleport instantly to new targets
-  //   3. STAGE FADE IN (250ms) + narration appears
-  //   4. tap stays LOCKED until enough read time has passed
+  // Each step: bodies glide to new positions over ~2.2s while narration
+  // fades to the new sentence. Tap is locked until the user has had time
+  // to actually read it — no skipping past unread narration.
   const [narrationStep, setNarrationStep] = useState(0);
-  const [stageOpacity, setStageOpacity] = useState(1);
   const [readLocked, setReadLocked] = useState(false);
   const stepTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -467,11 +464,8 @@ export default function StageSimulation({ characters, simulation, simulationStep
     clearStepTimers();
 
     if (currentStep === 0) {
-      // First reveal — already faded in via Start button. Show narration immediately.
       setNarrationStep(0);
-      setStageOpacity(1);
       setFadeState("visible");
-      // Lock tap for first read too — gives first beat its weight
       setReadLocked(true);
       stepTimersRef.current.push(
         setTimeout(() => setReadLocked(false), stepReadMs(sentences[0]))
@@ -479,48 +473,23 @@ export default function StageSimulation({ characters, simulation, simulationStep
       return;
     }
 
-    // Subsequent steps — hard cut: fade stage out, swap, fade back in.
-    const stillFrame =
-      !!simulationSteps?.[currentStep] &&
-      Object.keys(simulationSteps[currentStep].positions || {}).length === 0;
-
     setReadLocked(true);
     setFadeState("fading");
-
-    if (!stillFrame) {
-      // BLACKOUT for movement steps
-      setStageOpacity(0);
-      // 250ms in black → snap narration + start fade-in
-      stepTimersRef.current.push(
-        setTimeout(() => {
-          setNarrationStep(currentStep);
-          setStageOpacity(1);
-          setFadeState("visible");
-        }, 250)
-      );
-    } else {
-      // Still frame: NO blackout (the silence is exactly the same image, different words).
-      // Narration switches with a quiet fade only.
-      stepTimersRef.current.push(
-        setTimeout(() => {
-          setNarrationStep(currentStep);
-          setFadeState("visible");
-        }, 200)
-      );
-    }
-
-    // Tap unlocks after the user had time to read.
-    const lockMs = (stillFrame ? 3000 : 250) + stepReadMs(sentences[currentStep]);
+    // Wait for movement to settle, then reveal new narration.
     stepTimersRef.current.push(
-      setTimeout(() => setReadLocked(false), lockMs)
+      setTimeout(() => {
+        setNarrationStep(currentStep);
+        setFadeState("visible");
+      }, 1500)
+    );
+    stepTimersRef.current.push(
+      setTimeout(() => setReadLocked(false), 1500 + stepReadMs(sentences[currentStep]))
     );
 
     return () => clearStepTimers();
-  // sentences is derived from simulationSteps, narrating the same step IDs
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep, hasStarted, hasEnded]);
 
-  // Cleanup on unmount
   useEffect(() => clearStepTimers, []);
 
   // Final circle formation for ritual ending
@@ -608,10 +577,9 @@ export default function StageSimulation({ characters, simulation, simulationStep
     }
   }, [allCharacters]);
 
-  // Animation loop — runs once after each step change to snap positions.
-  // Hard-cut UX: positions teleport during the 250ms stage blackout. No glide.
+  // Animation loop — direct DOM manipulation for butter-smooth 60fps
   useEffect(() => {
-    const TRANSITION_DURATION = 1;
+    const TRANSITION_DURATION = 2200;
 
     const animate = (time: number) => {
       const pos = currentPositions.current;
@@ -719,7 +687,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
     if (endingTriggered.current) return;
     endingTriggered.current = true;
     clearStepTimers();
-    setStageOpacity(1);
     setReadLocked(false);
     setIsPlaying(false);
     setTimeout(() => {
@@ -741,7 +708,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
     setNarrationStep(0);
     setIsPlaying(true);
     setFadeState("visible");
-    setStageOpacity(1);
   };
 
   const handleReplay = () => {
@@ -752,7 +718,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
     setNarrationStep(0);
     setIsPlaying(true);
     setFadeState("visible");
-    setStageOpacity(1);
   };
 
   const progress = sentences.length > 1 ? currentStep / (sentences.length - 1) : 0;
@@ -830,10 +795,6 @@ export default function StageSimulation({ characters, simulation, simulationStep
           height="100%"
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid meet"
-          style={{
-            opacity: stageOpacity,
-            transition: "opacity 250ms ease",
-          }}
         >
           <defs>
             <filter id="glow-soft" x="-50%" y="-50%" width="200%" height="200%">
@@ -990,28 +951,13 @@ export default function StageSimulation({ characters, simulation, simulationStep
               const isAuthor = char.description === "author";
               const isAbstract = !isAuthor && char.description?.toLowerCase() === "abstract";
               const isActive = hasStarted && movedCharacters.has(i);
-              // STRONG hierarchy: active = much bigger + bright. Inactive = small + dim.
-              // Author keeps presence even when not active (gold identity).
-              // Still frame: nobody is "active" so all dots return to passive size,
-              // but slightly brighter than usual inactive — present, not asleep.
-              const inactiveBoost = isStillFrame ? 1 : 0.55;
-              const dotR = isAuthor ? 2.4 : (isActive ? 4.2 : 1.8);
+              const dotR = isAuthor ? 2.2 : (isActive ? 2.8 : 2);
 
               const colors = isAuthor
-                ? { fill: "rgba(255,215,0,0.85)", stroke: "rgba(255,215,0,0.9)", glow: "rgba(255,215,0,0.08)", text: "rgba(255,230,130,0.95)" }
+                ? { fill: "rgba(255,215,0,0.6)", stroke: "rgba(255,215,0,0.7)", glow: "rgba(255,215,0,0.06)", text: "rgba(255,230,130,0.7)" }
                 : isAbstract
-                  ? {
-                      fill: isActive ? "rgba(255,255,255,0.95)" : `rgba(255,255,255,${0.18 * inactiveBoost + 0.12})`,
-                      stroke: isActive ? "rgba(255,255,255,1)" : `rgba(255,255,255,${0.25 * inactiveBoost + 0.15})`,
-                      glow: "rgba(255,255,255,0.04)",
-                      text: isActive ? "rgba(255,255,255,1)" : `rgba(255,255,255,${0.25 * inactiveBoost + 0.18})`,
-                    }
-                  : {
-                      fill: isActive ? "rgba(255,85,0,1)" : `rgba(255,85,0,${0.28 * inactiveBoost + 0.18})`,
-                      stroke: isActive ? "rgba(255,85,0,1)" : `rgba(255,85,0,${0.35 * inactiveBoost + 0.2})`,
-                      glow: "rgba(255,85,0,0.08)",
-                      text: isActive ? "rgba(255,179,128,1)" : `rgba(255,179,128,${0.3 * inactiveBoost + 0.18})`,
-                    };
+                  ? { fill: isActive ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)", stroke: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)", glow: "rgba(255,255,255,0.03)", text: isActive ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)" }
+                  : { fill: isActive ? "rgba(255,85,0,0.9)" : "rgba(255,85,0,0.55)", stroke: isActive ? "rgba(255,85,0,1)" : "rgba(255,85,0,0.65)", glow: "rgba(255,85,0,0.06)", text: isActive ? "rgba(255,179,128,1)" : "rgba(255,179,128,0.55)" };
 
               const labelY = labelOffsets[i].y;
               const labelAbove = labelY < 0;
@@ -1118,19 +1064,13 @@ export default function StageSimulation({ characters, simulation, simulationStep
                   {currentStep + 1}/{sentences.length}
                 </span>
                 <span className={`text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-500 ${
-                  isStillFrame && readLocked
-                    ? "text-amber-400/50 font-mercure italic normal-case tracking-normal text-[12px]"
-                    : readLocked
-                      ? "text-white/10 italic normal-case tracking-normal text-[11px]"
-                      : currentStep >= sentences.length - 1
-                        ? "text-mars/60"
-                        : "text-white/30"
+                  readLocked
+                    ? "text-white/15"
+                    : currentStep >= sentences.length - 1
+                      ? "text-mars/60"
+                      : "text-white/30"
                 }`}>
-                  {isStillFrame && readLocked
-                    ? t.holdSilence
-                    : readLocked
-                      ? "..."
-                      : t.tapToContinue}
+                  {readLocked ? "..." : t.tapToContinue}
                 </span>
               </div>
             </button>
