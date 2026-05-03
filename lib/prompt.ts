@@ -67,6 +67,8 @@ People step into roles. They follow rules. The rules create pressure. The pressu
 
 CRITICAL — NO PROPS RULE: There is NOTHING on stage except PEOPLE. No chairs, no masks, no objects, no props, no artifacts, no tools, no furniture, no costumes. ZERO. If something needs to exist — a mask, a door, a wall, a border, a mirror, a tree, a rocket, a clock, a chair — a PERSON plays it. A person IS the Mask. A person IS the Chair. A person IS the Tree. Never write "masks are laid out" — write "people stand as masks." Never write "chairs for visitors" — visitors ARE people standing there. This is the absolute core of systemic work: when a human body represents a concept, it gains its own intelligence and starts behaving in unexpected ways. That's where the magic lives. SCAN YOUR OUTPUT — if any noun in the image or setup is not a person or a body, rewrite it.
 
+CRITICAL — NO EXCHANGES OF OBJECTS: Characters CANNOT hold, carry, pass, hand over, exchange, drop, give, or receive physical things. No dough, no keys, no letters, no gifts, no bread, no thread, no coins, no cups, no torches, no anything. Hands are EMPTY. The ONLY things characters can exchange are: words (spoken or whispered), looks (eye contact, gaze, glance), gestures (open palm, point, turn away, bow, reach), movements (step closer, step back, kneel, rise, circle), silence, breath, body position, touch (briefly placing a hand). Whenever you are tempted to write "X holds Y", "X passes Y to Z", "X offers Y", "X drops Y" — REWRITE it as a word, a look, a gesture, or a movement. "Milan holds the dough" → "Milan stands with empty hands." "She passes him the key" → "She speaks one word, then steps back." Pure embodiment, never possession.
+
 ## HOW A REAL SESSION WORKS (studied from 10+ live sessions)
 1. Someone sends a question "from Earth"
 2. The Cast proposes directing ideas — different game structures for the same question
@@ -93,7 +95,7 @@ CRITICAL — NO PROPS RULE: There is NOTHING on stage except PEOPLE. No chairs, 
 ### LES (The Forest)
 - **Use**: Questions about prioritization
 - **Characters**: Author, Trees (each represents one aspect of the question — one word in their head), Disruptive Animal
-- **Setup**: Trees stand in the space. Each tree holds one word. The animal is the unstable variable.
+- **Setup**: Trees stand in the space. Each tree IS one word (carries it in their head, says it only at the end). The animal is the unstable variable.
 - **Process**: Author moves between trees and intuitively eliminates the ones they don't want to keep. Trees cannot speak or communicate. Elimination continues until 3 trees remain.
 - **Ending**: The 3 remaining trees say their words aloud. Result: intuitive prioritization.
 - **Condition**: Trees must not speak.
@@ -184,7 +186,7 @@ In JSON, mark each as "concrete" or "abstract":
 - "abstract" = a pure force or concept: Fear, Silence, Trust, Tomorrow, Permission, Regret
 
 ## Image = GAME SETUP (MAX 2 SHORT SENTENCES)
-Not a fantasy landscape. A physical space made of people. Where do they stand, what does each represent? No props. MAX 2 SHORT sentences total. Be cinematic: "Four people crouch as tide pools. Anna stands at the edge holding water." NOT a paragraph.
+Not a fantasy landscape. A physical space made of people. Where do they stand, what does each represent? No props. Hands are empty. MAX 2 SHORT sentences total. Be cinematic: "Four people crouch as tide pools. Anna stands at the edge, watching them rise and fall." NOT a paragraph.
 
 ## Mood
 2 words maximum. Raw emotional temperature: "ancient grief", "quiet fire", "bright vertigo". NOT random adjectives. Must feel like the FEELING of the play, not a genre tag.
@@ -584,14 +586,14 @@ const AUTHOR_ROLES = [
   "is judged (stands still while characters circle and evaluate them)",
   "conducts (controls timing and intensity, but characters can ignore them)",
   "guards something (protects a position while characters try to reach it)",
-  "trades (must give something up to receive something from each character)",
+  "trades (must give up a word, a position, or a gesture to receive one back from each character)",
   "follows (is led through the space by characters, must choose which to follow)",
   "translates (receives a message from one side, must deliver it to the other, distortion is inevitable)",
   "waits (is passive while the world happens around them, must decide when to act)",
   "destroys (must tear something down that characters have built)",
   "witnesses silently (watches everything, says one sentence at the end)",
   "names things (gives each character their role by speaking it, but naming creates consequences)",
-  "carries weight (physically holds something, passes it, or drops it)",
+  "absorbs (stands still while characters speak words at them, decides which ones to keep)",
   "refuses (says no to each character, keeps saying no until they say yes once)",
   "confesses (tells each character one truth, each character responds differently)",
   "races against time (a countdown is happening, must finish before it ends)",
