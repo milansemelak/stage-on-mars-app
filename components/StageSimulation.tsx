@@ -736,14 +736,28 @@ export default function StageSimulation({ characters, simulation, simulationStep
         {/* Start overlay — hidden here, rendered below stage */}
         {false && !loading && !hasStarted && null}
 
-        {/* Tap stage to advance too — but button below is primary */}
+        {/* Tap stage to advance too — narration button below is the a11y target */}
         {hasStarted && !hasEnded && (
           <div
             onClick={advanceStep}
             className="absolute inset-0 z-10 cursor-pointer"
-            role="button"
-            tabIndex={-1}
+            aria-hidden="true"
           />
+        )}
+
+        {/* First-step tap affordance — only on step 0 to teach the gesture */}
+        {hasStarted && !hasEnded && currentStep === 0 && (
+          <div className="absolute inset-x-0 bottom-3 sm:bottom-5 z-20 flex justify-center pointer-events-none animate-fade-in">
+            <div className="flex items-center gap-2 bg-mars/15 border border-mars/40 rounded-full px-3.5 py-1.5 backdrop-blur-sm shadow-[0_0_30px_-6px_rgba(255,85,0,0.5)]">
+              <span className="relative flex w-1.5 h-1.5">
+                <span className="absolute inset-0 rounded-full bg-mars animate-ping opacity-75" />
+                <span className="relative rounded-full w-1.5 h-1.5 bg-mars" />
+              </span>
+              <span className="text-mars text-[10px] font-bold uppercase tracking-[0.18em]">
+                {t.tapToContinue}
+              </span>
+            </div>
+          </div>
         )}
 
         <svg

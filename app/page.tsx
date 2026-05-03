@@ -29,7 +29,7 @@ function Voices() {
     const interval = setInterval(() => {
       setVisible(false);
       setTimeout(() => { setIdx((i) => (i + 1) % VOICES.length); setVisible(true); }, 800);
-    }, 4500);
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
   return (
@@ -696,7 +696,7 @@ export default function Home() {
                       {t.landingCreateAccountBtn}
                     </button>
                     <a
-                      href="/business"
+                      href="/website"
                       className="inline-flex items-center px-5 py-3.5 text-white/45 hover:text-white/80 text-[12px] font-bold uppercase tracking-[0.15em] transition-all"
                     >
                       {t.landingBookRealPlay} →
@@ -770,7 +770,7 @@ export default function Home() {
             {/* Business CTA */}
             <div className="text-center mt-10 sm:mt-14">
               <p className="text-white/15 text-[11px] mb-3">Looking for something real?</p>
-              <a href="/business" className="text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars/70 transition-colors">
+              <a href="/website" className="text-mars/40 text-[11px] font-bold uppercase tracking-[0.15em] hover:text-mars/70 transition-colors">
                 Explore live plays →
               </a>
             </div>

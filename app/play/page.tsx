@@ -483,31 +483,43 @@ function PlayPage() {
     );
   }
 
+  // Journal tab is meaningful only after a few completed plays.
+  // Tab bar itself is hidden for fresh accounts so the empty state stays uncluttered.
+  const showJournalTab = playHistoryData.length >= 3;
+  const showTabBar = playHistoryData.length > 0 && showJournalTab;
+
+  // Force-back to play tab if journal is hidden
+  useEffect(() => {
+    if (!showJournalTab && activeTab === "journal") setActiveTab("play");
+  }, [showJournalTab, activeTab]);
+
   return (
     <div className="min-h-[calc(100vh-72px)]">
-      {/* Tab bar */}
-      <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 pt-4 sm:pt-6">
-        <div className="flex gap-6 border-b border-white/[0.06]">
-          <button
-            onClick={() => setActiveTab("play")}
-            className={`pb-3 text-[13px] font-bold uppercase tracking-[0.15em] transition-all relative ${
-              activeTab === "play" ? "text-white" : "text-white/25 hover:text-white/45"
-            }`}
-          >
-            {t.playTab}
-            {activeTab === "play" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-mars" />}
-          </button>
-          <button
-            onClick={() => setActiveTab("journal")}
-            className={`pb-3 text-[13px] font-bold uppercase tracking-[0.15em] transition-all relative ${
-              activeTab === "journal" ? "text-white" : "text-white/25 hover:text-white/45"
-            }`}
-          >
-            {t.journalTab}
-            {activeTab === "journal" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-mars" />}
-          </button>
+      {/* Tab bar — hidden until journal becomes meaningful */}
+      {showTabBar && (
+        <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 pt-4 sm:pt-6">
+          <div className="flex gap-6 border-b border-white/[0.06]">
+            <button
+              onClick={() => setActiveTab("play")}
+              className={`pb-3 text-[13px] font-bold uppercase tracking-[0.15em] transition-all relative ${
+                activeTab === "play" ? "text-white" : "text-white/25 hover:text-white/45"
+              }`}
+            >
+              {t.playTab}
+              {activeTab === "play" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-mars" />}
+            </button>
+            <button
+              onClick={() => setActiveTab("journal")}
+              className={`pb-3 text-[13px] font-bold uppercase tracking-[0.15em] transition-all relative ${
+                activeTab === "journal" ? "text-white" : "text-white/25 hover:text-white/45"
+              }`}
+            >
+              {t.journalTab}
+              {activeTab === "journal" && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-mars" />}
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {activeTab === "journal" ? (
         <div className="mx-auto w-full max-w-2xl px-5 sm:px-8 py-6 sm:py-8">
@@ -542,6 +554,29 @@ function PlayPage() {
                 clientName={clientName}
                 onClientNameChange={setClientName}
               />
+
+              {/* First-play onboarding — Ask · Play · See */}
+              {!play && !loading && playHistoryData.length === 0 && (
+                <div className="mt-8 sm:mt-10 grid grid-cols-3 gap-2 sm:gap-3 animate-fade-in">
+                  {[
+                    { label: t.stepAsk, desc: t.stepAskDesc },
+                    { label: t.stepPlay, desc: t.stepPlayDesc },
+                    { label: t.stepSee, desc: t.stepSeeDesc },
+                  ].map((step, i) => (
+                    <div key={i} className="flex flex-col items-start gap-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-mars/40 text-[10px] font-bold tabular-nums">0{i + 1}</span>
+                        <span className="text-white/55 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.18em]">
+                          {step.label}
+                        </span>
+                      </div>
+                      <p className="text-white/25 text-[11px] sm:text-[12px] leading-[1.4]">
+                        {step.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Daily question suggestion */}
               {!play && !loading && (

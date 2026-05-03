@@ -666,13 +666,22 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               </div>
 
               <button
-                onClick={typingDone ? () => onAskQuestion?.(currentPlay.followUpQuestion!) : undefined}
-                className={`w-full text-left ${typingDone ? "group cursor-pointer" : "cursor-default"}`}
+                onClick={() => {
+                  if (typingDone) {
+                    onAskQuestion?.(currentPlay.followUpQuestion!);
+                  } else {
+                    // Skip typewriter: show the whole question instantly
+                    if (typingRef.current) clearInterval(typingRef.current);
+                    setTypedChars(currentPlay.followUpQuestion!.length);
+                    setTypingDone(true);
+                  }
+                }}
+                className="group w-full text-left cursor-pointer"
               >
                 <div className={`rounded-2xl border px-6 sm:px-8 py-6 transition-all ${
                   typingDone
                     ? "border-mars/30 hover:border-mars/50 bg-mars/[0.08] hover:bg-mars/[0.12] shadow-[0_0_30px_-8px_rgba(255,85,0,0.15)]"
-                    : "border-mars/10 bg-mars/[0.04]"
+                    : "border-mars/10 bg-mars/[0.04] hover:border-mars/20"
                 }`}>
                   <p className="text-white group-hover:text-white text-base sm:text-lg font-mercure italic leading-relaxed transition-colors">
                     &ldquo;{currentPlay.simulation && !typingDone
@@ -680,9 +689,13 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                       : currentPlay.followUpQuestion
                     }{currentPlay.simulation && !typingDone && <span className="inline-block w-[2px] h-[1em] bg-mars ml-0.5 animate-pulse" />}&rdquo;
                   </p>
-                  {typingDone && (
+                  {typingDone ? (
                     <span className="text-mars group-hover:text-mars-light text-xs font-black uppercase tracking-widest mt-3 block transition-colors animate-fade-in">
                       {t.askThis}
+                    </span>
+                  ) : (
+                    <span className="text-white/25 text-[10px] uppercase tracking-[0.2em] mt-3 block">
+                      {t.tapToContinue}
                     </span>
                   )}
                 </div>

@@ -61,7 +61,7 @@ export default function PerspectivesJournal({ history }: Props) {
   }, [lang]);
 
   useEffect(() => {
-    if (history.length >= 5) {
+    if (history.length >= 3) {
       fetchSynthesis();
     }
   }, [history.length, fetchSynthesis]);
