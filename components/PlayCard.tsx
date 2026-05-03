@@ -504,6 +504,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 simulation={currentPlay.simulation}
                 simulationSteps={currentPlay.simulationSteps}
                 clientName={clientName}
+                image={currentPlay.image}
                 onEnd={() => {
                   setPerspectivesRevealed(true);
                   setVisiblePerspectives(0);
@@ -658,6 +659,9 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
                 </div>
                 <p className="text-center font-mercure italic text-amber-200/85 text-xl sm:text-2xl leading-[1.3] px-4 tracking-tight">
                   &ldquo;{display}&rdquo;
+                </p>
+                <p className="text-center text-white/25 text-[10px] uppercase tracking-[0.25em] mt-4 font-bold">
+                  {t.sayItAloud}
                 </p>
               </div>
             );

@@ -10,6 +10,7 @@ type Props = {
   simulationSteps?: SimulationStep[];
   loading?: boolean;
   clientName?: string;
+  image?: string;
   onEnd?: () => void;
 };
 
@@ -410,7 +411,7 @@ function playBell() {
   }
 }
 
-export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, onEnd }: Props) {
+export default function StageSimulation({ characters, simulation, simulationSteps, loading, clientName, image, onEnd }: Props) {
   const { t } = useI18n();
 
   const authorLabel = clientName || t.author;
@@ -643,9 +644,26 @@ export default function StageSimulation({ characters, simulation, simulationStep
     }
   });
 
+  // A still-frame step (empty positions object) is the held pause —
+  // user must sit with it for at least 3s before the tap unlocks.
+  const isStillFrame =
+    !!simulationSteps?.[currentStep] &&
+    Object.keys(simulationSteps[currentStep].positions || {}).length === 0;
+  const [stillFrameLocked, setStillFrameLocked] = useState(false);
+  useEffect(() => {
+    if (!hasStarted || hasEnded) return;
+    if (!isStillFrame) {
+      setStillFrameLocked(false);
+      return;
+    }
+    setStillFrameLocked(true);
+    const timer = setTimeout(() => setStillFrameLocked(false), 3000);
+    return () => clearTimeout(timer);
+  }, [currentStep, isStillFrame, hasStarted, hasEnded]);
+
   // Author-controlled: advance to next step on tap (no auto-advance)
   const advanceStep = () => {
-    if (!hasStarted || hasEnded) return;
+    if (!hasStarted || hasEnded || stillFrameLocked) return;
     if (currentStep < sentences.length - 1) {
       setCurrentStep((p) => p + 1);
     } else {
@@ -746,7 +764,7 @@ export default function StageSimulation({ characters, simulation, simulationStep
         )}
 
         {/* First-step tap affordance — only on step 0 to teach the gesture */}
-        {hasStarted && !hasEnded && currentStep === 0 && (
+        {hasStarted && !hasEnded && currentStep === 0 && !stillFrameLocked && (
           <div className="absolute inset-x-0 bottom-3 sm:bottom-5 z-20 flex justify-center pointer-events-none animate-fade-in">
             <div className="flex items-center gap-2 bg-mars/15 border border-mars/40 rounded-full px-3.5 py-1.5 backdrop-blur-sm shadow-[0_0_30px_-6px_rgba(255,85,0,0.5)]">
               <span className="relative flex w-1.5 h-1.5">
@@ -985,9 +1003,20 @@ export default function StageSimulation({ characters, simulation, simulationStep
         </svg>
       </div>
 
-      {/* Start button — pinned at bottom */}
+      {/* Pre-stage moment — image as poetic threshold + body ritual + Start */}
       {!loading && !hasStarted && (
-        <div className="shrink-0 px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
+        <div className="shrink-0 px-5 sm:px-6 pb-5 sm:pb-6 pt-2 space-y-5">
+          {image && (
+            <div className="text-center px-2 sm:px-4 animate-fade-in">
+              <p className="text-mars/40 text-[9px] uppercase tracking-[0.3em] font-bold mb-3">{t.theImage}</p>
+              <p className="font-mercure italic text-white/80 text-[16px] sm:text-[20px] leading-[1.45] tracking-tight">
+                {image}
+              </p>
+            </div>
+          )}
+          <p className="text-center font-mercure italic text-white/35 text-[12px] sm:text-[13px] leading-[1.45] animate-fade-in">
+            {t.bodyRitual}
+          </p>
           <button
             onClick={handleStart}
             className="group w-full relative cursor-pointer"
@@ -1024,9 +1053,13 @@ export default function StageSimulation({ characters, simulation, simulationStep
                   {currentStep + 1}/{sentences.length}
                 </span>
                 <span className={`text-[10px] font-bold uppercase tracking-[0.15em] transition-all ${
-                  currentStep >= sentences.length - 1 ? "text-mars/60" : "text-white/30"
+                  stillFrameLocked
+                    ? "text-amber-400/50 font-mercure italic normal-case tracking-normal text-[12px]"
+                    : currentStep >= sentences.length - 1
+                      ? "text-mars/60"
+                      : "text-white/30"
                 }`}>
-                  {t.tapToContinue}
+                  {stillFrameLocked ? t.holdSilence : t.tapToContinue}
                 </span>
               </div>
             </button>

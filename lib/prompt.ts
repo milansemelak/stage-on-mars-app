@@ -702,7 +702,7 @@ const ENDING_TYPES = [
   "the distance between the author and each character at the end IS the answer",
   "the character who moved last IS the answer",
   "what the author did when nobody was watching IS the answer",
-  "the thing the author dropped/released IS the answer",
+  "the words the author refused to say (and which character heard the silence) IS the answer",
   "the direction the author is facing when the play stops IS the answer",
   "what was whispered in the final silence IS the answer",
   "who betrayed whom (and who forgave) IS the answer",
@@ -799,7 +799,7 @@ export function buildUserPrompt(
   const contextInstruction =
     context === "business"
       ? `Context: BUSINESS / ORGANIZATIONAL question.
-Use game mechanics that reveal organizational dynamics — auctions, trials, constructions, eliminations, relay races, board meetings, mergers, acquisitions, pitches. Characters should use business and rational vocabulary — CEO, Investor, The Budget, The Deadline, The Strategy, The Customer, The Competitor, KPI, The Risk, The Market, The Process, Cash Flow, The Board, The Stakeholder, ROI, The Bottleneck, The Legacy System. Keep the language sharp, professional, and grounded in business reality. The game rules should force honest prioritization.`
+Use game MECHANICS that reveal organizational dynamics — auctions, board meetings, mergers, pitches, relay races, eliminations. Pick BUSINESS-RATIONAL FORCES given a body, not job titles: The Budget, The Deadline, The Strategy, The Risk, The Market, The Bottleneck, Cash Flow, The Legacy System, The Quarter, The Pivot, The Stakeholder, KPI, ROI, The Customer's Silence, The Board's Memory. Job-title characters (CEO, Investor, Manager, Employee) are still BANNED unless the question explicitly names them — they flatten plays. Treat business reality as the metaphor world; treat the forces inside it as the characters. Keep language sharp and professional. Game rules should force honest prioritization.`
       : `Context: PERSONAL question.
 Go deep and sideways. Use game mechanics that force the author into genuine vulnerability — funerals, coronations, mirrors, silent walks, dances. The author's task should cost them something real. Characters can be inner archetypes, contradictions, forces that don't have names yet.`;
 

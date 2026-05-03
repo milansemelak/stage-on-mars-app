@@ -507,6 +507,7 @@ export default function Home() {
                     characters={play.characters}
                     simulation={play.simulation}
                     clientName={clientName.trim() || undefined}
+                    image={play.image}
                     onEnd={() => { setSimEnded(true); fetchPerspectives(); }}
                   />
                 </div>
@@ -637,6 +638,9 @@ export default function Home() {
                 </div>
                 <p className="text-center font-mercure italic text-amber-200/85 text-[20px] sm:text-[28px] leading-[1.3] px-4 tracking-tight">
                   &ldquo;{play.takeawayWord}&rdquo;
+                </p>
+                <p className="text-center text-white/25 text-[10px] uppercase tracking-[0.25em] mt-4 font-bold">
+                  {t.sayItAloud}
                 </p>
               </div>
             )}
