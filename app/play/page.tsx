@@ -626,17 +626,17 @@ function PlayPage() {
             </div>
           )}
 
-          {/* Play result */}
+          {/* Play result — wider on desktop for conference projection */}
           {play && (
-            <div ref={playRef} className="mx-auto w-full max-w-2xl px-5 sm:px-8 py-6 sm:py-8">
-              <div className="flex items-center justify-between mb-4 animate-fade-slide-up">
-                <p className="text-sm text-white/25 italic truncate mr-4">
+            <div ref={playRef} className="mx-auto w-full max-w-2xl lg:max-w-5xl xl:max-w-6xl px-5 sm:px-8 lg:px-12 py-6 sm:py-8 lg:py-12">
+              <div className="flex items-center justify-between mb-4 lg:mb-6 animate-fade-slide-up">
+                <p className="text-sm lg:text-base text-white/35 italic truncate mr-4">
                   &ldquo;{askedQuestion}&rdquo;
                 </p>
                 <button
                   onClick={generatePlay}
                   disabled={loading}
-                  className="text-xs text-mars-light/60 hover:text-mars-light transition-colors whitespace-nowrap border border-mars/20 rounded-lg px-3 py-1.5 hover:border-mars/40"
+                  className="text-xs lg:text-sm text-mars-light/60 hover:text-mars-light transition-colors whitespace-nowrap border border-mars/20 rounded-lg px-3 py-1.5 lg:px-4 lg:py-2 hover:border-mars/40"
                 >
                   {t.regenerate}
                 </button>
