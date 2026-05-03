@@ -271,6 +271,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
   return (
     <>
       <div className="relative rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
+        {/* Subtle film-grain texture — gives the surface intentional aesthetic weight */}
+        <div className="grain-overlay" />
         {/* Top-right utility cluster — Edit, Favorite, Save/Cancel */}
         <div className="absolute top-4 right-4 lg:top-5 lg:right-5 z-10 flex items-center gap-2">
           {onToggleFavorite && (
@@ -334,8 +336,113 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </div>
           </div>
 
+          {/* Characters — HERO casting tiles (moved up: cast first, directions second) */}
+          <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
+            <SectionLabel color="mars">{t.characters}</SectionLabel>
+            <div className="mt-3 lg:mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3">
+              {/* Author tile — distinct gold treatment */}
+              <div className="char-reveal char-delay-0 group relative rounded-2xl border-2 border-amber-500/40 bg-gradient-to-b from-amber-500/[0.12] to-amber-500/[0.04] hover:border-amber-500/70 hover:from-amber-500/[0.18] hover:to-amber-500/[0.06] transition-all duration-300 hover:-translate-y-0.5 px-3 py-4 sm:px-4 sm:py-5 lg:py-6 flex flex-col items-center text-center overflow-hidden">
+                <div className="absolute top-3 sm:top-4 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-amber-400/20 blur-xl pointer-events-none group-hover:bg-amber-400/30 transition-colors" />
+                <span className="relative flex flex-col items-center mb-2 sm:mb-2.5">
+                  <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-300 shadow-[0_0_16px_rgba(255,200,80,0.85)] animate-pulse-glow" />
+                  <span className="block w-px h-2 sm:h-2.5 bg-amber-300/30 mt-0.5" />
+                </span>
+                <span className="relative font-black text-sm sm:text-[15px] lg:text-base text-amber-200 leading-tight tracking-tight break-words">
+                  {clientName || t.author}
+                </span>
+                <span className="relative text-[9px] sm:text-[10px] uppercase tracking-[0.22em] text-amber-400/60 font-bold mt-1 sm:mt-1.5">
+                  {t.landingYouBadge}
+                </span>
+              </div>
+              {currentPlay.characters.map((char, i) => {
+                const isAbstract =
+                  char.description?.toLowerCase() === "abstract";
+                return (
+                  <div
+                    key={i}
+                    className={`char-reveal char-delay-${Math.min(i, 5)} group relative rounded-2xl border transition-all duration-300 hover:-translate-y-0.5 px-3 py-4 sm:px-4 sm:py-5 lg:py-6 flex flex-col items-center text-center overflow-hidden ${
+                      isAbstract
+                        ? "bg-gradient-to-b from-white/[0.04] to-white/[0.01] border-white/15 hover:border-white/40 hover:from-white/[0.06]"
+                        : "bg-gradient-to-b from-mars/[0.14] to-mars/[0.04] border-mars/40 hover:border-mars/70 hover:from-mars/[0.20]"
+                    }`}
+                  >
+                    <div className={`absolute top-3 sm:top-4 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full blur-xl pointer-events-none transition-colors ${
+                      isAbstract ? "bg-white/[0.06] group-hover:bg-white/[0.12]" : "bg-mars/30 group-hover:bg-mars/45"
+                    }`} />
+                    {editing ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => toggleCharacterType(i)}
+                          aria-label={isAbstract ? t.abstract : t.concrete}
+                          title={isAbstract ? t.abstract : t.concrete}
+                          className={`relative shrink-0 mb-2 sm:mb-2.5 rounded-full cursor-pointer hover:scale-110 transition-transform w-3 h-3 sm:w-3.5 sm:h-3.5 ${
+                            isAbstract
+                              ? "border-2 border-white/55"
+                              : "bg-mars shadow-[0_0_16px_rgba(255,85,0,0.85)] animate-pulse-glow"
+                          }`}
+                        />
+                        <input
+                          value={char.name}
+                          onChange={(e) => updateCharacterName(i, e.target.value)}
+                          className={`relative w-full text-center font-black text-sm sm:text-[15px] lg:text-base bg-transparent border-b focus:outline-none ${
+                            isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
+                          }`}
+                        />
+                        {currentPlay.characters.length > 2 && (
+                          <button
+                            onClick={() => removeCharacter(i)}
+                            className="absolute top-2 right-2 text-white/25 hover:text-red-400/80 transition-colors text-lg leading-none"
+                            title="Remove"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="relative flex flex-col items-center mb-2 sm:mb-2.5">
+                          <span
+                            className={`w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full ${
+                              isAbstract
+                                ? "border-2 border-white/55"
+                                : "bg-mars shadow-[0_0_16px_rgba(255,85,0,0.85)] animate-pulse-glow"
+                            }`}
+                          />
+                          <span className={`block w-px h-2 sm:h-2.5 mt-0.5 ${
+                            isAbstract ? "bg-white/25" : "bg-mars/40"
+                          }`} />
+                        </span>
+                        <span
+                          className={`relative font-black text-sm sm:text-[15px] lg:text-base leading-tight tracking-tight break-words ${
+                            isAbstract ? "text-white/90 font-mercure italic" : "text-[#ffb380]"
+                          }`}
+                        >
+                          {char.name}
+                        </span>
+                        <span className={`relative text-[9px] sm:text-[10px] uppercase tracking-[0.22em] font-bold mt-1 sm:mt-1.5 ${
+                          isAbstract ? "text-white/30" : "text-mars/60"
+                        }`}>
+                          {isAbstract ? t.abstract : t.concrete}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {editing && (
+              <button
+                onClick={addCharacter}
+                className="mt-3 w-full py-3 rounded-2xl border border-dashed border-white/10 hover:border-white/25 text-white/25 hover:text-white/50 text-sm transition-all"
+              >
+                + {t.addCharacter || "Add character"}
+              </button>
+            )}
+          </div>
+
           {/* The Image / Stage Directions */}
-          <div className="animate-fade-slide-up stagger-2 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-5 xl:p-6 lg:h-full">
+          <div className="animate-fade-slide-up stagger-2 lg:col-span-7 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.theImage}</SectionLabel>
             {editing ? (
               <textarea
@@ -357,8 +464,21 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               href={`https://open.spotify.com/search/${encodeURIComponent(`${currentPlay.music.track} ${currentPlay.music.artist}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="block animate-fade-slide-up stagger-5 lg:col-span-5 lg:h-full rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-5 xl:p-6 transition-all group"
+              className="relative block animate-fade-slide-up stagger-5 lg:col-span-5 lg:h-full rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-5 xl:p-6 transition-all group overflow-hidden"
             >
+              {/* Mini equalizer — subtle music-is-alive indicator, bottom right */}
+              <div className="pointer-events-none absolute bottom-3 right-3 sm:bottom-4 sm:right-4 hidden sm:flex items-end gap-[3px] h-4 opacity-50 group-hover:opacity-90 transition-opacity">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <span
+                    key={i}
+                    className="eq-bar w-[2px] bg-mars rounded-full"
+                    style={{
+                      animationDelay: `${i * 0.15}s`,
+                      height: `${50 + ((i * 37) % 50)}%`,
+                    }}
+                  />
+                ))}
+              </div>
               <div className="flex items-center gap-2.5 mb-2">
                 <svg className="w-3.5 h-3.5 text-mars shrink-0" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
@@ -386,107 +506,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
             </a>
           )}
 
-          {/* Characters — HERO casting tiles. Each character is the role someone will step into. */}
-          <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
-            <SectionLabel color="mars">{t.characters}</SectionLabel>
-            <div className="mt-3 lg:mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-              {/* Author tile — always first, distinct gold treatment */}
-              <div className="char-reveal char-delay-0 group relative rounded-2xl border-2 border-amber-500/40 bg-gradient-to-b from-amber-500/[0.12] to-amber-500/[0.04] hover:border-amber-500/70 hover:from-amber-500/[0.18] hover:to-amber-500/[0.06] transition-all duration-300 hover:-translate-y-0.5 px-4 py-5 sm:px-5 sm:py-7 lg:px-5 lg:py-8 flex flex-col items-center text-center overflow-hidden">
-                {/* Aura behind the dot */}
-                <div className="absolute top-3 sm:top-5 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-amber-400/20 blur-xl pointer-events-none group-hover:bg-amber-400/30 transition-colors" />
-                <span className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-amber-300 shadow-[0_0_18px_rgba(255,200,80,0.85)] mb-3 sm:mb-4 animate-pulse-glow" />
-                <span className="font-black text-base sm:text-lg lg:text-xl text-amber-200 leading-tight tracking-tight break-words">
-                  {clientName || t.author}
-                </span>
-                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-amber-400/60 font-bold mt-1.5 sm:mt-2">
-                  {t.landingYouBadge}
-                </span>
-              </div>
-              {currentPlay.characters.map((char, i) => {
-                const isAbstract =
-                  char.description?.toLowerCase() === "abstract";
-                return (
-                  <div
-                    key={i}
-                    className={`char-reveal char-delay-${Math.min(i, 5)} group relative rounded-2xl border transition-all duration-300 hover:-translate-y-0.5 px-4 py-5 sm:px-5 sm:py-7 lg:px-5 lg:py-8 flex flex-col items-center text-center overflow-hidden ${
-                      isAbstract
-                        ? "bg-gradient-to-b from-white/[0.04] to-white/[0.01] border-white/15 hover:border-white/40 hover:from-white/[0.06]"
-                        : "bg-gradient-to-b from-mars/[0.14] to-mars/[0.04] border-mars/40 hover:border-mars/70 hover:from-mars/[0.20]"
-                    }`}
-                  >
-                    {/* Aura behind the dot */}
-                    <div className={`absolute top-3 sm:top-5 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full blur-xl pointer-events-none transition-colors ${
-                      isAbstract ? "bg-white/[0.06] group-hover:bg-white/[0.12]" : "bg-mars/30 group-hover:bg-mars/45"
-                    }`} />
-                    {editing ? (
-                      <>
-                        <button
-                          type="button"
-                          onClick={() => toggleCharacterType(i)}
-                          aria-label={isAbstract ? t.abstract : t.concrete}
-                          title={isAbstract ? t.abstract : t.concrete}
-                          className={`relative shrink-0 mb-3 sm:mb-4 rounded-full cursor-pointer hover:scale-110 transition-transform w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                            isAbstract
-                              ? "border-2 border-white/55"
-                              : "bg-mars shadow-[0_0_18px_rgba(255,85,0,0.85)] animate-pulse-glow"
-                          }`}
-                        />
-                        <input
-                          value={char.name}
-                          onChange={(e) => updateCharacterName(i, e.target.value)}
-                          className={`relative w-full text-center font-black text-base sm:text-lg lg:text-xl bg-transparent border-b focus:outline-none ${
-                            isAbstract ? "text-white/85 font-mercure italic border-white/20 focus:border-white/40" : "text-[#ffb380] border-mars/30 focus:border-mars/60"
-                          }`}
-                        />
-                        {currentPlay.characters.length > 2 && (
-                          <button
-                            onClick={() => removeCharacter(i)}
-                            className="absolute top-2 right-2 text-white/25 hover:text-red-400/80 transition-colors text-lg leading-none"
-                            title="Remove"
-                          >
-                            ×
-                          </button>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <span
-                          className={`relative shrink-0 mb-3 sm:mb-4 rounded-full w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                            isAbstract
-                              ? "border-2 border-white/55"
-                              : "bg-mars shadow-[0_0_18px_rgba(255,85,0,0.85)] animate-pulse-glow"
-                          }`}
-                        />
-                        <span
-                          className={`relative font-black text-base sm:text-lg lg:text-xl leading-tight tracking-tight break-words ${
-                            isAbstract ? "text-white/90 font-mercure italic" : "text-[#ffb380]"
-                          }`}
-                        >
-                          {char.name}
-                        </span>
-                        <span className={`relative text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold mt-1.5 sm:mt-2 ${
-                          isAbstract ? "text-white/30" : "text-mars/60"
-                        }`}>
-                          {isAbstract ? t.abstract : t.concrete}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            {editing && (
-              <button
-                onClick={addCharacter}
-                className="mt-3 w-full py-3 rounded-2xl border border-dashed border-white/10 hover:border-white/25 text-white/25 hover:text-white/50 text-sm transition-all"
-              >
-                + {t.addCharacter || "Add character"}
-              </button>
-            )}
-          </div>
-
           {/* Author's Role */}
-          <div className="animate-fade-slide-up stagger-4 lg:col-span-7 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-5 xl:p-6 lg:h-full">
+          <div className="animate-fade-slide-up stagger-4 lg:col-span-7 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.authorsRole}</SectionLabel>
             {editing ? (
               <textarea
@@ -503,7 +524,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* Ending Perspective — always visible, it's an instruction for live play */}
-          <div className="animate-fade-slide-up stagger-5 lg:col-span-5 lg:rounded-2xl lg:border lg:border-white/[0.06] lg:bg-white/[0.015] lg:p-5 xl:p-6 lg:h-full">
+          <div className="animate-fade-slide-up stagger-5 lg:col-span-5 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.endingPerspective}</SectionLabel>
             {editing ? (
               <textarea
