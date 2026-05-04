@@ -312,8 +312,8 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
         <div className="p-5 sm:p-8 lg:p-8 xl:p-10 space-y-6 sm:space-y-8 lg:space-y-7">
           {/* DASHBOARD GRID — only static play info; post-play sections stay linear below */}
           <div className="space-y-6 sm:space-y-8 lg:space-y-0 lg:grid lg:grid-cols-12 lg:gap-x-7 lg:gap-y-7">
-          {/* Play name — hero element, full width */}
-          <div className="animate-fade-slide-up stagger-1 lg:col-span-12 pr-24 lg:pr-28">
+          {/* Play name — hero element, full width, theatrical entry */}
+          <div className="animate-title-entry lg:col-span-12 pr-24 lg:pr-28">
             {editing ? (
               <input
                 value={editData.name}
@@ -339,7 +339,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* Characters — HERO casting tiles (moved up: cast first, directions second) */}
-          <div className="animate-fade-slide-up stagger-3 lg:col-span-12">
+          <div className="animate-fade-slide-up stagger-2 lg:col-span-12">
             <SectionLabel color="mars">{t.characters}</SectionLabel>
             <div className="mt-3 lg:mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-3">
               {/* Author tile — distinct gold treatment */}
@@ -444,7 +444,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* The Image / Stage Directions */}
-          <div className="animate-fade-slide-up stagger-2 lg:col-span-7 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
+          <div className="animate-fade-slide-up stagger-3 lg:col-span-7 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.theImage}</SectionLabel>
             {editing ? (
               <textarea
@@ -466,7 +466,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               href={`https://open.spotify.com/search/${encodeURIComponent(`${currentPlay.music.track} ${currentPlay.music.artist}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative block animate-fade-slide-up stagger-5 lg:col-span-5 lg:h-full rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-5 xl:p-6 transition-all group overflow-hidden"
+              className="relative block animate-fade-slide-up stagger-4 lg:col-span-5 lg:h-full rounded-2xl border border-mars/25 bg-mars/[0.06] hover:bg-mars/[0.10] hover:border-mars/40 p-4 sm:p-5 lg:p-5 xl:p-6 transition-all group overflow-hidden"
             >
               {/* Mini equalizer — subtle music-is-alive indicator, bottom right */}
               <div className="pointer-events-none absolute bottom-3 right-3 sm:bottom-4 sm:right-4 hidden sm:flex items-end gap-[3px] h-4 opacity-50 group-hover:opacity-90 transition-opacity">
@@ -509,7 +509,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           )}
 
           {/* Author's Role */}
-          <div className="animate-fade-slide-up stagger-4 lg:col-span-7 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
+          <div className="animate-fade-slide-up stagger-5 lg:col-span-7 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.authorsRole}</SectionLabel>
             {editing ? (
               <textarea
@@ -526,7 +526,7 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
 
           {/* Ending Perspective — always visible, it's an instruction for live play */}
-          <div className="animate-fade-slide-up stagger-5 lg:col-span-5 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
+          <div className="animate-fade-slide-up stagger-6 lg:col-span-5 rounded-xl lg:rounded-2xl border border-white/[0.06] bg-white/[0.015] p-4 sm:p-5 xl:p-6 lg:h-full">
             <SectionLabel color="mars">{t.endingPerspective}</SectionLabel>
             {editing ? (
               <textarea
@@ -543,15 +543,16 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
           </div>
           </div>{/* end DASHBOARD GRID */}
 
-          {/* ── Step 2: See what happens ── */}
+          {/* ── Step 2: See what happens ── final beat of the cascade */}
           {!currentPlay.simulation && !marsLoading && (
-            <div className="animate-fade-slide-up stagger-6">
+            <div>
               {marsError && (
                 <p className="text-red-400/70 text-xs mb-3 text-center">{marsError}</p>
               )}
               <button
                 onClick={fetchFromMars}
-                className="group relative w-full py-5 lg:py-7 rounded-2xl text-white font-black text-lg sm:text-xl lg:text-2xl tracking-widest uppercase transition-all overflow-hidden bg-gradient-to-b from-mars-light to-mars hover:from-mars-light hover:to-mars-light shadow-[0_0_60px_-12px_rgba(255,85,0,0.55)] hover:shadow-[0_0_80px_-8px_rgba(255,85,0,0.75)] active:scale-[0.99]"
+                style={{ animationDelay: "1.65s" }}
+                className="animate-button-arrival group relative w-full py-5 lg:py-7 rounded-2xl text-white font-black text-lg sm:text-xl lg:text-2xl tracking-widest uppercase transition-all overflow-hidden bg-gradient-to-b from-mars-light to-mars hover:from-mars-light hover:to-mars-light hover:shadow-[0_0_80px_-8px_rgba(255,85,0,0.75)] active:scale-[0.99]"
               >
                 <span className="relative z-10 inline-flex items-center justify-center gap-3">
                   <svg className="w-4 h-4 lg:w-5 lg:h-5 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
