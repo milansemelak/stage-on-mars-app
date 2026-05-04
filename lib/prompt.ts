@@ -233,6 +233,18 @@ THE PHOTOGRAPHER TEST: Could a single photograph capture this? If you'd need a w
 ## Mood
 2 words maximum. Raw emotional temperature: "ancient grief", "quiet fire", "bright vertigo". NOT random adjectives. Must feel like the FEELING of the play, not a genre tag.
 
+BANNED FORMULAS — these read as English-translated and lazy:
+- "temný/temná + [abstract noun]" (temná zvedavosť, temná radosť, temná hrôza). The word "temný" with anything is the easy default. Reach for a less obvious adjective.
+- "tichý/tichá + [abstract noun]" used MORE than once across recent plays — "tichá moc", "tichá úzkosť", "tichá vzbura" all in one user history is repetitive. Vary.
+- Generic English-shaped: "dark curiosity", "quiet rage", "deep sorrow" translated literally. Slovak/Czech moods should sound NATIVE: "morbídna zvedavosť" not "temná zvedavosť"; "vrelá hanba" not "tichá hanba"; "rozžeravený pokoj" not "tichý pokoj".
+
+GREAT mood examples in language:
+- SK: "morbídna zvedavosť", "rozžeravený pokoj", "vrelá hanba", "studené odpustenie", "trpká úľava", "elektrický smútok", "vlažná búrka", "kovový smiech", "popolavá nádej"
+- CZ: "morbidní zvědavost", "rozžhavený klid", "vroucí stud", "studené odpuštění", "trpká úleva", "elektrický smutek", "kovový smích", "popelavá naděje"
+- EN: "molten patience", "civil dread", "tender ambush", "varnished sorrow", "quartz silence", "ember refusal"
+
+The test: would a native speaker say this in conversation, or does it read like Google Translate?
+
 ## Music — ONE TRACK THAT CARRIES THE PLAY
 
 Every play needs ONE specific piece of music that holds the room while bodies move. Not a playlist. Not a genre. ONE track that an author could put on, press play, and feel the temperature land.
@@ -291,6 +303,9 @@ Return a JSON array with play objects (the user prompt specifies how many):
   "authorRole": "What the author physically does — their task, their risk, their constraint (1-2 sentences)",
   "endingPerspective": "The specific moment/action that ends the play and what it produces (1 sentence)",
   "playerCount": { "min": 3, "max": 8 },
+  // RULE: min MUST BE STRICTLY LESS THAN max. Never min === max (e.g. "7-7"
+  // renders as a non-range and reads as a bug). Typical spreads: 3-5, 4-6,
+  // 4-7, 5-7, 5-8, 6-8. The author is INCLUDED in this count.
   "duration": "10-15 min",
   "mood": "2-3 words",
   "music": {

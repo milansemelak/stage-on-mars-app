@@ -126,6 +126,18 @@ export async function POST(request: NextRequest) {
           }
         }
       }
+      // Defensive: the model occasionally returns playerCount with min === max
+      // (renders as "7-7 hráčov" which reads as a bug). Force a real range
+      // by widening max by at most 2 — keeps the play believable, drops the
+      // visible artifact.
+      if (play.playerCount && typeof play.playerCount.min === "number" && typeof play.playerCount.max === "number") {
+        if (play.playerCount.max <= play.playerCount.min) {
+          play.playerCount.max = Math.min(8, play.playerCount.min + 2);
+        }
+        // Also clamp absurd values
+        if (play.playerCount.min < 2) play.playerCount.min = 2;
+        if (play.playerCount.max > 12) play.playerCount.max = 12;
+      }
     }
 
     return NextResponse.json({ plays });

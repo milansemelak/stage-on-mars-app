@@ -331,7 +331,9 @@ export default function PlayCard({ play, question, onPlayUpdate, onPlayCompleted
               <span>{currentPlay.duration}</span>
               <span className="text-white/15">|</span>
               <span>
-                {currentPlay.playerCount.min}-{currentPlay.playerCount.max} {t.players}
+                {currentPlay.playerCount.min === currentPlay.playerCount.max
+                  ? currentPlay.playerCount.min
+                  : `${currentPlay.playerCount.min}-${currentPlay.playerCount.max}`} {t.players}
               </span>
             </div>
           </div>
